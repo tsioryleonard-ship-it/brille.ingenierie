@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Pétale 1 · Boussole des Alliés — BRILLE</title>
+<link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vert:#cbe1b6; --bleu:#a8dbeb; --mauve:#b8aed7;
+  --orange:#f49f4c; --rose:#f5abaf; --jaune:#f8f4b8;
+  --noir:#1a1a2e; --gris:#555; --blanc:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f5f3ef;color:var(--noir);}
+h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
+
+@media print{
+  body{background:white;}
+  .no-print{display:none!important;}
+  .page-break{page-break-after:always;}
+  .tool-section{page-break-inside:avoid;}
+  nav{display:none;}
+}
+
+/* NAV */
+nav{background:var(--noir);padding:12px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;}
+nav .logo{height:36px;border-radius:50%;}
+nav h1{color:var(--orange);font-size:16px;letter-spacing:2px;}
+nav .tabs{display:flex;gap:8px;margin-left:auto;}
+nav .tab{background:rgba(255,255,255,0.1);color:white;border:none;border-radius:20px;padding:6px 14px;font-family:'Quicksand',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+nav .tab.active{background:var(--orange);color:var(--noir);}
+.no-print.btn-print{background:var(--vert);color:var(--noir);border:none;border-radius:20px;padding:8px 18px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-left:8px;}
+
+/* AGE PANELS */
+.age-panel{display:none;max-width:960px;margin:0 auto;padding:24px;}
+.age-panel.active{display:block;}
+
+/* HERO */
+.petal-hero{border-radius:20px;padding:28px 32px;margin-bottom:24px;position:relative;overflow:hidden;}
+.petal-hero::after{content:'1';position:absolute;right:20px;bottom:-20px;font-family:'Gruppo',sans-serif;font-size:140px;color:rgba(0,0,0,0.06);line-height:1;}
+.petal-hero .badge{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,0.4);margin-bottom:6px;}
+.petal-hero .emoji{font-size:48px;margin-bottom:8px;}
+.petal-hero h2{font-size:30px;margin-bottom:4px;}
+.petal-hero p{font-size:13px;color:rgba(0,0,0,0.5);font-weight:400;}
+.petal-hero .age-chip{position:absolute;top:20px;right:20px;background:rgba(0,0,0,0.12);color:var(--noir);font-size:12px;font-weight:700;padding:6px 16px;border-radius:20px;}
+
+/* TOOL SECTIONS */
+.tool-section{background:white;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden;}
+.tool-header{padding:18px 24px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:12px;}
+.tool-header .tool-icon{font-size:28px;}
+.tool-header h3{font-size:18px;}
+.tool-header .tool-tag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:12px;background:#f0f0f0;color:var(--gris);}
+.tool-body{padding:20px 24px;}
+
+/* ===== OUTIL 1 : THERMOMÈTRE ===== */
+.thermometer-wrap{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+.thermo-svg-wrap{flex-shrink:0;}
+.thermo-levels{flex:1;min-width:200px;}
+.thermo-level{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 14px;border-radius:12px;}
+.thermo-level .tl-num{font-family:'Gruppo',sans-serif;font-size:22px;font-weight:400;width:32px;text-align:center;}
+.thermo-level .tl-info{}
+.thermo-level .tl-title{font-size:13px;font-weight:700;color:var(--noir);}
+.thermo-level .tl-sub{font-size:11px;font-weight:300;color:var(--gris);margin-top:2px;}
+.thermo-interactive .tl-btn{cursor:pointer;border:2px solid transparent;transition:all 0.2s;}
+.thermo-interactive .tl-btn:hover{border-color:rgba(0,0,0,0.2);transform:translateX(4px);}
+.thermo-interactive .tl-btn.selected{border-color:rgba(0,0,0,0.3);box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+
+/* ===== OUTIL 2 : CARTES SITUATIONS ===== */
+.situations-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.situation-card{border-radius:14px;padding:14px;border:2px solid;cursor:pointer;transition:all 0.2s;position:relative;}
+.situation-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.1);}
+.situation-card .sc-emoji{font-size:32px;margin-bottom:8px;display:block;}
+.situation-card .sc-title{font-size:12px;font-weight:700;color:var(--noir);margin-bottom:4px;}
+.situation-card .sc-text{font-size:11px;font-weight:300;color:var(--gris);line-height:1.5;}
+.situation-card .sc-check{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.2);background:white;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.2s;}
+.situation-card.selected .sc-check{background:var(--noir);color:white;border-color:var(--noir);}
+.situation-card .sc-ally{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,0.15);}
+.situation-card .sc-ally-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(0,0,0,0.35);margin-bottom:3px;}
+.sc-ally-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.sc-ally-tag{background:rgba(255,255,255,0.7);border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:10px;padding:2px 7px;font-weight:600;color:var(--noir);}
+
+/* ===== OUTIL 3 : BOUSSOLE ===== */
+.boussole-wrap{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+.boussole-svg-wrap{flex-shrink:0;}
+.boussole-legend{flex:1;min-width:200px;}
+.b-direction{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;padding:12px 14px;border-radius:12px;}
+.b-dir-icon{font-size:24px;flex-shrink:0;}
+.b-dir-info .b-dir-title{font-size:13px;font-weight:700;color:var(--noir);}
+.b-dir-info .b-dir-sub{font-size:11px;font-weight:300;color:var(--gris);margin-top:2px;line-height:1.5;}
+.boussole-fill-zone{background:#f8f8f8;border:2px dashed #ddd;border-radius:12px;padding:14px;margin-top:12px;}
+.boussole-fill-zone .bfz-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#aaa;margin-bottom:8px;}
+.fill-slot{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fill-slot .fs-dir{font-size:14px;font-weight:700;width:60px;color:var(--gris);}
+.fill-slot .fs-line{flex:1;border-bottom:1.5px dashed #ccc;height:16px;}
+.fill-slot .fs-emoji{font-size:12px;}
+
+/* ===== OUTIL 4 : LISTE QUALITÉS ===== */
+.qualities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.quality-item{border-radius:12px;padding:12px 10px;text-align:center;cursor:pointer;border:2px solid transparent;transition:all 0.2s;}
+.quality-item:hover{transform:translateY(-2px);}
+.quality-item.child-yes{border-color:rgba(0,150,0,0.4);}
+.quality-item.parent-yes{border-color:rgba(0,0,200,0.3);}
+.quality-item.both-yes{border-width:3px;border-color:var(--orange);box-shadow:0 3px 10px rgba(244,159,76,0.3);}
+.quality-item .qi-emoji{font-size:28px;margin-bottom:6px;}
+.quality-item .qi-name{font-size:11px;font-weight:700;color:var(--noir);margin-bottom:4px;}
+.quality-item .qi-check-row{display:flex;gap:4px;justify-content:center;}
+.quality-item .qi-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.2);background:white;display:flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;}
+.quality-item .qi-check.c-active{background:#4caf50;border-color:#4caf50;color:white;}
+.quality-item .qi-check.p-active{background:#2196f3;border-color:#2196f3;color:white;}
+.qualities-legend{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.ql-item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;}
+.ql-dot{width:14px;height:14px;border-radius:50%;}
+
+/* ===== OUTIL 5 : FICHE LIVRABLE ===== */
+.livrable-card{background:linear-gradient(135deg,#f8f8f8,#efefef);border-radius:16px;padding:20px;border:2px dashed #ddd;}
+.livrable-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e0e0e0;}
+.livrable-logo{width:44px;height:44px;border-radius:50%;overflow:hidden;background:white;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.livrable-logo img{width:100%;height:100%;object-fit:contain;}
+.livrable-header h3{font-size:16px;}
+.livrable-header .lh-sub{font-size:11px;color:var(--gris);}
+.livrable-sections{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.liv-section{background:white;border-radius:12px;padding:14px;}
+.liv-section h4{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--noir);}
+.write-area{border:1.5px dashed #ddd;border-radius:8px;min-height:60px;padding:8px;font-size:12px;font-family:'Quicksand',sans-serif;width:100%;color:var(--gris);resize:none;}
+.write-line{border-bottom:1.5px dashed #ccc;height:24px;margin-bottom:6px;}
+.section-instruction{font-size:10px;color:var(--gris);font-style:italic;margin-bottom:8px;}
+
+/* TABS instruction */
+.instruction-bar{background:#fffbf0;border:1px solid #f0e0a0;border-radius:12px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--gris);display:flex;align-items:center;gap:10px;}
+
+/* INTERACTIVE feedback */
+.feedback-bar{background:var(--noir);color:white;border-radius:12px;padding:10px 16px;margin-top:12px;font-size:12px;display:none;}
+.feedback-bar.show{display:flex;align-items:center;gap:8px;}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <img class="logo" id="nav-logo" src="" alt="brille">
+  <h1>PÉTALE 1 · BOUSSOLE DES ALLIÉS</h1>
+  <div class="tabs">
+    <button class="tab active" onclick="showAge('6-7')">🌱 6–7 ans</button>
+    <button class="tab" onclick="showAge('8-9')">🌿 8–9 ans</button>
+    <button class="tab" onclick="showAge('10-12')">🌳 10–12 ans</button>
+  </div>
+  <button class="no-print btn-print" onclick="window.print()">🖨️ Imprimer</button>
+</nav>
+
+<!-- ==================== AGE 6-7 ==================== -->
+<div class="age-panel active" id="panel-6-7">
+
+  <div class="petal-hero" style="background:var(--vert);">
+    <div class="badge">Pétale 1 · Réseau des Alliés</div>
+    <div class="emoji">🧭</div>
+    <h2>Ma Boussole des Alliés</h2>
+    <p>Je sais vers qui me tourner selon ce dont j'ai besoin</p>
+    <div class="age-chip">🌱 6–7 ans</div>
+  </div>
+
+  <div class="instruction-bar">
+    💡 <span><strong>Pour l'atelier :</strong> L'enfant colle une gommette ⭐ sur les alliés qu'il reconnaît. Le parent complète oralement. On identifie ensemble les 4 alliés principaux de la boussole.</span>
+  </div>
+
+  <!-- OUTIL A : THERMOMÈTRE DE BESOIN -->
+  <div class="tool-section tool-A">
+    <div class="tool-header" style="border-left:5px solid var(--vert);">
+      <span class="tool-icon">🌡️</span>
+      <h3>Mon Thermomètre de Besoin</h3>
+      <span class="tool-tag">Outil 1 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Quand j'ai un problème, de quel genre d'aide j'ai besoin ? Pointe ou colorie le niveau !</p>
+      <div class="thermometer-wrap">
+        <div class="thermo-svg-wrap">
+          <svg width="80" height="280" viewBox="0 0 80 280">
+            <!-- tube -->
+            <rect x="32" y="20" width="16" height="200" rx="8" fill="#e8e8e8"/>
+            <!-- levels colored -->
+            <rect x="32" y="160" width="16" height="60" rx="4" fill="#a4c2e7" id="thermo-l1-67"/>
+            <rect x="32" y="110" width="16" height="50" rx="4" fill="#cbe1b6" id="thermo-l2-67"/>
+            <rect x="32" y="60" width="16" height="50" rx="4" fill="#f8f4b8" id="thermo-l3-67"/>
+            <rect x="32" y="20" width="16" height="40" rx="4" fill="#f5abaf" id="thermo-l4-67"/>
+            <!-- bulb -->
+            <circle cx="40" cy="240" r="20" fill="#f49f4c"/>
+            <circle cx="40" cy="240" r="14" fill="#e88830"/>
+            <!-- tick marks -->
+            <line x1="48" y1="160" x2="56" y2="160" stroke="#999" stroke-width="1.5"/>
+            <line x1="48" y1="110" x2="56" y2="110" stroke="#999" stroke-width="1.5"/>
+            <line x1="48" y1="60" x2="56" y2="60" stroke="#999" stroke-width="1.5"/>
+            <line x1="48" y1="20" x2="56" y2="20" stroke="#999" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="thermo-levels thermo-interactive">
+          <div class="thermo-level tl-btn" style="background:#fce8ec;" onclick="selectThermo(this,'67')" data-val="4">
+            <div class="tl-num" style="color:#d04060;">4</div>
+            <div class="tl-info">
+              <div class="tl-title">🆘 J'ai vraiment besoin d'aide !</div>
+              <div class="tl-sub">Je suis bloqué, je ne sais pas quoi faire tout seul</div>
+            </div>
+          </div>
+          <div class="thermo-level tl-btn" style="background:#fff8e0;" onclick="selectThermo(this,'67')" data-val="3">
+            <div class="tl-num" style="color:#c08000;">3</div>
+            <div class="tl-info">
+              <div class="tl-title">😕 C'est difficile pour moi</div>
+              <div class="tl-sub">J'essaie mais j'aurais besoin d'un coup de main</div>
+            </div>
+          </div>
+          <div class="thermo-level tl-btn" style="background:#eaf6ee;" onclick="selectThermo(this,'67')" data-val="2">
+            <div class="tl-num" style="color:#2a8040;">2</div>
+            <div class="tl-info">
+              <div class="tl-title">🙂 Je me débrouille</div>
+              <div class="tl-sub">Ça va à peu près, je peux essayer seul</div>
+            </div>
+          </div>
+          <div class="thermo-level tl-btn" style="background:#e6f3fa;" onclick="selectThermo(this,'67')" data-val="1">
+            <div class="tl-num" style="color:#1a6090;">1</div>
+            <div class="tl-info">
+              <div class="tl-title">😄 C'est facile !</div>
+              <div class="tl-sub">Je sais faire tout seul, aucun souci</div>
+            </div>
+          </div>
+          <div class="feedback-bar" id="fb-thermo-67">
+            <span>✨</span><span id="fb-thermo-67-text"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTIL B : CARTES SITUATIONS -->
+  <div class="tool-section tool-B">
+    <div class="tool-header" style="border-left:5px solid var(--bleu);">
+      <span class="tool-icon">🃏</span>
+      <h3>Mes Cartes de Situations</h3>
+      <span class="tool-tag">Outil 2 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Clique sur les situations que tu as déjà vécues ! Qui t'a aidé ?</p>
+      <div class="situations-grid">
+
+        <div class="situation-card" style="background:#e8f4fb;border-color:#a4c2e7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😢</span>
+          <div class="sc-title">J'ai pleuré à l'école</div>
+          <div class="sc-text">Quelque chose m'a rendu très triste pendant la classe</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Maîtresse</span><span class="sc-ally-tag">👩 Maman</span></div>
+          </div>
+        </div>
+
+        <div class="situation-card" style="background:#eaf6ee;border-color:#cbe1b6;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😡</span>
+          <div class="sc-title">J'étais très en colère</div>
+          <div class="sc-text">Quelqu'un a pris mon jouet ou dit quelque chose de méchant</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span><span class="sc-ally-tag">👨 Papa</span></div>
+          </div>
+        </div>
+
+        <div class="situation-card" style="background:#fff8e0;border-color:#f8f4b8;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😰</span>
+          <div class="sc-title">J'avais très peur</div>
+          <div class="sc-text">Quelque chose m'a fait peur, la nuit ou à l'école</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">🧸 Doudou</span><span class="sc-ally-tag">👩 Maman</span></div>
+          </div>
+        </div>
+
+        <div class="situation-card" style="background:#fce8ec;border-color:#f5abaf;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🤕</span>
+          <div class="sc-title">Je me suis blessé</div>
+          <div class="sc-text">Je me suis fait mal dans la cour ou à la maison</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">🏥 Infirmière</span><span class="sc-ally-tag">👨 Papa</span></div>
+          </div>
+        </div>
+
+        <div class="situation-card" style="background:#f0eafa;border-color:#b8aed7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">📚</span>
+          <div class="sc-title">Je comprenais pas mon exercice</div>
+          <div class="sc-text">J'étais bloqué sur mes devoirs et je ne savais plus quoi faire</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Maîtresse</span><span class="sc-ally-tag">👧 Sœur</span></div>
+          </div>
+        </div>
+
+        <div class="situation-card" style="background:#e8f4fb;border-color:#a4c2e7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😔</span>
+          <div class="sc-title">Mon ami ne voulait plus jouer</div>
+          <div class="sc-text">Je me suis senti seul dans la cour de récréation</div>
+          <div class="sc-ally"><div class="sc-ally-label">Mes alliés</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Maîtresse</span><span class="sc-ally-tag">👴 Papy</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTIL C : BOUSSOLE 4 POINTS -->
+  <div class="tool-section tool-C">
+    <div class="tool-header" style="border-left:5px solid var(--orange);">
+      <span class="tool-icon">🧭</span>
+      <h3>Ma Boussole des Alliés</h3>
+      <span class="tool-tag">Outil 3 / 5 — L'outil principal</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Ma boussole a 4 points. Chaque point = un type d'aide. Écris ou dessine ton allié dans chaque case !</p>
+      <div class="boussole-wrap">
+        <div class="boussole-svg-wrap">
+          <svg width="260" height="260" viewBox="0 0 260 260">
+            <!-- fond cercle -->
+            <circle cx="130" cy="130" r="120" fill="#f8f8f0" stroke="#e0ddd0" stroke-width="1.5"/>
+            <!-- cercle intérieur -->
+            <circle cx="130" cy="130" r="40" fill="white" stroke="#e0ddd0" stroke-width="1"/>
+            <!-- lignes boussole -->
+            <line x1="130" y1="10" x2="130" y2="90" stroke="#c8c0b0" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="130" y1="170" x2="130" y2="250" stroke="#c8c0b0" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="10" y1="130" x2="90" y2="130" stroke="#c8c0b0" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <line x1="170" y1="130" x2="250" y2="130" stroke="#c8c0b0" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- zones de couleur -->
+            <path d="M130,130 L130,10 A120,120 0 0,1 250,130 Z" fill="#fce8ec" opacity="0.6"/>
+            <path d="M130,130 L250,130 A120,120 0 0,1 130,250 Z" fill="#eaf6ee" opacity="0.6"/>
+            <path d="M130,130 L130,250 A120,120 0 0,1 10,130 Z" fill="#e8f4fb" opacity="0.6"/>
+            <path d="M130,130 L10,130 A120,120 0 0,1 130,10 Z" fill="#fff8e0" opacity="0.6"/>
+            <!-- aiguille -->
+            <polygon points="130,55 125,130 135,130" fill="#f49f4c" opacity="0.8"/>
+            <polygon points="130,205 125,130 135,130" fill="#b8aed7" opacity="0.6"/>
+            <circle cx="130" cy="130" r="8" fill="white" stroke="#f49f4c" stroke-width="2"/>
+            <circle cx="130" cy="130" r="4" fill="#f49f4c"/>
+            <!-- labels directions -->
+            <text x="130" y="32" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="11" fill="#c04060">❤️ Émotionnel</text>
+            <text x="130" y="248" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="11" fill="#2a8040">🔧 Logistique</text>
+            <text x="248" y="134" text-anchor="end" font-family="Gruppo,sans-serif" font-size="11" fill="#1a6090">🎓 Expertise</text>
+            <text x="12" y="134" font-family="Gruppo,sans-serif" font-size="11" fill="#c08000">🎉 Fun</text>
+            <!-- N S E W markers -->
+            <text x="130" y="50" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)">N</text>
+            <text x="130" y="244" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)">S</text>
+            <text x="244" y="134" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)">E</text>
+            <text x="16" y="134" text-anchor="middle" font-family="Gruppo,sans-serif" font-size="9" fill="rgba(0,0,0,0.3)">O</text>
+          </svg>
+        </div>
+        <div class="boussole-legend">
+          <div class="b-direction" style="background:#fce8ec;">
+            <div class="b-dir-icon">❤️</div>
+            <div class="b-dir-info">
+              <div class="b-dir-title">Nord — Quand je suis triste ou en colère</div>
+              <div class="b-dir-sub">Qui me console ? Qui me prend dans ses bras ?</div>
+            </div>
+          </div>
+          <div class="b-direction" style="background:#eaf6ee;">
+            <div class="b-dir-icon">🔧</div>
+            <div class="b-dir-info">
+              <div class="b-dir-title">Sud — Quand j'ai besoin d'aide pratique</div>
+              <div class="b-dir-sub">Qui m'aide à porter, à préparer, à organiser ?</div>
+            </div>
+          </div>
+          <div class="b-direction" style="background:#e8f4fb;">
+            <div class="b-dir-icon">🎓</div>
+            <div class="b-dir-info">
+              <div class="b-dir-title">Est — Quand je ne comprends pas</div>
+              <div class="b-dir-sub">Qui m'explique, qui m'apprend, qui sait des choses ?</div>
+            </div>
+          </div>
+          <div class="b-direction" style="background:#fff8e0;">
+            <div class="b-dir-icon">🎉</div>
+            <div class="b-dir-info">
+              <div class="b-dir-title">Ouest — Quand je veux m'amuser</div>
+              <div class="b-dir-sub">Qui joue avec moi ? Qui rigole ? Qui invente des trucs ?</div>
+            </div>
+          </div>
+          <!-- Zone à compléter -->
+          <div class="boussole-fill-zone">
+            <div class="bfz-label">✏️ Mes alliés — Écris leurs noms !</div>
+            <div class="fill-slot"><span class="fs-dir">❤️ Nord :</span><div class="fs-line"></div></div>
+            <div class="fill-slot"><span class="fs-dir">🔧 Sud :</span><div class="fs-line"></div></div>
+            <div class="fill-slot"><span class="fs-dir">🎓 Est :</span><div class="fs-line"></div></div>
+            <div class="fill-slot"><span class="fs-dir">🎉 Ouest :</span><div class="fs-line"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTIL D : QUALITÉS ILLUSTRÉES -->
+  <div class="tool-section tool-D">
+    <div class="tool-header" style="border-left:5px solid var(--mauve);">
+      <span class="tool-icon">⭐</span>
+      <h3>Les Qualités de mes Alliés</h3>
+      <span class="tool-tag">Outil 4 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:8px;font-style:italic;">Qu'est-ce qui fait qu'un allié est un bon allié ? Coche les qualités que tu vois chez tes alliés !</p>
+      <div class="qualities-legend">
+        <div class="ql-item"><div class="ql-dot" style="background:#4caf50"></div>Je vois cette qualité (moi)</div>
+        <div class="ql-item"><div class="ql-dot" style="background:#2196f3"></div>Mon parent voit cette qualité</div>
+      </div>
+      <div class="qualities-grid">
+        <div class="quality-item" style="background:#fce8ec;">
+          <div class="qi-emoji">🤗</div>
+          <div class="qi-name">Il me fait des câlins</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')" title="Moi">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')" title="Parent">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#eaf6ee;">
+          <div class="qi-emoji">👂</div>
+          <div class="qi-name">Il m'écoute</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#e8f4fb;">
+          <div class="qi-emoji">😄</div>
+          <div class="qi-name">Il me fait rire</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#fff8e0;">
+          <div class="qi-emoji">💪</div>
+          <div class="qi-name">Il m'aide quand c'est dur</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#f0eafa;">
+          <div class="qi-emoji">🛡️</div>
+          <div class="qi-name">Il me protège</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#fce8ec;">
+          <div class="qi-emoji">🎮</div>
+          <div class="qi-name">Il joue avec moi</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#eaf6ee;">
+          <div class="qi-emoji">📖</div>
+          <div class="qi-name">Il m'apprend des choses</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+        <div class="quality-item" style="background:#e8f4fb;">
+          <div class="qi-emoji">🌟</div>
+          <div class="qi-name">Il me fait me sentir bien</div>
+          <div class="qi-check-row">
+            <div class="qi-check" onclick="toggleCheck(this,'c')">👦</div>
+            <div class="qi-check" onclick="toggleCheck(this,'p')">👨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTIL E : FICHE LIVRABLE -->
+  <div class="tool-section tool-E page-break">
+    <div class="tool-header" style="border-left:5px solid var(--jaune);">
+      <span class="tool-icon">🎁</span>
+      <h3>Ma Fiche Livrable — Je reparts avec ça !</h3>
+      <span class="tool-tag">Outil 5 / 5</span>
+    </div>
+    <div class="tool-body">
+      <div class="livrable-card">
+        <div class="livrable-header">
+          <div class="livrable-logo"><img class="logo-img" src="" alt="brille"></div>
+          <div>
+            <h3>Ma Boussole des Alliés 🧭</h3>
+            <div class="lh-sub">Pétale 1 · 🌱 6–7 ans · Date : _______________</div>
+          </div>
+        </div>
+        <div class="livrable-sections">
+          <div class="liv-section">
+            <h4>❤️ Quand je suis triste, j'appelle :</h4>
+            <div class="write-line"></div>
+            <div class="write-line"></div>
+          </div>
+          <div class="liv-section">
+            <h4>🔧 Quand j'ai besoin d'aide pratique :</h4>
+            <div class="write-line"></div>
+            <div class="write-line"></div>
+          </div>
+          <div class="liv-section">
+            <h4>🎓 Quand je ne comprends pas :</h4>
+            <div class="write-line"></div>
+            <div class="write-line"></div>
+          </div>
+          <div class="liv-section">
+            <h4>🎉 Quand je veux m'amuser :</h4>
+            <div class="write-line"></div>
+            <div class="write-line"></div>
+          </div>
+          <div class="liv-section" style="grid-column:1/-1;">
+            <h4>⭐ Mon allié préféré et pourquoi :</h4>
+            <div class="section-instruction">Dessine-le ou écris son nom !</div>
+            <div class="write-line"></div>
+            <div class="write-line"></div>
+            <div style="border:1.5px dashed #ddd;border-radius:8px;height:80px;margin-top:8px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:12px;">Mon dessin ici ✏️</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--noir);border-radius:10px;display:flex;gap:8px;align-items:center;">
+          <span style="font-size:18px;">💡</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.7);">Je n'ai pas besoin d'être seul face à mes problèmes. Ma boussole m'aide à savoir vers qui me tourner !</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end panel 6-7 -->
+
+<!-- ==================== AGE 8-9 ==================== -->
+<div class="age-panel" id="panel-8-9">
+
+  <div class="petal-hero" style="background:var(--bleu);">
+    <div class="badge">Pétale 1 · Réseau des Alliés</div>
+    <div class="emoji">🧭</div>
+    <h2>Ma Boussole des Alliés</h2>
+    <p>Je cartographie mon réseau et je comprends les rôles de chacun</p>
+    <div class="age-chip">🌿 8–9 ans</div>
+  </div>
+
+  <div class="instruction-bar">
+    💡 <span><strong>Pour l'atelier :</strong> L'enfant complète sa boussole avec 4 points + une colonne "remplaçant". On discute des situations d'urgence. Durée : 2h.</span>
+  </div>
+
+  <!-- THERMOMÈTRE 8-9 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--bleu);">
+      <span class="tool-icon">🌡️</span>
+      <h3>Mon Baromètre de Besoin</h3>
+      <span class="tool-tag">Outil 1 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Sur une échelle de 1 à 5, à quel point j'ai besoin d'aide en ce moment dans chaque domaine ?</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;">❤️ Soutien émotionnel</div>
+          <div style="display:flex;gap:6px;">
+            <div onclick="selectBarometer(this,'em89')" data-v="1" style="flex:1;height:40px;background:#e8f4fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">1</div>
+            <div onclick="selectBarometer(this,'em89')" data-v="2" style="flex:1;height:40px;background:#a8dbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">2</div>
+            <div onclick="selectBarometer(this,'em89')" data-v="3" style="flex:1;height:40px;background:#f8f4b8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">3</div>
+            <div onclick="selectBarometer(this,'em89')" data-v="4" style="flex:1;height:40px;background:#fdd5a5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">4</div>
+            <div onclick="selectBarometer(this,'em89')" data-v="5" style="flex:1;height:40px;background:#f5abaf;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">5</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;">🔧 Aide pratique / logistique</div>
+          <div style="display:flex;gap:6px;">
+            <div onclick="selectBarometer(this,'lo89')" data-v="1" style="flex:1;height:40px;background:#e8f4fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">1</div>
+            <div onclick="selectBarometer(this,'lo89')" data-v="2" style="flex:1;height:40px;background:#a8dbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">2</div>
+            <div onclick="selectBarometer(this,'lo89')" data-v="3" style="flex:1;height:40px;background:#f8f4b8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">3</div>
+            <div onclick="selectBarometer(this,'lo89')" data-v="4" style="flex:1;height:40px;background:#fdd5a5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">4</div>
+            <div onclick="selectBarometer(this,'lo89')" data-v="5" style="flex:1;height:40px;background:#f5abaf;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">5</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;">🎓 Aide scolaire / expertise</div>
+          <div style="display:flex;gap:6px;">
+            <div onclick="selectBarometer(this,'sc89')" data-v="1" style="flex:1;height:40px;background:#e8f4fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">1</div>
+            <div onclick="selectBarometer(this,'sc89')" data-v="2" style="flex:1;height:40px;background:#a8dbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">2</div>
+            <div onclick="selectBarometer(this,'sc89')" data-v="3" style="flex:1;height:40px;background:#f8f4b8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">3</div>
+            <div onclick="selectBarometer(this,'sc89')" data-v="4" style="flex:1;height:40px;background:#fdd5a5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">4</div>
+            <div onclick="selectBarometer(this,'sc89')" data-v="5" style="flex:1;height:40px;background:#f5abaf;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">5</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;margin-bottom:8px;">🎉 Loisirs / amis / fun</div>
+          <div style="display:flex;gap:6px;">
+            <div onclick="selectBarometer(this,'fu89')" data-v="1" style="flex:1;height:40px;background:#e8f4fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">1</div>
+            <div onclick="selectBarometer(this,'fu89')" data-v="2" style="flex:1;height:40px;background:#a8dbeb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">2</div>
+            <div onclick="selectBarometer(this,'fu89')" data-v="3" style="flex:1;height:40px;background:#f8f4b8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">3</div>
+            <div onclick="selectBarometer(this,'fu89')" data-v="4" style="flex:1;height:40px;background:#fdd5a5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">4</div>
+            <div onclick="selectBarometer(this,'fu89')" data-v="5" style="flex:1;height:40px;background:#f5abaf;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all 0.2s;">5</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;font-size:10px;color:var(--gris);">
+        <span>1 = Je gère seul</span><span>·</span><span>2 = Un peu d'aide</span><span>·</span><span>3 = Moyen</span><span>·</span><span>4 = Difficile</span><span>·</span><span>5 = Urgent !</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARTES SITUATIONS 8-9 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--bleu);">
+      <span class="tool-icon">🃏</span>
+      <h3>Mes Cartes de Situations — Avec mon plan d'action</h3>
+      <span class="tool-tag">Outil 2 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Pour chaque situation, identifie ton allié principal ET un remplaçant si l'allié principal n'est pas disponible.</p>
+      <div class="situations-grid">
+        <div class="situation-card" style="background:#e8f4fb;border-color:#a4c2e7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😰</span>
+          <div class="sc-title">J'ai une grande inquiétude</div>
+          <div class="sc-text">Quelque chose me tracasse depuis plusieurs jours et j'arrive pas à dormir</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant si absent</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👵 Mamie</span><span class="sc-ally-tag">👩‍🏫 Maîtresse</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#eaf6ee;border-color:#cbe1b6;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">📉</span>
+          <div class="sc-title">J'ai eu une mauvaise note</div>
+          <div class="sc-text">J'ai eu un résultat décevant et je me sens nul·le</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👨 Papa</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Maîtresse</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#fff8e0;border-color:#f8f4b8;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🤝</span>
+          <div class="sc-title">Je me suis disputé avec un ami</div>
+          <div class="sc-text">On s'est fâchés et je ne sais pas comment réconcilier</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Maîtresse</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#fce8ec;border-color:#f5abaf;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🏠</span>
+          <div class="sc-title">Je suis seul à la maison</div>
+          <div class="sc-text">Mes parents sont en retard et je me sens seul et un peu inquiet</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">📱 Appel Papa</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">🏡 Voisin</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#f0eafa;border-color:#b8aed7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">💻</span>
+          <div class="sc-title">Je suis bloqué sur un projet scolaire</div>
+          <div class="sc-text">J'ai un exposé à faire et je ne sais pas par où commencer</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👦 Frère</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#e8f4fb;border-color:#a4c2e7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🎯</span>
+          <div class="sc-title">Je veux essayer une nouvelle activité</div>
+          <div class="sc-text">J'ai envie de découvrir quelque chose de nouveau mais je n'ose pas</div>
+          <div class="sc-ally"><div class="sc-ally-label">Allié principal</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">🧑‍🤝‍🧑 Ami</span></div>
+          </div>
+          <div class="sc-ally" style="margin-top:4px;"><div class="sc-ally-label">Remplaçant</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👨 Papa</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOUSSOLE + REMPLAÇANT 8-9 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--orange);">
+      <span class="tool-icon">🧭</span>
+      <h3>Ma Boussole avec Plan de Communication</h3>
+      <span class="tool-tag">Outil 3 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Complète ta boussole avec ton allié principal ET son remplaçant pour chaque direction.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:#fce8ec;border-radius:14px;padding:14px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:10px;">❤️ Soutien émotionnel</div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Allié principal :</div>
+          <div class="write-line" style="margin-bottom:10px;"></div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Si absent, je contacte :</div>
+          <div class="write-line" style="margin-bottom:6px;"></div>
+          <div style="font-size:10px;color:var(--gris);">Comment ? (tel / message / en personne) :</div>
+          <div class="write-line"></div>
+        </div>
+        <div style="background:#eaf6ee;border-radius:14px;padding:14px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:10px;">🔧 Aide logistique</div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Allié principal :</div>
+          <div class="write-line" style="margin-bottom:10px;"></div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Si absent :</div>
+          <div class="write-line" style="margin-bottom:6px;"></div>
+          <div style="font-size:10px;color:var(--gris);">Comment ?</div>
+          <div class="write-line"></div>
+        </div>
+        <div style="background:#e8f4fb;border-radius:14px;padding:14px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:10px;">🎓 Expertise / apprentissage</div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Allié principal :</div>
+          <div class="write-line" style="margin-bottom:10px;"></div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Si absent :</div>
+          <div class="write-line" style="margin-bottom:6px;"></div>
+          <div style="font-size:10px;color:var(--gris);">Comment ?</div>
+          <div class="write-line"></div>
+        </div>
+        <div style="background:#fff8e0;border-radius:14px;padding:14px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:10px;">🎉 Fun / loisirs</div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Allié principal :</div>
+          <div class="write-line" style="margin-bottom:10px;"></div>
+          <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Si absent :</div>
+          <div class="write-line" style="margin-bottom:6px;"></div>
+          <div style="font-size:10px;color:var(--gris);">Comment ?</div>
+          <div class="write-line"></div>
+        </div>
+      </div>
+      <!-- Scénario urgence -->
+      <div style="margin-top:14px;background:#f0eafa;border-radius:12px;padding:14px;border-left:4px solid var(--mauve);">
+        <div style="font-size:12px;font-weight:700;margin-bottom:8px;">🚨 Mon plan d'urgence — Que faire si personne n'est disponible ?</div>
+        <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Je peux contacter :</div>
+        <div class="write-line" style="margin-bottom:6px;"></div>
+        <div style="font-size:11px;color:var(--gris);margin-bottom:6px;">Numéro de téléphone d'urgence :</div>
+        <div class="write-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUALITÉS 8-9 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--mauve);">
+      <span class="tool-icon">⭐</span>
+      <h3>Les Qualités de mes Alliés — Analyse comparée</h3>
+      <span class="tool-tag">Outil 4 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:12px;font-style:italic;">Coche les qualités que toi et ton parent observez. Discutez des différences !</p>
+      <div class="qualities-legend">
+        <div class="ql-item"><div class="ql-dot" style="background:#4caf50"></div>Je vois cette qualité</div>
+        <div class="ql-item"><div class="ql-dot" style="background:#2196f3"></div>Mon parent voit cette qualité</div>
+        <div class="ql-item"><div class="ql-dot" style="background:#f49f4c"></div>On est d'accord tous les deux !</div>
+      </div>
+      <div class="qualities-grid">
+        <div class="quality-item" style="background:#fce8ec;"><div class="qi-emoji">🤗</div><div class="qi-name">Bienveillant·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#eaf6ee;"><div class="qi-emoji">💬</div><div class="qi-name">Bon·ne communicant·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#e8f4fb;"><div class="qi-emoji">🧠</div><div class="qi-name">Intelligent·e / sage</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#fff8e0;"><div class="qi-emoji">😄</div><div class="qi-name">Joyeux·se / drôle</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#f0eafa;"><div class="qi-emoji">🛡️</div><div class="qi-name">Protecteur·trice</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#fce8ec;"><div class="qi-emoji">🎯</div><div class="qi-name">Fiable / de confiance</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#eaf6ee;"><div class="qi-emoji">🌱</div><div class="qi-name">Patient·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#e8f4fb;"><div class="qi-emoji">🌟</div><div class="qi-name">Inspirant·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#fff8e0;"><div class="qi-emoji">❤️</div><div class="qi-name">Affectueux·se</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+        <div class="quality-item" style="background:#f0eafa;"><div class="qi-emoji">🚀</div><div class="qi-name">Motivant·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVRABLE 8-9 -->
+  <div class="tool-section page-break">
+    <div class="tool-header" style="border-left:5px solid var(--jaune);">
+      <span class="tool-icon">🎁</span>
+      <h3>Fiche Livrable + Plan de Communication Complet</h3>
+      <span class="tool-tag">Outil 5 / 5</span>
+    </div>
+    <div class="tool-body">
+      <div class="livrable-card">
+        <div class="livrable-header">
+          <div class="livrable-logo"><img class="logo-img" src="" alt="brille"></div>
+          <div>
+            <h3>Ma Boussole + Plan de Communication 🧭</h3>
+            <div class="lh-sub">Pétale 1 · 🌿 8–9 ans · Nom : _______________ Date : _______________</div>
+          </div>
+        </div>
+        <div class="livrable-sections">
+          <div class="liv-section"><h4>❤️ Émotionnel — Allié + remplaçant</h4><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🔧 Logistique — Allié + remplaçant</h4><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🎓 Expertise — Allié + remplaçant</h4><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🎉 Fun — Allié + remplaçant</h4><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section" style="grid-column:1/-1;">
+            <h4>🚨 Mon scénario d'urgence — Si personne n'est là…</h4>
+            <div class="write-line"></div><div class="write-line"></div>
+            <div style="margin-top:8px;padding:8px 12px;background:#f0eafa;border-radius:8px;font-size:11px;color:var(--gris);">
+              💡 <strong>Engagement :</strong> La semaine prochaine, je vais contacter au moins un de mes alliés pour quelque chose de positif (pas seulement en cas de problème !) :<div class="write-line" style="margin-top:6px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end panel 8-9 -->
+
+<!-- ==================== AGE 10-12 ==================== -->
+<div class="age-panel" id="panel-10-12">
+
+  <div class="petal-hero" style="background:var(--mauve);">
+    <div class="badge">Pétale 1 · Réseau des Alliés</div>
+    <div class="emoji">🧭</div>
+    <h2>Mon Réseau des Alliés — Analyse Stratégique</h2>
+    <p>Je cartographie mon réseau, j'analyse mes dépendances et je construis ma résilience</p>
+    <div class="age-chip">🌳 10–12 ans</div>
+  </div>
+
+  <div class="instruction-bar" style="background:#f0eafa;border-color:#c8b8e8;">
+    💡 <span><strong>Pour l'atelier :</strong> Boussole complète 4 points + colonne "remplaçant". 5 traductions Grimoire + l'enfant en invente une. Discussion sur les situations d'urgence réelles.</span>
+  </div>
+
+  <!-- THERMOMÈTRE 10-12 : Analyse de dépendance -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--mauve);">
+      <span class="tool-icon">📊</span>
+      <h3>Analyse de Mon Réseau de Soutien</h3>
+      <span class="tool-tag">Outil 1 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Évalue chaque dimension de ton réseau de soutien actuel. Sois honnête avec toi-même !</p>
+      <div style="display:grid;grid-template-columns:1fr;gap:10px;">
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;font-size:11px;font-weight:700;color:var(--gris);padding:0 4px;">
+          <span>Dimension</span><span>Niveau actuel (glisse le curseur)</span><span style="text-align:center;">Score</span>
+        </div>
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;background:#fce8ec;border-radius:10px;padding:10px 14px;">
+          <span style="font-size:12px;font-weight:700;">❤️ Soutien émotionnel</span>
+          <input type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value+'/10'" style="accent-color:#f5abaf;">
+          <span style="font-size:14px;font-weight:700;text-align:center;">5/10</span>
+        </div>
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;background:#eaf6ee;border-radius:10px;padding:10px 14px;">
+          <span style="font-size:12px;font-weight:700;">🔧 Soutien logistique</span>
+          <input type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value+'/10'" style="accent-color:#cbe1b6;">
+          <span style="font-size:14px;font-weight:700;text-align:center;">5/10</span>
+        </div>
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;background:#e8f4fb;border-radius:10px;padding:10px 14px;">
+          <span style="font-size:12px;font-weight:700;">🎓 Soutien académique</span>
+          <input type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value+'/10'" style="accent-color:#a8dbeb;">
+          <span style="font-size:14px;font-weight:700;text-align:center;">5/10</span>
+        </div>
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;background:#fff8e0;border-radius:10px;padding:10px 14px;">
+          <span style="font-size:12px;font-weight:700;">🎉 Soutien social / fun</span>
+          <input type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value+'/10'" style="accent-color:#f8f4b8;">
+          <span style="font-size:14px;font-weight:700;text-align:center;">5/10</span>
+        </div>
+        <div style="display:grid;grid-template-columns:160px 1fr 60px;gap:10px;align-items:center;background:#f0eafa;border-radius:10px;padding:10px 14px;">
+          <span style="font-size:12px;font-weight:700;">🌟 Confiance en moi</span>
+          <input type="range" min="1" max="10" value="5" oninput="this.nextElementSibling.textContent=this.value+'/10'" style="accent-color:#b8aed7;">
+          <span style="font-size:14px;font-weight:700;text-align:center;">5/10</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;background:#fffbf0;border:1px solid #f0e0a0;border-radius:10px;padding:10px 14px;">
+        <div style="font-size:11px;font-weight:700;margin-bottom:6px;">🔍 Ce que j'observe dans mon analyse :</div>
+        <textarea class="write-area" placeholder="Quelle dimension est la plus fragile ? Où ai-je le plus besoin de renforcer mon réseau ?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITUATIONS 10-12 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--mauve);">
+      <span class="tool-icon">🃏</span>
+      <h3>Scenarios Complexes — Mon plan d'action détaillé</h3>
+      <span class="tool-tag">Outil 2 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Des situations plus complexes. Pour chaque scénario, analyse qui peut t'aider et comment tu vas les contacter.</p>
+      <div class="situations-grid">
+        <div class="situation-card" style="background:#fce8ec;border-color:#f5abaf;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">😤</span>
+          <div class="sc-title">Conflit répété avec un parent</div>
+          <div class="sc-text">On se dispute souvent sur le même sujet et ça devient épuisant pour tout le monde</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👵 Mamie</span><span class="sc-ally-tag">👩‍🏫 Conseillère</span><span class="sc-ally-tag">🧑 Oncle/Tante</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#eaf6ee;border-color:#cbe1b6;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">📱</span>
+          <div class="sc-title">Problème avec les réseaux sociaux</div>
+          <div class="sc-text">Quelque chose de difficile s'est passé en ligne et je ne sais pas à qui en parler</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span><span class="sc-ally-tag">👨 Papa</span><span class="sc-ally-tag">👩‍🏫 CPE</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#e8f4fb;border-color:#a4c2e7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🎓</span>
+          <div class="sc-title">Pression scolaire intense</div>
+          <div class="sc-text">Les contrôles s'accumulent et je me sens dépassé. Je dors mal.</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩‍🏫 Prof principal</span><span class="sc-ally-tag">👨 Papa</span><span class="sc-ally-tag">🧑‍🤝‍🧑 Camarade</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#fff8e0;border-color:#f8f4b8;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">👥</span>
+          <div class="sc-title">Pression du groupe de pairs</div>
+          <div class="sc-text">Mes amis me poussent à faire quelque chose qui ne me semble pas juste</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👩 Maman</span><span class="sc-ally-tag">👵 Mamie</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#f0eafa;border-color:#b8aed7;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">💭</span>
+          <div class="sc-title">Questions sur mon avenir</div>
+          <div class="sc-text">Je me pose des questions sur ce que je veux faire plus tard et ça m'angoisse</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👨 Papa</span><span class="sc-ally-tag">🧑 Oncle</span><span class="sc-ally-tag">👩‍🏫 Orientation</span></div>
+          </div>
+        </div>
+        <div class="situation-card" style="background:#fce8ec;border-color:#f5abaf;" onclick="toggleCard(this)">
+          <div class="sc-check">✓</div>
+          <span class="sc-emoji">🏠</span>
+          <div class="sc-title">Tension dans la famille</div>
+          <div class="sc-text">Il y a une période difficile à la maison et je ne sais pas comment y faire face</div>
+          <div class="sc-ally"><div class="sc-ally-label">Alliés potentiels</div>
+            <div class="sc-ally-tags"><span class="sc-ally-tag">👵 Mamie</span><span class="sc-ally-tag">🧑 Cousin</span><span class="sc-ally-tag">👩‍🏫 Psych sco.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOUSSOLE STRATÉGIQUE 10-12 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--orange);">
+      <span class="tool-icon">🧭</span>
+      <h3>Ma Boussole Stratégique — Plan de Communication Complet</h3>
+      <span class="tool-tag">Outil 3 / 5</span>
+    </div>
+    <div class="tool-body">
+      <p style="font-size:12px;color:var(--gris);margin-bottom:16px;font-style:italic;">Pour chaque direction, tu as un allié principal, un remplaçant ET un mode de contact défini.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#fce8ec;border-radius:14px;padding:16px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">❤️ Soutien émotionnel / moral</div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Allié principal</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Remplaçant</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Mode de contact préféré</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span onclick="this.style.background=this.style.background?'':var(--rose)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f5abaf;">📱 SMS</span>
+            <span onclick="this.style.background=this.style.background?'':var(--rose)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f5abaf;">📞 Appel</span>
+            <span onclick="this.style.background=this.style.background?'':var(--rose)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f5abaf;">🗣️ En personne</span>
+          </div>
+        </div>
+        <div style="background:#eaf6ee;border-radius:14px;padding:16px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🔧 Aide logistique / pratique</div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Allié principal</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Remplaçant</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Mode de contact</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span onclick="this.style.background=this.style.background?'':var(--vert)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #cbe1b6;">📱 SMS</span>
+            <span onclick="this.style.background=this.style.background?'':var(--vert)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #cbe1b6;">📞 Appel</span>
+            <span onclick="this.style.background=this.style.background?'':var(--vert)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #cbe1b6;">🗣️ En personne</span>
+          </div>
+        </div>
+        <div style="background:#e8f4fb;border-radius:14px;padding:16px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🎓 Expertise / académique</div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Allié principal</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Remplaçant</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Mode de contact</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span onclick="this.style.background=this.style.background?'':var(--bleu)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #a8dbeb;">📱 SMS</span>
+            <span onclick="this.style.background=this.style.background?'':var(--bleu)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #a8dbeb;">📞 Appel</span>
+            <span onclick="this.style.background=this.style.background?'':var(--bleu)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #a8dbeb;">🗣️ En personne</span>
+          </div>
+        </div>
+        <div style="background:#fff8e0;border-radius:14px;padding:16px;">
+          <div style="font-size:14px;font-weight:700;margin-bottom:12px;">🎉 Social / fun / loisirs</div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Allié principal</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Remplaçant</div>
+          <div class="write-line"></div>
+          <div style="font-size:10px;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px;">Mode de contact</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span onclick="this.style.background=this.style.background?'':var(--jaune)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f8f4b8;">📱 SMS</span>
+            <span onclick="this.style.background=this.style.background?'':var(--jaune)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f8f4b8;">📞 Appel</span>
+            <span onclick="this.style.background=this.style.background?'':var(--jaune)" style="cursor:pointer;font-size:10px;padding:3px 8px;border-radius:8px;border:1px solid #f8f4b8;">🗣️ En personne</span>
+          </div>
+        </div>
+      </div>
+      <!-- Scénario urgence complet -->
+      <div style="margin-top:14px;background:#1a1a2e;border-radius:12px;padding:16px;">
+        <div style="font-size:13px;font-weight:700;color:#fdd5a5;margin-bottom:10px;">🚨 Mon protocole d'urgence complet</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:6px;">1er contact</div>
+            <div class="write-line" style="border-color:rgba(255,255,255,0.2);"></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:6px;">2e contact</div>
+            <div class="write-line" style="border-color:rgba(255,255,255,0.2);"></div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:10px;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:6px;">Contact d'urgence adulte</div>
+            <div class="write-line" style="border-color:rgba(255,255,255,0.2);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUALITÉS + GRIMOIRE VERBES 10-12 -->
+  <div class="tool-section">
+    <div class="tool-header" style="border-left:5px solid var(--mauve);">
+      <span class="tool-icon">📖</span>
+      <h3>Le Grimoire des Verbes + Analyse des Qualités</h3>
+      <span class="tool-tag">Outil 4 / 5</span>
+    </div>
+    <div class="tool-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;">⭐ Qualités de mes alliés</div>
+          <div class="qualities-grid" style="grid-template-columns:1fr 1fr;">
+            <div class="quality-item" style="background:#fce8ec;"><div class="qi-emoji">🛡️</div><div class="qi-name">Fiable</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+            <div class="quality-item" style="background:#eaf6ee;"><div class="qi-emoji">💡</div><div class="qi-name">Sage conseil</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+            <div class="quality-item" style="background:#e8f4fb;"><div class="qi-emoji">🤝</div><div class="qi-name">Respectueux·se</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+            <div class="quality-item" style="background:#fff8e0;"><div class="qi-emoji">🌱</div><div class="qi-name">Bienveillant·e</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+            <div class="quality-item" style="background:#f0eafa;"><div class="qi-emoji">🎯</div><div class="qi-name">Efficace</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+            <div class="quality-item" style="background:#fce8ec;"><div class="qi-emoji">💬</div><div class="qi-name">À l'écoute</div><div class="qi-check-row"><div class="qi-check" onclick="toggleCheck(this,'c')">Moi</div><div class="qi-check" onclick="toggleCheck(this,'p')">Parent</div></div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:10px;">📖 Grimoire des Verbes — Mes traductions</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="background:#fafafa;border-radius:10px;padding:10px 12px;">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">"Je n'ai personne à qui parler"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div style="font-size:11px;font-weight:700;color:var(--noir);">"J'ACTIVE ma boussole et j'identifie mon allié adapté."</div>
+              </div>
+            </div>
+            <div style="background:#fafafa;border-radius:10px;padding:10px 12px;">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">"Tout le monde s'en fout de moi"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div style="font-size:11px;font-weight:700;color:var(--noir);">"Je CONTACTE un allié de mon réseau qui est disponible."</div>
+              </div>
+            </div>
+            <div style="background:#fafafa;border-radius:10px;padding:10px 12px;">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">"Je dois tout gérer seul"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div style="font-size:11px;font-weight:700;color:var(--noir);">"Je DÉLÈGUE la bonne partie au bon allié."</div>
+              </div>
+            </div>
+            <div style="background:#fafafa;border-radius:10px;padding:10px 12px;">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">"Je ne veux déranger personne"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div style="font-size:11px;font-weight:700;color:var(--noir);">"Je CONTRIBUE au lien en osant demander de l'aide."</div>
+              </div>
+            </div>
+            <div style="background:#fafafa;border-radius:10px;padding:10px 12px;">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">"Les adultes ne comprennent pas"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div style="font-size:11px;font-weight:700;color:var(--noir);">"Je CHERCHE l'allié adulte qui a vécu quelque chose de similaire."</div>
+              </div>
+            </div>
+            <div style="background:#f0eafa;border-radius:10px;padding:10px 12px;border:2px dashed var(--mauve);">
+              <div style="font-size:10px;color:var(--gris);font-style:italic;margin-bottom:4px;">Ma propre traduction (invente-la !) :</div>
+              <div style="font-size:10px;color:var(--gris);margin-bottom:4px;">"_________________________"</div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--orange);font-size:14px;">→</span>
+                <div class="write-line" style="flex:1;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVRABLE 10-12 -->
+  <div class="tool-section page-break">
+    <div class="tool-header" style="border-left:5px solid var(--jaune);">
+      <span class="tool-icon">🎁</span>
+      <h3>Fiche Livrable Complète — Boussole + Scénario + Engagement</h3>
+      <span class="tool-tag">Outil 5 / 5</span>
+    </div>
+    <div class="tool-body">
+      <div class="livrable-card">
+        <div class="livrable-header">
+          <div class="livrable-logo"><img class="logo-img" src="" alt="brille"></div>
+          <div>
+            <h3>Mon Réseau des Alliés — Plan Stratégique 🧭</h3>
+            <div class="lh-sub">Pétale 1 · 🌳 10–12 ans · Nom : _______________ Date : _______________</div>
+          </div>
+        </div>
+        <div class="livrable-sections">
+          <div class="liv-section"><h4>❤️ Émotionnel : allié + remplaçant + contact</h4><div class="write-line"></div><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🔧 Logistique : allié + remplaçant + contact</h4><div class="write-line"></div><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🎓 Expertise : allié + remplaçant + contact</h4><div class="write-line"></div><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🎉 Fun : allié + remplaçant + contact</h4><div class="write-line"></div><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section"><h4>🚨 Protocole d'urgence (3 contacts)</h4><div class="write-line"></div><div class="write-line"></div><div class="write-line"></div></div>
+          <div class="liv-section">
+            <h4>📖 Ma traduction inventée</h4>
+            <div style="font-size:10px;color:var(--gris);margin-bottom:4px;">"..." → Je...</div>
+            <div class="write-line"></div><div class="write-line"></div>
+          </div>
+          <div class="liv-section" style="grid-column:1/-1;background:#f0eafa;">
+            <h4>🌟 Mon engagement pour les 2 semaines qui viennent</h4>
+            <div style="font-size:11px;color:var(--gris);margin-bottom:8px;">Je vais renforcer mon réseau en faisant ceci :</div>
+            <div class="write-line"></div><div class="write-line"></div>
+            <div style="margin-top:10px;font-size:11px;font-weight:700;">Signature : _______________ &nbsp;&nbsp; Témoin : _______________</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end panel 10-12 -->
+
+<script>
+// ===== LOGO =====
+(function(){
+  const b64 = "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";
+  const src = "data:image/png;base64,"+b64;
+  document.querySelectorAll('.logo-img, nav .logo').forEach(img => img.src = src);
+})();
+
+// ===== TAB SWITCHING =====
+function showAge(age) {
+  document.querySelectorAll('.age-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+age).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ===== THERMOMETER =====
+function selectThermo(el, id) {
+  const siblings = el.parentElement.querySelectorAll('.tl-btn');
+  siblings.forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  const val = parseInt(el.dataset.val);
+  const messages = ['','😄 Super ! Tu gères bien tout seul !','🙂 Bien ! Tu peux essayer par toi-même.','😐 C\'est moyen. Un peu d\'aide serait utile.','😕 C\'est difficile. Appelle un allié !','🆘 C\'est urgent ! Contacte ton allié principal maintenant.'];
+  const fb = document.getElementById('fb-thermo-'+id);
+  const fbt = document.getElementById('fb-thermo-'+id+'-text');
+  if(fb && fbt){fb.classList.add('show');fbt.textContent=messages[val];}
+}
+
+// ===== CARD TOGGLE =====
+function toggleCard(el) {
+  el.classList.toggle('selected');
+  const check = el.querySelector('.sc-check');
+  if(el.classList.contains('selected')){check.textContent='✓';check.style.background='#1a1a2e';check.style.color='white';}
+  else{check.textContent='✓';check.style.background='white';check.style.color='';}
+}
+
+// ===== QUALITY CHECK =====
+function toggleCheck(el, type) {
+  el.classList.toggle(type===('c')?'c-active':'p-active');
+  const card = el.closest('.quality-item');
+  const cActive = card.querySelector('.c-active');
+  const pActive = card.querySelector('.p-active');
+  if(cActive && pActive){card.classList.add('both-yes');card.classList.remove('child-yes','parent-yes');}
+  else if(cActive){card.classList.add('child-yes');card.classList.remove('both-yes','parent-yes');}
+  else if(pActive){card.classList.add('parent-yes');card.classList.remove('both-yes','child-yes');}
+  else{card.classList.remove('child-yes','parent-yes','both-yes');}
+}
+
+// ===== BAROMETER =====
+function selectBarometer(el, group) {
+  const siblings = el.parentElement.querySelectorAll('[data-v]');
+  siblings.forEach(s => {s.style.borderColor='transparent';s.style.fontWeight='700';});
+  el.style.borderColor = '#1a1a2e';
+  el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+}// Accès limité par âge
+function initAgeFromURL() {
+  const hash = window.location.hash.replace('#','');
+  const ages = ['6-7','8-9','10-12'];
+  if(ages.includes(hash)) {
+    document.querySelectorAll('.tab').forEach(t => t.style.display='none');
+    const nav = document.querySelector('nav .tabs');
+    if(nav) {
+      const labels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
+      nav.innerHTML = '<span style="color:#fdd5a5;font-size:12px;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+labels[hash]+'</span>';
+    }
+    document.querySelectorAll('.age-panel').forEach(p => p.classList.remove('active'));
+    const t = document.getElementById('panel-'+hash);
+    if(t) t.classList.add('active');
+  }
+}
+document.addEventListener('DOMContentLoaded', initAgeFromURL);
+</script>
+
+</body>
+</html>
