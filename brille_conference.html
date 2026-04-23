@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRILLE · Conférence Interactive — Les 7 Pétales QVE</title>
+<link href="https://fonts.googleapis.com/css2?family=Fascinate&family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --vert:#cbe1b6;--bleu:#a8dbeb;--mauve:#b8aed7;
+  --orange:#f49f4c;--rose:#f5abaf;--jaune:#f8f4b8;
+  --peche:#fdd5a5;--noir:#1a1a2e;--gris:#555;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Quicksand',sans-serif;background:var(--noir);color:white;min-height:100vh;overflow:hidden;}
+
+/* SLIDE ENGINE */
+.slide{display:none;width:100vw;height:100vh;position:relative;align-items:center;justify-content:center;flex-direction:column;}
+.slide.active{display:flex;}
+
+/* PROGRESS BAR */
+.progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--orange),var(--rose));transition:width .4s;z-index:100;}
+
+/* NAV */
+.nav{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:100;}
+.nav button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:10px 24px;border-radius:30px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.nav button:hover{background:var(--orange);border-color:var(--orange);}
+.slide-counter{position:fixed;top:16px;right:20px;font-size:11px;color:rgba(255,255,255,.3);font-weight:700;z-index:100;}
+
+/* SLIDE 0 — ACCUEIL */
+#s0{background:radial-gradient(ellipse at 30% 50%, #2a1a4e 0%, var(--noir) 60%);}
+#s0 .logo-wrap{width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.08);padding:10px;margin-bottom:28px;box-shadow:0 0 60px rgba(244,159,76,.3);}
+#s0 .logo-wrap img{width:100%;height:100%;object-fit:contain;}
+#s0 h1{font-family:'Fascinate',cursive;font-size:72px;color:var(--peche);letter-spacing:6px;margin-bottom:8px;text-shadow:0 0 40px rgba(253,213,165,.3);}
+#s0 .sub{font-size:16px;color:rgba(255,255,255,.4);letter-spacing:3px;margin-bottom:48px;}
+#s0 .tagline{font-family:'Gruppo',sans-serif;font-size:28px;color:white;text-align:center;max-width:700px;line-height:1.4;}
+#s0 .tagline em{color:var(--orange);font-style:normal;}
+
+/* SLIDE 1 — QUESTION BRISE-GLACE */
+.q-slide{background:linear-gradient(135deg,#1a1a2e 0%,#2d1b3d 100%);}
+.q-badge{background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:20px;text-transform:uppercase;}
+.q-title{font-family:'Gruppo',sans-serif;font-size:48px;text-align:center;max-width:800px;line-height:1.3;margin-bottom:40px;}
+.q-title em{color:var(--jaune);font-style:normal;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:780px;width:100%;}
+.opt{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.15);border-radius:18px;padding:20px 24px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:14px;}
+.opt:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);transform:translateY(-2px);}
+.opt.selected{background:rgba(244,159,76,.2);border-color:var(--orange);}
+.opt .emoji{font-size:32px;flex-shrink:0;}
+.opt .text{font-size:16px;font-weight:600;line-height:1.3;}
+.opt-single{grid-column:1/-1;}
+
+/* SLIDE PÉTALE */
+.petal-slide{position:relative;overflow:hidden;}
+.petal-bg{position:absolute;inset:0;opacity:.06;}
+.petal-number{font-family:'Fascinate',cursive;font-size:220px;position:absolute;right:-20px;bottom:-40px;line-height:1;opacity:.06;color:white;}
+.petal-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;max-width:900px;padding:40px;}
+.petal-badge{font-size:11px;font-weight:700;letter-spacing:2px;padding:5px 16px;border-radius:20px;margin-bottom:16px;background:rgba(255,255,255,.15);}
+.petal-emoji{font-size:80px;margin-bottom:16px;filter:drop-shadow(0 0 30px rgba(255,255,255,.2));}
+.petal-name{font-family:'Gruppo',sans-serif;font-size:52px;margin-bottom:10px;text-align:center;}
+.petal-desc{font-size:18px;color:rgba(255,255,255,.65);text-align:center;max-width:600px;line-height:1.6;margin-bottom:36px;}
+.petal-question{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:18px;padding:22px 30px;font-size:20px;font-weight:700;text-align:center;max-width:700px;line-height:1.4;}
+.petal-question .qi{font-size:26px;margin-right:8px;}
+
+/* SLIDE DIAGNOSTIC */
+#s-diag{background:radial-gradient(ellipse at 60% 40%, #1a2e1a 0%,var(--noir) 70%);}
+.diag-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;max-width:900px;width:100%;margin-bottom:30px;}
+.diag-petal{border-radius:14px;padding:14px 8px;text-align:center;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s;}
+.diag-petal:hover{transform:translateY(-3px);}
+.diag-petal .de{font-size:28px;margin-bottom:6px;}
+.diag-petal .dn{font-size:9px;font-weight:700;line-height:1.3;color:rgba(255,255,255,.7);}
+.diag-colors{display:flex;gap:10px;justify-content:center;margin-top:12px;}
+.dc{width:32px;height:32px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s;}
+.dc:hover{transform:scale(1.15);}
+.dc.sel{border-color:white;transform:scale(1.2);}
+.dc-r{background:#e53e3e;}.dc-o{background:#e67e22;}.dc-v{background:#27ae60;}
+
+/* SLIDE RECAP */
+#s-recap{background:radial-gradient(ellipse at 50% 30%,#2a1a0e 0%,var(--noir) 70%);}
+.recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:880px;width:100%;}
+.rc{background:rgba(255,255,255,.07);border-radius:16px;padding:18px;text-align:center;border:2px solid rgba(255,255,255,.1);}
+.rc .re{font-size:30px;margin-bottom:6px;}
+.rc .rn{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);}
+.rc .rt{font-size:14px;font-weight:700;margin-top:4px;color:var(--peche);}
+
+/* SLIDE MISSION */
+#s-mission{background:linear-gradient(160deg,#0d1a2e 0%,#1a2e1a 100%);}
+#s-mission .m-card{background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.15);border-radius:24px;padding:40px;max-width:800px;text-align:center;}
+#s-mission .m-emoji{font-size:80px;margin-bottom:20px;}
+#s-mission h2{font-family:'Gruppo',sans-serif;font-size:42px;margin-bottom:16px;color:var(--peche);}
+#s-mission p{font-size:18px;color:rgba(255,255,255,.7);line-height:1.7;max-width:600px;margin:0 auto 28px;}
+#s-mission .m-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+#s-mission .mp{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:8px 20px;font-size:14px;font-weight:700;}
+
+/* SLIDE FIN */
+#s-fin{background:radial-gradient(ellipse at 50% 50%,#2a1a4e 0%,var(--noir) 70%);}
+#s-fin h1{font-family:'Fascinate',cursive;font-size:64px;color:var(--peche);margin-bottom:16px;text-align:center;}
+#s-fin .fin-sub{font-size:20px;color:rgba(255,255,255,.5);margin-bottom:48px;text-align:center;}
+#s-fin .fin-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;}
+#s-fin .fs{background:rgba(255,255,255,.07);border-radius:18px;padding:22px;text-align:center;border:1.5px solid rgba(255,255,255,.12);}
+#s-fin .fs .fse{font-size:32px;margin-bottom:10px;}
+#s-fin .fs .fst{font-size:14px;font-weight:700;margin-bottom:6px;}
+#s-fin .fs .fsd{font-size:11px;color:rgba(255,255,255,.5);}
+
+.slide-title-big{font-family:'Gruppo',sans-serif;font-size:44px;margin-bottom:16px;text-align:center;}
+.slide-sub{font-size:17px;color:rgba(255,255,255,.55);text-align:center;max-width:680px;margin-bottom:40px;line-height:1.6;}
+
+/* ANIMATIONS */
+.slide.active .petal-emoji{animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.slide.active .petal-name{animation:slideUp .4s .1s both;}
+.slide.active .petal-question{animation:slideUp .4s .2s both;}
+@keyframes popIn{from{transform:scale(0.5);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="slide-counter" id="counter">1 / 13</div>
+
+<!-- SLIDE 0 : ACCUEIL -->
+<div class="slide active" id="s0">
+  <div class="logo-wrap"><img id="logo-img" src="" alt="brille"></div>
+  <h1>brille</h1>
+  <div class="sub">Qualité de Vie de l'Enfant · 6–12 ans</div>
+  <div class="tagline">Aujourd'hui, on parle de votre enfant.<br>De ce qui le fait <em>briller</em>… et de ce qui le freine.</div>
+</div>
+
+<!-- SLIDE 1 : BRISE-GLACE -->
+<div class="slide q-slide" id="s1">
+  <div class="q-badge">🎯 Brise-glace</div>
+  <div class="q-title">En ce moment, comment décririez-vous <em>la QVE</em> de votre enfant ?</div>
+  <div class="options">
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">🌩️</span><span class="text">Orages fréquents — beaucoup de tensions</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">🌥️</span><span class="text">Nuageux — ça va, mais pas au top</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">⛅</span><span class="text">Variable — des hauts et des bas</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">☀️</span><span class="text">Ensoleillé — dans l'ensemble bien !</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 2 : QU'EST-CE QUE LA QVE ? -->
+<div class="slide q-slide" id="s2">
+  <div class="q-badge">💡 Définition</div>
+  <div class="q-title">La <em>QVE</em>, c'est quoi pour vous ?</div>
+  <div class="options">
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">😊</span><span class="text">Qu'il soit heureux à l'école</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">🏠</span><span class="text">Qu'il soit bien dans la famille</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">🌟</span><span class="text">Qu'il se sente capable et confiant</span></div>
+    <div class="opt" onclick="toggleOpt(this)"><span class="emoji">🌱</span><span class="text">Tout ça à la fois… et je cherche comment !</span></div>
+  </div>
+</div>
+
+<!-- SLIDE 3 : INTRO FLEUR -->
+<div class="slide" id="s3" style="background:radial-gradient(ellipse at 50% 40%,#1a2a1a 0%,var(--noir) 70%)">
+  <div class="slide-title-big">🌸 La Fleur QVE</div>
+  <div class="slide-sub">7 domaines clés pour comprendre et agir sur la qualité de vie de votre enfant</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:820px;width:100%;">
+    <div style="background:rgba(168,219,235,.15);border:1.5px solid rgba(168,219,235,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">🧭 Boussole des Alliés</div>
+    <div style="background:rgba(253,213,165,.15);border:1.5px solid rgba(253,213,165,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">⭐ Constellation des Talents</div>
+    <div style="background:rgba(245,171,175,.15);border:1.5px solid rgba(245,171,175,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">🌤️ Météo Intérieure</div>
+    <div style="background:rgba(248,244,184,.15);border:1.5px solid rgba(248,244,184,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">🏠 QG du Commandant</div>
+    <div style="background:rgba(168,219,235,.15);border:1.5px solid rgba(168,219,235,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">⚖️ Charte Famille</div>
+    <div style="background:rgba(184,174,215,.15);border:1.5px solid rgba(184,174,215,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;">🏆 Grimoire des Victoires</div>
+    <div style="background:rgba(203,225,182,.15);border:1.5px solid rgba(203,225,182,.3);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700;grid-column:2/3;">🌳 Arbre des Possibles</div>
+    <div style="background:rgba(255,255,255,.05);border:1.5px dashed rgba(255,255,255,.15);border-radius:14px;padding:14px;text-align:center;font-size:12px;color:rgba(255,255,255,.4);">→ Chaque pétale = un levier d'action</div>
+  </div>
+</div>
+
+<!-- SLIDES PÉTALES 1-7 -->
+<div class="slide petal-slide" id="s4" style="background:radial-gradient(ellipse at 40% 50%,#0d2a38 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--bleu);">Pétale 1 · Mes Soutiens</div>
+    <div class="petal-emoji">🧭</div>
+    <div class="petal-name" style="color:var(--bleu);">Boussole des Alliés</div>
+    <div class="petal-desc">Qui peut aider votre enfant selon le type de besoin ? École, émotionnel, fun, logistique…</div>
+    <div class="petal-question"><span class="qi">💬</span>Quand votre enfant a un problème, vers qui se tourne-t-il en <strong>premier</strong> ?</div>
+  </div>
+  <div class="petal-number">1</div>
+</div>
+
+<div class="slide petal-slide" id="s5" style="background:radial-gradient(ellipse at 60% 40%,#2a1e00 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--peche);">Pétale 2 · Mes Forces</div>
+    <div class="petal-emoji">⭐</div>
+    <div class="petal-name" style="color:var(--peche);">Constellation des Talents</div>
+    <div class="petal-desc">Ce qui fait briller votre enfant — ses super-pouvoirs uniques, connus ou cachés.</div>
+    <div class="petal-question"><span class="qi">💬</span>Citez <strong>une chose</strong> que votre enfant fait mieux que vous… et qui vous épate !</div>
+  </div>
+  <div class="petal-number">2</div>
+</div>
+
+<div class="slide petal-slide" id="s6" style="background:radial-gradient(ellipse at 30% 60%,#2a0a14 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--rose);">Pétale 3 · Mes Émotions</div>
+    <div class="petal-emoji">🌤️</div>
+    <div class="petal-name" style="color:var(--rose);">Météo Intérieure</div>
+    <div class="petal-desc">Nommer ses émotions pour les apprivoiser. Le baromètre émotionnel du quotidien.</div>
+    <div class="petal-question"><span class="qi">💬</span>Quel est le <strong>"mot météo"</strong> de votre enfant aujourd'hui ? (sans réfléchir !)</div>
+  </div>
+  <div class="petal-number">3</div>
+</div>
+
+<div class="slide petal-slide" id="s7" style="background:radial-gradient(ellipse at 50% 30%,#1e1e00 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--jaune);">Pétale 4 · Mon Espace & Temps</div>
+    <div class="petal-emoji">🏠</div>
+    <div class="petal-name" style="color:var(--jaune);">QG du Commandant</div>
+    <div class="petal-desc">Gérer son espace, son temps, ses responsabilités. Le QG personnel de l'enfant.</div>
+    <div class="petal-question"><span class="qi">💬</span>Le matin chez vous, c'est plutôt <strong>mission accomplie</strong> ou <strong>zone de turbulences</strong> ?</div>
+  </div>
+  <div class="petal-number">4</div>
+</div>
+
+<div class="slide petal-slide" id="s8" style="background:radial-gradient(ellipse at 70% 50%,#001a2e 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--bleu);">Pétale 5 · Ma Place & Droits</div>
+    <div class="petal-emoji">⚖️</div>
+    <div class="petal-name" style="color:var(--bleu);">Charte de la Famille</div>
+    <div class="petal-desc">Comprendre sa place dans la famille. Droits, devoirs, règles co-construites.</div>
+    <div class="petal-question"><span class="qi">💬</span>Y a-t-il une règle à la maison que votre enfant <strong>conteste le plus</strong> ?</div>
+  </div>
+  <div class="petal-number">5</div>
+</div>
+
+<div class="slide petal-slide" id="s9" style="background:radial-gradient(ellipse at 40% 40%,#1a0a2e 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--mauve);">Pétale 6 · Mes Réussites</div>
+    <div class="petal-emoji">🏆</div>
+    <div class="petal-name" style="color:var(--mauve);">Grimoire des Victoires</div>
+    <div class="petal-desc">Célébrer les réussites, grandes et petites. Construire la confiance par les preuves.</div>
+    <div class="petal-question"><span class="qi">💬</span>Quelle <strong>petite victoire</strong> de votre enfant méritait une grande célébration ?</div>
+  </div>
+  <div class="petal-number">6</div>
+</div>
+
+<div class="slide petal-slide" id="s10" style="background:radial-gradient(ellipse at 50% 60%,#001a00 0%,var(--noir) 70%)">
+  <div class="petal-content">
+    <div class="petal-badge" style="color:var(--vert);">Pétale 7 · Mes Rêves</div>
+    <div class="petal-emoji">🌳</div>
+    <div class="petal-name" style="color:var(--vert);">Arbre des Possibles</div>
+    <div class="petal-desc">Projeter vers l'avenir. Rêves, objectifs, première action concrète pour y aller.</div>
+    <div class="petal-question"><span class="qi">💬</span>Quand votre enfant sera grand, il veut… et <strong>vous, vous en pensez quoi</strong> ?</div>
+  </div>
+  <div class="petal-number">7</div>
+</div>
+
+<!-- SLIDE DIAGNOSTIC -->
+<div class="slide" id="s-diag" style="background:radial-gradient(ellipse at 50% 40%,#0d2020 0%,var(--noir) 70%)">
+  <div class="slide-title-big">🌸 Diagnostic Fleur QVE</div>
+  <div class="slide-sub">Coloriez chaque pétale : 🔴 Difficile · 🟠 Moyen · 🟢 Bien</div>
+  <div class="diag-grid" id="diag-grid"></div>
+  <div style="font-size:13px;color:rgba(255,255,255,.4);text-align:center;">Cliquez sur un pétale puis choisissez une couleur</div>
+</div>
+
+<!-- SLIDE RÉCAP -->
+<div class="slide" id="s-recap" style="background:radial-gradient(ellipse at 50% 50%,#1a1200 0%,var(--noir) 70%)">
+  <div class="slide-title-big">🎯 Ce qu'on retient</div>
+  <div class="slide-sub">Les 4 piliers de la méthode BRILLE</div>
+  <div class="recap-grid">
+    <div class="rc"><div class="re">🔍</div><div class="rn">Diagnostiquer</div><div class="rt">Identifier les pétales à travailler</div></div>
+    <div class="rc"><div class="re">🛠️</div><div class="rn">Agir</div><div class="rt">Des outils concrets par pétale</div></div>
+    <div class="rc"><div class="re">🤝</div><div class="rn">Accompagner</div><div class="rt">Parents + enfant ensemble</div></div>
+    <div class="rc"><div class="re">✨</div><div class="rn">Célébrer</div><div class="rt">Chaque victoire compte</div></div>
+    <div class="rc" style="grid-column:1/-1;background:rgba(244,159,76,.1);border-color:rgba(244,159,76,.3);">
+      <div class="re">🌸</div>
+      <div class="rn">La méthode BRILLE en une phrase</div>
+      <div class="rt" style="font-size:16px;margin-top:8px;">"Partir du vécu de votre enfant pour construire les bons outils, au bon moment, ensemble."</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE MISSION -->
+<div class="slide" id="s-mission">
+  <div class="m-card">
+    <div class="m-emoji">🔬</div>
+    <h2>Ma Mission</h2>
+    <p>Je suis ingénieure QVE. Mon rôle : vous donner les bons outils pour que votre enfant s'épanouisse — à la maison, à l'école, avec ses amis.</p>
+    <div class="m-pills">
+      <div class="mp">🧭 Diagnostiquer</div>
+      <div class="mp">🛠️ Outiller</div>
+      <div class="mp">🤝 Accompagner</div>
+      <div class="mp">🌸 Transformer</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE FIN -->
+<div class="slide" id="s-fin">
+  <h1>Et maintenant ?</h1>
+  <div class="fin-sub">Voici les 3 prochaines étapes ensemble</div>
+  <div class="fin-steps">
+    <div class="fs"><div class="fse">🌸</div><div class="fst">Diagnostic Fleur QVE</div><div class="fsd">Comparer vos perceptions avec celles de votre enfant</div></div>
+    <div class="fs"><div class="fse">🛠️</div><div class="fst">Kit de départ</div><div class="fsd">Vos outils personnalisés envoyés par email ce soir</div></div>
+    <div class="fs"><div class="fse">📩</div><div class="fst">Votre espace BRILLE</div><div class="fsd">Accès à vie pour suivre la progression de votre enfant</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="prevSlide()">← Précédent</button>
+  <button onclick="nextSlide()" style="background:var(--orange);border-color:var(--orange);">Suivant →</button>
+</div>
+
+<script>
+// LOGO
+document.getElementById('logo-img').src = 'data:image/png;base64,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';
+
+// SLIDES
+const slides = ['s0','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s-diag','s-recap','s-mission','s-fin'];
+let current = 0;
+
+function updateProgress(){
+  const pct = ((current+1)/slides.length)*100;
+  document.getElementById('progress').style.width = pct+'%';
+  document.getElementById('counter').textContent = (current+1)+' / '+slides.length;
+}
+
+function goTo(n){
+  document.getElementById(slides[current]).classList.remove('active');
+  current = Math.max(0, Math.min(slides.length-1, n));
+  document.getElementById(slides[current]).classList.add('active');
+  updateProgress();
+}
+
+function nextSlide(){ goTo(current+1); }
+function prevSlide(){ goTo(current-1); }
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') nextSlide();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prevSlide();
+});
+
+function toggleOpt(el){
+  el.classList.toggle('selected');
+}
+
+// DIAGNOSTIC GRID
+const PETALS = [
+  {id:1,name:'Boussole des Alliés',emoji:'🧭',color:'#a8dbeb'},
+  {id:2,name:'Constellation des Talents',emoji:'⭐',color:'#fdd5a5'},
+  {id:3,name:'Météo Intérieure',emoji:'🌤️',color:'#f5abaf'},
+  {id:4,name:'QG du Commandant',emoji:'🏠',color:'#f8f4b8'},
+  {id:5,name:'Charte Famille',emoji:'⚖️',color:'#a8dbeb'},
+  {id:6,name:'Grimoire des Victoires',emoji:'🏆',color:'#b8aed7'},
+  {id:7,name:'Arbre des Possibles',emoji:'🌳',color:'#cbe1b6'},
+];
+const pcColors = {};
+let selPetal = null;
+
+function buildDiag(){
+  const g = document.getElementById('diag-grid');
+  g.innerHTML = PETALS.map(p=>`
+    <div class="diag-petal" id="dp-${p.id}" onclick="selectDiagPetal(${p.id})" style="border-color:rgba(255,255,255,.12);">
+      <div class="de">${p.emoji}</div>
+      <div class="dn">${p.name}</div>
+      <div class="diag-colors">
+        <div class="dc dc-r" onclick="event.stopPropagation();setDiagColor(${p.id},'rouge')"></div>
+        <div class="dc dc-o" onclick="event.stopPropagation();setDiagColor(${p.id},'orange')"></div>
+        <div class="dc dc-v" onclick="event.stopPropagation();setDiagColor(${p.id},'vert')"></div>
+      </div>
+    </div>`).join('');
+}
+
+function selectDiagPetal(id){ selPetal = id; }
+
+function setDiagColor(id, color){
+  pcColors[id] = color;
+  const el = document.getElementById('dp-'+id);
+  const cMap = {rouge:'#e53e3e',orange:'#e67e22',vert:'#27ae60'};
+  el.style.background = cMap[color]+'22';
+  el.style.borderColor = cMap[color];
+}
+
+buildDiag();
+updateProgress();
+</script>
+</body>
+</html>
