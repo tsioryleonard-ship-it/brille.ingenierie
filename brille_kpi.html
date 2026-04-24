@@ -123,7 +123,7 @@ body{font-family:'Quicksand',sans-serif;background:#f5f3ef;color:var(--noir);min
     </div>
     <div class="fg">
       <label>Tranche d'âge de votre enfant</label>
-      <div class="chk-group">
+      <div class="chk-group" id="chk-age">
         <div class="chk-item" onclick="toggleChk(this,'age')">🌱 6–7 ans</div>
         <div class="chk-item" onclick="toggleChk(this,'age')">🌿 8–9 ans</div>
         <div class="chk-item" onclick="toggleChk(this,'age')">🌳 10–12 ans</div>
@@ -250,7 +250,7 @@ body{font-family:'Quicksand',sans-serif;background:#f5f3ef;color:var(--noir);min
     </div>
     <div class="fg">
       <label>Souhaitez-vous aller plus loin ?</label>
-      <div class="chk-group">
+      <div class="chk-group" id="chk-suite">
         <div class="chk-item" onclick="toggleChk(this,'suite')">🗓️ Formule Programme (7 mois)</div>
         <div class="chk-item" onclick="toggleChk(this,'suite')">📞 Consultation individuelle</div>
         <div class="chk-item" onclick="toggleChk(this,'suite')">📧 Newsletter BRILLE</div>
@@ -315,12 +315,55 @@ function updateSlider(key){
   ratings[key] = parseInt(val);
 }
 
-function submitForm(){
+async function submitForm(){
   const email = document.getElementById('email').value;
   if(!email){ alert('Merci d\'entrer votre email pour recevoir vos outils.'); return; }
-  document.getElementById('form-area').style.display='none';
-  document.getElementById('success').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+
+  // Collecter toutes les données
+  const data = {
+    email: email,
+    formule: currentFormule,
+    enfant: document.getElementById('enfant').value,
+    note_globale: ratings.global + '/5',
+    note_contenu: ratings.contenu + '/5',
+    utilite: ratings.utilite + '/10',
+    nps: ratings.nps + '/10',
+    mot: document.getElementById('word').value,
+    plus: document.getElementById('plus').value,
+    marque: document.getElementById('marque').value,
+    ages_sel: [...document.querySelectorAll('#chk-age .sel')].map(e=>e.textContent).join(', ') || 'Non renseigné',
+    utile_sel: [...document.querySelectorAll('#chk-utile .sel')].map(e=>e.textContent).join(', ') || 'Non renseigné',
+    suite_sel: [...document.querySelectorAll('#chk-suite .sel')].map(e=>e.textContent).join(', ') || 'Non renseigné',
+    ambiance_sel: [...document.querySelectorAll('.ev.sel')].map(e=>e.textContent).join(', ') || 'Non renseigné',
+    petale_touche: selectedPetale.val || 'Non renseigné',
+    _subject: 'BRILLE · Retour Famille — ' + currentFormule,
+  };
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '⏳ Envoi en cours...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xnjlwpaz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (res.ok) {
+      document.getElementById('form-area').style.display='none';
+      document.getElementById('success').style.display='block';
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else {
+      alert('Erreur lors de l\'envoi : ' + (json.error || 'Veuillez réessayer.'));
+      btn.textContent = '✅ Envoyer mon retour';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    btn.textContent = '✅ Envoyer mon retour';
+    btn.disabled = false;
+  }
 }
 </script>
 </body>
