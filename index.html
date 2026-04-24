@@ -298,20 +298,19 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
             <div style="color:rgba(255,255,255,.7);font-size:11px;line-height:1.8;" id="fin-ap-actions"></div>
           </div>
           <button class="btn" style="background:#f0f0f0;color:var(--gris);" onclick="previewKit()">👁️ Prévisualiser le kit</button>
-          <!-- BRILLE KIT SECTION -->
           <div id="fin-kit-section" style="display:none;background:linear-gradient(135deg,rgba(203,225,182,.2),rgba(168,219,235,.15));border:1.5px solid rgba(203,225,182,.6);border-radius:14px;padding:14px;margin-bottom:12px;">
-            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.4);text-transform:uppercase;margin-bottom:8px;">📚 Brille Kit Pétale — Formule Standard</div>
-            <div id="fin-kit-card" style="display:flex;align-items:center;gap:12px;background:white;border-radius:10px;padding:12px;border:1.5px solid #e0e0e0;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.4);text-transform:uppercase;margin-bottom:8px;">📚 Brille Kit Petale - Formule Standard</div>
+            <div style="display:flex;align-items:center;gap:12px;background:white;border-radius:10px;padding:12px;border:1.5px solid #e0e0e0;">
               <div id="fin-kit-emoji" style="font-size:28px;">🌸</div>
               <div style="flex:1;">
-                <div style="font-size:11px;font-weight:700;" id="fin-kit-name">—</div>
-                <div style="font-size:10px;color:var(--gris);margin-top:2px;" id="fin-kit-url">—</div>
+                <div style="font-size:11px;font-weight:700;" id="fin-kit-name">-</div>
+                <div style="font-size:10px;color:var(--gris);margin-top:2px;" id="fin-kit-url">-</div>
               </div>
-              <a id="fin-kit-link" href="#" target="_blank" style="padding:6px 12px;background:var(--vert);border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;color:var(--noir);">👁️ Voir</a>
+              <a id="fin-kit-link" href="#" target="_blank" style="padding:6px 12px;background:var(--vert);border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;color:var(--noir);">Voir</a>
             </div>
             <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
               <input type="checkbox" id="fin-kit-include" checked style="accent-color:var(--orange);width:14px;height:14px;">
-              <label for="fin-kit-include" style="font-size:11px;font-weight:600;cursor:pointer;">Inclure le lien du Brille Kit dans l'email</label>
+              <label for="fin-kit-include" style="font-size:11px;font-weight:600;cursor:pointer;">Inclure le lien Brille Kit dans le mail</label>
             </div>
           </div>
           <button class="btn btn-or" style="margin-top:8px;" onclick="envoyerKit()">📧 Envoyer le kit par email</button>
@@ -322,21 +321,15 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
 
     <!-- OUTILS -->
     <div id="it-tools" style="display:none;">
-      <h2 style="font-size:18px;margin-bottom:6px;">🧰 Ressources d'Atelier</h2>
-      <p style="font-size:11px;color:var(--gris);margin-bottom:16px;">Outils d'animation · Fiches pétales · Bilans</p>
+      <h2 style="font-size:18px;margin-bottom:14px;">Ressources d'Atelier</h2>
       <div class="g2" id="tools-grid"></div>
     </div>
 
-    <!-- BIBLIOTHÈQUE KITS -->
+    <!-- BIBLIOTHEQUE KITS -->
     <div id="it-biblio" style="display:none;">
       <h2 style="font-size:18px;margin-bottom:6px;">📚 Bibliothèque — Brille Kits</h2>
-      <p style="font-size:11px;color:var(--gris);margin-bottom:16px;">Kits pétales imprimables · Formule Standard & Programme</p>
-      <div id="biblio-locked" style="display:none;background:rgba(244,159,76,.08);border:1.5px solid rgba(244,159,76,.25);border-radius:16px;padding:24px;text-align:center;margin-bottom:16px;">
-        <div style="font-size:36px;margin-bottom:10px;">🔒</div>
-        <div style="font-family:Gruppo,sans-serif;font-size:16px;margin-bottom:6px;">Accès Formule Standard</div>
-        <div style="font-size:12px;color:var(--gris);">Les Brille Kits sont disponibles pour les familles de la Formule Standard et du Programme.</div>
-      </div>
-      <div class="g2" id="biblio-grid"></div>
+      <p style="font-size:11px;color:var(--gris);margin-bottom:16px;">Kits pétales imprimables · Formule Standard et Programme</p>
+      <div id="biblio-grid"></div>
     </div>
   </div>
   <div class="bnav">
@@ -502,28 +495,51 @@ function showPage(name){
 
 // ===== ONGLETS INGÉNIEURE =====
 function renderBiblio(){
-  const BASE='https://tsioryleonard-ship-it.github.io/brille.ingenierie';
-  const KITS=[{id:1,emoji:"🧭",name:"Le Reseau des Allies",color:"#a8dbeb",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-1.html"},{id:2,emoji:"⭐",name:"La Constellation des Talents",color:"#fdd5a5",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-2.html"},{id:3,emoji:"🌤️",name:"La Meteo Interieure",color:"#f5abaf",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-3.html"},{id:4,emoji:"🏠",name:"Mon Quartier General",color:"#f8f4b8",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-4.html"},{id:5,emoji:"⚖️",name:"La Constitution de la Famille",color:"#a8dbeb",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-5.html"},{id:6,emoji:"🌳",name:"L\'Arbre des Possibles",color:"#b8aed7",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-6.html"},{id:7,emoji:"⚡",name:"Ma Station de Recharge",color:"#cbe1b6",url:"https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-7.html"}];
-  document.getElementById('biblio-grid').innerHTML = KITS.map(k=>`
-    <div style="background:white;border-radius:14px;border:1.5px solid ${k.color}88;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);">
-      <div style="background:${k.color}33;border-bottom:3px solid ${k.color};padding:14px 16px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:24px;">${k.emoji}</span>
-        <div>
-          <div style="font-size:9px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.45);text-transform:uppercase;">Brille Kit · Pétale ${k.id}</div>
-          <div style="font-family:Gruppo,sans-serif;font-size:14px;margin-top:1px;">${k.name}</div>
-        </div>
-      </div>
-      <div style="padding:12px 16px;display:flex;gap:8px;">
-        <a href="${k.url}" target="_blank" style="flex:1;text-align:center;padding:8px;background:${k.color}44;border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;">👁️ Voir</a>
-        <button onclick="navigator.share ? navigator.share({title:'Brille Kit ${k.emoji}',url:'${k.url}'}) : navigator.clipboard.writeText('${k.url}').then(()=>alert('Lien copié!'))" style="flex:1;padding:8px;background:#1a1a2e;border:none;border-radius:10px;font-size:11px;font-weight:700;color:#fdd5a5;cursor:pointer;">📤 Partager</button>
-      </div>
-    </div>`).join('');
+  var KITS=JSON.parse(document.getElementById('brille-kits-data').textContent);
+  var grid=document.getElementById('biblio-grid');
+  grid.innerHTML='';
+  KITS.forEach(function(k){
+    var card=document.createElement('div');
+    card.style.cssText='background:white;border-radius:14px;border:1.5px solid '+k.color+'88;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:10px;';
+    var head=document.createElement('div');
+    head.style.cssText='background:'+k.color+'33;border-bottom:3px solid '+k.color+';padding:14px 16px;display:flex;align-items:center;gap:12px;';
+    var sp=document.createElement('span');sp.style.fontSize='24px';sp.textContent=k.emoji;
+    var di=document.createElement('div');
+    var lb=document.createElement('div');lb.style.cssText='font-size:9px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.45);text-transform:uppercase;';lb.textContent='Brille Kit - Petale '+k.id;
+    var nm=document.createElement('div');nm.style.cssText='font-family:Gruppo,sans-serif;font-size:14px;margin-top:1px;';nm.textContent=k.name;
+    di.appendChild(lb);di.appendChild(nm);head.appendChild(sp);head.appendChild(di);
+    var btns=document.createElement('div');btns.style.cssText='padding:12px 16px;display:flex;gap:8px;';
+    var av=document.createElement('a');av.href=k.url;av.target='_blank';
+    av.style.cssText='flex:1;text-align:center;padding:8px;background:'+k.color+'44;border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';av.textContent='Voir';
+    var ap=document.createElement('a');ap.href=k.url;ap.target='_blank';
+    ap.style.cssText='flex:1;text-align:center;padding:8px;background:var(--vert);border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';ap.textContent='Imprimer';
+    var bs=document.createElement('button');
+    bs.style.cssText='flex:1;padding:8px;background:#1a1a2e;border:none;border-radius:10px;font-size:11px;font-weight:700;color:#fdd5a5;cursor:pointer;';bs.textContent='Partager';
+    (function(u,n){bs.onclick=function(){if(navigator.share)navigator.share({title:n,url:u});else navigator.clipboard.writeText(u).then(function(){alert('Lien copie !');});};})(k.url,k.name);
+    btns.appendChild(av);btns.appendChild(ap);btns.appendChild(bs);
+    card.appendChild(head);card.appendChild(btns);grid.appendChild(card);
+  });
+}
+
+function updateFinKit(){
+  var r=Object.entries(finPC).filter(function(e){return e[1]==='rouge';});
+  var o=Object.entries(finPC).filter(function(e){return e[1]==='orange';});
+  var pe=r.length>0?r[0]:o.length>0?o[0]:null;
+  var ks=document.getElementById('fin-kit-section');
+  if(!pe||!finFam){ks.style.display='none';return;}
+  var prio=PETALS[pe[0]-1];
+  var ku='https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+prio.id+'.html';
+  document.getElementById('fin-kit-emoji').textContent=prio.emoji;
+  document.getElementById('fin-kit-name').textContent=prio.name;
+  document.getElementById('fin-kit-url').textContent=ku;
+  document.getElementById('fin-kit-link').href=ku;
+  ks.style.display='block';
 }
 
 function ingTab(tab,btn){
-  ['dash','fams','new','fin','tools','biblio'].forEach(t=>document.getElementById('it-'+t).style.display='none');
+  ['dash','fams','new','fin','tools','biblio'].forEach(function(t){document.getElementById('it-'+t).style.display='none';});
   document.getElementById('it-'+tab).style.display='block';
-  if(tab==='biblio') renderBiblio();
+  if(tab==='biblio')renderBiblio();
   if(btn){document.querySelectorAll('#pg-ing .tb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
   if(tab==='fin'){loadFinSelect();loadEjsCfg();}
 }
@@ -600,18 +616,7 @@ async function loadDash(){
   else{pio.innerHTML=rouges.map(p=>{const fam=fams?.find(f=>f.code===p.famille_code);const pet=PETALS[p.petal_num-1];return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5;"><span style="font-size:20px;">${pet?.emoji||'🌸'}</span><div><div style="font-size:12px;font-weight:700;">${pet?.name||'Pétale'}</div><div style="font-size:10px;color:var(--gris);">${fam?.enfant||''} — ${fam?.nom||''}</div></div></div>`;}).join('');}
   // Outils grid
   const bgs=['#e8f4fb','#fdf4e0','#fce8ec','#fff8e0','#e8f4fb','#f0eafa','#eaf6ee'];
-  const BASE='https://tsioryleonard-ship-it.github.io/brille.ingenierie';
-  const ATELIER_TOOLS=[
-    {emoji:'🎭',name:'Conférence Interactive',desc:'Diaporama 7 pétales — vidéoprojecteur',color:'#f49f4c',bg:'#fff8f0',url:`${BASE}/brille_conference.html`},
-    {emoji:'📊',name:'Retour Familles KPI',desc:'Formulaire évaluation — 3 formules',color:'#a8dbeb',bg:'#e8f4fb',url:`${BASE}/brille_kpi.html`},
-    {emoji:'📋',name:'Bilan Centre Social',desc:'Rapport PDCA — à envoyer au centre',color:'#cbe1b6',bg:'#eaf6ee',url:`${BASE}/brille_bilan_centre.html`},
-    {emoji:'📓',name:'Carnet de Bord',desc:'Programme 7 mois — 7 séances',color:'#b8aed7',bg:'#f0eafa',url:`${BASE}/brille_carnet_bord.html`},
-  ];
-  document.getElementById('tools-grid').innerHTML=
-    '<div style="grid-column:1/-1;font-family:Gruppo,sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;">🛠️ Outils d&#39;Atelier</div>'+
-    ATELIER_TOOLS.map(t=>`<a href="${t.url}" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;border:1.5px solid ${t.color}33;"><div class="ch" style="background:${t.bg};border-left:4px solid ${t.color};padding:12px 14px;"><span style="font-size:22px;">${t.emoji}</span><div><h3 style="font-size:12px;">${t.name}</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">${t.desc}</div></div><span style="margin-left:auto;color:${t.color};">→</span></div></div></a>`).join('')+
-    '<div style="grid-column:1/-1;font-family:Gruppo,sans-serif;font-size:15px;font-weight:700;margin:14px 0 6px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;">🌸 Fiches Pétales</div>'+
-    PETALS.map((p,i)=>`<a href="${PFILES[i]}" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;"><div class="ch" style="background:${bgs[i]};border-left:4px solid ${p.color};padding:12px 14px;"><span style="font-size:22px;">${p.emoji}</span><div><h3 style="font-size:12px;">P${p.id} · ${p.name}</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">🌱 6–7 · 🌿 8–9 · 🌳 10–12</div></div><span style="margin-left:auto;color:var(--orange);">→</span></div></div></a>`).join('');
+  document.getElementById('tools-grid').innerHTML=PETALS.map((p,i)=>`<a href="${PFILES[i]}" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;"><div class="ch" style="background:${bgs[i]};border-left:4px solid ${p.color};padding:12px 14px;"><span style="font-size:22px;">${p.emoji}</span><div><h3 style="font-size:12px;">P${p.id} · ${p.name}</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">🌱 6–7 · 🌿 8–9 · 🌳 10–12</div></div><span style="margin-left:auto;color:var(--orange);">→</span></div></div></a>`).join('');
 }
 
 // ===== CRÉER FAMILLE =====
@@ -846,23 +851,7 @@ async function loadFinSelect(){
   (fams||[]).forEach(f=>{const o=document.createElement('option');o.value=f.code;o.textContent=`${f.emoji||'👨‍👩‍👧'} ${f.nom} — ${f.enfant} (${f.age})`;sel.appendChild(o);});
 }
 
-async function updateFinKit(){
-  const r=Object.entries(finPC).filter(([,v])=>v==='rouge');
-  const o=Object.entries(finPC).filter(([,v])=>v==='orange');
-  const prioEntry = r.length>0?r[0]:o.length>0?o[0]:null;
-  const kitSection = document.getElementById('fin-kit-section');
-  if(!prioEntry||!finFam){kitSection.style.display='none';return;}
-  const prio=PETALS[prioEntry[0]-1];
-  const ageHash=finFam.age||'6-7';
-  const kitUrl=`https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-${prio.id}.html`;
-  document.getElementById('fin-kit-emoji').textContent=prio.emoji;
-  document.getElementById('fin-kit-name').textContent=`Kit Pétale ${prio.id} — ${prio.name}`;
-  document.getElementById('fin-kit-url').textContent=kitUrl;
-  document.getElementById('fin-kit-link').href=kitUrl;
-  kitSection.style.display='block';
-}
-
-function onPickFam(){
+async function onPickFam(){
   const code=document.getElementById('fin-fam').value;
   if(!code){document.getElementById('fin-fam-info').style.display='none';document.getElementById('fin-petales').style.display='none';document.getElementById('fin-email-card').style.display='none';return;}
   const {data:fam}=await db.from('familles').select('*').eq('code',code).single();
@@ -925,7 +914,7 @@ async function envoyerKit(){
   const msg=document.getElementById('fin-msg').value.trim()||`Vous avez fait un premier pas magnifique pour ${finFam.enfant}. Les outils BRILLE sont maintenant dans vos mains — je suis là pour vous accompagner. À très bientôt !`;
   const base='https://tsioryleonard-ship-it.github.io/brille/brille-app';
   const ageHash = finFam.age || '6-7'; // ex: "6-7", "8-9", "10-12"
-  const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'—',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,kit_url:(document.getElementById('fin-kit-include')?.checked&&prio)?`https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-${prio.id}.html`:'',kit_nom:prio?`Kit Pétale ${prio.id} — ${prio.name}`:'—',message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};
+  const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'—',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,kit_url:prio?('https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+prio.id+'.html'):'',message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};
   document.getElementById('fin-st').style.display='block';
   document.getElementById('fin-st-i').textContent='⏳';
   document.getElementById('fin-st-m').textContent='Envoi en cours…';
@@ -947,5 +936,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('nf-date').value=new Date().toISOString().split('T')[0];
 });
 </script>
+<script type="application/json" id="brille-kits-data">[{"id": 1, "emoji": "\ud83e\udded", "name": "Le R\u00e9seau des Alli\u00e9s", "color": "#a8dbeb", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-1.html"}, {"id": 2, "emoji": "\u2b50", "name": "La Constellation des Talents", "color": "#fdd5a5", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-2.html"}, {"id": 3, "emoji": "\ud83c\udf24\ufe0f", "name": "La M\u00e9t\u00e9o Int\u00e9rieure", "color": "#f5abaf", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-3.html"}, {"id": 4, "emoji": "\ud83c\udfe0", "name": "Mon Quartier G\u00e9n\u00e9ral", "color": "#f8f4b8", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-4.html"}, {"id": 5, "emoji": "\u2696\ufe0f", "name": "La Constitution de la Famille", "color": "#a8dbeb", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-5.html"}, {"id": 6, "emoji": "\ud83c\udf33", "name": "L\u2019Arbre des Possibles", "color": "#b8aed7", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-6.html"}, {"id": 7, "emoji": "\u26a1", "name": "Ma Station de Recharge", "color": "#cbe1b6", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-7.html"}]</script>
 </body>
 </html>
