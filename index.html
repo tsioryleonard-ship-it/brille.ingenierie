@@ -616,7 +616,18 @@ async function loadDash(){
   else{pio.innerHTML=rouges.map(p=>{const fam=fams?.find(f=>f.code===p.famille_code);const pet=PETALS[p.petal_num-1];return`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5;"><span style="font-size:20px;">${pet?.emoji||'🌸'}</span><div><div style="font-size:12px;font-weight:700;">${pet?.name||'Pétale'}</div><div style="font-size:10px;color:var(--gris);">${fam?.enfant||''} — ${fam?.nom||''}</div></div></div>`;}).join('');}
   // Outils grid
   const bgs=['#e8f4fb','#fdf4e0','#fce8ec','#fff8e0','#e8f4fb','#f0eafa','#eaf6ee'];
-  document.getElementById('tools-grid').innerHTML=PETALS.map((p,i)=>`<a href="${PFILES[i]}" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;"><div class="ch" style="background:${bgs[i]};border-left:4px solid ${p.color};padding:12px 14px;"><span style="font-size:22px;">${p.emoji}</span><div><h3 style="font-size:12px;">P${p.id} · ${p.name}</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">🌱 6–7 · 🌿 8–9 · 🌳 10–12</div></div><span style="margin-left:auto;color:var(--orange);">→</span></div></div></a>`).join('');
+  var atelierTools=[
+    {emoji:'🎭',name:'Conference Interactive',desc:'Diaporama 7 petales - videoprojecteur',color:'#f49f4c',bg:'#fff8f0',url:'https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille_conference.html'},
+    {emoji:'📊',name:'Retour Familles KPI',desc:'Formulaire evaluation - 3 formules',color:'#a8dbeb',bg:'#e8f4fb',url:'https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille_kpi.html'},
+    {emoji:'📋',name:'Bilan Centre Social',desc:'Rapport PDCA - a envoyer au centre',color:'#cbe1b6',bg:'#eaf6ee',url:'https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille_bilan_centre.html'},
+    {emoji:'📓',name:'Carnet de Bord',desc:'Programme 7 mois - 7 seances',color:'#b8aed7',bg:'#f0eafa',url:'https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille_carnet_bord.html'},
+  ];
+  var atelierHTML='<div style="grid-column:1/-1;font-family:Gruppo,sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;">Outils Atelier</div>';
+  atelierTools.forEach(function(t){
+    atelierHTML+='<a href="'+t.url+'" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;border:1.5px solid '+t.color+'33;"><div class="ch" style="background:'+t.bg+';border-left:4px solid '+t.color+';padding:12px 14px;"><span style="font-size:22px;">'+t.emoji+'</span><div><h3 style="font-size:12px;">'+t.name+'</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">'+t.desc+'</div></div><span style="margin-left:auto;color:'+t.color+';">→</span></div></div></a>';
+  });
+  atelierHTML+='<div style="grid-column:1/-1;font-family:Gruppo,sans-serif;font-size:15px;font-weight:700;margin:14px 0 6px;padding-bottom:8px;border-bottom:2px solid #f0f0f0;">Fiches Petales</div>';
+  document.getElementById('tools-grid').innerHTML=atelierHTML+PETALS.map((p,i)=>`<a href="${PFILES[i]}" target="_blank" style="text-decoration:none;"><div class="card" style="cursor:pointer;"><div class="ch" style="background:${bgs[i]};border-left:4px solid ${p.color};padding:12px 14px;"><span style="font-size:22px;">${p.emoji}</span><div><h3 style="font-size:12px;">P${p.id} · ${p.name}</h3><div style="font-size:9px;color:var(--gris);margin-top:1px;">🌱 6–7 · 🌿 8–9 · 🌳 10–12</div></div><span style="margin-left:auto;color:var(--orange);">→</span></div></div></a>`).join('');
 }
 
 // ===== CRÉER FAMILLE =====
