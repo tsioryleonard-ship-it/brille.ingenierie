@@ -249,9 +249,71 @@ function setObj(btn, status){
   btns.forEach(b=>{b.classList.remove('yes','no','partial');});
   btn.classList.add(status);
 }
-function submitBilan(){
-  document.getElementById('success').style.display='block';
-  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+async function submitBilan(){
+  const emailCentre = document.getElementById('email-centre').value;
+  const centre = document.getElementById('centre').value;
+  if(!centre){ alert('Merci d\'entrer le nom du centre social.'); return; }
+
+  // Collecter toutes les données PDCA
+  const data = {
+    _subject: 'BRILLE · Bilan Centre — ' + centre + ' — ' + new Date().toLocaleDateString('fr-FR'),
+    centre: centre,
+    date_intervention: document.getElementById('date-inter').value,
+    formule: document.getElementById('formule').value,
+    seance: document.getElementById('seance-num').value,
+    petale: document.getElementById('petale-travaille').value,
+    referent: document.getElementById('referent').value,
+    email_centre: emailCentre,
+    nb_familles: document.getElementById('nb-familles').value,
+    nb_enfants: document.getElementById('nb-enfants').value,
+    nb_emails: document.getElementById('nb-emails').value,
+    nb_kits: document.getElementById('nb-kits').value,
+    satisfaction: document.getElementById('slider-sat').value + '/10',
+    nps: document.getElementById('slider-nps').value + '/10',
+    pdca_plan_obj: document.getElementById('pdca-p-obj').value,
+    pdca_plan_public: document.getElementById('pdca-p-public').value,
+    pdca_do_deroul: document.getElementById('pdca-d-deroul').value,
+    pdca_do_outils: document.getElementById('pdca-d-outils').value,
+    pdca_check_forts: document.getElementById('pdca-c-forts').value,
+    pdca_act_amelio: document.getElementById('pdca-a-amelio').value,
+    pdca_act_actions: document.getElementById('pdca-a-actions').value,
+    verbatim: document.getElementById('verbatim').value,
+    observations: document.getElementById('observations').value,
+    reco_centre: document.getElementById('reco-centre').value,
+    date_suivi: document.getElementById('date-suivi').value,
+    next_action: document.getElementById('next-action').value,
+    // Objectifs atteints
+    objectifs: [...document.querySelectorAll('.obj-item')].map(el => {
+      const name = el.querySelector('.obj-name').textContent;
+      const done = el.querySelector('.ot-btn.yes') ? '✅' : el.querySelector('.ot-btn.partial') ? '⚡' : el.querySelector('.ot-btn.no') ? '❌' : '—';
+      return name + ' : ' + done;
+    }).join(' | '),
+  };
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '⏳ Envoi en cours...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://formspree.io/f/xnjlwpaz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const json = await res.json();
+    if (res.ok) {
+      document.getElementById('success').style.display='block';
+      window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+    } else {
+      alert('Erreur lors de l\'envoi : ' + (json.error || 'Veuillez réessayer.'));
+      btn.textContent = '✅ Valider et envoyer au centre';
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Erreur réseau. Vérifiez votre connexion et réessayez.');
+    btn.textContent = '✅ Valider et envoyer au centre';
+    btn.disabled = false;
+  }
 }
 </script>
 </body>
