@@ -298,6 +298,22 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
             <div style="color:rgba(255,255,255,.7);font-size:11px;line-height:1.8;" id="fin-ap-actions"></div>
           </div>
           <button class="btn" style="background:#f0f0f0;color:var(--gris);" onclick="previewKit()">👁️ Prévisualiser le kit</button>
+          <!-- BRILLE KIT SECTION -->
+          <div id="fin-kit-section" style="display:none;background:linear-gradient(135deg,rgba(203,225,182,.2),rgba(168,219,235,.15));border:1.5px solid rgba(203,225,182,.6);border-radius:14px;padding:14px;margin-bottom:12px;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.4);text-transform:uppercase;margin-bottom:8px;">📚 Brille Kit Pétale — Formule Standard</div>
+            <div id="fin-kit-card" style="display:flex;align-items:center;gap:12px;background:white;border-radius:10px;padding:12px;border:1.5px solid #e0e0e0;">
+              <div id="fin-kit-emoji" style="font-size:28px;">🌸</div>
+              <div style="flex:1;">
+                <div style="font-size:11px;font-weight:700;" id="fin-kit-name">—</div>
+                <div style="font-size:10px;color:var(--gris);margin-top:2px;" id="fin-kit-url">—</div>
+              </div>
+              <a id="fin-kit-link" href="#" target="_blank" style="padding:6px 12px;background:var(--vert);border-radius:8px;text-decoration:none;font-size:11px;font-weight:700;color:var(--noir);">👁️ Voir</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+              <input type="checkbox" id="fin-kit-include" checked style="accent-color:var(--orange);width:14px;height:14px;">
+              <label for="fin-kit-include" style="font-size:11px;font-weight:600;cursor:pointer;">Inclure le lien du Brille Kit dans l'email</label>
+            </div>
+          </div>
           <button class="btn btn-or" style="margin-top:8px;" onclick="envoyerKit()">📧 Envoyer le kit par email</button>
           <div id="fin-st" style="display:none;text-align:center;padding:16px;"><div style="font-size:36px;margin-bottom:8px;" id="fin-st-i">⏳</div><div style="font-size:13px;font-weight:700;" id="fin-st-m">Envoi…</div></div>
         </div>
@@ -830,7 +846,23 @@ async function loadFinSelect(){
   (fams||[]).forEach(f=>{const o=document.createElement('option');o.value=f.code;o.textContent=`${f.emoji||'👨‍👩‍👧'} ${f.nom} — ${f.enfant} (${f.age})`;sel.appendChild(o);});
 }
 
-async function onPickFam(){
+async function updateFinKit(){
+  const r=Object.entries(finPC).filter(([,v])=>v==='rouge');
+  const o=Object.entries(finPC).filter(([,v])=>v==='orange');
+  const prioEntry = r.length>0?r[0]:o.length>0?o[0]:null;
+  const kitSection = document.getElementById('fin-kit-section');
+  if(!prioEntry||!finFam){kitSection.style.display='none';return;}
+  const prio=PETALS[prioEntry[0]-1];
+  const ageHash=finFam.age||'6-7';
+  const kitUrl=`https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-${prio.id}.html`;
+  document.getElementById('fin-kit-emoji').textContent=prio.emoji;
+  document.getElementById('fin-kit-name').textContent=`Kit Pétale ${prio.id} — ${prio.name}`;
+  document.getElementById('fin-kit-url').textContent=kitUrl;
+  document.getElementById('fin-kit-link').href=kitUrl;
+  kitSection.style.display='block';
+}
+
+function onPickFam(){
   const code=document.getElementById('fin-fam').value;
   if(!code){document.getElementById('fin-fam-info').style.display='none';document.getElementById('fin-petales').style.display='none';document.getElementById('fin-email-card').style.display='none';return;}
   const {data:fam}=await db.from('familles').select('*').eq('code',code).single();
@@ -867,6 +899,7 @@ function updateFinPrio(){
   const r=Object.entries(finPC).filter(([,v])=>v==='rouge');
   const p=r.length>0?PETALS[r[0][0]-1]:null;
   document.getElementById('fin-prio-txt').textContent=p?`${p.emoji} ${p.name}`:'—';
+  updateFinKit();
 }
 
 function previewKit(){
@@ -892,7 +925,7 @@ async function envoyerKit(){
   const msg=document.getElementById('fin-msg').value.trim()||`Vous avez fait un premier pas magnifique pour ${finFam.enfant}. Les outils BRILLE sont maintenant dans vos mains — je suis là pour vous accompagner. À très bientôt !`;
   const base='https://tsioryleonard-ship-it.github.io/brille/brille-app';
   const ageHash = finFam.age || '6-7'; // ex: "6-7", "8-9", "10-12"
-  const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'—',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};
+  const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'—',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,kit_url:(document.getElementById('fin-kit-include')?.checked&&prio)?`https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-${prio.id}.html`:'',kit_nom:prio?`Kit Pétale ${prio.id} — ${prio.name}`:'—',message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};
   document.getElementById('fin-st').style.display='block';
   document.getElementById('fin-st-i').textContent='⏳';
   document.getElementById('fin-st-m').textContent='Envoi en cours…';
