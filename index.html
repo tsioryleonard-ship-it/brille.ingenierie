@@ -923,7 +923,7 @@ async function envoyerKit(){
   const prio=r.length>0?PETALS[r[0][0]-1]:null;
   const actions=prio?PACTIONS[prio.id].map(a=>a.replace(/{enfant}/g,finFam.enfant)):['Continuez sur votre lancée !'];
   const msg=document.getElementById('fin-msg').value.trim()||`Vous avez fait un premier pas magnifique pour ${finFam.enfant}. Les outils BRILLE sont maintenant dans vos mains — je suis là pour vous accompagner. À très bientôt !`;
-  const base='https://tsioryleonard-ship-it.github.io/brille/brille-app';
+  const base='https://tsioryleonard-ship-it.github.io/brille.ingenierie';
   const ageHash = finFam.age || '6-7'; // ex: "6-7", "8-9", "10-12"
   const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'—',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,kit_url:prio?('https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+prio.id+'.html'):'',message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};
   document.getElementById('fin-st').style.display='block';
