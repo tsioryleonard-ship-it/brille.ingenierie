@@ -620,22 +620,30 @@ function showAge(age,btn){document.querySelectorAll('.age-panel').forEach(p=>p.c
 function selectThLevel(el){el.closest('.tool-body').querySelectorAll('[onclick*="selectThLevel"]').forEach(e=>e.style.borderColor='transparent');el.style.borderColor='rgba(0,0,0,0.3)';}
 function selectMeteoSit(el){const row=el.closest('div');row.querySelectorAll('span').forEach(s=>s.style.opacity='0.4');el.style.opacity='1';}
 function updateEmoLevel(el){const v=parseInt(el.value);const levels=['','☀️ Niveau 1 — Grand soleil','🌤️ Niveau 2 — Quelques nuages','⛅ Niveau 3 — Nuages modérés','🌧️ Niveau 4 — Pluie intense','⛈️ Niveau 5 — Orage fort','🌩️ Niveau 6 — Gros orage','🌪️ Niveau 7 — Tempête','🌪️ Niveau 8 — Très forte tempête','🌋 Niveau 9 — Pré-éruption','🌋 Niveau 10 — Éruption !'];document.getElementById('emo-level-display').textContent=levels[v];}
-// Accès limité par âge
+
+// ===== ACCÈS LIMITÉ PAR ÂGE (via URL hash) =====
 function initAgeFromURL() {
   const hash = window.location.hash.replace('#','');
   const ages = ['6-7','8-9','10-12'];
-  if(ages.includes(hash)) {
-    document.querySelectorAll('.tab').forEach(t => t.style.display='none');
+  const validHash = ages.includes(hash) ? hash : null;
+  document.querySelectorAll('.age-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  const target = validHash
+    ? document.getElementById('panel-'+validHash)
+    : document.getElementById('panel-6-7');
+  if(target) { target.style.display = 'block'; target.classList.add('active'); }
+  if(validHash) {
+    document.querySelectorAll('.tab').forEach(t => { t.style.display = 'none'; });
     const nav = document.querySelector('nav .tabs');
     if(nav) {
-      const labels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
-      nav.innerHTML = '<span style="color:#fdd5a5;font-size:12px;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+labels[hash]+'</span>';
+      const ageLabels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
+      nav.innerHTML = '<span style="color:var(--peche);font-size:12px;font-weight:600;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+ageLabels[validHash]+'</span>';
     }
-    document.querySelectorAll('.age-panel').forEach(p => p.classList.remove('active'));
-    const t = document.getElementById('panel-'+hash);
-    if(t) t.classList.add('active');
   }
 }
-document.addEventListener('DOMContentLoaded', initAgeFromURL);</script>
+document.addEventListener('DOMContentLoaded', initAgeFromURL);
+</script>
 </body>
 </html>
