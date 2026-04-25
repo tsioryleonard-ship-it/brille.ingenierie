@@ -318,5 +318,51 @@ h1,h2,h3,h4 { font-family:'Gruppo',sans-serif; font-weight:400; }
   </div>
 </div>
 
+
+<script>
+(function(){
+  var hash = window.location.hash.replace('#','');
+  var validAges = {'6-7':0,'8-9':1,'10-12':2};
+  if(!(hash in validAges)) return; // Pas de hash = affiche tout (mode ingénieure)
+
+  var colIndex = validAges[hash];
+  var ageLabels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // 1. Remplacer les onglets d'âge par un badge simple
+    var ageTabs = document.querySelector('.age-tabs');
+    if(ageTabs){
+      ageTabs.style.cssText = 'background:transparent;margin-bottom:16px;display:flex;justify-content:center;';
+      ageTabs.innerHTML = '<div style="background:var(--noir);color:var(--peche);font-family:Gruppo,sans-serif;font-size:14px;padding:8px 20px;border-radius:20px;display:inline-block;">' + ageLabels[hash] + '</div>';
+    }
+
+    // 2. Pour chaque grille à 3 colonnes, garder seulement la bonne colonne
+    var grids = document.querySelectorAll('[style*="grid-template-columns:repeat(3"]');
+    grids.forEach(function(grid){
+      var cols = grid.children;
+      if(cols.length === 3){
+        for(var i = 0; i < 3; i++){
+          if(i !== colIndex){
+            cols[i].style.display = 'none';
+          }
+        }
+        // Adapter la grille à 1 colonne
+        grid.style.gridTemplateColumns = '1fr';
+      }
+    });
+
+    // 3. Masquer les labels 6-7, 8-9, 10-12 dans les fill-label
+    var fillLabels = document.querySelectorAll('.fill-label');
+    fillLabels.forEach(function(el){
+      var txt = el.textContent.trim();
+      if((txt.indexOf('6') > -1 && hash !== '6-7') ||
+         (txt.indexOf('8') > -1 && hash !== '8-9') ||
+         (txt.indexOf('10') > -1 && hash !== '10-12')){
+        el.style.display = 'none';
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
