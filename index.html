@@ -134,6 +134,17 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
 .ehero{background:linear-gradient(135deg,var(--jaune),var(--peche));border-radius:18px;padding:22px;margin-bottom:18px;text-align:center;}
 /* VIC */
 .vi{background:#f8f8f8;border-radius:10px;padding:10px 12px;margin-bottom:7px;display:flex;gap:10px;align-items:flex-start;}
+
+/* SCINTILLE EFFECTS */
+@keyframes starBurst{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
+@keyframes noteSaved{0%,100%{background:var(--vert);}50%{transform:scale(1.03);}}
+.star-particle{position:fixed;pointer-events:none;z-index:9999;font-size:16px;animation:starBurst .8s ease-out forwards;}
+.save-confirm{background:var(--vert)!important;color:var(--noir)!important;transition:all .3s;}
+.pcard{border-radius:18px;padding:18px 10px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 3px 14px rgba(0,0,0,.08);}
+.pcard:hover{transform:translateY(-4px);}
+.pcard .pe{font-size:52px;margin-bottom:10px;}
+.pcard .pn{font-size:12px;font-weight:700;line-height:1.3;}
+.app-signature{text-align:center;font-size:10px;color:rgba(0,0,0,.25);padding:16px;font-style:italic;border-top:1px solid rgba(0,0,0,.05);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -176,7 +187,7 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
         <div class="err" id="err-ing">Email ou mot de passe incorrect</div>
       </div>
       <div id="lt-fam" style="display:none;">
-        <div style="text-align:center;margin-bottom:16px;"><div style="font-size:36px;margin-bottom:8px;">🔑</div><p style="font-size:12px;color:rgba(255,255,255,.5);">Code d'accès donné par votre ingénieure</p></div>
+        <div style="text-align:center;margin-bottom:20px;"><div style="font-size:38px;margin-bottom:10px;">✨</div><div style="font-family:Gruppo,sans-serif;font-size:16px;color:var(--peche);margin-bottom:6px;line-height:1.5;">Rallumez votre étincelle,<br>faites briller votre enfant.</div><p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;">Entrez votre code Scintille</p></div>
         <div class="lg"><label>Code d'accès</label><input type="text" id="fam-code" placeholder="BRL-XXXXXX" style="text-align:center;font-size:20px;letter-spacing:4px;text-transform:uppercase;" maxlength="10" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')loginFam()"></div>
         <button class="lbtn" onclick="loginFam()">Accéder à mes outils →</button>
         <div class="err" id="err-fam">Code incorrect ou non reconnu</div>
@@ -236,7 +247,7 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
             <div class="fg"><label class="fl">Tranche d'âge</label><select class="fi" id="nf-age"><option value="">-- Choisir --</option><option value="6-7">🌱 6–7 ans</option><option value="8-9">🌿 8–9 ans</option><option value="10-12">🌳 10–12 ans</option></select></div>
             <div class="fg"><label class="fl">Date 1er atelier</label><input type="date" class="fi" id="nf-date"></div>
           </div>
-          <div class="fg"><label class="fl">Notes initiales</label><textarea class="fta" id="nf-notes" placeholder="Contexte, priorité…"></textarea></div>
+          <div class="fg"><label class="fl">Offre souscrite</label><select class="fi" id="nf-offre" style="padding:10px;border-radius:10px;border:1.5px solid #e2e2e2;font-family:Quicksand,sans-serif;font-size:13px;width:100%;"><option value="atelier">🏫 Atelier Centre Social</option><option value="etincelle-poche">✨ Etincelle en Poche (29€)</option><option value="etincelle-maison">🏠 Etincelle a la Maison (49€) - Kit a envoyer</option><option value="etincelle-partagee">🤝 Etincelle Partagee (120€)</option><option value="etincelle-durable">🌟 Etincelle Durable (290€)</option></select></div><div class="fg"><label class="fl">Notes initiales</label><textarea class="fta" id="nf-notes" placeholder="Contexte, priorité…"></textarea></div>
           <div style="background:var(--jaune);border-radius:12px;padding:14px;margin:14px 0;text-align:center;">
             <div style="font-size:10px;color:var(--gris);font-weight:700;margin-bottom:6px;">🔑 Code généré automatiquement</div>
             <div class="code">BRL-??????</div>
@@ -411,7 +422,7 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
 
     <!-- OUTILS -->
     <div id="ft-outils" style="display:none;">
-      <h2 style="font-size:18px;margin-bottom:14px;">Mes Outils BRILLE</h2>
+      <h2 style="font-size:18px;margin-bottom:14px;">✨ Mes Outils Scintille</h2>
       <div id="outils-list"></div>
     </div>
 
@@ -434,9 +445,10 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
 
     <!-- ENFANT -->
     <div id="ft-enfant" style="display:none;">
-      <div class="ehero"><div style="font-size:52px;margin-bottom:10px;">🌟</div><h2 id="enfant-prenom">Mon espace BRILLE</h2><p style="font-size:11px;color:rgba(0,0,0,.5);margin-top:4px;">Touche un pétale pour voir tes outils !</p></div>
+      <div class="ehero"><div style="font-size:52px;margin-bottom:10px;">🌟</div><h2 id="enfant-prenom">Mon espace BRILLE</h2><p style="font-size:11px;color:rgba(0,0,0,.5);margin-top:4px;">✨ Touche un pétale pour faire briller tes super-pouvoirs !</p></div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;" id="enfant-grid"></div>
     </div>
+  <div class="app-signature">Un outil conçu avec expertise par votre ingénieure ✨ Ìtincelle Brille</div>
   </div>
   <div class="bnav">
     <div class="bnavc">
@@ -642,7 +654,7 @@ async function creerFamille(){
   const colors=['#fdd5a5','#a8dbeb','#f5abaf','#cbe1b6','#f8f4b8','#b8aed7'];
   const emojis=['👨‍👩‍👧','👩‍👦','👨‍👧','👩‍👧','👨‍👦','👨‍👩‍👦'];
   showLoader('Création…');
-  const {error}=await db.from('familles').insert({code,nom,enfant:enf,age,date_atelier:date||null,notes,emoji:emojis[Math.floor(Math.random()*emojis.length)],color:colors[Math.floor(Math.random()*colors.length)]});
+  const {error}=var offre=document.getElementById('nf-offre').value;await db.from('familles').insert({code,nom,enfant:enf,age,date_atelier:date||null,notes,offre:offre,kit_statut:offre==='etincelle-maison'?'a_envoyer':'ok',emoji:emojis[Math.floor(Math.random()*emojis.length)],color:colors[Math.floor(Math.random()*colors.length)]});
   hideLoader();
   if(error){toast('❌ Erreur : '+error.message);return;}
   document.getElementById('btn-creer').style.display='none';
@@ -698,9 +710,9 @@ async function loadNotes(){const {data}=await db.from('notes').select('*').eq('f
 
 function initFamApp(){
   const f=ST.famData;
-  document.getElementById('fam-ttl').textContent='BRILLE · '+f.enfant;
+  document.getElementById('fam-ttl').textContent='Scintille · '+f.enfant;
   document.getElementById('fam-welcome').textContent='Bonjour, famille '+f.nom+' ! 🌸';
-  document.getElementById('fam-wsub').textContent=f.enfant+' · '+f.age+' · Votre espace BRILLE';
+  document.getElementById('fam-wsub').textContent=f.enfant+' · '+f.age+' · Votre espace Scintille';
   document.getElementById('enfant-prenom').textContent='Bonjour '+f.enfant+' ! 🌟';
   renderPetalsMini();renderVics();updateStats();renderOutils();renderEnfant();updatePrio();
 }
@@ -718,7 +730,7 @@ function pickPetal(n){
 async function colorPetal(c){
   if(!ST.selPetal)return;
   const n=ST.selPetal;closePicker();
-  ST.pc[n]=c;renderPetalsMini();updateStats();updatePrio();renderOutils();
+  ST.pc[n]=c;renderPetalsMini();updateStats();updatePrio();renderOutils();if(c==="vert"||c==="rouge")burstStars(event?event.target:null);
   toast(c==='vert'?'🟢 Sauvegardé !':c==='orange'?'🟠 Sauvegardé !':'🔴 Sauvegardé !');
   await db.from('petales').upsert({famille_code:ST.famCode,petal_num:n,couleur:c,updated_at:new Date().toISOString()},{onConflict:'famille_code,petal_num'});
 }
@@ -749,24 +761,35 @@ function analyserFleur(){
   updatePrio();
 }
 
+function getAgeHash(){
+  var a=ST.famData&&ST.famData.age?ST.famData.age:'';
+  if(a.indexOf('6')>-1||a.indexOf('7')>-1)return '6-7';
+  if(a.indexOf('8')>-1||a.indexOf('9')>-1)return '8-9';
+  if(a.indexOf('10')>-1||a.indexOf('11')>-1||a.indexOf('12')>-1)return '10-12';
+  return '6-7';
+}
+function getAgeBadge(){
+  var badges={'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
+  return badges[getAgeHash()]||'🌱 6–7 ans';
+}
 function renderOutils(){
   const rouges = Object.entries(ST.pc).filter(([,v])=>v==='rouge').map(([k])=>PETALS[k-1]);
   const oranges = Object.entries(ST.pc).filter(([,v])=>v==='orange').map(([k])=>PETALS[k-1]);
-  const prio = rouges.length>0 ? rouges : oranges; // Pétales prioritaires uniquement
+  const prio = rouges.length>0 ? rouges : oranges;
 
   if(prio.length===0){
     document.getElementById('outils-list').innerHTML=`
       <div style="text-align:center;padding:40px 20px;color:var(--gris);">
         <div style="font-size:48px;margin-bottom:12px;">🌸</div>
-        <p style="font-size:13px;">Coloriez votre fleur QVE pour accéder à vos outils personnalisés !</p>
+        <p style="font-size:13px;">Coloriez votre fleur QVE pour faire Scintille ✨</p>
       </div>`;
     return;
   }
 
   document.getElementById('outils-list').innerHTML = `
-    <div style="background:#fff0e0;border-radius:12px;padding:12px 16px;margin-bottom:16px;border-left:4px solid var(--orange);">
-      <div style="font-size:11px;font-weight:700;color:#a04000;margin-bottom:2px;">🎯 Vos outils personnalisés</div>
-      <div style="font-size:12px;color:var(--gris);">Ces outils correspondent à votre pétale prioritaire identifié pendant l'atelier.</div>
+    <div style="background:linear-gradient(135deg,#fff0e0,#fff8f0);border-radius:12px;padding:12px 16px;margin-bottom:16px;border-left:4px solid var(--orange);display:flex;align-items:center;justify-content:space-between;">
+      <div><div style="font-size:11px;font-weight:700;color:#a04000;margin-bottom:2px;">🎯 Outils personnalisés Scintille</div><div style="font-size:12px;color:var(--gris);">Adaptés à l'age de votre enfant</div></div>
+      <div style="background:var(--orange);color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:10px;">${getAgeBadge()}</div>
     </div>
     ${prio.map(p=>{
       const c=ST.pc[p.id]||'none';
@@ -787,7 +810,7 @@ function renderEnfant(){
   const prio = rouges.length>0 ? rouges : oranges;
   const bgs=['#e8f4fb','#fdf4e0','#fce8ec','#fff8e0','#e8f4fb','#f0eafa','#eaf6ee'];
   if(prio.length===0){
-    document.getElementById('enfant-grid').innerHTML=`<div style="text-align:center;padding:40px;color:var(--gris);font-size:13px;">Demande à tes parents de colorier ta fleur d'abord ! 🌸</div>`;
+    document.getElementById('enfant-grid').innerHTML=`<div style="text-align:center;padding:40px;color:var(--gris);font-size:13px;">Demande à tes parents de colorier ta fleur pour faire Scintille ! ✨</div>`;
     return;
   }
   document.getElementById('enfant-grid').innerHTML=prio.map(p=>`
@@ -798,12 +821,12 @@ function renderEnfant(){
 }
 
 function openOutil(n){
-  const p=PETALS[n-1];const age=ST.famData?.age||'6-7';
-  const ageLbl=age==='6-7'?'🌱 6–7 ans':age==='8-9'?'🌿 8–9 ans':'🌳 10–12 ans';
+  const p=PETALS[n-1];const age=getAgeHash();
+  const ageLbl=getAgeBadge();
   document.getElementById('modal-title').textContent=p.emoji+' '+p.name;
   document.getElementById('modal-body').innerHTML=`
     <div style="text-align:center;padding:10px 0 16px;"><div style="font-size:52px;margin-bottom:10px;">${p.emoji}</div><h3 style="margin-bottom:5px;">${p.name}</h3><span class="pill pb">${ageLbl}</span><p style="font-size:12px;color:var(--gris);margin:12px 0;">${p.desc}</p></div>
-    <a href="${PFILES[n-1]}#${age}" target="_blank" style="text-decoration:none;"><div style="background:var(--orange);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;cursor:pointer;"><div style="font-size:36px;">📋</div><div><div style="color:white;font-family:'Gruppo',sans-serif;font-size:16px;margin-bottom:2px;">Ouvrir la fiche complète</div><div style="color:rgba(255,255,255,.7);font-size:11px;">5 outils · ${ageLbl} · Imprimable</div></div><div style="margin-left:auto;color:rgba(255,255,255,.7);font-size:22px;">→</div></div></a>
+    <a href="https://tsioryleonard-ship-it.github.io/brille.ingenierie/${PFILES[n-1]}#${age}" target="_blank" style="text-decoration:none;"><div style="background:var(--orange);border-radius:14px;padding:16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;cursor:pointer;"><div style="font-size:36px;">📋</div><div><div style="color:white;font-family:'Gruppo',sans-serif;font-size:16px;margin-bottom:2px;">Ouvrir la fiche complète</div><div style="color:rgba(255,255,255,.7);font-size:11px;">5 outils · ${ageLbl} · Imprimable</div></div><div style="margin-left:auto;color:rgba(255,255,255,.7);font-size:22px;">→</div></div></a>
     <div style="background:#e8f4fb;border-radius:10px;padding:12px;display:flex;gap:10px;"><span style="font-size:18px;">💡</span><p style="font-size:11px;color:#1060a0;line-height:1.5;">Sélectionne l'onglet <strong>${ageLbl}</strong> en haut pour voir les outils adaptés. Bouton 🖨️ pour imprimer !</p></div>`;
   document.getElementById('modal').classList.add('open');
 }
@@ -817,7 +840,7 @@ async function addVic(){
   const {data,error}=await db.from('victoires').insert({famille_code:ST.famCode,texte,categorie:cat}).select().single();
   hideLoader();
   if(error){toast('❌ Erreur');return;}
-  ST.vics.unshift(data);document.getElementById('new-vic').value='';renderVics();updateStats();toast('🏆 Victoire ajoutée !');
+  ST.vics.unshift(data);document.getElementById('new-vic').value='';renderVics();updateStats();toast('🏆 Victoire ajoutée !');burstStars(document.getElementById('new-vic'));
 }
 
 function renderVics(){
@@ -828,10 +851,27 @@ function renderVics(){
 
 async function delVic(id){await db.from('victoires').delete().eq('id',id);ST.vics=ST.vics.filter(v=>v.id!==id);renderVics();updateStats();toast('🗑️ Supprimé');}
 
+function burstStars(el){
+  var rect=el?el.getBoundingClientRect():{top:window.innerHeight/2,left:window.innerWidth/2,width:0,height:0};
+  var cx=rect.left+rect.width/2,cy=rect.top;
+  var stars=['✨','⭐','🌟','💫','✴️'];
+  for(var i=0;i<8;i++){
+    var s=document.createElement('div');s.className='star-particle';
+    s.textContent=stars[i%stars.length];
+    s.style.left=cx+'px';s.style.top=cy+'px';
+    var a=(i/8)*Math.PI*2,d=50+Math.random()*40;
+    s.style.setProperty('--tx',Math.cos(a)*d+'px');
+    s.style.setProperty('--ty',Math.sin(a)*d+'px');
+    document.body.appendChild(s);
+    setTimeout(function(x){x.remove();},800,s);
+  }
+}
 async function saveNotes(){
-  const c=document.getElementById('fam-notes').value;
+  var c=document.getElementById('fam-notes').value;
   await db.from('notes').upsert({famille_code:ST.famCode,contenu:c,updated_at:new Date().toISOString()},{onConflict:'famille_code'});
-  toast('💾 Notes sauvegardées !');
+  var btn=document.querySelector('[onclick="saveNotes()"]');
+  if(btn){btn.classList.add('save-confirm');btn.textContent='✅ Sauvegardé !';setTimeout(function(){btn.classList.remove('save-confirm');btn.textContent='💾 Sauvegarder';},2000);}
+  burstStars(btn);
 }
 
 // ===== FIN D'ATELIER =====
