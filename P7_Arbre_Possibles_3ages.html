@@ -497,6 +497,30 @@ function showAge(id,btn){
   document.getElementById('p'+id).classList.add('active');
   btn.classList.add('active');
 }
+
+// ===== ACCÈS LIMITÉ PAR ÂGE (via URL hash) =====
+function initAgeFromURL() {
+  const hash = window.location.hash.replace('#','');
+  const ages = ['6-7','8-9','10-12'];
+  const validHash = ages.includes(hash) ? hash : null;
+  document.querySelectorAll('.age-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  const target = validHash
+    ? document.getElementById('panel-'+validHash)
+    : document.getElementById('panel-6-7');
+  if(target) { target.style.display = 'block'; target.classList.add('active'); }
+  if(validHash) {
+    document.querySelectorAll('.tab').forEach(t => { t.style.display = 'none'; });
+    const nav = document.querySelector('nav .tabs');
+    if(nav) {
+      const ageLabels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
+      nav.innerHTML = '<span style="color:var(--peche);font-size:12px;font-weight:600;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+ageLabels[validHash]+'</span>';
+    }
+  }
+}
+document.addEventListener('DOMContentLoaded', initAgeFromURL);
 </script>
 </body>
 </html>
