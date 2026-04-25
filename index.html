@@ -654,7 +654,8 @@ async function creerFamille(){
   const colors=['#fdd5a5','#a8dbeb','#f5abaf','#cbe1b6','#f8f4b8','#b8aed7'];
   const emojis=['👨‍👩‍👧','👩‍👦','👨‍👧','👩‍👧','👨‍👦','👨‍👩‍👦'];
   showLoader('Création…');
-  const {error}=var offre=document.getElementById('nf-offre').value;await db.from('familles').insert({code,nom,enfant:enf,age,date_atelier:date||null,notes,offre:offre,kit_statut:offre==='etincelle-maison'?'a_envoyer':'ok',emoji:emojis[Math.floor(Math.random()*emojis.length)],color:colors[Math.floor(Math.random()*colors.length)]});
+  var offre=document.getElementById('nf-offre')?document.getElementById('nf-offre').value:'atelier';
+  const {error}=await db.from('familles').insert({code,nom,enfant:enf,age,date_atelier:date||null,notes,offre:offre,kit_statut:offre==='etincelle-maison'?'a_envoyer':'ok',emoji:emojis[Math.floor(Math.random()*emojis.length)],color:colors[Math.floor(Math.random()*colors.length)]});
   hideLoader();
   if(error){toast('❌ Erreur : '+error.message);return;}
   document.getElementById('btn-creer').style.display='none';
