@@ -522,9 +522,12 @@ function renderBiblio(){
   // Sélecteur de famille pour filtrer par âge
   var famList=window.allFams||[];
   var headerDiv=document.createElement('div');
-  headerDiv.style.cssText='background:#f8f8f8;border-radius:12px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;';
-  headerDiv.innerHTML='<span style="font-size:14px;">👨‍👩‍👧</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Partager pour la famille :</label>';
-  
+  headerDiv.style.cssText='background:#f8f8f8;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;';
+
+  // Ligne 1 : sélecteur famille
+  var row1=document.createElement('div');
+  row1.style.cssText='display:flex;align-items:center;gap:10px;';
+  row1.innerHTML='<span style="font-size:14px;">👨‍👩‍👧</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Famille :</label>';
   var sel=document.createElement('select');
   sel.id='biblio-fam-sel';
   sel.style.cssText='border:1.5px solid #e2e2e2;border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
@@ -537,7 +540,19 @@ function renderBiblio(){
     opt.textContent=f.emoji+' '+f.nom+' ('+f.enfant+' · '+ageLabel+')';
     sel.appendChild(opt);
   });
-  headerDiv.appendChild(sel);
+  row1.appendChild(sel);
+  headerDiv.appendChild(row1);
+
+  // Ligne 2 : sélecteur âge manuel (toujours visible)
+  var row2=document.createElement('div');
+  row2.style.cssText='display:flex;align-items:center;gap:10px;';
+  row2.innerHTML='<span style="font-size:14px;">🎯</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Tranche d'âge :</label>';
+  var selAge=document.createElement('select');
+  selAge.id='biblio-age-sel';
+  selAge.style.cssText='border:1.5px solid var(--orange);border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
+  selAge.innerHTML='<option value="6-7">🌱 6–7 ans</option><option value="8-9">🌿 8–9 ans</option><option value="10-12">🌳 10–12 ans</option>';
+  row2.appendChild(selAge);
+  headerDiv.appendChild(row2);
   grid.appendChild(headerDiv);
 
   // Info bulle âge
@@ -569,28 +584,36 @@ function renderBiblio(){
 
     // Mise à jour des liens selon la famille sélectionnée
     function updateLinks(){
-      var selEl=document.getElementById('biblio-fam-sel');
-      var selOpt=selEl?selEl.options[selEl.selectedIndex]:null;
-      var age=selOpt&&selOpt.dataset.age?selOpt.dataset.age:'6-7';
+      // Priorité : famille sélectionnée → sinon sélecteur âge manuel
+      var selFamEl=document.getElementById('biblio-fam-sel');
+      var selAgeEl=document.getElementById('biblio-age-sel');
+      var selOpt=selFamEl?selFamEl.options[selFamEl.selectedIndex]:null;
+      var age;
+      if(selOpt&&selOpt.dataset.age){
+        age=selOpt.dataset.age;
+        if(selAgeEl) selAgeEl.value=age; // sync le sélecteur âge
+      } else {
+        age=selAgeEl?selAgeEl.value:'6-7';
+      }
       var url=k.url+'#'+age;
       av.href=url;
       ap.href=url;
       var ageLabels={'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
       var infoEl=document.getElementById('biblio-age-info');
-      if(selOpt&&selOpt.value&&infoEl){
+      if(infoEl){
         infoEl.style.display='block';
-        infoEl.textContent='✅ Contenu filtré pour '+ageLabels[age]+' — seule cette tranche sera visible pour la famille';
+        infoEl.textContent='✅ Contenu filtré pour '+ageLabels[age]+' — seule cette tranche sera visible';
       }
       bs.onclick=function(){
         if(navigator.share)navigator.share({title:'Brille Kit '+k.name,url:url});
-        else navigator.clipboard.writeText(url).then(function(){toast('📋 Lien copié avec filtre '+ageLabels[age]);});
+        else navigator.clipboard.writeText(url).then(function(){toast('📋 Lien copié · '+ageLabels[age]);});
       };
     }
     updateLinks();
     
     // Recalculer si on change de famille
     document.addEventListener('change',function(e){
-      if(e.target&&e.target.id==='biblio-fam-sel') updateLinks();
+      if(e.target&&(e.target.id==='biblio-fam-sel'||e.target.id==='biblio-age-sel')) updateLinks();
     });
 
     btns.appendChild(av);btns.appendChild(ap);btns.appendChild(bs);
