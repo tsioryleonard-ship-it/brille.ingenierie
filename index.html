@@ -546,7 +546,7 @@ function renderBiblio(){
   // Ligne 2 : sélecteur âge manuel (toujours visible)
   var row2=document.createElement('div');
   row2.style.cssText='display:flex;align-items:center;gap:10px;';
-  row2.innerHTML='<span style="font-size:14px;">🎯</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Tranche d'âge :</label>';
+  var sp2=document.createElement('span');sp2.style.fontSize='14px';sp2.textContent='🎯';var lb2=document.createElement('label');lb2.style.cssText='font-size:11px;font-weight:700;color:var(--gris);flex:1;';lb2.textContent='Tranche age :';row2.appendChild(sp2);row2.appendChild(lb2);
   var selAge=document.createElement('select');
   selAge.id='biblio-age-sel';
   selAge.style.cssText='border:1.5px solid var(--orange);border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
