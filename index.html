@@ -247,7 +247,7 @@ h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
             <div class="fg"><label class="fl">Tranche d'âge</label><select class="fi" id="nf-age"><option value="">-- Choisir --</option><option value="6-7">🌱 6–7 ans</option><option value="8-9">🌿 8–9 ans</option><option value="10-12">🌳 10–12 ans</option></select></div>
             <div class="fg"><label class="fl">Date 1er atelier</label><input type="date" class="fi" id="nf-date"></div>
           </div>
-          <div class="fg"><label class="fl">Offre souscrite</label><select class="fi" id="nf-offre" style="padding:10px;border-radius:10px;border:1.5px solid #e2e2e2;font-family:Quicksand,sans-serif;font-size:13px;width:100%;"><option value="atelier">🏫 Atelier Centre Social</option><option value="etincelle-poche">✨ Étincelle en Poche (29€)</option><option value="etincelle-maison">🏠 Étincelle à la Maison (49€) — Kit à envoyer</option><option value="etincelle-famille">👪 Étincelle en Famille (79€) — 2 enfants</option><option value="etincelle-partagee">🤝 Étincelle Partagée (120€)</option><option value="etincelle-durable">🌟 Étincelle Durable (290€)</option></select></div><div class="fg"><label class="fl">Notes initiales</label><textarea class="fta" id="nf-notes" placeholder="Contexte, priorité…"></textarea></div>
+          <div class="fg"><label class="fl">Offre souscrite</label><select class="fi" id="nf-offre" onchange="toggleFamilleFields()" style="padding:10px;border-radius:10px;border:1.5px solid #e2e2e2;font-family:Quicksand,sans-serif;font-size:13px;width:100%;"><option value="atelier">🏫 Atelier Centre Social</option><option value="etincelle-poche">✨ Étincelle en Poche (29€)</option><option value="etincelle-maison">🏠 Étincelle à la Maison (49€) — Kit à envoyer</option><option value="etincelle-famille">👪 Étincelle en Famille (79€) — 2 enfants</option><option value="etincelle-partagee">🤝 Étincelle Partagée (120€)</option><option value="etincelle-durable">🌟 Étincelle Durable (290€)</option></select></div><div class="fg"><label class="fl">Notes initiales</label><textarea class="fta" id="nf-notes" placeholder="Contexte, priorité…"></textarea></div>
           <div style="background:var(--jaune);border-radius:12px;padding:14px;margin:14px 0;text-align:center;">
             <div style="font-size:10px;color:var(--gris);font-weight:700;margin-bottom:6px;">🔑 Code généré automatiquement</div>
             <div class="code">BRL-??????</div>
@@ -546,7 +546,9 @@ function renderBiblio(){
   // Ligne 2 : sélecteur âge manuel (toujours visible)
   var row2=document.createElement('div');
   row2.style.cssText='display:flex;align-items:center;gap:10px;';
-  var sp2=document.createElement('span');sp2.style.fontSize='14px';sp2.textContent='🎯';var lb2=document.createElement('label');lb2.style.cssText='font-size:11px;font-weight:700;color:var(--gris);flex:1;';lb2.textContent='Tranche age :';row2.appendChild(sp2);row2.appendChild(lb2);
+    var sp2=document.createElement('span');sp2.style.fontSize='14px';sp2.textContent='🎯';
+  var lb2=document.createElement('label');lb2.style.cssText='font-size:11px;font-weight:700;color:var(--gris);flex:1;';lb2.textContent='Tranche age :';
+  row2.appendChild(sp2);row2.appendChild(lb2);
   var selAge=document.createElement('select');
   selAge.id='biblio-age-sel';
   selAge.style.cssText='border:1.5px solid var(--orange);border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
@@ -636,6 +638,17 @@ function updateFinKit(){
   ks.style.display='block';
 }
 
+function toggleFamilleFields(){
+  var offre=document.getElementById('nf-offre')?document.getElementById('nf-offre').value:'';
+  var isFamille=offre==='etincelle-famille';
+  var w2=document.getElementById('nf-enf2-wrap');
+  var a2=document.getElementById('nf-age2-wrap');
+  if(w2)w2.style.display=isFamille?'block':'none';
+  if(a2)a2.style.display=isFamille?'block':'none';
+  var lbl=document.querySelector('label[for="nf-enf"],label.fl');
+  var enf1lbl=document.getElementById('nf-enf')?document.getElementById('nf-enf').previousElementSibling:null;
+}
+
 function ingTab(tab,btn){
   ['dash','fams','new','fin','tools','biblio'].forEach(function(t){document.getElementById('it-'+t).style.display='none';});
   document.getElementById('it-'+tab).style.display='block';
@@ -677,14 +690,64 @@ async function loginIng(){
 
 async function loginFam(){
   const code=document.getElementById('fam-code').value.trim().toUpperCase();
-  showLoader('Vérification…');
+  showLoader('V\u00e9rification\u2026');
   const {data}=await db.from('familles').select('*').eq('code',code).single();
   hideLoader();
-  if(data){
-    ST.role='fam';ST.famCode=code;ST.famData=data;ST.pc={};ST.vics=[];
-    await loadPC();await loadVics();await loadNotes();
-    showPage('fam');initFamApp();
-  } else { document.getElementById('err-fam').style.display='block'; }
+  if(!data){document.getElementById('err-fam').style.display='block';return;}
+  
+  // Sauvegarder le code en localStorage pour m\u00e9moire de session
+  localStorage.setItem('brille_last_code', code);
+  
+  // V\u00e9rifier si cette famille a d'autres profils (groupe famille)
+  if(data.groupe_id){
+    const {data:freres}=await db.from('familles').select('*').eq('groupe_id',data.groupe_id);
+    if(freres&&freres.length>1){
+      // Afficher le s\u00e9lecteur de profil style Netflix
+      ST.familleGroup=freres;
+      ST.famCode=code;
+      showProfileSelector(freres, data);
+      return;
+    }
+  }
+  
+  // Profil unique - connexion directe
+  await connecterProfil(data);
+}
+
+async function connecterProfil(famData){
+  ST.role='fam';ST.famCode=famData.code;ST.famData=famData;ST.pc={};ST.vics=[];
+  localStorage.setItem('brille_last_code', famData.code);
+  await loadPC();await loadVics();await loadNotes();
+  showPage('fam');initFamApp();
+}
+
+function showProfileSelector(profils, current){
+  var pg=document.getElementById('pg-profiles');
+  if(!pg){
+    pg=document.createElement('div');
+    pg.id='pg-profiles';
+    pg.style.cssText='position:fixed;inset:0;background:var(--noir);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:500;padding:40px 20px;';
+    document.body.appendChild(pg);
+  }
+  pg.innerHTML='<div style="text-align:center;margin-bottom:40px;"><div style="font-family:Fascinate,cursive;font-size:28px;color:var(--peche);letter-spacing:4px;margin-bottom:8px;">scintille</div><div style="font-family:Gruppo,sans-serif;font-size:22px;color:white;margin-bottom:6px;">Qui veut briller aujourd\u2019hui ?</div><div style="font-size:12px;color:rgba(255,255,255,.35);">Famille '+profils[0].nom+'</div></div><div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">'
+    +profils.map(function(p){
+      return '<div onclick="selectProfil(\''+p.code+'\')" style="cursor:pointer;text-align:center;padding:24px 20px;border-radius:20px;background:rgba(255,255,255,.06);border:2px solid '+(p.code===current.code?'var(--orange)':'rgba(255,255,255,.1)')+';transition:all .2s;min-width:140px;" onmouseover="this.style.borderColor=\'var(--orange)\';this.style.background=\'rgba(244,159,76,.1)\'" onmouseout="this.style.borderColor=\''+(p.code===current.code?'var(--orange)':'rgba(255,255,255,.1)')+'\';this.style.background=\'rgba(255,255,255,.06)\'">'
+        +'<div style="font-size:52px;margin-bottom:12px;">'+p.emoji+'</div>'
+        +'<div style="font-family:Gruppo,sans-serif;font-size:18px;color:white;margin-bottom:4px;">'+p.enfant+'</div>'
+        +'<div style="font-size:11px;color:rgba(255,255,255,.35);">'+p.age+'</div>'
+      +'</div>';
+    }).join('')
+  +'</div><button onclick="document.getElementById(\'pg-profiles\').remove();showPage(\'login\');" style="margin-top:32px;padding:10px 24px;background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.4);border-radius:20px;cursor:pointer;font-family:Quicksand,sans-serif;font-size:12px;">← Utiliser un autre code</button>';
+  pg.style.display='flex';
+}
+
+async function selectProfil(code){
+  var pg=document.getElementById('pg-profiles');
+  if(pg)pg.remove();
+  showLoader('Chargement\u2026');
+  const {data}=await db.from('familles').select('*').eq('code',code).single();
+  hideLoader();
+  if(data) await connecterProfil(data);
 }
 
 function logout(){
@@ -731,14 +794,23 @@ async function loadDash(){
 }
 
 // ===== CRÉER FAMILLE =====
-async function creerFamille(){
+async async function creerFamille(){
   const nom=document.getElementById('nf-nom').value.trim();
   const enf=document.getElementById('nf-enf').value.trim();
   const age=document.getElementById('nf-age').value;
   const date=document.getElementById('nf-date').value;
   const notes=document.getElementById('nf-notes').value;
+  var offre2=document.getElementById('nf-offre')?document.getElementById('nf-offre').value:'atelier';
+  var isFamille=offre2==='etincelle-famille';
+  var enf2=isFamille?(document.getElementById('nf-enf2')?document.getElementById('nf-enf2').value.trim():''):'';
+  var age2=isFamille?(document.getElementById('nf-age2')?document.getElementById('nf-age2').value:''):'';
   if(!nom||!enf||!age){toast('⚠️ Remplissez tous les champs');return;}
-  const code='BRL-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  if(isFamille&&(!enf2||!age2)){toast('⚠️ Remplissez le prénom et l\u00e2ge du 2\u00e8me enfant');return;}
+  // Générer codes famille style FAM-NOM-1 / FAM-NOM-2
+  var nomCode=nom.toUpperCase().replace(/[^A-Z0-9]/g,'').substr(0,5);
+  var suffix=Math.random().toString(36).substr(2,4).toUpperCase();
+  const code=isFamille?('FAM-'+nomCode+'-1-'+suffix):('BRL-'+Math.random().toString(36).substr(2,6).toUpperCase());
+  const code2=isFamille?('FAM-'+nomCode+'-2-'+suffix):'';
   const colors=['#fdd5a5','#a8dbeb','#f5abaf','#cbe1b6','#f8f4b8','#b8aed7'];
   const emojis=['👨‍👩‍👧','👩‍👦','👨‍👧','👩‍👧','👨‍👦','👨‍👩‍👦'];
   showLoader('Création…');
@@ -748,6 +820,11 @@ async function creerFamille(){
   if(error){toast('❌ Erreur : '+error.message);return;}
   document.getElementById('btn-creer').style.display='none';
   document.getElementById('code-success').textContent=code;
+  if(isFamille&&code2){
+    var codeDiv=document.getElementById('code-success');
+    codeDiv.innerHTML='<div style="margin-bottom:8px;">👤 '+enf+' :</div><div style="font-family:monospace;font-size:18px;letter-spacing:3px;color:var(--orange);">'+code+'</div><div style="margin:12px 0 6px;">👤 '+enf2+' :</div><div style="font-family:monospace;font-size:18px;letter-spacing:3px;color:var(--orange);">'+code2+'</div>';
+    document.querySelector('#success-creer p').textContent='Codes à donner à la famille :';
+  }
   document.getElementById('success-creer').style.display='block';
   document.getElementById('btn-copier').onclick=()=>navigator.clipboard.writeText(code).then(()=>toast('✅ Code copié !'));
   await loadDash();
@@ -1078,6 +1155,17 @@ async function envoyerKit(){
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('nf-date').value=new Date().toISOString().split('T')[0];
+  // Mémoriser le dernier code
+  var lastCode=localStorage.getItem('brille_last_code');
+  if(lastCode){
+    var inp=document.getElementById('fam-code');
+    if(inp)inp.value=lastCode;
+    // Basculer sur l'onglet Famille
+    setTimeout(function(){
+      var tabs=document.querySelectorAll('.ltab');
+      if(tabs[1])tabs[1].click();
+    },300);
+  }
 });
 </script>
 <script type="application/json" id="brille-kits-data">[{"id": 1, "emoji": "\ud83e\udded", "name": "Le R\u00e9seau des Alli\u00e9s", "color": "#a8dbeb", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-1.html"}, {"id": 2, "emoji": "\u2b50", "name": "La Constellation des Talents", "color": "#fdd5a5", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-2.html"}, {"id": 3, "emoji": "\ud83c\udf24\ufe0f", "name": "La M\u00e9t\u00e9o Int\u00e9rieure", "color": "#f5abaf", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-3.html"}, {"id": 4, "emoji": "\ud83c\udfe0", "name": "Mon Quartier G\u00e9n\u00e9ral", "color": "#f8f4b8", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-4.html"}, {"id": 5, "emoji": "\u2696\ufe0f", "name": "La Constitution de la Famille", "color": "#a8dbeb", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-5.html"}, {"id": 6, "emoji": "\ud83c\udf33", "name": "L\u2019Arbre des Possibles", "color": "#b8aed7", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-6.html"}, {"id": 7, "emoji": "\u26a1", "name": "Ma Station de Recharge", "color": "#cbe1b6", "url": "https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-7.html"}]</script>
