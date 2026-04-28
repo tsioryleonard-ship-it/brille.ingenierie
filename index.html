@@ -560,7 +560,89 @@ function renderFinGrid(){document.getElementById('fin-pgrid').innerHTML=PETALS.m
 async function setFinPC(n,c){finPC[n]=c;renderFinGrid();updateFinPrio();await db.from('petales').upsert({famille_code:finFam.code,petal_num:n,couleur:c,updated_at:new Date().toISOString()},{onConflict:'famille_code,petal_num'});}
 function updateFinPrio(){const r=Object.entries(finPC).filter(([,v])=>v==='rouge');const p=r.length>0?PETALS[r[0][0]-1]:null;document.getElementById('fin-prio-txt').textContent=p?`${p.emoji} ${p.name}`:'—';const ks=document.getElementById('fin-kit-section');if(!p||!finFam){ks.style.display='none';return;}const ku='https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+p.id+'.html';document.getElementById('fin-kit-emoji').textContent=p.emoji;document.getElementById('fin-kit-name').textContent=p.name;document.getElementById('fin-kit-url').textContent=ku;document.getElementById('fin-kit-link').href=ku;ks.style.display='block';}
 function previewKit(){if(!finFam){toast('⚠️ Sélectionne une famille');return;}const r=Object.entries(finPC).filter(([,v])=>v==='rouge');const prio=r.length>0?PETALS[r[0][0]-1]:null;const actions=prio?PACTIONS[prio.id].map(a=>a.replace(/{enfant}/g,finFam.enfant)):['Continuez sur votre lancée !'];document.getElementById('fin-ap-petales').innerHTML=PETALS.map(p=>{const c=finPC[p.id]||'none';return`<div style="background:${CSVG[c]};color:white;border-radius:8px;padding:6px 8px;font-size:10px;font-weight:700;text-align:center;min-width:56px;"><div style="font-size:16px;">${p.emoji}</div><div style="font-size:8px;opacity:.9;">${c==='rouge'?'Difficile':c==='orange'?'Moyen':c==='vert'?'Bien':'—'}</div></div>`;}).join('');document.getElementById('fin-ap-prio').textContent=prio?`🔴 Prioritaire : ${prio.emoji} ${prio.name}`:'🟢 Pas de pétale rouge !';document.getElementById('fin-ap-actions').innerHTML=actions.map(a=>`<div>• ${a}</div>`).join('');document.getElementById('fin-apercu').style.display='block';toast('👁️ Aperçu prêt !');}
-async function envoyerKit(){if(!finFam){toast('⚠️ Sélectionne une famille');return;}const dest=document.getElementById('fin-email-dest').value.trim();if(!dest){toast("⚠️ Entre l'email du parent");return;}if(!EJS.pub){toast('⚠️ Configure EmailJS dabord');return;}const r=Object.entries(finPC).filter(([,v])=>v==='rouge');const prio=r.length>0?PETALS[r[0][0]-1]:null;const actions=prio?PACTIONS[prio.id].map(a=>a.replace(/{enfant}/g,finFam.enfant)):['Continuez sur votre lancée !'];const msg=document.getElementById('fin-msg').value.trim()||`Vous avez fait un premier pas magnifique pour ${finFam.enfant}. Les outils BRILLE sont maintenant dans vos mains. À très bientôt !`;const base='https://tsioryleonard-ship-it.github.io/brille.ingenierie';const ageHash=finFam.age||'6-7';const params={to_email:dest,to_name:`Famille ${finFam.nom}`,enfant_prenom:finFam.enfant,enfant_age:finFam.age==='6-7'?'6–7 ans':finFam.age==='8-9'?'8–9 ans':'10–12 ans',famille_nom:finFam.nom,code_acces:finFam.code,app_url:base,petales_resume:PETALS.map(p=>{const c=finPC[p.id]||'none';return`${p.emoji} ${c==='rouge'?'🔴':c==='orange'?'🟠':c==='vert'?'🟢':'⬜'}`;}).join('  '),petale_prio_emoji:prio?.emoji||'🌸',petale_prio_nom:prio?.name||'-',petale_prio_desc:prio?.desc||'Continuez !',actions_text:actions.map((a,i)=>`${i+1}. ${a}`).join('\n'),fiche_url:prio?`${base}/${PFILES[prio.id-1]}#${ageHash}`:base,kit_url:prio?('https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+prio.id+'.html'):'',message_ing:msg,from_name:'Léonard T. — Ingénieure QVE BRILLE',reply_to:'tsioryleonard@gmail.com'};document.getElementById('fin-st').style.display='block';document.getElementById('fin-st-i').textContent='⏳';document.getElementById('fin-st-m').textContent='Envoi en cours…';try{await emailjs.init(EJS.pub);await emailjs.send(EJS.svc,EJS.tpl,params);document.getElementById('fin-st-i').textContent='✅';document.getElementById('fin-st-m').textContent=`Kit envoyé à ${dest} !`;toast('📧 Kit envoyé !');}catch(err){document.getElementById('fin-st-i').textContent='❌';document.getElementById('fin-st-m').textContent='Erreur — vérifie tes clés EmailJS';toast("❌ Erreur d'envoi");}}
+async function envoyerKit(){
+  if(!finFam){toast('⚠️ Sélectionne une famille');return;}
+  const dest=document.getElementById('fin-email-dest').value.trim();
+  if(!dest){toast("⚠️ Entre l'email du parent");return;}
+  if(!EJS.pub){toast('⚠️ Configure EmailJS dabord');return;}
+  const r=Object.entries(finPC).filter(([,v])=>v==='rouge');
+  const prio=r.length>0?PETALS[r[0][0]-1]:null;
+  const actions=prio?PACTIONS[prio.id].map(a=>a.replace(/{enfant}/g,finFam.enfant)):['Continuez sur votre lancee !'];
+  const msg=document.getElementById('fin-msg').value.trim()||'Vous avez fait un premier pas magnifique pour '+finFam.enfant+'. Les outils BRILLE sont maintenant dans vos mains. A tres bientot !';
+  const base='https://tsioryleonard-ship-it.github.io/brille.ingenierie';
+  
+  // Calculer l'age hash de l'enfant principal
+  function ageHash(age){
+    if(!age)return '6-7';
+    if(age.indexOf('10')>-1||age.indexOf('12')>-1)return '10-12';
+    if(age.indexOf('8')>-1||age.indexOf('9')>-1)return '8-9';
+    return '6-7';
+  }
+  function ageLabel(age){
+    var h=ageHash(age);
+    return h==='10-12'?'10-12 ans':h==='8-9'?'8-9 ans':'6-7 ans';
+  }
+
+  // Construire la variable brille_kits selon offre famille ou individuelle
+  var brilleKits='';
+  if(prio){
+    var kitBase='https://tsioryleonard-ship-it.github.io/brille.ingenierie/brille-kit-petale-'+prio.id+'.html';
+    
+    if(finFam.groupe_id){
+      // Offre famille : chercher le 2eme enfant
+      var {data:freres}=await db.from('familles').select('*').eq('groupe_id',finFam.groupe_id);
+      if(freres&&freres.length>1){
+        var enf1=finFam;
+        var enf2=freres.find(function(f){return f.code!==finFam.code;});
+        var url1=kitBase+'#'+ageHash(enf1.age);
+        var url2=enf2?kitBase+'#'+ageHash(enf2.age):'';
+        brilleKits='Kit de '+enf1.enfant+' ('+ageLabel(enf1.age)+') : '+url1;
+        if(enf2)brilleKits+='\nKit de '+enf2.enfant+' ('+ageLabel(enf2.age)+') : '+url2;
+      }
+    } else {
+      // Offre individuelle
+      var url1=kitBase+'#'+ageHash(finFam.age);
+      brilleKits='Kit de '+finFam.enfant+' ('+ageLabel(finFam.age)+') : '+url1;
+    }
+  } else {
+    brilleKits='Pas de petale prioritaire identifie pour le moment.';
+  }
+
+  const params={
+    to_email:dest,
+    to_name:'Famille '+finFam.nom,
+    enfant_prenom:finFam.enfant,
+    enfant_age:ageLabel(finFam.age),
+    famille_nom:finFam.nom,
+    code_acces:finFam.code,
+    app_url:base,
+    petales_resume:PETALS.map(function(p){var c=finPC[p.id]||'none';return p.emoji+' '+(c==='rouge'?'rouge':c==='orange'?'orange':c==='vert'?'vert':'-');}).join(' | '),
+    petale_prio_emoji:prio?prio.emoji:'🌸',
+    petale_prio_nom:prio?prio.name:'-',
+    petale_prio_desc:prio?prio.desc:'Continuez !',
+    actions_text:actions.map(function(a,i){return (i+1)+'. '+a;}).join('\n'),
+    fiche_url:prio?(base+'/'+PFILES[prio.id-1]+'#'+ageHash(finFam.age)):base,
+    brille_kits:brilleKits,
+    message_ing:msg,
+    from_name:'Leonard T. - Ingenieure QVE BRILLE',
+    reply_to:'tsioryleonard@gmail.com'
+  };
+
+  document.getElementById('fin-st').style.display='block';
+  document.getElementById('fin-st-i').textContent='⏳';
+  document.getElementById('fin-st-m').textContent='Envoi en cours…';
+  try{
+    await emailjs.init(EJS.pub);
+    await emailjs.send(EJS.svc,EJS.tpl,params);
+    document.getElementById('fin-st-i').textContent='✅';
+    document.getElementById('fin-st-m').textContent='Kit envoye a '+dest+' !';
+    toast('📧 Kit envoye !');
+  }catch(err){
+    document.getElementById('fin-st-i').textContent='❌';
+    document.getElementById('fin-st-m').textContent='Erreur — verifie tes cles EmailJS';
+    toast("Erreur d'envoi");
+  }
+}
 
 function renderBiblio(){
   var KITS=JSON.parse(document.getElementById('brille-kits-data').textContent);
