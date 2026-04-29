@@ -6,159 +6,159 @@
 <title>Auto-Audit QVE — Brille</title>
 <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --vert:#cbe1b6;--bleu:#a8dbeb;--mauve:#b8aed7;
   --orange:#f49f4c;--rose:#f5abaf;--jaune:#f8f4b8;
-  --peche:#fdd5a5;--noir:#1a1a2e;--gris:#888;
-  --bg:#f7f4ef;
+  --peche:#fdd5a5;--noir:#1a1a2e;--gris:#888;--bg:#f7f4ef;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--noir);min-height:100vh;}
 
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes wiggle{0%,100%{transform:rotate(0);}25%{transform:rotate(-8deg);}75%{transform:rotate(8deg);}}
+@keyframes starBurst{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
+@keyframes pop{0%{transform:scale(.8);opacity:0;}60%{transform:scale(1.12);}100%{transform:scale(1);opacity:1;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+.star-particle{position:fixed;pointer-events:none;z-index:9999;font-size:18px;animation:starBurst .9s ease-out forwards;}
+
+/* PAGE SYSTEM */
+.page{display:none;}
+.page.active{display:block;}
+
 /* HERO */
 .hero{background:var(--noir);padding:60px 24px 80px;text-align:center;position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(244,159,76,.15) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(168,219,235,.1) 0%,transparent 50%);pointer-events:none;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(244,159,76,.15),transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(168,219,235,.1),transparent 50%);pointer-events:none;}
 .hero-logo{font-family:'Gruppo',sans-serif;font-size:48px;color:var(--peche);letter-spacing:8px;margin-bottom:8px;animation:fadeDown .8s ease both;}
 .hero-sub{font-size:13px;color:rgba(255,255,255,.4);letter-spacing:3px;margin-bottom:32px;animation:fadeDown .8s .1s ease both;}
+.hero-emoji{font-size:64px;margin-bottom:16px;display:block;animation:float 3s ease-in-out infinite;}
 .hero-title{font-family:'Gruppo',sans-serif;font-size:28px;color:white;margin-bottom:12px;animation:fadeDown .8s .2s ease both;}
-.hero-desc{font-size:13px;color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 40px;line-height:1.8;animation:fadeDown .8s .3s ease both;}
-.hero-cta{display:inline-block;background:var(--orange);color:white;font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;padding:16px 40px;border-radius:50px;text-decoration:none;cursor:pointer;border:none;animation:fadeDown .8s .4s ease both;transition:transform .2s,box-shadow .2s;}
+.hero-desc{font-size:13px;color:rgba(255,255,255,.5);max-width:480px;margin:0 auto 40px;line-height:1.9;animation:fadeDown .8s .3s ease both;}
+.hero-cta{display:inline-block;background:var(--orange);color:white;font-family:'Quicksand',sans-serif;font-weight:700;font-size:14px;padding:16px 40px;border-radius:50px;cursor:pointer;border:none;animation:fadeDown .8s .4s ease both;transition:transform .2s,box-shadow .2s;}
 .hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(244,159,76,.4);}
-.petals-preview{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:40px;animation:fadeDown .8s .5s ease both;}
-.petal-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:.7;}
-
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
-@keyframes starBurst{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
-
-/* INTRO */
-.intro-section{max-width:680px;margin:0 auto;padding:60px 24px 20px;text-align:center;}
-.intro-section h2{font-family:'Gruppo',sans-serif;font-size:24px;margin-bottom:12px;}
-.intro-section p{font-size:13px;color:var(--gris);line-height:1.9;}
-
-/* PROGRESS */
-.progress-wrap{max-width:680px;margin:0 auto;padding:20px 24px 0;position:sticky;top:0;z-index:50;background:var(--bg);}
-.progress-bar{height:6px;background:#e0e0e0;border-radius:10px;overflow:hidden;}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--peche));border-radius:10px;transition:width .5s ease;}
-.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--gris);margin-top:6px;font-weight:700;}
-
-/* PETAL SECTION */
-.petal-section{max-width:680px;margin:0 auto;padding:40px 24px;opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease;}
-.petal-section.visible{opacity:1;transform:translateY(0);}
-.petal-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding:20px 24px;border-radius:20px;background:white;box-shadow:0 4px 20px rgba(0,0,0,.06);}
-.petal-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
-.petal-header h2{font-family:'Gruppo',sans-serif;font-size:20px;margin-bottom:4px;}
-.petal-header p{font-size:12px;color:var(--gris);line-height:1.6;}
-.petal-num{font-size:10px;font-weight:700;color:var(--gris);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
-
-/* QUESTIONS */
-.questions{display:flex;flex-direction:column;gap:16px;}
-.question-card{background:white;border-radius:16px;padding:20px 22px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:2px solid transparent;transition:border .2s;}
-.question-card.answered{border-color:rgba(203,225,182,.6);}
-.question-text{font-size:13px;font-weight:600;line-height:1.7;margin-bottom:14px;}
-.scale-wrap{display:flex;flex-direction:column;gap:8px;}
-.scale-options{display:flex;gap:8px;justify-content:space-between;}
-.scale-opt{flex:1;aspect-ratio:1;border-radius:12px;border:2px solid #e0e0e0;background:white;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all .2s;font-family:'Quicksand',sans-serif;}
-.scale-opt:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
-.scale-opt.selected{border-color:var(--orange);background:rgba(244,159,76,.08);}
-.scale-opt .emoji{font-size:20px;}
-.scale-opt .label{font-size:9px;font-weight:700;color:var(--gris);text-align:center;line-height:1.2;}
-.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--gris);padding:0 4px;}
-
-/* NAVIGATION */
-.nav-btns{display:flex;gap:12px;justify-content:center;margin-top:32px;padding:0 24px 40px;max-width:680px;margin-left:auto;margin-right:auto;}
-.btn-prev{flex:1;padding:14px;border:2px solid #e0e0e0;background:white;border-radius:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;color:var(--gris);transition:all .2s;}
-.btn-prev:hover{border-color:var(--orange);color:var(--orange);}
-.btn-next{flex:2;padding:14px;border:none;background:var(--orange);color:white;border-radius:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
-.btn-next:hover{background:#e08a30;transform:translateY(-1px);}
-.btn-next:disabled{background:#ccc;cursor:not-allowed;transform:none;}
+.petals-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:36px;animation:fadeDown .8s .5s ease both;}
+.petal-dot{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .2s;}
+.petal-dot:hover{transform:scale(1.2) rotate(10deg);}
 
 /* INFOS */
-.infos-section{max-width:680px;margin:0 auto;padding:40px 24px;}
-.infos-section h2{font-family:'Gruppo',sans-serif;font-size:22px;margin-bottom:8px;}
-.infos-section p{font-size:13px;color:var(--gris);margin-bottom:24px;line-height:1.7;}
+.section{max-width:680px;margin:0 auto;padding:40px 24px;}
+.section h2{font-family:'Gruppo',sans-serif;font-size:22px;margin-bottom:8px;}
+.section p{font-size:13px;color:var(--gris);margin-bottom:22px;line-height:1.8;}
 .form-group{margin-bottom:16px;}
 .form-group label{display:block;font-size:11px;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
 .form-group input,.form-group select{width:100%;border:1.5px solid #e0e0e0;border-radius:12px;padding:12px 16px;font-family:'Quicksand',sans-serif;font-size:13px;outline:none;background:white;transition:border .2s;}
 .form-group input:focus,.form-group select:focus{border-color:var(--orange);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:480px){.form-row{grid-template-columns:1fr;}}
+.info-tip{background:var(--jaune);border-radius:14px;padding:14px 18px;font-size:12px;color:var(--noir);line-height:1.8;margin-top:8px;}
+
+/* PROGRESS */
+.progress-wrap{max-width:680px;margin:0 auto;padding:16px 24px 0;position:sticky;top:0;z-index:50;background:var(--bg);}
+.progress-bar{height:6px;background:#e0e0e0;border-radius:10px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--peche));border-radius:10px;transition:width .5s ease;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--gris);margin-top:5px;font-weight:700;}
+
+/* PETAL SECTION */
+.petal-section{max-width:680px;margin:0 auto;padding:28px 24px;animation:fadeUp .5s ease both;}
+.petal-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding:20px 22px;border-radius:20px;background:white;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+.petal-icon{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.petal-header h2{font-family:'Gruppo',sans-serif;font-size:19px;margin-bottom:3px;}
+.petal-header p{font-size:12px;color:var(--gris);line-height:1.5;}
+.petal-num{font-size:10px;font-weight:700;color:var(--gris);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+
+/* QUESTIONS */
+.questions{display:flex;flex-direction:column;gap:14px;}
+.qcard{background:white;border-radius:16px;padding:18px 20px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:2px solid transparent;transition:border .2s;}
+.qcard.answered{border-color:rgba(203,225,182,.7);}
+.qtext{font-size:13px;font-weight:600;line-height:1.7;margin-bottom:14px;}
+
+/* ÉCHELLE PARENT */
+.scale-parent{display:flex;gap:8px;}
+.sopt{flex:1;border-radius:12px;border:2px solid #e8e8e8;background:white;cursor:pointer;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s;font-family:'Quicksand',sans-serif;}
+.sopt:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1);}
+.sopt.selected{border-color:var(--orange);background:rgba(244,159,76,.08);}
+.sopt .se{font-size:22px;}
+.sopt .sl{font-size:9px;font-weight:700;color:var(--gris);text-align:center;line-height:1.2;}
+.scale-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--gris);padding:4px 2px 0;}
+
+/* ÉCHELLE ENFANT - ludique avec étoiles */
+.scale-enfant{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.eopt{width:56px;height:56px;border-radius:50%;border:3px solid #e8e8e8;background:white;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .25s;font-family:'Quicksand',sans-serif;position:relative;}
+.eopt:hover{transform:scale(1.12) rotate(5deg);}
+.eopt.selected{border-color:var(--orange);background:rgba(244,159,76,.1);transform:scale(1.15);}
+.eopt .ee{font-size:24px;line-height:1;}
+.stars-display{display:flex;justify-content:center;gap:2px;margin-top:8px;}
+.star-empty{color:#ddd;font-size:14px;}
+.star-full{color:var(--orange);font-size:14px;animation:pop .3s ease both;}
+.enfant-label{text-align:center;font-size:11px;color:var(--gris);margin-top:6px;font-weight:700;}
+/* Couleurs par niveau */
+.eopt[data-val="1"].selected{border-color:#e53e3e;background:rgba(229,62,62,.08);}
+.eopt[data-val="2"].selected{border-color:#e67e22;background:rgba(230,126,34,.08);}
+.eopt[data-val="3"].selected{border-color:#f0c040;background:rgba(240,192,64,.08);}
+.eopt[data-val="4"].selected{border-color:#27ae60;background:rgba(39,174,96,.08);}
+.eopt[data-val="5"].selected{border-color:#2ecc71;background:rgba(46,204,113,.1);}
+
+/* NAV BUTTONS */
+.nav-btns{display:flex;gap:12px;max-width:680px;margin:0 auto;padding:8px 24px 40px;}
+.btn-prev{flex:1;padding:14px;border:2px solid #e0e0e0;background:white;border-radius:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;color:var(--gris);transition:all .2s;}
+.btn-prev:hover{border-color:var(--orange);color:var(--orange);}
+.btn-next{flex:2;padding:14px;border:none;background:var(--orange);color:white;border-radius:14px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;}
+.btn-next:hover{background:#e08a30;transform:translateY(-1px);}
 
 /* RÉSULTATS */
-.results-section{max-width:680px;margin:0 auto;padding:40px 24px 80px;display:none;}
-.results-hero{background:var(--noir);border-radius:24px;padding:36px 28px;text-align:center;margin-bottom:28px;}
+.results-hero{background:var(--noir);border-radius:24px;padding:36px 28px;text-align:center;margin-bottom:24px;}
 .results-hero h2{font-family:'Gruppo',sans-serif;font-size:26px;color:var(--peche);margin-bottom:8px;}
 .results-hero p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;}
 .score-global{font-family:'Gruppo',sans-serif;font-size:72px;color:white;line-height:1;}
 .score-label{font-size:12px;color:rgba(255,255,255,.4);margin-top:4px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
-
-/* FLEUR SVG résultats */
-.fleur-wrap{text-align:center;margin:28px 0;}
-
-/* CARDS RÉSULTATS */
-.result-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
-.result-card{background:white;border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:4px solid #e0e0e0;}
-.result-card.rouge{border-left-color:#e53e3e;}
-.result-card.orange{border-left-color:#e67e22;}
-.result-card.vert{border-left-color:#27ae60;}
-.result-icon{font-size:26px;flex-shrink:0;}
-.result-info{flex:1;}
-.result-name{font-size:13px;font-weight:700;margin-bottom:2px;}
-.result-desc{font-size:11px;color:var(--gris);}
-.result-score{font-family:'Gruppo',sans-serif;font-size:22px;font-weight:700;}
-.result-bar{height:5px;background:#f0f0f0;border-radius:10px;margin-top:6px;overflow:hidden;}
-.result-bar-fill{height:100%;border-radius:10px;transition:width 1s ease .5s;}
-
-/* PRIORITÉ */
-.priorite-card{background:linear-gradient(135deg,#fce8ec,#fff0e0);border-radius:20px;padding:24px;margin-bottom:20px;border:2px solid rgba(229,62,62,.2);}
-.priorite-card h3{font-family:'Gruppo',sans-serif;font-size:18px;margin-bottom:6px;}
-.priorite-card p{font-size:12px;color:var(--gris);line-height:1.8;margin-bottom:16px;}
-.actions-list{display:flex;flex-direction:column;gap:8px;}
-.action-item{background:white;border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
-.action-num{background:var(--orange);color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
-
-/* CTA FINAL */
-.cta-final{background:var(--noir);border-radius:20px;padding:28px;text-align:center;}
-.cta-final h3{font-family:'Gruppo',sans-serif;font-size:20px;color:var(--peche);margin-bottom:8px;}
-.cta-final p{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.8;}
-.cta-btn{display:inline-block;background:var(--orange);color:white;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;padding:14px 32px;border-radius:50px;text-decoration:none;border:none;cursor:pointer;margin:6px;transition:all .2s;}
-.cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(244,159,76,.4);}
-.cta-btn.secondary{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);}
-.cta-btn.secondary:hover{background:rgba(255,255,255,.2);}
-
-/* PILL */
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;}
+.fleur-wrap{text-align:center;margin:24px 0;}
+.result-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:24px;}
+.rcard{background:white;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.05);border-left:4px solid #e0e0e0;}
+.rcard.rouge{border-left-color:#e53e3e;}
+.rcard.orange{border-left-color:#e67e22;}
+.rcard.vert{border-left-color:#27ae60;}
+.rcard-icon{font-size:24px;flex-shrink:0;}
+.rcard-info{flex:1;}
+.rcard-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+.rcard-desc{font-size:11px;color:var(--gris);}
+.rcard-score{font-family:'Gruppo',sans-serif;font-size:20px;font-weight:700;}
+.rbar{height:5px;background:#f0f0f0;border-radius:10px;margin-top:5px;overflow:hidden;}
+.rbar-fill{height:100%;border-radius:10px;}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;}
 .pill-rouge{background:#fce8ec;color:#c04060;}
 .pill-orange{background:#fff0e0;color:#a04000;}
 .pill-vert{background:#eaf6ee;color:#306040;}
-
-.star-particle{position:fixed;pointer-events:none;z-index:9999;font-size:16px;animation:starBurst .8s ease-out forwards;}
-
-/* STEPS */
-.steps{display:flex;gap:6px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
-.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,.4);cursor:pointer;transition:all .2s;}
-.step-dot.done{background:rgba(203,225,182,.3);border-color:var(--vert);color:white;}
-.step-dot.active{background:var(--orange);border-color:var(--orange);color:white;}
-
-/* PAGE MANAGER */
-.page{display:none;}
-.page.active{display:block;}
+.priorite-card{background:linear-gradient(135deg,#fce8ec,#fff0e0);border-radius:20px;padding:22px;margin-bottom:18px;border:2px solid rgba(229,62,62,.2);}
+.priorite-card h3{font-family:'Gruppo',sans-serif;font-size:18px;margin-bottom:6px;}
+.priorite-card p{font-size:12px;color:var(--gris);line-height:1.8;margin-bottom:14px;}
+.actions-list{display:flex;flex-direction:column;gap:8px;}
+.action-item{background:white;border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.6;display:flex;gap:10px;align-items:flex-start;}
+.action-num{background:var(--orange);color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
+.strengths-card{background:linear-gradient(135deg,#eaf6ee,#e8f4fb);border-radius:16px;padding:18px;margin-bottom:18px;border:1.5px solid rgba(203,225,182,.6);}
+.strengths-card h3{font-family:'Gruppo',sans-serif;font-size:16px;margin-bottom:10px;}
+.cta-final{background:var(--noir);border-radius:20px;padding:26px;text-align:center;}
+.cta-final h3{font-family:'Gruppo',sans-serif;font-size:20px;color:var(--peche);margin-bottom:8px;}
+.cta-final p{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:18px;line-height:1.8;}
+.cta-btn{display:inline-block;background:var(--orange);color:white;font-family:'Quicksand',sans-serif;font-weight:700;font-size:13px;padding:13px 28px;border-radius:50px;text-decoration:none;border:none;cursor:pointer;margin:5px;transition:all .2s;}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(244,159,76,.4);}
+.cta-btn.sec{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);}
 </style>
 </head>
 <body>
 
-<!-- PAGE 1 : HERO -->
+<!-- PAGE HERO -->
 <div class="page active" id="page-hero">
   <div class="hero">
     <div class="hero-logo">brille</div>
     <div class="hero-sub">Qualité de Vie de l'Enfant · 6–12 ans</div>
-    <div class="hero-title">🌸 Auto-Audit QVE</div>
-    <div class="hero-desc">Évaluez la qualité de vie de votre enfant en 7 dimensions. 28 questions · 5 minutes · Résultats personnalisés.</div>
-    <button class="hero-cta" onclick="startAudit()">Commencer l'audit →</button>
-    <div class="petals-preview">
+    <span class="hero-emoji">🌸</span>
+    <div class="hero-title">Auto-Audit QVE</div>
+    <div class="hero-desc">Évaluez la qualité de vie de votre enfant en 7 dimensions.<br>28 questions · 5 minutes · Résultats personnalisés.</div>
+    <button class="hero-cta" onclick="showPage('page-infos')">Commencer l'audit →</button>
+    <div class="petals-row">
       <div class="petal-dot" style="background:#a8dbeb33;">🧭</div>
       <div class="petal-dot" style="background:#fdd5a533;">⭐</div>
       <div class="petal-dot" style="background:#f5abaf33;">🌤️</div>
@@ -167,15 +167,14 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--noir);m
       <div class="petal-dot" style="background:#b8aed733;">🏆</div>
       <div class="petal-dot" style="background:#cbe1b633;">🌳</div>
     </div>
-    <div class="steps" id="hero-steps"></div>
   </div>
 </div>
 
-<!-- PAGE 2 : INFOS -->
+<!-- PAGE INFOS -->
 <div class="page" id="page-infos">
-  <div class="infos-section">
+  <div class="section">
     <h2>👋 Avant de commencer</h2>
-    <p>Quelques informations pour personnaliser votre audit et vous envoyer vos résultats.</p>
+    <p>Quelques informations pour personnaliser votre audit.</p>
     <div class="form-row">
       <div class="form-group">
         <label>Prénom de l'enfant</label>
@@ -192,19 +191,17 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--noir);m
       </div>
     </div>
     <div class="form-group">
-      <label>Votre email (pour recevoir les résultats)</label>
-      <input type="email" id="inf-email" placeholder="parent@email.com">
-    </div>
-    <div class="form-group">
       <label>Qui répond à cet audit ?</label>
-      <select id="inf-qui">
+      <select id="inf-qui" onchange="updateModePreview()">
         <option value="parent">👨‍👩‍👧 Un parent</option>
         <option value="enfant">👧 L'enfant lui-même</option>
         <option value="ensemble">🤝 Parent et enfant ensemble</option>
       </select>
     </div>
-    <div style="background:var(--jaune);border-radius:14px;padding:14px 18px;font-size:12px;color:var(--noir);line-height:1.8;margin-top:8px;">
-      💡 <strong>Conseil :</strong> Pour un résultat optimal, répondez en pensant aux <strong>4 dernières semaines</strong> de vie de votre enfant.
+    <div id="mode-preview" style="background:white;border-radius:14px;padding:14px 18px;border:1.5px solid #e0e0e0;font-size:12px;color:var(--gris);line-height:1.8;margin-top:8px;display:none;">
+    </div>
+    <div class="info-tip" style="margin-top:12px;">
+      💡 <strong>Conseil :</strong> Répondez en pensant aux <strong>4 dernières semaines</strong>.
     </div>
   </div>
   <div class="nav-btns">
@@ -213,14 +210,11 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--noir);m
   </div>
 </div>
 
-<!-- PAGE 3 : QUESTIONS (générée dynamiquement) -->
+<!-- PAGE QUESTIONS -->
 <div class="page" id="page-questions">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="progress-label">
-      <span id="progress-text">Pétale 1/7</span>
-      <span id="progress-pct">0%</span>
-    </div>
+    <div class="progress-label"><span id="progress-text">Pétale 1/7</span><span id="progress-pct">0%</span></div>
   </div>
   <div id="questions-container"></div>
   <div class="nav-btns">
@@ -229,106 +223,156 @@ body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--noir);m
   </div>
 </div>
 
-<!-- PAGE 4 : RÉSULTATS -->
+<!-- PAGE RÉSULTATS -->
 <div class="page" id="page-results">
-  <div class="results-section" id="results-content" style="display:block;">
-  </div>
+  <div class="section" id="results-content"></div>
 </div>
 
 <script>
 const PETALS = [
   {
-    id:1, name:"Boussole des Alliés", emoji:"🧭", color:"#a8dbeb", bg:"#e8f4fb",
+    id:1,name:"Boussole des Alliés",emoji:"🧭",color:"#a8dbeb",bg:"#e8f4fb",
     desc:"Réseau de soutien social et émotionnel",
-    questions:[
+    q_parent:[
       "Mon enfant sait vers qui se tourner quand il a un problème",
       "Mon enfant a des amis proches avec qui il se sent bien",
       "Mon enfant parle facilement de ses difficultés à un adulte de confiance",
       "Mon enfant se sent soutenu par sa famille en cas de besoin"
+    ],
+    q_enfant:[
+      "Je sais qui appeler quand j'ai un problème 📞",
+      "J'ai des amis avec qui je me sens vraiment bien 💛",
+      "Je peux parler à un adulte de confiance quand ça ne va pas 🗣️",
+      "Ma famille est là pour moi quand j'en ai besoin 🏠"
     ]
   },
   {
-    id:2, name:"Constellation des Talents", emoji:"⭐", color:"#fdd5a5", bg:"#fdf4e0",
+    id:2,name:"Constellation des Talents",emoji:"⭐",color:"#fdd5a5",bg:"#fdf4e0",
     desc:"Confiance en soi et reconnaissance des forces",
-    questions:[
+    q_parent:[
       "Mon enfant connaît ses points forts et en est fier",
       "Mon enfant persévère quand quelque chose est difficile",
       "Mon enfant reçoit des encouragements réguliers à la maison et à l'école",
       "Mon enfant se sent capable de réussir ce qu'il entreprend"
+    ],
+    q_enfant:[
+      "Je connais ce que je fais bien et j'en suis fier·ère ⭐",
+      "Quand c'est difficile, je continue d'essayer 💪",
+      "On me dit souvent bravo à la maison ou à l'école 🎉",
+      "Je crois que je peux réussir ce que j'entreprends 🚀"
     ]
   },
   {
-    id:3, name:"Météo Intérieure", emoji:"🌤️", color:"#f5abaf", bg:"#fce8ec",
+    id:3,name:"Météo Intérieure",emoji:"🌤️",color:"#f5abaf",bg:"#fce8ec",
     desc:"Gestion des émotions et bien-être intérieur",
-    questions:[
+    q_parent:[
       "Mon enfant sait nommer et exprimer ce qu'il ressent",
       "Mon enfant récupère assez bien après un moment difficile",
       "Mon enfant a des moments de joie et de bonne humeur réguliers",
       "Mon enfant n'est pas souvent submergé par l'anxiété ou la tristesse"
+    ],
+    q_enfant:[
+      "Je sais dire comment je me sens à l'intérieur 🌈",
+      "Après un moment triste ou énervé, je me sens mieux assez vite ☀️",
+      "J'ai souvent des moments de joie et de bonne humeur 😄",
+      "Je ne me sens pas souvent très inquiet·e ou très triste 🌤️"
     ]
   },
   {
-    id:4, name:"QG du Commandant", emoji:"🏠", color:"#f8f4b8", bg:"#fffde7",
+    id:4,name:"QG du Commandant",emoji:"🏠",color:"#f8f4b8",bg:"#fffde7",
     desc:"Environnement, routine et autonomie",
-    questions:[
+    q_parent:[
       "Mon enfant dispose d'un espace calme pour faire ses devoirs et se ressourcer",
       "Mon enfant a une routine stable qui lui apporte sécurité",
       "Mon enfant participe à des tâches de la maison adaptées à son âge",
       "Mon enfant a un bon équilibre entre écrans, activités et sommeil"
+    ],
+    q_enfant:[
+      "J'ai un endroit calme rien que pour moi à la maison 🏠",
+      "Ma journée a un rythme que je connais bien ⏰",
+      "J'aide à la maison et c'est ma mission 🌟",
+      "J'ai un bon équilibre entre écrans, jeux et dodo 🌙"
     ]
   },
   {
-    id:5, name:"Charte de la Famille", emoji:"⚖️", color:"#a8dbeb", bg:"#e8f4fb",
+    id:5,name:"Charte de la Famille",emoji:"⚖️",color:"#a8dbeb",bg:"#e8f4fb",
     desc:"Règles, droits et sentiment de justice",
-    questions:[
+    q_parent:[
       "Mon enfant comprend et respecte les règles de la maison",
       "Mon enfant se sent entendu et respecté dans ses opinions",
       "Les règles familiales sont claires et appliquées de façon cohérente",
       "Mon enfant sait qu'il a des droits et qu'il peut les exprimer"
+    ],
+    q_enfant:[
+      "Je comprends les règles à la maison et je sais pourquoi elles sont là ⚖️",
+      "On m'écoute vraiment quand j'ai quelque chose à dire 👂",
+      "Les règles sont les mêmes pour tout le monde chez moi 🤝",
+      "Je sais que j'ai des droits et je peux les dire 💬"
     ]
   },
   {
-    id:6, name:"Grimoire des Victoires", emoji:"🏆", color:"#b8aed7", bg:"#f0eafa",
+    id:6,name:"Grimoire des Victoires",emoji:"🏆",color:"#b8aed7",bg:"#f0eafa",
     desc:"Célébration des réussites et motivation",
-    questions:[
+    q_parent:[
       "On célèbre régulièrement les petites et grandes victoires de mon enfant",
       "Mon enfant se souvient de ses réussites passées avec fierté",
       "Mon enfant est motivé et a des objectifs qui lui tiennent à cœur",
       "Mon enfant sait rebondir après un échec sans se dévaloriser"
+    ],
+    q_enfant:[
+      "À la maison, on fête mes réussites même les petites 🎊",
+      "Je me souviens de mes belles réussites et j'en suis fier·ère 🏆",
+      "J'ai des choses qui me motivent et me font avancer 🌟",
+      "Quand je rate quelque chose, je sais que je peux réessayer 💫"
     ]
   },
   {
-    id:7, name:"Arbre des Possibles", emoji:"🌳", color:"#cbe1b6", bg:"#eaf6ee",
+    id:7,name:"Arbre des Possibles",emoji:"🌳",color:"#cbe1b6",bg:"#eaf6ee",
     desc:"Projets, rêves et vision de l'avenir",
-    questions:[
+    q_parent:[
       "Mon enfant parle de ses rêves et de ce qu'il veut faire plus tard",
       "Mon enfant explore des activités créatives, sportives ou culturelles",
       "Mon enfant a le sentiment que son avenir lui appartient",
       "Mon enfant se sent libre d'être lui-même et de grandir à son rythme"
+    ],
+    q_enfant:[
+      "J'ai des rêves et des idées sur ce que je veux faire plus tard 🌈",
+      "Je fais des activités que j'aime vraiment 🎨🏃",
+      "Je sens que mon avenir m'appartient et que tout est possible 🚀",
+      "Je me sens libre d'être moi-même 🌳"
     ]
   }
 ];
 
-const SCALE = [
-  {val:1, emoji:"😰", label:"Pas du tout"},
-  {val:2, emoji:"😟", label:"Rarement"},
-  {val:3, emoji:"😐", label:"Parfois"},
-  {val:4, emoji:"🙂", label:"Souvent"},
-  {val:5, emoji:"😊", label:"Toujours"}
+const SCALE_PARENT = [
+  {val:1,emoji:"😰",label:"Pas du tout"},
+  {val:2,emoji:"😟",label:"Rarement"},
+  {val:3,emoji:"😐",label:"Parfois"},
+  {val:4,emoji:"🙂",label:"Souvent"},
+  {val:5,emoji:"😊",label:"Toujours"}
+];
+
+// Échelle enfant : plus visuelle et ludique
+const SCALE_ENFANT = [
+  {val:1,emoji:"😿",label:"Jamais"},
+  {val:2,emoji:"😕",label:"Pas souvent"},
+  {val:3,emoji:"😊",label:"Des fois"},
+  {val:4,emoji:"🌟",label:"Souvent"},
+  {val:5,emoji:"🚀",label:"Toujours !"}
 ];
 
 const ACTIONS = {
-  1:["Identifiez ensemble 3 alliés de confiance et leur rôle","Organisez une rencontre ou un appel avec l'allié émotionnel","Créez un 'protocole urgence' : qui appeler en premier selon la situation"],
-  2:["Écrivez 3 qualités de votre enfant sur un post-it et collez-le sur son miroir","Célébrez une réussite cette semaine, même petite","Dites chaque soir : 'Ce que j'admire en toi aujourd'hui c'est...'"],
-  3:["Instaurez le rituel météo chaque matin : 'C'est quoi ta météo intérieure ?'","Apprenez ensemble la respiration 4-7-8 ce soir","Créez un 'protocole orage' en 3 étapes pour les moments difficiles"],
-  4:["Identifiez les 3 moments de friction de la journée et parlez-en calmement","Créez le planning semaine et choisissez 1 mission maison adaptée","Testez 'devoirs avant écrans' pendant 7 jours et notez ce qui change"],
-  5:["Co-rédigez 3 droits et 3 devoirs de la maison ce week-end","Fixez la date du premier Conseil de Famille dans l'agenda","Choisissez un mot-signal pour signaler un désaccord sans conflit"],
-  6:["Ouvrez un cahier 'Grimoire des Victoires' et notez 3 réussites","Écrivez une Lettre de Reconnaissance et lisez-la à voix haute","Instaurez le rituel du vendredi : la victoire de la semaine à table"],
-  7:["Dessinez ensemble l'Arbre des Possibles : racines (forces) et branches (rêves)","Identifiez 1 action concrète vers un rêve dans les 30 prochains jours","Inscrivez votre enfant à une activité qui l'attire depuis longtemps"]
+  1:["Identifiez ensemble 3 alliés de confiance et leur rôle","Organisez une rencontre avec l'allié émotionnel cette semaine","Créez un 'protocole urgence' : qui appeler en premier selon la situation"],
+  2:["Écrivez 3 qualités sur un post-it et collez-le sur le miroir","Célébrez une réussite cette semaine, même petite","Dites chaque soir : 'Ce que j'admire en toi aujourd'hui c'est...'"],
+  3:["Instaurez le rituel météo chaque matin : 'C'est quoi ta météo ?'","Apprenez ensemble la respiration 4-7-8 ce soir","Créez un 'protocole orage' en 3 étapes pour les moments difficiles"],
+  4:["Identifiez les 3 moments de friction de la journée","Créez le planning semaine et choisissez 1 mission maison","Testez 'devoirs avant écrans' pendant 7 jours"],
+  5:["Co-rédigez 3 droits et 3 devoirs ce week-end","Fixez la date du premier Conseil de Famille","Choisissez un mot-signal pour signaler un désaccord sans conflit"],
+  6:["Ouvrez un cahier des victoires et notez 3 réussites","Écrivez une Lettre de Reconnaissance et lisez-la à voix haute","Instaurez le rituel du vendredi : la victoire de la semaine"],
+  7:["Dessinez l'Arbre des Possibles : racines (forces) et branches (rêves)","Identifiez 1 action concrète vers un rêve dans les 30 prochains jours","Inscrivez-vous à une activité qui attire depuis longtemps"]
 };
 
 let currentPetal = 0;
-let answers = {}; // {petalId: {qIndex: score}}
+let answers = {};
 let userInfo = {};
 
 function showPage(id){
@@ -337,262 +381,251 @@ function showPage(id){
   window.scrollTo(0,0);
 }
 
-function startAudit(){
-  showPage('page-infos');
+function updateModePreview(){
+  var qui = document.getElementById('inf-qui').value;
+  var prev = document.getElementById('mode-preview');
+  if(qui==='enfant'){
+    prev.style.display='block';
+    prev.innerHTML='🎮 <strong>Mode Enfant activé</strong> — Les questions seront formulées directement pour l\'enfant, avec une interface plus ludique et des réponses visuelles !';
+    prev.style.background='rgba(203,225,182,.2)';
+    prev.style.borderColor='rgba(203,225,182,.6)';
+    prev.style.color='#306040';
+  } else if(qui==='ensemble'){
+    prev.style.display='block';
+    prev.innerHTML='🤝 <strong>Mode Ensemble</strong> — Répondez en famille ! Les questions sont formulées pour le parent, mais l\'enfant peut donner son avis.';
+    prev.style.background='rgba(168,219,235,.15)';
+    prev.style.borderColor='rgba(168,219,235,.5)';
+    prev.style.color='#1060a0';
+  } else {
+    prev.style.display='none';
+  }
 }
 
 function startQuestions(){
-  const prenom = document.getElementById('inf-prenom').value.trim();
-  const age = document.getElementById('inf-age').value;
-  if(!prenom || !age){
-    alert('Merci de renseigner le prénom et la tranche d\'âge !');
-    return;
-  }
-  userInfo = {
-    prenom, age,
-    email: document.getElementById('inf-email').value.trim(),
-    qui: document.getElementById('inf-qui').value
-  };
-  currentPetal = 0;
-  answers = {};
+  var prenom = document.getElementById('inf-prenom').value.trim();
+  var age = document.getElementById('inf-age').value;
+  if(!prenom||!age){showToast('Merci de renseigner le prénom et la tranche d\'âge !');return;}
+  userInfo={prenom,age,qui:document.getElementById('inf-qui').value};
+  currentPetal=0;answers={};
   renderPetal(0);
   showPage('page-questions');
 }
 
+function isEnfantMode(){return userInfo.qui==='enfant';}
+
 function renderPetal(idx){
-  const p = PETALS[idx];
-  const container = document.getElementById('questions-container');
-  const existingAnswers = answers[p.id] || {};
+  var p = PETALS[idx];
+  var enfantMode = isEnfantMode();
+  var questions = enfantMode ? p.q_enfant : p.q_parent;
+  var existingAnswers = answers[p.id]||{};
+  var scale = enfantMode ? SCALE_ENFANT : SCALE_PARENT;
 
-  container.innerHTML = `
-    <div class="petal-section visible" style="animation:fadeUp .5s ease">
-      <div class="petal-header">
-        <div class="petal-icon" style="background:${p.bg}">${p.emoji}</div>
-        <div>
-          <div class="petal-num">Pétale ${idx+1} sur 7</div>
-          <h2>${p.name}</h2>
-          <p>${p.desc}</p>
-        </div>
-      </div>
-      <div class="questions">
-        ${p.questions.map((q, qi) => `
-          <div class="question-card ${existingAnswers[qi] ? 'answered' : ''}" id="qcard-${qi}">
-            <div class="question-text">${qi+1}. ${q.replace('{enfant}', userInfo.prenom||'mon enfant')}</div>
-            <div class="scale-wrap">
-              <div class="scale-options">
-                ${SCALE.map(s => `
-                  <button class="scale-opt ${existingAnswers[qi]===s.val?'selected':''}" 
-                    onclick="selectAnswer(${p.id},${qi},${s.val},this)"
-                    title="${s.label}">
-                    <span class="emoji">${s.emoji}</span>
-                    <span class="label">${s.label}</span>
-                  </button>
-                `).join('')}
-              </div>
-              <div class="scale-labels"><span>Pas du tout</span><span>Toujours</span></div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    </div>`;
+  var questionsHTML = questions.map(function(q,qi){
+    var answered = existingAnswers[qi];
+    if(enfantMode){
+      // Mode enfant : cercles colorés ludiques
+      return '<div class="qcard '+(answered?'answered':'')+'" id="qcard-'+qi+'">'
+        +'<div class="qtext">'+q+'</div>'
+        +'<div class="scale-enfant">'
+        +scale.map(function(s){
+          return '<button class="eopt '+(answered===s.val?'selected':'')+'" data-val="'+s.val+'" onclick="selectAnswer('+p.id+','+qi+','+s.val+',this)">'
+            +'<span class="ee">'+s.emoji+'</span>'
+          +'</button>';
+        }).join('')
+        +'</div>'
+        +'<div class="stars-display" id="stars-'+qi+'">'
+        +renderStars(answered||0)
+        +'</div>'
+        +'<div class="enfant-label" id="elabel-'+qi+'">'+(answered?scale[answered-1].label:'')+'</div>'
+      +'</div>';
+    } else {
+      // Mode parent : classique avec emojis
+      return '<div class="qcard '+(answered?'answered':'')+'" id="qcard-'+qi+'">'
+        +'<div class="qtext">'+(qi+1)+'. '+q.replace(/{enfant}/g,userInfo.prenom||'mon enfant')+'</div>'
+        +'<div class="scale-parent">'
+        +scale.map(function(s){
+          return '<button class="sopt '+(answered===s.val?'selected':'')+'" onclick="selectAnswer('+p.id+','+qi+','+s.val+',this)">'
+            +'<span class="se">'+s.emoji+'</span>'
+            +'<span class="sl">'+s.label+'</span>'
+          +'</button>';
+        }).join('')
+        +'</div>'
+        +'<div class="scale-labels"><span>Pas du tout</span><span>Toujours</span></div>'
+      +'</div>';
+    }
+  }).join('');
 
-  // Update progress
-  const pct = Math.round((idx / 7) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-text').textContent = `Pétale ${idx+1}/7 — ${p.name}`;
-  document.getElementById('progress-pct').textContent = pct + '%';
+  var headerBg = enfantMode
+    ? 'background:linear-gradient(135deg,'+p.bg+',white);'
+    : '';
 
-  // Buttons
-  document.getElementById('btn-prev').style.display = idx === 0 ? 'none' : 'flex';
-  document.getElementById('btn-next').textContent = idx === 6 ? '🌸 Voir mes résultats' : 'Suivant →';
+  document.getElementById('questions-container').innerHTML =
+    '<div class="petal-section">'
+    +'<div class="petal-header" style="'+headerBg+'">'
+    +'<div class="petal-icon" style="background:'+p.bg+'">'+p.emoji+'</div>'
+    +'<div>'
+    +'<div class="petal-num">Pétale '+(idx+1)+' sur 7</div>'
+    +'<h2>'+p.name+'</h2>'
+    +'<p>'+p.desc+'</p>'
+    +'</div>'
+    +'</div>'
+    +(enfantMode?'<div style="text-align:center;font-size:13px;color:var(--gris);margin-bottom:16px;background:white;border-radius:12px;padding:10px;">🎮 Réponds aux questions selon ce que <strong>tu ressens vraiment</strong> !</div>':'')
+    +'<div class="questions">'+questionsHTML+'</div>'
+    +'</div>';
+
+  var pct = Math.round((idx/7)*100);
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-text').textContent='Pétale '+(idx+1)+'/7 — '+p.name;
+  document.getElementById('progress-pct').textContent=pct+'%';
+  document.getElementById('btn-prev').style.display=idx===0?'none':'flex';
+  document.getElementById('btn-next').textContent=idx===6?'🌸 Voir mes résultats':'Suivant →';
 }
 
-function selectAnswer(petalId, qIdx, val, btn){
-  if(!answers[petalId]) answers[petalId] = {};
-  answers[petalId][qIdx] = val;
-  
-  // Update UI
-  const card = document.getElementById('qcard-' + qIdx);
+function renderStars(val){
+  var s='';
+  for(var i=1;i<=5;i++){
+    s+='<span class="'+(i<=val?'star-full':'star-empty')+'">★</span>';
+  }
+  return s;
+}
+
+function selectAnswer(petalId,qIdx,val,btn){
+  if(!answers[petalId])answers[petalId]={};
+  answers[petalId][qIdx]=val;
+  var card=document.getElementById('qcard-'+qIdx);
   card.classList.add('answered');
-  card.querySelectorAll('.scale-opt').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  
-  // Burst stars on high score
-  if(val >= 4) burstStars(btn);
+
+  if(isEnfantMode()){
+    card.querySelectorAll('.eopt').forEach(function(b){b.classList.remove('selected');});
+    btn.classList.add('selected');
+    // Animer les étoiles
+    var starsEl=document.getElementById('stars-'+qIdx);
+    var labelEl=document.getElementById('elabel-'+qIdx);
+    if(starsEl)starsEl.innerHTML=renderStars(val);
+    var scale=SCALE_ENFANT;
+    if(labelEl)labelEl.textContent=scale[val-1].label;
+    if(val>=4)burstStars(btn);
+  } else {
+    card.querySelectorAll('.sopt').forEach(function(b){b.classList.remove('selected');});
+    btn.classList.add('selected');
+    if(val>=4)burstStars(btn);
+  }
 }
 
 function nextPetal(){
-  const p = PETALS[currentPetal];
-  const ans = answers[p.id] || {};
-  const answered = Object.keys(ans).length;
-  
-  if(answered < p.questions.length){
-    const missing = p.questions.length - answered;
-    showToast(`⚠️ Répondez aux ${missing} question(s) restante(s) !`);
-    return;
+  var p=PETALS[currentPetal];
+  var ans=answers[p.id]||{};
+  if(Object.keys(ans).length<p.q_parent.length){
+    showToast('⚠️ Réponds à toutes les questions !');return;
   }
-  
-  if(currentPetal < 6){
-    currentPetal++;
-    renderPetal(currentPetal);
-    window.scrollTo(0,0);
-  } else {
-    showResults();
-  }
+  if(currentPetal<6){currentPetal++;renderPetal(currentPetal);window.scrollTo(0,0);}
+  else showResults();
 }
 
 function prevPetal(){
-  if(currentPetal > 0){
-    currentPetal--;
-    renderPetal(currentPetal);
-    window.scrollTo(0,0);
-  }
+  if(currentPetal>0){currentPetal--;renderPetal(currentPetal);window.scrollTo(0,0);}
 }
 
 function calcScore(petalId){
-  const ans = answers[petalId] || {};
-  const vals = Object.values(ans);
-  if(!vals.length) return 0;
-  return Math.round(vals.reduce((a,b)=>a+b,0) / vals.length * 20); // score /100
+  var ans=answers[petalId]||{};
+  var vals=Object.values(ans);
+  if(!vals.length)return 0;
+  return Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length*20);
 }
 
-function getStatus(score){
-  if(score >= 70) return 'vert';
-  if(score >= 45) return 'orange';
-  return 'rouge';
-}
+function getStatus(score){return score>=70?'vert':score>=45?'orange':'rouge';}
 
 function showResults(){
-  const scores = PETALS.map(p => ({...p, score: calcScore(p.id), status: getStatus(calcScore(p.id))}));
-  const globalScore = Math.round(scores.reduce((a,p)=>a+p.score,0) / 7);
-  const sorted = [...scores].sort((a,b)=>a.score-b.score);
-  const prio = sorted[0]; // pétale avec le score le plus bas
-  const strengths = sorted.slice(-2).reverse(); // 2 meilleurs
+  var scores=PETALS.map(function(p){var s=calcScore(p.id);return Object.assign({},p,{score:s,status:getStatus(s)});});
+  var globalScore=Math.round(scores.reduce(function(a,p){return a+p.score;},0)/7);
+  var sorted=[].concat(scores).sort(function(a,b){return a.score-b.score;});
+  var prio=sorted[0];
+  var strengths=sorted.slice(-2).reverse();
+  var colors={rouge:'#e53e3e',orange:'#e67e22',vert:'#27ae60'};
+  var svgColors={rouge:'#e53e3e',orange:'#e67e22',vert:'#27ae60',none:'#C5BAE8'};
 
-  const colors = {rouge:'#e53e3e', orange:'#e67e22', vert:'#27ae60'};
-  const svgColors = {rouge:'#e53e3e', orange:'#e67e22', vert:'#27ae60', none:'#C5BAE8'};
+  var fleurSVG='<svg viewBox="-155 -155 310 310" style="width:min(260px,80vw);margin:0 auto;display:block;">'
+    +'<defs><filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+    +scores.map(function(p,i){return '<ellipse cx="0" cy="-90" rx="36" ry="52" fill="'+svgColors[p.status]+'" transform="rotate('+(i*51.4)+')" opacity="0.9"/>';}).join('')
+    +'<circle cx="0" cy="0" r="36" fill="#FDEEA0" stroke="#F0C800" stroke-width="2"/>'
+    +'<circle cx="-9" cy="-4" r="5" fill="#C8A000"/><circle cx="9" cy="-4" r="5" fill="#C8A000"/>'
+    +'<path d="M-11 7 Q0 17 11 7" stroke="#C8A000" stroke-width="2" fill="none" stroke-linecap="round"/>'
+    +'</svg>';
 
-  // Générer la fleur SVG
-  const fleurSVG = `
-    <svg viewBox="-155 -155 310 310" style="width:min(260px,80vw);margin:0 auto;display:block;">
-      <defs><filter id="gl2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
-      ${scores.map((p,i) => `<ellipse cx="0" cy="-90" rx="36" ry="52" fill="${svgColors[p.status]}" transform="rotate(${i*51.4})" opacity="0.9"/>`).join('')}
-      <circle cx="0" cy="0" r="36" fill="#FDEEA0" stroke="#F0C800" stroke-width="2"/>
-      <circle cx="-9" cy="-4" r="5" fill="#C8A000"/><circle cx="9" cy="-4" r="5" fill="#C8A000"/>
-      <path d="M-11 7 Q0 17 11 7" stroke="#C8A000" stroke-width="2" fill="none" stroke-linecap="round"/>
-    </svg>`;
+  var nomEnfant=userInfo.prenom||'votre enfant';
+  var globalEmoji=globalScore>=70?'🌟':globalScore>=45?'🌱':'💪';
+  var globalMsg=globalScore>=70?nomEnfant+' s\'épanouit bien dans l\'ensemble !':globalScore>=45?'Il y a de beaux domaines à renforcer ensemble.':'Il y a des opportunités importantes à saisir dès maintenant.';
 
-  const globalEmoji = globalScore >= 70 ? '🌟' : globalScore >= 45 ? '🌱' : '💪';
-  const globalMsg = globalScore >= 70 
-    ? `${userInfo.prenom||'Votre enfant'} s'épanouit bien dans l'ensemble !`
-    : globalScore >= 45
-    ? `Il y a de beaux domaines à renforcer ensemble.`
-    : `Il y a des opportunités importantes à saisir dès maintenant.`;
+  var html='<div class="results-hero">'
+    +'<h2>'+globalEmoji+' Résultats de '+nomEnfant+'</h2>'
+    +'<p>'+globalMsg+'</p>'
+    +'<div class="score-global">'+globalScore+'<span style="font-size:32px;opacity:.5">/100</span></div>'
+    +'<div class="score-label">Score QVE Global</div>'
+    +'</div>'
+    +'<div class="fleur-wrap">'+fleurSVG+'</div>'
+    +'<div style="text-align:center;margin-bottom:18px;font-size:12px;color:var(--gris);">'
+    +'<span style="margin:0 8px;">🔴 À renforcer</span>'
+    +'<span style="margin:0 8px;">🟠 À développer</span>'
+    +'<span style="margin:0 8px;">🟢 En bonne santé</span>'
+    +'</div>'
+    +'<div class="result-cards">'
+    +sorted.map(function(p){return '<div class="rcard '+p.status+'">'
+      +'<div class="rcard-icon">'+p.emoji+'</div>'
+      +'<div class="rcard-info">'
+      +'<div class="rcard-name">'+p.name+' <span class="pill pill-'+p.status+'">'+p.score+'/100</span></div>'
+      +'<div class="rcard-desc">'+p.desc+'</div>'
+      +'<div class="rbar"><div class="rbar-fill" style="width:'+p.score+'%;background:'+colors[p.status]+';transition:width 1s ease .3s;"></div></div>'
+      +'</div>'
+    +'</div>';}).join('')
+    +'</div>'
+    +'<div class="priorite-card">'
+    +'<h3>🎯 Priorité : '+prio.emoji+' '+prio.name+'</h3>'
+    +'<p>Avec un score de <strong>'+prio.score+'/100</strong>, ce pétale mérite votre attention en premier. Voici 3 actions concrètes pour cette semaine :</p>'
+    +'<div class="actions-list">'
+    +ACTIONS[prio.id].map(function(a,i){return '<div class="action-item"><div class="action-num">'+(i+1)+'</div><div>'+a.replace(/votre enfant/g,nomEnfant)+'</div></div>';}).join('')
+    +'</div>'
+    +'</div>'
+    +(strengths.length?'<div class="strengths-card"><h3 style="font-family:Gruppo,sans-serif;font-size:16px;margin-bottom:10px;">✨ Points forts à célébrer</h3>'+strengths.map(function(p){return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:20px;">'+p.emoji+'</span><div><strong style="font-size:13px;">'+p.name+'</strong> <span class="pill pill-vert">'+p.score+'/100</span></div></div>';}).join('')+'</div>':'')
+    +'<div class="cta-final">'
+    +'<h3>🌸 Vous n\'êtes pas seul(e) dans cette aventure</h3>'
+    +'<p>Cet audit est un premier pas précieux. Si vous souhaitez aller plus loin et être accompagné(e), l\'ingénieure QVE Brille est disponible pour vous.</p>'
+    +'<div style="display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto;">'
+    +'<button class="cta-btn" onclick="window.location.href=\'mailto:tsioryleonard@gmail.com\'" style="display:block;text-align:center;">✉️ tsioryleonard@gmail.com</button>'
+    +'<button class="cta-btn sec" onclick="restartAudit()" style="display:block;text-align:center;">↺ Refaire l\'audit</button>'
+    +'</div>'
+    +'</div>';
 
-  const html = `
-    <div class="results-hero">
-      <h2>${globalEmoji} Résultats de ${userInfo.prenom||'votre enfant'}</h2>
-      <p>${globalMsg}</p>
-      <div class="score-global">${globalScore}<span style="font-size:32px;opacity:.5">/100</span></div>
-      <div class="score-label">Score QVE Global</div>
-    </div>
-
-    <div class="fleur-wrap">${fleurSVG}</div>
-
-    <div style="text-align:center;margin-bottom:20px;font-size:12px;color:var(--gris);">
-      <span style="margin:0 8px;">🔴 À renforcer</span>
-      <span style="margin:0 8px;">🟠 À développer</span>
-      <span style="margin:0 8px;">🟢 En bonne santé</span>
-    </div>
-
-    <div class="result-cards">
-      ${sorted.map(p => `
-        <div class="result-card ${p.status}">
-          <div class="result-icon">${p.emoji}</div>
-          <div class="result-info">
-            <div class="result-name">${p.name} <span class="pill pill-${p.status}">${p.score}/100</span></div>
-            <div class="result-desc">${p.desc}</div>
-            <div class="result-bar"><div class="result-bar-fill" style="width:${p.score}%;background:${colors[p.status]}"></div></div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="priorite-card">
-      <h3>🎯 Priorité : ${prio.emoji} ${prio.name}</h3>
-      <p>Avec un score de <strong>${prio.score}/100</strong>, ce pétale mérite votre attention en premier. Voici 3 actions concrètes pour cette semaine :</p>
-      <div class="actions-list">
-        ${ACTIONS[prio.id].map((a,i) => `
-          <div class="action-item">
-            <div class="action-num">${i+1}</div>
-            <div>${a.replace(/votre enfant/g, userInfo.prenom||'votre enfant')}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-
-    ${strengths.length ? `
-    <div style="background:linear-gradient(135deg,#eaf6ee,#e8f4fb);border-radius:16px;padding:20px;margin-bottom:20px;border:1.5px solid rgba(203,225,182,.6);">
-      <h3 style="font-family:Gruppo,sans-serif;font-size:16px;margin-bottom:10px;">✨ Points forts à célébrer</h3>
-      ${strengths.map(p => `
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-          <span style="font-size:20px;">${p.emoji}</span>
-          <div><strong style="font-size:13px;">${p.name}</strong> <span class="pill pill-vert">${p.score}/100</span></div>
-        </div>
-      `).join('')}
-    </div>` : ''}
-
-    <div class="cta-final">
-      <h3>🌸 Vous n'êtes pas seul(e) dans cette aventure</h3>
-      <p>Cet audit est un premier pas précieux. Si vous souhaitez aller plus loin et être accompagné(e) dans la démarche, l'ingénieure QVE Brille est disponible pour échanger avec vous.</p>
-      <a href="mailto:tsioryleonard@gmail.com?subject=Suite à l'audit QVE de ${userInfo.prenom||'mon enfant'}" class="cta-btn">✉️ Nous contacter</a>
-      <a href="tel:0611140715" class="cta-btn secondary">📞 06 11 14 07 15</a>
-      <br><button class="cta-btn secondary" style="margin-top:10px;" onclick="restartAudit()">↺ Refaire l'audit</button>
-    </div>`;
-
-  document.getElementById('results-content').innerHTML = html;
+  document.getElementById('results-content').innerHTML=html;
   showPage('page-results');
-  
-  // Animate bars after render
-  setTimeout(() => {
-    document.querySelectorAll('.result-bar-fill').forEach(bar => {
-      bar.style.transition = 'width 1s ease';
-    });
-  }, 100);
-  
-  burstStarsGlobal();
+  setTimeout(function(){burstStarsGlobal();},300);
 }
 
-function restartAudit(){
-  answers = {};
-  currentPetal = 0;
-  showPage('page-hero');
-}
+function restartAudit(){answers={};currentPetal=0;showPage('page-hero');}
 
 function burstStars(el){
-  var rect = el ? el.getBoundingClientRect() : {top:window.innerHeight/2,left:window.innerWidth/2,width:0,height:0};
-  var cx = rect.left + rect.width/2, cy = rect.top;
-  var stars = ['✨','⭐','🌟','💫'];
-  for(var i=0;i<5;i++){
+  var rect=el?el.getBoundingClientRect():{top:window.innerHeight/2,left:window.innerWidth/2,width:0,height:0};
+  var cx=rect.left+rect.width/2,cy=rect.top;
+  var stars=['✨','⭐','🌟','💫','🎉'];
+  for(var i=0;i<6;i++){
     var s=document.createElement('div');s.className='star-particle';
     s.textContent=stars[i%stars.length];s.style.left=cx+'px';s.style.top=cy+'px';
-    var a=(i/5)*Math.PI*2,d=40+Math.random()*30;
+    var a=(i/6)*Math.PI*2,d=45+Math.random()*35;
     s.style.setProperty('--tx',Math.cos(a)*d+'px');s.style.setProperty('--ty',Math.sin(a)*d+'px');
-    document.body.appendChild(s);setTimeout(function(x){x.remove();},800,s);
+    document.body.appendChild(s);setTimeout(function(x){x.remove();},900,s);
   }
 }
 
 function burstStarsGlobal(){
-  for(var i=0;i<12;i++){
+  for(var i=0;i<14;i++){
     setTimeout(function(){
-      var stars=['✨','⭐','🌟','💫','🌸'];
+      var stars=['✨','⭐','🌟','💫','🌸','🎉'];
       var s=document.createElement('div');s.className='star-particle';
       s.textContent=stars[Math.floor(Math.random()*stars.length)];
-      s.style.left=(20+Math.random()*60)+'vw';s.style.top=(20+Math.random()*40)+'vh';
-      var a=Math.random()*Math.PI*2,d=60+Math.random()*60;
+      s.style.left=(10+Math.random()*80)+'vw';s.style.top=(10+Math.random()*50)+'vh';
+      var a=Math.random()*Math.PI*2,d=70+Math.random()*50;
       s.style.setProperty('--tx',Math.cos(a)*d+'px');s.style.setProperty('--ty',Math.sin(a)*d+'px');
-      document.body.appendChild(s);setTimeout(function(x){x.remove();},800,s);
-    },i*80);
+      document.body.appendChild(s);setTimeout(function(x){x.remove();},900,s);
+    },i*60);
   }
 }
 
