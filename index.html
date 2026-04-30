@@ -675,13 +675,12 @@ function renderBiblio(){
   grid.innerHTML='';
   var famList=window.allFams||[];
 
-  // Header avec sélecteurs
   var headerDiv=document.createElement('div');
   headerDiv.style.cssText='background:#f8f8f8;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;';
 
   var row1=document.createElement('div');
   row1.style.cssText='display:flex;align-items:center;gap:10px;';
-  row1.innerHTML='<span style="font-size:14px;">👨‍👩‍👧</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Famille :</label>';
+  row1.innerHTML='<span style="font-size:14px;">\u{1F468}\u200D\u{1F469}\u200D\u{1F467}</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Famille :</label>';
   var sel=document.createElement('select');
   sel.id='biblio-fam-sel';
   sel.style.cssText='border:1.5px solid #e2e2e2;border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
@@ -698,11 +697,11 @@ function renderBiblio(){
 
   var row2=document.createElement('div');
   row2.style.cssText='display:flex;align-items:center;gap:10px;';
-  row2.innerHTML='<span style="font-size:14px;">🎯</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Tranche âge :</label>';
+  row2.innerHTML='<span style="font-size:14px;">\uD83C\uDFAF</span><label style="font-size:11px;font-weight:700;color:var(--gris);flex:1;">Tranche age :</label>';
   var selAge=document.createElement('select');
   selAge.id='biblio-age-sel';
   selAge.style.cssText='border:1.5px solid var(--orange);border-radius:8px;padding:6px 10px;font-family:Quicksand,sans-serif;font-size:12px;outline:none;max-width:200px;';
-  selAge.innerHTML='<option value="6-7">🌱 6–7 ans</option><option value="8-9">🌿 8–9 ans</option><option value="10-12">🌳 10–12 ans</option>';
+  selAge.innerHTML='<option value="6-7">6-7 ans</option><option value="8-9">8-9 ans</option><option value="10-12">10-12 ans</option>';
   row2.appendChild(selAge);
   headerDiv.appendChild(row2);
   grid.appendChild(headerDiv);
@@ -712,7 +711,6 @@ function renderBiblio(){
   infoDiv.style.cssText='display:none;background:rgba(203,225,182,.2);border:1.5px solid rgba(203,225,182,.6);border-radius:10px;padding:8px 12px;margin-bottom:12px;font-size:11px;color:#3a7040;font-weight:600;';
   grid.appendChild(infoDiv);
 
-  // Créer les cartes kits
   KITS.forEach(function(k){
     var card=document.createElement('div');
     card.style.cssText='background:white;border-radius:14px;border:1.5px solid '+k.color+'88;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:10px;';
@@ -720,73 +718,45 @@ function renderBiblio(){
     head.style.cssText='background:'+k.color+'33;border-bottom:3px solid '+k.color+';padding:14px 16px;display:flex;align-items:center;gap:12px;';
     var sp=document.createElement('span');sp.style.fontSize='24px';sp.textContent=k.emoji;
     var di=document.createElement('div');
-    var lb=document.createElement('div');lb.style.cssText='font-size:9px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.45);text-transform:uppercase;';lb.textContent='Brille Kit · Pétale '+k.id;
+    var lb=document.createElement('div');lb.style.cssText='font-size:9px;font-weight:700;letter-spacing:1.5px;color:rgba(0,0,0,.45);text-transform:uppercase;';lb.textContent='Brille Kit · Petale '+k.id;
     var nm=document.createElement('div');nm.style.cssText='font-family:Gruppo,sans-serif;font-size:14px;margin-top:1px;';nm.textContent=k.name;
     di.appendChild(lb);di.appendChild(nm);head.appendChild(sp);head.appendChild(di);
-
     var btns=document.createElement('div');btns.style.cssText='padding:12px 16px;display:flex;gap:8px;';
-
-    // Liens avec data-base-url pour mise à jour dynamique
     var av=document.createElement('a');av.target='_blank';
-    av.dataset.baseUrl=k.url;
-    av.className='biblio-kit-link';
-    av.style.cssText='flex:1;text-align:center;padding:8px;background:'+k.color+'44;border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';
-    av.textContent='Voir';
-
+    av.dataset.baseUrl=k.url;av.className='biblio-kit-link';
+    av.style.cssText='flex:1;text-align:center;padding:8px;background:'+k.color+'44;border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';av.textContent='Voir';
     var ap=document.createElement('a');ap.target='_blank';
-    ap.dataset.baseUrl=k.url;
-    ap.className='biblio-kit-link';
-    ap.style.cssText='flex:1;text-align:center;padding:8px;background:var(--vert);border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';
-    ap.textContent='Imprimer';
-
+    ap.dataset.baseUrl=k.url;ap.className='biblio-kit-link';
+    ap.style.cssText='flex:1;text-align:center;padding:8px;background:var(--vert);border-radius:10px;text-decoration:none;font-size:11px;font-weight:700;color:#1a1a2e;';ap.textContent='Imprimer';
     var bs=document.createElement('button');
-    bs.dataset.kitName=k.name;
-    bs.dataset.baseUrl=k.url;
-    bs.className='biblio-kit-share';
-    bs.style.cssText='flex:1;padding:8px;background:#1a1a2e;border:none;border-radius:10px;font-size:11px;font-weight:700;color:#fdd5a5;cursor:pointer;';
-    bs.textContent='📤 Partager';
-
+    bs.dataset.kitName=k.name;bs.dataset.baseUrl=k.url;bs.className='biblio-kit-share';
+    bs.style.cssText='flex:1;padding:8px;background:#1a1a2e;border:none;border-radius:10px;font-size:11px;font-weight:700;color:#fdd5a5;cursor:pointer;';bs.textContent='Partager';
     btns.appendChild(av);btns.appendChild(ap);btns.appendChild(bs);
-    card.appendChild(head);card.appendChild(btns);
-    grid.appendChild(card);
+    card.appendChild(head);card.appendChild(btns);grid.appendChild(card);
   });
 
-  // UNE SEULE fonction de mise à jour globale
   function updateAllLinks(){
     var sf=document.getElementById('biblio-fam-sel');
     var so=document.getElementById('biblio-age-sel');
     var selOpt=sf&&sf.selectedIndex>0?sf.options[sf.selectedIndex]:null;
     var age;
-    if(selOpt&&selOpt.dataset.age){
-      age=selOpt.dataset.age;
-      if(so)so.value=age;
-    } else {
-      age=so?so.value:'6-7';
-    }
-    var ageLabels={'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
-    // Mettre à jour tous les liens
-    document.querySelectorAll('.biblio-kit-link').forEach(function(el){
-      el.href=el.dataset.baseUrl+'#'+age;
-    });
+    if(selOpt&&selOpt.dataset.age){age=selOpt.dataset.age;if(so)so.value=age;}
+    else{age=so?so.value:'6-7';}
+    var ageLabels={'6-7':'6-7 ans','8-9':'8-9 ans','10-12':'10-12 ans'};
+    document.querySelectorAll('.biblio-kit-link').forEach(function(el){el.href=el.dataset.baseUrl+'#'+age;});
     document.querySelectorAll('.biblio-kit-share').forEach(function(el){
       el.onclick=function(){
         var url=el.dataset.baseUrl+'#'+age;
         if(navigator.share)navigator.share({title:'Brille Kit '+el.dataset.kitName,url:url});
-        else navigator.clipboard.writeText(url).then(function(){toast('📋 Lien copié · '+ageLabels[age]);});
+        else navigator.clipboard.writeText(url).then(function(){toast('Lien copie');});
       };
     });
     var infoEl=document.getElementById('biblio-age-info');
-    if(infoEl){
-      infoEl.style.display='block';
-      infoEl.textContent='✅ Contenu filtré pour '+ageLabels[age];
-    }
+    if(infoEl){infoEl.style.display='block';infoEl.textContent='Contenu filtre pour '+ageLabels[age];}
   }
 
-  // Initialiser les liens au chargement
   updateAllLinks();
-
-  // Écouter les changements sur les sélecteurs
-  sel.addEventListener('change', updateAllLinks);
-  selAge.addEventListener('change', updateAllLinks);
+  sel.addEventListener('change',updateAllLinks);
+  selAge.addEventListener('change',updateAllLinks);
 }
 >
