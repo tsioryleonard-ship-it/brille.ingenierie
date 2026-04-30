@@ -491,8 +491,8 @@ nav h1{color:var(--vert);font-size:14px;letter-spacing:2px;}
   const src="data:image/png;base64,"+b64;
   document.querySelectorAll('.logo-img').forEach(i=>i.src=src);
 })();
-function showAge(age,btn){
-  document.querySelectorAll('.age-panel').forEach(p=>{
+function showAge(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>{
     p.classList.remove('active');
     p.style.display='';
   });
@@ -500,37 +500,37 @@ function showAge(age,btn){
     t.classList.remove('active');
     t.style.display='';
   });
-  const panel=document.getElementById('panel-'+age);
+  const panel=document.getElementById('p'+id);
   if(panel){panel.classList.add('active');panel.style.display='block';}
   if(btn){const rb=btn.closest?btn.closest('.tab'):btn;if(rb)rb.classList.add('active');}
 }
 
 // ===== ACCÈS LIMITÉ PAR ÂGE (via URL hash) =====
-function initAgeFromURL() {
-  const hash = window.location.hash.replace('#','');
-  const ages = ['6-7','8-9','10-12'];
-  const validHash = ages.includes(hash) ? hash : null;
-  document.querySelectorAll('.age-panel').forEach(p => {
+function initAgeFromURL(){
+  const hash=window.location.hash.replace('#','');
+  const map={'6-7':'67','8-9':'89','10-12':'1012'};
+  const id=map[hash]||null;
+  document.querySelectorAll('.panel').forEach(p=>{
     p.classList.remove('active');
-    p.style.display = 'none';
+    p.style.display='none';
   });
-  const targetAge = validHash || '6-7';
-  const target = document.getElementById('panel-'+targetAge);
-  if(target) { target.style.display = 'block'; target.classList.add('active'); }
-  if(validHash) {
-    document.querySelectorAll('.tab').forEach(t => { t.style.display = 'none'; });
-    const nav = document.querySelector('nav .tabs');
-    if(nav) {
-      const ageLabels = {'6-7':'🌱 6–7 ans','8-9':'🌿 8–9 ans','10-12':'🌳 10–12 ans'};
-      nav.innerHTML = '<span style="color:var(--peche);font-size:12px;font-weight:600;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+ageLabels[validHash]+'</span>';
+  const tid=id||'67';
+  const target=document.getElementById('p'+tid);
+  if(target){target.style.display='block';target.classList.add('active');}
+  if(id){
+    document.querySelectorAll('.tab').forEach(t=>{t.style.display='none';});
+    const nav=document.querySelector('nav .tabs');
+    if(nav){
+      const lbl={'67':'🌱 6–7 ans','89':'🌿 8–9 ans','1012':'🌳 10–12 ans'};
+      nav.innerHTML='<span style="color:var(--orange);font-size:12px;font-weight:600;padding:6px 14px;background:rgba(255,255,255,0.1);border-radius:20px;">'+lbl[tid]+'</span>';
     }
   } else {
-    document.querySelectorAll('.tab').forEach(t => { t.style.display=''; t.classList.remove('active'); });
-    const firstTab = document.querySelector('.tab');
-    if(firstTab) firstTab.classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>{t.style.display='';t.classList.remove('active');});
+    const ft=document.querySelector('.tab');
+    if(ft)ft.classList.add('active');
   }
 }
-document.addEventListener('DOMContentLoaded', initAgeFromURL);
-window.addEventListener('hashchange', initAgeFromURL);
+document.addEventListener('DOMContentLoaded',initAgeFromURL);
+window.addEventListener('hashchange',initAgeFromURL);
 </script></body>
 </html>
