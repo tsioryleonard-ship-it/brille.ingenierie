@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brille — Posts Mai & Juin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #a8c4e0;
+    --yellow: #f0e575;
+    --pink: #e8b4d8;
+    --green: #b8d4a8;
+    --purple: #b8a8d8;
+    --orange: #e8a864;
+    --cream: #faf8f3;
+    --dark: #1e1e1e;
+    --mid: #666;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+  }
+
+  header {
+    background: var(--dark);
+    padding: 40px 24px 36px;
+    text-align: center;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    color: white;
+    font-weight: 300;
+  }
+
+  .logo em { color: var(--yellow); font-style: italic; }
+
+  header p {
+    color: rgba(255,255,255,0.45);
+    font-size: 12px;
+    margin-top: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 8px;
+    padding: 14px 20px;
+    overflow-x: auto;
+    background: white;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    padding: 7px 16px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    background: white;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all 0.2s;
+    color: var(--dark);
+  }
+  .nav-btn:hover { border-color: var(--dark); }
+
+  /* CONTAINER */
+  .container {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+  }
+
+  /* SEMAINE HEADER */
+  .week-block {
+    margin-bottom: 56px;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid rgba(0,0,0,0.07);
+  }
+
+  .week-pill {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    color: white;
+  }
+
+  .week-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--dark);
+  }
+
+  .week-date {
+    font-size: 12px;
+    color: var(--mid);
+    margin-top: 2px;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+
+  .card-header {
+    padding: 18px 22px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card-header:hover { background: rgba(0,0,0,0.01); }
+
+  .card-left {
+    flex: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .date-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--mid);
+    letter-spacing: 0.3px;
+  }
+
+  .format-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-carrousel { background: var(--blue); color: #1e1e1e; }
+  .tag-image { background: var(--orange); }
+  .tag-teaser { background: var(--purple); }
+  .tag-story { background: #9b8cc4; }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.4;
+  }
+
+  .toggle-icon {
+    font-size: 20px;
+    color: rgba(0,0,0,0.25);
+    transition: transform 0.25s;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .toggle-icon.open { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .card-body.open { display: block; }
+
+  /* SECTIONS */
+  .section {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(0,0,0,0.35);
+    margin-bottom: 12px;
+  }
+
+  /* TEXT BOX */
+  .text-box {
+    background: #f7f5f0;
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: var(--dark);
+    white-space: pre-wrap;
+    position: relative;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 8px;
+    padding: 4px 11px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--mid);
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { background: var(--dark); color: white; border-color: var(--dark); }
+  .copy-btn.copied { background: var(--green); color: #333; border-color: var(--green); }
+
+  /* SLIDES */
+  .slides-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .slide {
+    border-radius: 12px;
+    padding: 14px 16px;
+    border-left: 4px solid;
+    position: relative;
+  }
+
+  .slide-num {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(0,0,0,0.35);
+    margin-bottom: 6px;
+  }
+
+  .slide-content {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--dark);
+    white-space: pre-wrap;
+  }
+
+  /* STICKERS */
+  .stickers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .sticker {
+    background: var(--yellow);
+    color: #555;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 8px;
+  }
+
+  /* TIP */
+  .tip {
+    font-size: 12px;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 10px;
+    padding-left: 4px;
+  }
+
+  /* COLOR INDICATOR */
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--mid);
+    margin-top: 6px;
+  }
+
+  .swatch {
+    width: 16px; height: 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">bri<em>lle</em></div>
+  <p>Posts & Teasers · Mai — Juin 2025</p>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn" onclick="jump('s1')">📅 Sem. 21 mai</button>
+  <button class="nav-btn" onclick="jump('s2')">📅 Sem. 28 mai</button>
+  <button class="nav-btn" onclick="jump('s3')">📅 Sem. 4 juin</button>
+  <button class="nav-btn" onclick="jump('s4')">📅 Sem. 11 juin</button>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SEMAINE 21 MAI -->
+<!-- ═══════════════════════════════════════ -->
+<div class="week-block" id="s1">
+  <div class="week-header">
+    <span class="week-pill" style="background:var(--pink); color:#333">Sem. 1</span>
+    <div>
+      <div class="week-title">C'est quoi vraiment la QVE ?</div>
+      <div class="week-date">Mercredi 21 mai + Dimanche 25 mai</div>
+    </div>
+  </div>
+
+  <!-- POST MERCREDI 21 MAI -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Mercredi 21 mai</span>
+          <span class="format-tag tag-carrousel">📸 Carrousel</span>
+        </div>
+        <div class="card-title">C'est quoi vraiment la QVE ? — 7 slides</div>
+        <div class="color-row"><div class="swatch" style="background:#e8b4d8"></div> Fond rose poudré</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+C'est quoi la QVE ? Et pourquoi ça change tout pour ton enfant 🌸
+
+QVE. Trois lettres que j'aurais aimé connaître plus tôt en tant que maman.
+
+La Qualité de Vie de l'Enfant, c'est une approche qui regarde ton enfant dans sa globalité.
+Pas juste ses notes.
+Pas juste s'il a des amis.
+Tout. Sa façon de vivre, de ressentir, de se voir. 💙
+
+Parce qu'un enfant peut réussir à l'école… et se sentir profondément seul.
+Parce qu'un enfant peut avoir des amis… et ne pas savoir qui il est vraiment.
+
+La QVE, c'est le regard complet qu'on pose sur lui.
+Celui qui permet de l'accompagner vraiment.
+
+→ Swipe pour comprendre les 7 dimensions 🌸
+
+#QVE #QualitéDeVieEnfant #Brille #BienÊtreEnfant #ParentalitéConsciente #6-12ans</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">🎨 Slides du carrousel</div>
+        <div class="slides-grid">
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 1 — Accroche</div>
+            <div class="slide-content">C'est quoi vraiment la QVE ?
+(texte centré, fond rose poudré)</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 2 — Le constat</div>
+            <div class="slide-content">On mesure tout pour nos enfants.
+La taille. Le poids. Les notes.
+
+Mais leur bien-être intérieur ?
+On l'oublie souvent. 💭</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 3 — La définition</div>
+            <div class="slide-content">La QVE — Qualité de Vie de l'Enfant —
+c'est une approche qui évalue ton enfant
+dans TOUTES les dimensions de sa vie.
+
+Pas juste ce qu'il fait.
+Mais comment il se sent. 🌸</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 4 — Les 7 pétales</div>
+            <div class="slide-content">7 dimensions pour voir ton enfant en entier :
+
+👫 Mes liens & ma parole
+🏆 Ce qui me fait briller
+🩷 Mes émotions
+📅 Mon organisation
+⚖️ Ma place en famille
+📚 Le sens de ce que j'apprends
+🔋 Mon énergie & mon équilibre</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 5 — Le déclic</div>
+            <div class="slide-content">Un enfant peut avoir de bonnes notes
+et se sentir profondément seul.
+
+Un enfant peut avoir des amis
+et ne pas savoir qui il est vraiment.
+
+La QVE, c'est le regard qui voit tout ça. 💙</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 6 — Ce que je fais</div>
+            <div class="slide-content">Chez BRILLE, je m'appuie sur la QVE
+pour accompagner chaque enfant de 6 à 12 ans.
+
+On ne change pas l'enfant.
+On optimise le système autour de lui. 🛠️✨</div>
+          </div>
+
+          <div class="slide" style="background:#fdf0f9; border-color:#e8b4d8;">
+            <div class="slide-num">Slide 7 — CTA</div>
+            <div class="slide-content">Tu veux savoir où en est ton enfant ?
+
+Fais le test gratuit 👆
+Lien en bio 🌸
+
+(logo Brille)</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEASER DIMANCHE 25 MAI -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Dimanche 25 mai</span>
+          <span class="format-tag tag-teaser">🟣 Teaser couleur unie</span>
+        </div>
+        <div class="card-title">Fond rose · "3 signes que ton enfant cherche ses mots"</div>
+        <div class="color-row"><div class="swatch" style="background:#e8b4d8"></div> Fond rose poudré uni</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🖼️ Texte sur l'image</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+3 signes que ton enfant
+cherche ses mots…
+
+1. Il dit "ça va" sans te regarder
+2. Il explose pour des petites choses
+3. Il dit "je suis nul" trop souvent
+
+Tu en reconnais un ?
+👇 Dis-le moi en commentaire</div>
+        <p class="tip">💡 Texte blanc ou bordeaux sur fond rose poudré. Simple, aéré, lisible.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Ces signes-là, on les voit souvent passer sans y prêter attention.
+
+Parce qu'on est occupés. Parce qu'on pense que "ça va passer".
+Parce qu'on ne sait pas toujours quoi faire avec ça.
+
+Mais derrière chaque petit signal… il y a un enfant qui cherche ses mots.
+Et qui a juste besoin qu'on lui crée l'espace pour les trouver. 💙
+
+C'est exactement ce que fait BRILLE.
+
+Tu veux en savoir plus ?
+→ Fais le test gratuit (lien en bio) 🌸
+
+#Brille #SignesEnfant #BienÊtreEnfant #Parentalité #QVE</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📲 Story d'accompagnement</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Tu reconnais l'un de ces 3 signes chez ton enfant ?
+        </div>
+        <div class="stickers">
+          <span class="sticker">🗳️ Sondage : "Le ça va automatique" / "Les explosions" / "Je suis nul" / "Les 3 😅"</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SEMAINE 28 MAI -->
+<!-- ═══════════════════════════════════════ -->
+<div class="week-block" id="s2">
+  <div class="week-header">
+    <span class="week-pill" style="background:var(--orange)">Sem. 2</span>
+    <div>
+      <div class="week-title">Reel + Teaser mystère appli</div>
+      <div class="week-date">Mercredi 28 mai + Dimanche 1er juin</div>
+    </div>
+  </div>
+
+  <!-- REEL MERCREDI 28 MAI -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Mercredi 28 mai</span>
+          <span class="format-tag" style="background:var(--orange)">🎬 Reel</span>
+        </div>
+        <div class="card-title">"3 signes que ton enfant ne brille pas encore"</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🎬 Script du Reel (face caméra · 30-45 sec)</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+ACCROCHE (texte à l'écran) :
+"Si ton enfant fait ça… il a besoin d'aide pour briller 🌟"
+
+---
+
+Signe n°1 — Il dit "ça va" mais tu sens que non.
+Il répond en automatique, sans vraiment te regarder.
+
+Signe n°2 — Il explose pour des petites choses.
+Pas parce qu'il est difficile.
+Mais parce qu'il ne sait pas encore mettre des mots
+sur ce qu'il ressent.
+
+Signe n°3 — Il se compare tout le temps aux autres.
+"Je suis nul." "Elle est meilleure que moi."
+Ce n'est pas de la modestie. C'est un signal.
+
+---
+
+Ces signes ne veulent pas dire que quelque chose ne va pas.
+Ils veulent dire qu'il a besoin d'un espace
+pour apprendre à briller.
+C'est exactement pour ça que j'ai créé Brille 💙
+
+TEXTE FINAL À L'ÉCRAN :
+"Sauve ce Reel si tu te reconnais 👆"</div>
+        <p class="tip">💡 Face caméra · lumière naturelle · musique douce en fond · active les sous-titres automatiques Instagram</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du Reel</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+3 signes discrets que ton enfant a besoin de soutien 🌟
+
+Ces comportements ne veulent pas dire qu'il ne va pas bien.
+Ils veulent dire qu'il cherche ses mots, ses repères, sa place.
+
+Et ça… on peut l'accompagner. 💙
+
+Sauve ce Reel et partage-le à un parent qui en a besoin 🙏
+
+#Brille #SignesEnfant #BienÊtreEnfant #Parentalité #Atelier Enfant #6-12ans</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEASER DIMANCHE 1ER JUIN -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Dimanche 1er juin</span>
+          <span class="format-tag tag-teaser">🟡 Teaser couleur unie</span>
+        </div>
+        <div class="card-title">Fond jaune · Premier teaser mystère de l'appli</div>
+        <div class="color-row"><div class="swatch" style="background:#f0e575"></div> Fond jaune doux uni</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🖼️ Texte sur l'image</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Je prépare quelque chose…
+
+Pour les familles qui ne peuvent pas
+venir en atelier.
+
+👀 Rendez-vous à la rentrée.</div>
+        <p class="tip">💡 Texte foncé sur fond jaune. Minimaliste. La curiosité fait le travail.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Depuis que j'ai créé BRILLE, on me pose souvent cette question :
+
+"Et si on ne peut pas venir en atelier… il y a quelque chose pour nous ?"
+
+J'ai entendu. Je prépare la réponse. 🌟
+
+Ce sera là pour la rentrée.
+Je te dis tout très bientôt. 👀
+
+#Brille #Bientôt #RentréeSeptembre #BienÊtreEnfant #FamillesConnectées</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📲 Story d'accompagnement</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Tu as vu mon post ? 👀
+
+Si tu ne peux pas venir en atelier…
+j'ai quelque chose pour toi à la rentrée.
+
+Tu veux être la première informée ?
+        </div>
+        <div class="stickers">
+          <span class="sticker">🗳️ Sondage : "Oui, tiens-moi au courant ! 🙋" / "Dis m'en plus 👀"</span>
+          <span class="sticker">📩 Réponds à cette story pour être sur la liste</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SEMAINE 4 JUIN -->
+<!-- ═══════════════════════════════════════ -->
+<div class="week-block" id="s3">
+  <div class="week-header">
+    <span class="week-pill" style="background:var(--purple)">Sem. 3</span>
+    <div>
+      <div class="week-title">Ce que j'ai appris en créant Brille</div>
+      <div class="week-date">Mercredi 4 juin + Dimanche 8 juin</div>
+    </div>
+  </div>
+
+  <!-- POST MERCREDI 4 JUIN -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Mercredi 4 juin</span>
+          <span class="format-tag tag-image">🖼️ Image unique</span>
+        </div>
+        <div class="card-title">"Ce que j'ai appris en créant Brille"</div>
+        <div class="color-row"><div class="swatch" style="background:#b8a8d8"></div> Fond violet doux · photo de toi</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🖼️ Texte sur l'image (overlay)</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+"Ce que créer Brille
+m'a vraiment appris…"</div>
+        <p class="tip">💡 Belle photo de toi — souriante, naturelle. Texte en overlay doux. Fond aux couleurs de Brille 💛</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Ce que créer Brille m'a vraiment appris 💛
+
+Que les enfants ont souvent DÉJÀ les ressources.
+Ils ont juste besoin qu'on leur crée l'espace pour les trouver.
+
+Que les parents veulent bien faire.
+Toujours. Même quand ils se sentent complètement dépassés.
+
+Que l'ingénierie socio-éducative…
+ce n'est pas une formule froide.
+C'est une façon de voir l'enfant en entier.
+Pas juste le problème. Lui. 💙
+
+Je construis Brille brique par brique avec cette conviction.
+Et chaque jour, elle se confirme un peu plus.
+
+Et toi — qu'est-ce que la parentalité t'a appris sur toi-même ?
+Dis-le moi en commentaire, je lis tout 👇
+
+#Brille #CoulissesBrille #Parentalité #Apprentissage #IngénierieDuCœur #MamanEntrepreneuse</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEASER DIMANCHE 8 JUIN -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Dimanche 8 juin</span>
+          <span class="format-tag tag-teaser">🩷 Teaser couleur unie</span>
+        </div>
+        <div class="card-title">Fond rose · "Ton plus grand défi avec ton enfant ?"</div>
+        <div class="color-row"><div class="swatch" style="background:#e8b4d8"></div> Fond rose poudré uni</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🖼️ Texte sur l'image</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Ton plus grand défi
+avec ton enfant
+en ce moment…
+
+c'est quoi ?
+
+👇 Je lis tout.</div>
+        <p class="tip">💡 Texte simple, centré. Laisse le blanc respirer. C'est une invitation sincère.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Je te pose la question sincèrement 💙
+
+Pas pour juger. Pas pour vendre.
+Juste pour comprendre ce que tu vis vraiment.
+
+Parce que c'est en écoutant les familles
+que Brille continue de grandir et de s'adapter.
+
+Alors dis-moi en commentaire :
+ton plus grand défi avec ton enfant en ce moment, c'est quoi ?
+
+Je réponds à chacun. Promis. 🌸
+
+#Brille #Parentalité #DéfiParents #BienÊtreEnfant #CommunautéBrille</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📲 Story d'accompagnement</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Une question sincère pour toi ce soir 💙
+
+Ton plus grand défi avec ton enfant en ce moment…
+c'est quoi ?
+        </div>
+        <div class="stickers">
+          <span class="sticker">❓ Sticker question ouverte</span>
+          <span class="sticker">📩 Je réponds personnellement à chaque message</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- SEMAINE 11 JUIN -->
+<!-- ═══════════════════════════════════════ -->
+<div class="week-block" id="s4">
+  <div class="week-header">
+    <span class="week-pill" style="background:var(--green); color:#333">Sem. 4</span>
+    <div>
+      <div class="week-title">Kanban, 5S… l'ingénierie aide les familles</div>
+      <div class="week-date">Mercredi 11 juin + Dimanche 15 juin</div>
+    </div>
+  </div>
+
+  <!-- POST MERCREDI 11 JUIN -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Mercredi 11 juin</span>
+          <span class="format-tag tag-carrousel" >📸 Carrousel</span>
+        </div>
+        <div class="card-title">Kanban, 5S… comment l'ingénierie aide les familles — 7 slides</div>
+        <div class="color-row"><div class="swatch" style="background:#b8d4a8"></div> Fond vert sauge</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Et si les outils des grandes entreprises fonctionnaient aussi à la maison ? 🛠️
+
+Dans l'industrie, on utilise des méthodes puissantes
+pour fluidifier les systèmes complexes.
+
+Chez Brille, j'ai adapté ces mêmes outils…
+pour fluidifier la vie des familles. 💛
+
+Parce qu'une famille, c'est aussi un système.
+Et quand l'engrenage grippe… tout le monde le ressent.
+
+→ Swipe pour découvrir 3 outils concrets 🔧
+
+#Brille #KanbanFamille #OrganisationFamiliale #IngénierieSocioÉducative #ParentalitéSereine #LogistiqueQuotidien</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">🎨 Slides du carrousel</div>
+        <div class="slides-grid">
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 1 — Accroche</div>
+            <div class="slide-content">Ces outils d'ingénierie…
+marchent aussi à la maison 🛠️
+(fond vert sauge)</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 2 — Intro</div>
+            <div class="slide-content">Dans l'industrie, on utilise des méthodes
+pour simplifier les systèmes complexes.
+
+Une famille, c'est aussi un système complexe.
+Alors j'ai adapté ces outils pour vous. 💛</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 3 — Outil 1 : Le Kanban</div>
+            <div class="slide-content">🗂️ Le Kanban familial
+
+À la base : un tableau de gestion de projet.
+Adapté : un tableau visuel des tâches de chaque enfant.
+
+Résultat : moins de "t'as fait tes devoirs ?"
+Plus d'autonomie. Moins de friction. ✨</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 4 — Outil 2 : Le 5S</div>
+            <div class="slide-content">📦 Le 5S à la maison
+
+À la base : méthode de rangement en usine.
+Adapté : un espace pensé pour que l'enfant
+s'y retrouve seul.
+
+Résultat : moins de chaos le matin.
+Un enfant qui sait où sont ses affaires. 💛</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 5 — Outil 3 : L'analyse de flux</div>
+            <div class="slide-content">🔄 L'analyse de flux
+
+À la base : identifier les goulets d'étranglement.
+Adapté : repérer le moment de la journée
+où tout déraille.
+
+Résultat : on ajuste UNE chose.
+Et tout le reste respire mieux. 🌿</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 6 — Le lien avec Brille</div>
+            <div class="slide-content">Chez BRILLE, j'utilise ces méthodes
+combinées à la Fleur QVE
+pour identifier ce qui freine ton enfant…
+et libérer ce qui le fait briller. 🌟</div>
+          </div>
+
+          <div class="slide" style="background:#edf5e8; border-color:#b8d4a8;">
+            <div class="slide-num">Slide 7 — CTA</div>
+            <div class="slide-content">Curieux de savoir quel "grain de sable"
+grippe le quotidien de ton enfant ?
+
+Réserve ton appel découverte gratuit 👆
+Lien en bio 🛠️✨
+
+(logo Brille)</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TEASER DIMANCHE 15 JUIN -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="card-left">
+        <div class="card-meta">
+          <span class="date-badge">Dimanche 15 juin</span>
+          <span class="format-tag tag-teaser">🟢 Teaser couleur unie</span>
+        </div>
+        <div class="card-title">Fond vert · Teaser appli — "Et si les familles loin pouvaient aussi…"</div>
+        <div class="color-row"><div class="swatch" style="background:#b8d4a8"></div> Fond vert sauge uni</div>
+      </div>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="card-body">
+
+      <div class="section">
+        <div class="section-label">🖼️ Texte sur l'image</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Et si les familles
+loin du centre social
+pouvaient elles aussi
+en bénéficier ?
+
+👀 Quelque chose arrive.
+Rentrée 2025.</div>
+        <p class="tip">💡 Texte foncé sur fond vert. Court et mystérieux. Laisse la curiosité faire le travail.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📝 Légende du post</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Depuis le début, j'entends la même chose :
+
+"C'est super ce que tu fais… mais nous on ne peut pas venir en atelier."
+
+Trop loin. Pas de transport. Emploi du temps impossible.
+
+J'ai entendu. Et je prépare quelque chose pour vous. 🌟
+
+Ce n'est pas encore le moment de tout révéler.
+Mais la rentrée 2025 va changer les choses pour ces familles-là.
+
+Reste connecté. 👀
+
+#Brille #Bientôt #RentréeSeptembre #FamillesConnectées #BienÊtreEnfant</div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">📲 Story d'accompagnement</div>
+        <div class="text-box">
+          <button class="copy-btn" onclick="copyText(this)">Copier</button>
+Tu ne peux pas venir en atelier ?
+
+Je prépare quelque chose pour toi.
+Rentrée 2025. 🌟
+
+Tu veux être parmi les premières informées ?
+        </div>
+        <div class="stickers">
+          <span class="sticker">🗳️ Sondage : "Oui ! Je veux savoir 🙋" / "Dis m'en plus 👀"</span>
+          <span class="sticker">📩 Réponds à cette story → je t'ajoute à la liste</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function toggle(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.toggle-icon');
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+function copyText(btn) {
+  const box = btn.parentElement;
+  const text = box.innerText.replace('Copier', '').replace('Copié ✓', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copié ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copier';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function jump(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+
+</body>
+</html>
