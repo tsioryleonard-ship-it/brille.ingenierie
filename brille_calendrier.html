@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brille — Calendrier Instagram</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #a8c4e0;
+    --yellow: #f0e575;
+    --pink: #e8b4d8;
+    --green: #b8d4a8;
+    --purple: #b8a8d8;
+    --orange: #e8a864;
+    --cream: #faf8f3;
+    --dark: #1e1e1e;
+    --mid: #555;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+  }
+
+  header {
+    background: var(--dark);
+    padding: 40px 24px 36px;
+    text-align: center;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    color: white;
+    font-weight: 300;
+    letter-spacing: -1px;
+  }
+
+  .logo em {
+    color: var(--yellow);
+    font-style: italic;
+  }
+
+  header p {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin-top: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 16px 24px;
+    background: white;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mid);
+  }
+
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .phase {
+    margin-bottom: 48px;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .phase-pill {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    color: white;
+  }
+
+  .phase-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--dark);
+  }
+
+  .phase-desc {
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 2px;
+  }
+
+  .week {
+    margin-bottom: 8px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    background: white;
+  }
+
+  .week-days {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .day {
+    padding: 16px 18px;
+    border-right: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+  }
+
+  .day:last-child { border-right: none; }
+
+  .day-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(0,0,0,0.35);
+    margin-bottom: 8px;
+  }
+
+  .date {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .post-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+    color: white;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-carrousel { background: var(--blue); }
+  .tag-teaser { background: var(--purple); }
+  .tag-reel { background: var(--orange); }
+  .tag-lancement { background: #e05555; }
+  .tag-contenu { background: var(--green); color: #333; }
+  .tag-vide { background: rgba(0,0,0,0.08); color: #999; }
+
+  .post-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.4;
+  }
+
+  .post-color {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--mid);
+  }
+
+  .color-swatch {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+
+  .empty {
+    font-size: 12px;
+    color: rgba(0,0,0,0.25);
+    font-style: italic;
+  }
+
+  .today-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--yellow);
+    color: var(--dark);
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .alert-box {
+    background: #fff8e6;
+    border: 1.5px solid var(--yellow);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #7a6000;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .sept-banner {
+    background: var(--dark);
+    color: white;
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .sept-banner .emoji { font-size: 36px; margin-bottom: 12px; }
+
+  .sept-banner h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--yellow);
+    font-style: italic;
+  }
+
+  .sept-banner p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(0,0,0,0.07);
+    margin: 32px 0;
+  }
+
+  @media (max-width: 480px) {
+    .week-days { grid-template-columns: 1fr; }
+    .day { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .day:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">bri<em>lle</em> ✦</div>
+  <p>Calendrier Instagram · Avril → Septembre 2025</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="dot" style="background:var(--blue)"></div> Carrousel</div>
+  <div class="legend-item"><div class="dot" style="background:var(--purple)"></div> Teaser couleur unie</div>
+  <div class="legend-item"><div class="dot" style="background:var(--orange)"></div> Reel</div>
+  <div class="legend-item"><div class="dot" style="background:var(--green)"></div> Contenu à créer</div>
+  <div class="legend-item"><div class="dot" style="background:#e05555"></div> Lancement</div>
+</div>
+
+<div class="container">
+
+  <!-- PHASE 1 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:var(--blue)">Phase 1</span>
+      <div>
+        <div class="phase-title">Poser les bases</div>
+        <div class="phase-desc">Avril → 20 Mai · Tu présentes Brille et ton univers</div>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      ⚠️ Après le 20 mai tu n'as plus de contenu prêt. On va construire la suite ensemble dans la Phase 2 !
+    </div>
+
+    <!-- Semaine 30 avril -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="today-badge">Aujourd'hui</div>
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--pink)">30 Avril</div>
+          <span class="post-tag tag-carrousel">📸 Carrousel</span>
+          <div class="post-title">La Fleur QVE — 7 pétales pour comprendre ton enfant</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8b4d8"></div> Couleur rose poudré</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--purple)">4 Mai</div>
+          <span class="post-tag tag-teaser">🟣 Teaser</span>
+          <div class="post-title">Couleur unie rose · "Quel pétale est le plus chaud chez toi ?"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8b4d8"></div> Fond rose poudré</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 7 mai -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--orange)">7 Mai</div>
+          <span class="post-tag tag-carrousel">📸 Carrousel</span>
+          <div class="post-title">Mes 4 offres — Étincelle, Lueur, Rayon, Main Tendue</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8a864"></div> Couleur orange doux</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--orange)">11 Mai</div>
+          <span class="post-tag tag-teaser">🟠 Teaser</span>
+          <div class="post-title">Couleur unie orange · "Lequel des 4 ateliers te parle le plus ?"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8a864"></div> Fond orange doux</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 14 mai -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--green)">14 Mai</div>
+          <span class="post-tag tag-carrousel">📸 Carrousel</span>
+          <div class="post-title">Auto-audit QVE — "Et si tu faisais le point sur ton enfant ?"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#b8d4a8"></div> Couleur vert sauge</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--green)">18 Mai</div>
+          <span class="post-tag tag-teaser">🟢 Teaser</span>
+          <div class="post-title">Couleur unie vert · "As-tu fait le test ? Le lien est en bio 👆"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#b8d4a8"></div> Fond vert sauge</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PHASE 2 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:var(--yellow); color:#333">Phase 2</span>
+      <div>
+        <div class="phase-title">Créer l'anticipation</div>
+        <div class="phase-desc">21 Mai → Août · Tu teases l'application sans tout révéler</div>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      💡 À partir d'ici, tu alternes entre contenu éducatif à créer et teasers mystère pour l'appli. Je peux t'écrire tous ces textes !
+    </div>
+
+    <!-- Semaine 21 mai -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--blue)">21 Mai</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Contenu éducatif · "C'est quoi vraiment la QVE ?"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#a8c4e0"></div> Couleur bleu ciel</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--blue)">25 Mai</div>
+          <span class="post-tag tag-teaser">🔵 Teaser</span>
+          <div class="post-title">Couleur unie bleu · "3 signes que ton enfant cherche ses mots"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#a8c4e0"></div> Fond bleu ciel</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 28 mai -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--orange)">28 Mai</div>
+          <span class="post-tag tag-reel">🎬 Reel</span>
+          <div class="post-title">"3 signes que ton enfant ne brille pas encore"</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--yellow); -webkit-text-stroke: 0.5px #999">1 Juin</div>
+          <span class="post-tag tag-teaser">🟡 Teaser</span>
+          <div class="post-title">Couleur unie jaune · "Je prépare quelque chose… 👀"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#f0e575"></div> Fond jaune doux</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 4 juin -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--pink)">4 Juin</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Coulisses · "Ce que j'ai appris en créant Brille"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8b4d8"></div> Couleur rose</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--pink)">8 Juin</div>
+          <span class="post-tag tag-teaser">🩷 Teaser</span>
+          <div class="post-title">Couleur unie rose · "Ton plus grand défi avec ton enfant en ce moment ?"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8b4d8"></div> Fond rose</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 11 juin -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--green)">11 Juin</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Éducatif · "Kanban, 5S… comment l'ingénierie aide les familles"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#b8d4a8"></div> Couleur vert</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--green)">15 Juin</div>
+          <span class="post-tag tag-teaser">🟢 Teaser</span>
+          <div class="post-title">Couleur unie vert · "Et si les familles loin du centre social pouvaient aussi en bénéficier ? 👀"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#b8d4a8"></div> Fond vert</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Semaine 18 juin -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--orange)">18 Juin</div>
+          <span class="post-tag tag-reel">🎬 Reel</span>
+          <div class="post-title">"Pourquoi j'ai créé Brille — mon histoire en 45 secondes"</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--purple)">22 Juin</div>
+          <span class="post-tag tag-teaser">🟣 Teaser</span>
+          <div class="post-title">Couleur unie violet · "Quelque chose arrive pour les familles qui ne peuvent pas venir en atelier…"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#b8a8d8"></div> Fond violet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Juillet -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--blue)">2 Juil.</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Témoignage ou FAQ ateliers</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--blue)">6 Juil.</div>
+          <span class="post-tag tag-teaser">🔵 Teaser mystère</span>
+          <div class="post-title">"Je travaille sur quelque chose de grand pour la rentrée… 🌟"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#a8c4e0"></div> Fond bleu</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--pink)">16 Juil.</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Éducatif · "Comment parler d'émotions avec un enfant de 6-12 ans"</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--pink)">20 Juil.</div>
+          <span class="post-tag tag-teaser">🩷 Teaser</span>
+          <div class="post-title">"Cet été je prépare la rentrée de vos enfants… à distance 👀"</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8b4d8"></div> Fond rose</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Août -->
+    <div class="week">
+      <div class="week-days">
+        <div class="day">
+          <div class="day-label">Mercredi</div>
+          <div class="date" style="color:var(--orange)">20 Août</div>
+          <span class="post-tag tag-contenu">✍️ À créer</span>
+          <div class="post-title">Pré-rentrée · "3 choses à faire avant la rentrée pour que ton enfant brille"</div>
+        </div>
+        <div class="day">
+          <div class="day-label">Dimanche</div>
+          <div class="date" style="color:var(--orange)">24 Août</div>
+          <span class="post-tag tag-teaser">🟠 Teaser final</span>
+          <div class="post-title">"La semaine prochaine… tout se révèle. 🌟 Reste connecté."</div>
+          <div class="post-color"><div class="color-swatch" style="background:#e8a864"></div> Fond orange</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PHASE 3 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-pill" style="background:#e05555">Phase 3</span>
+      <div>
+        <div class="phase-title">Le Grand Lancement 🎉</div>
+        <div class="phase-desc">Septembre · Après ton intervention au centre social</div>
+      </div>
+    </div>
+
+    <div class="sept-banner">
+      <div class="emoji">🌟</div>
+      <h3>Septembre — La révélation</h3>
+      <p>
+        Après ton intervention au centre social,<br>
+        tu postes LE post de lancement de l'application.<br><br>
+        Photo ou vidéo de toi ce jour-là · L'émotion vraie · La révélation de l'appli<br>
+        Un CTA clair vers l'application et les offres<br><br>
+        <strong style="color:var(--yellow)">Ce post aura 10x plus d'impact<br>parce qu'il sera ancré dans le réel. 💙</strong>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
