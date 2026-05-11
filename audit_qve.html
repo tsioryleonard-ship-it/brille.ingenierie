@@ -598,6 +598,30 @@ function showResults(){
   document.getElementById('results-content').innerHTML=html;
   showPage('page-results');
   setTimeout(function(){burstStarsGlobal();},300);
+  sendToSheet(scores, globalScore);
+}
+
+function sendToSheet(scores, globalScore){
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxurhUReBLq3ekyqz6eqxxDEQTREi3o_NKJ5LYJdSFc1F5fXWw0YOxHFgOmLpY8j9sT/exec';
+  var payload = {
+    prenom: userInfo.prenom || '',
+    age: userInfo.age || '',
+    qui: userInfo.qui || '',
+    score_global: globalScore,
+    p1: scores[0] ? scores[0].score : 0,
+    p2: scores[1] ? scores[1].score : 0,
+    p3: scores[2] ? scores[2].score : 0,
+    p4: scores[3] ? scores[3].score : 0,
+    p5: scores[4] ? scores[4].score : 0,
+    p6: scores[5] ? scores[5].score : 0,
+    p7: scores[6] ? scores[6].score : 0
+  };
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }).catch(function(){});
 }
 
 function restartAudit(){answers={};currentPetal=0;showPage('page-hero');}
