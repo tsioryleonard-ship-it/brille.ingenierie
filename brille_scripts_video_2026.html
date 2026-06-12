@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripts Vidéo BRILLE 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+  :root {
+    --blanc:#ffffff;--noir:#000000;--orange:#f49f4c;--rose:#f5abaf;
+    --peche:#fdd5a5;--jaune:#f8f4b8;--bleu:#a4c2e7;--cyan:#a8dbeb;
+    --vert:#cbe1b6;--mauve:#b8aed7;--lilas:#ebc6e0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f7f7f5;color:#222;}
+
+  /* NAV MOIS */
+  nav.nav-mois{position:sticky;top:0;z-index:100;background:var(--blanc);border-bottom:1px solid #eee;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  nav.nav-mois::-webkit-scrollbar{display:none;}
+  .nav-btn{padding:14px 16px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;white-space:nowrap;color:#aaa;border-bottom:3px solid transparent;transition:all 0.2s;}
+  .nav-btn.active,.nav-btn:hover{color:#222;border-bottom-color:#222;}
+
+  /* HEADER */
+  header{background:var(--blanc);padding:36px 40px 28px;border-bottom:1px solid #eee;}
+  .logo{font-size:32px;font-weight:700;letter-spacing:-1px;}
+  .logo span{display:inline-block;width:26px;height:16px;border-radius:0 0 16px 16px;background:linear-gradient(135deg,#a8dbeb,#f8f4b8,#f49f4c);margin-left:3px;vertical-align:middle;transform:translateY(1px);}
+  .header-sub{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#aaa;margin-top:4px;}
+
+  /* MOIS SECTION */
+  .mois-section{display:none;padding:28px 40px;max-width:1200px;margin:0 auto;}
+  .mois-section.visible{display:block;}
+  .mois-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #eee;flex-wrap:wrap;}
+  .mois-badge{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .mois-titre{font-size:20px;font-weight:700;}
+  .mois-petale{font-size:13px;color:#888;margin-top:2px;}
+
+  /* ONGLETS SOUS-NAVIGATION */
+  .tabs-bar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:20px;border:2px solid #eee;background:var(--blanc);font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;color:#aaa;cursor:pointer;transition:all 0.2s;}
+  .tab-btn.active{border-color:#222;color:#222;background:#fff;}
+  .tab-btn.mise-en-scene-btn{border-color:var(--orange);color:var(--orange);}
+  .tab-btn.mise-en-scene-btn.active{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+  /* CONTENU ONGLETS */
+  .tab-content{display:none;}
+  .tab-content.visible{display:block;}
+
+  /* GRILLE PLATEFORMES */
+  .plateformes-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:20px;}
+
+  /* SCRIPT CARD */
+  .script-card{background:var(--blanc);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .script-card-header{padding:14px 20px;display:flex;align-items:center;gap:10px;}
+  .plateforme-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+  .plateforme-name{font-size:13px;font-weight:700;}
+  .plateforme-format{font-size:11px;color:#888;margin-top:1px;}
+  .linkedin-header{background:#e8f0f9;}
+  .insta-header{background:#fde8f5;}
+  .fb-header{background:#e8eef9;}
+  .tiktok-header{background:#e0f5f5;}
+  .script-body{padding:18px 20px;}
+  .script-block{margin-bottom:14px;}
+  .block-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:5px;}
+  .hook-label{color:#f49f4c;}
+  .corps-label{color:#888;}
+  .cta-label{color:#a4c2e7;}
+  .note-label{color:#b8aed7;}
+  .script-text{font-size:13px;line-height:1.7;color:#333;background:#fafafa;border-radius:10px;padding:12px 14px;border-left:3px solid transparent;}
+  .hook-text{border-left-color:#f49f4c;background:#fffbf5;}
+  .cta-text{border-left-color:#a4c2e7;background:#f5f8fd;}
+  .note-text{border-left-color:#b8aed7;background:#f8f5fd;font-style:italic;font-size:12px;}
+
+  /* MISE EN SCÈNE */
+  .mise-en-scene-card{background:var(--blanc);border-radius:16px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .mes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:20px;}
+  .mes-bloc{border-radius:12px;padding:16px 18px;}
+  .mes-bloc-titre{font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:10px;}
+  .mes-item{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+  .mes-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+  .mes-text{font-size:13px;line-height:1.5;color:#333;}
+  .mes-text strong{font-weight:600;}
+
+  .bloc-setup{background:#fffbf5;}
+  .bloc-setup .mes-bloc-titre{color:#f49f4c;}
+  .bloc-tenue{background:#fde8f5;}
+  .bloc-tenue .mes-bloc-titre{color:#c4608a;}
+  .bloc-tournage{background:#f0f7ff;}
+  .bloc-tournage .mes-bloc-titre{color:#2d6fa3;}
+  .bloc-montage{background:#f0f9f0;}
+  .bloc-montage .mes-bloc-titre{color:#4a7a4a;}
+  .bloc-posture{background:#f8f5fd;}
+  .bloc-posture .mes-bloc-titre{color:#7a5a9a;}
+
+  .mes-intro{font-size:14px;line-height:1.6;color:#555;padding:16px;background:#f9f9f7;border-radius:10px;margin-bottom:4px;}
+
+  /* TEMPS FORT */
+  .temps-fort-band{background:linear-gradient(135deg,#fff8ef,#fff);border:1px solid #fdd5a5;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+  .tf-icon{font-size:20px;flex-shrink:0;}
+  .tf-titre{font-size:12px;font-weight:700;color:#f49f4c;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+  .tf-text{font-size:12px;color:#666;line-height:1.5;}
+
+  @media(max-width:768px){
+    .plateformes-grille{grid-template-columns:1fr;}
+    .mes-grid{grid-template-columns:1fr;}
+    header,.mois-section{padding:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">brille<span></span></div>
+  <div class="header-sub">Scripts vidéo · Juin – Décembre 2026 · 4 plateformes + mise en scène</div>
+</header>
+
+<nav class="nav-mois">
+  <button class="nav-btn active" onclick="showMois('juin',this)">Juin</button>
+  <button class="nav-btn" onclick="showMois('juillet',this)">Juillet</button>
+  <button class="nav-btn" onclick="showMois('aout',this)">Août</button>
+  <button class="nav-btn" onclick="showMois('septembre',this)">Septembre</button>
+  <button class="nav-btn" onclick="showMois('octobre',this)">Octobre</button>
+  <button class="nav-btn" onclick="showMois('novembre',this)">Novembre</button>
+  <button class="nav-btn" onclick="showMois('decembre',this)">Décembre</button>
+</nav>
+
+<!-- ======================================================= -->
+<!-- JUIN -->
+<!-- ======================================================= -->
+<div class="mois-section visible" id="juin">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--peche)">Juin 2026</div>
+    <div>
+      <div class="mois-titre">La vidéo fondatrice BRILLE</div>
+      <div class="mois-petale">🌟 C'est quoi la QVE — et pourquoi j'ai créé BRILLE</div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('juin','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('juin','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('juin','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('juin','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('juin','mes',this)">🎬 Mise en scène</button>
+  </div>
+
+  <div class="tab-content visible" id="juin-linkedin">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header linkedin-header">
+          <div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div>
+          <div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Posture experte</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Est-ce qu'on parle assez de la qualité de vie des enfants de 6 à 12 ans ?<br><br>On parle beaucoup de la qualité de vie au travail. On a des outils, des indicateurs, des dispositifs. Mais pour les enfants — et en particulier pour cette tranche d'âge qu'on appelle "les grands petits" — on n'a presque rien.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Moi c'est Tsiory. Je suis ingénieure QVE — Qualité de Vie de l'Enfant. Et j'ai créé BRILLE Ingénierie pour combler ce manque.<br><br>Mon parcours : un Master 2 en ingénierie de formation, un mémoire sur la QVT — la qualité de vie au travail. Et un jour j'ai réalisé que tout ce que j'avais étudié sur le bien-être des adultes en organisation pouvait être transposé à l'enfant.<br><br>La QVE, c'est ça : regarder l'enfant dans sa globalité. Pas seulement ses résultats scolaires. Pas seulement ses comportements. Mais ses émotions, ses liens, ses droits, son énergie, ce qui le fait briller.<br><br>J'ai modélisé ça en une Fleur QVE à 7 pétales. Et j'interviens dans les centres sociaux avec des ateliers collectifs — non thérapeutiques, sans diagnostic, sans compte rendu nominatif — pour que chaque enfant reparte avec un peu plus de lumière.<br><br>Ce n'est pas de la thérapie. Ce n'est pas du soutien scolaire. C'est de l'ingénierie socio-éducative. Et ça commence par un ancrage légal fort : la Convention Internationale des Droits de l'Enfant, et le Code civil sur l'autorité parentale.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Si vous travaillez avec des familles, si vous pilotez un centre social ou un dispositif d'accompagnement à la parentalité — je serais heureuse d'échanger avec vous sur comment BRILLE peut s'intégrer à vos actions.<br><br>La suite dans les prochaines vidéos : chaque mois, un pétale de la QVE expliqué.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="juin-instagram">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header insta-header">
+          <div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div>
+          <div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Version condensée</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Est-ce que ton enfant sait ce qui le fait briller ?<br><br>Pas ses notes. Pas ce que les autres pensent de lui. Ce qui le fait vraiment briller, lui.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Moi c'est Tsiory, je suis ingénieure QVE — Qualité de Vie de l'Enfant. J'ai créé BRILLE pour les enfants de 6 à 12 ans et leurs familles.<br><br>La QVE c'est une façon de regarder ton enfant dans sa globalité : ses émotions, ses liens, ses droits, ce qui l'équilibre, ce qui l'anime.<br><br>J'interviens dans les centres sociaux avec des ateliers collectifs — en groupe, en présentiel, avec les enfants et leurs parents. Pas de thérapie. Pas de diagnostic. Juste de l'espace pour que chaque enfant puisse se découvrir et grandir.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Chaque mois je parle d'un aspect de la QVE. Suis le compte pour ne rien manquer.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="juin-facebook">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header fb-header">
+          <div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div>
+          <div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Parents, récit</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Je suis maman de trois enfants. Et un jour j'ai réalisé que mon expertise professionnelle — je travaillais sur le bien-être au travail — pouvait servir à mes propres enfants. Et aux enfants de plein de familles autour de moi.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">C'est comme ça qu'est née BRILLE. BRILLE c'est une micro-entreprise que j'ai créée pour proposer des ateliers collectifs pour les enfants de 6 à 12 ans et leurs familles, dans les centres sociaux.<br><br>Ma démarche s'appelle la QVE — la Qualité de Vie de l'Enfant. C'est une façon de regarder l'enfant dans sa globalité, pas juste à travers ses résultats scolaires ou ses comportements.<br><br>J'ai construit une Fleur QVE avec 7 pétales : les émotions, les apprentissages, les liens, les droits, l'énergie, ce qui fait briller l'enfant, et son organisation. Chaque atelier travaille un ou plusieurs de ces pétales.<br><br>Ce n'est pas de la thérapie. Ce n'est pas du suivi individuel. C'est du collectif, du concret, et du positif. Pour que les enfants repartent en sachant un peu mieux qui ils sont.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Si tu as des enfants entre 6 et 12 ans, ou si tu connais un centre social près de chez toi, partage cette vidéo. Ce que je fais mérite d'être connu.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="juin-tiktok">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header tiktok-header">
+          <div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div>
+          <div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Hook fort</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook — 1ère seconde</div>
+            <div class="script-text hook-text">On m'a dit que ce que je fais c'est de la thérapie déguisée. Laisse-moi t'expliquer pourquoi c'est faux.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Je m'appelle Tsiory. J'ai un Master en ingénierie de formation. J'ai transposé la qualité de vie au travail — la QVT — aux enfants. Et j'ai créé la QVE : la Qualité de Vie de l'Enfant.<br><br>La QVE c'est pas un diagnostic. C'est pas un suivi thérapeutique. C'est des ateliers collectifs dans les centres sociaux, pour les enfants de 6 à 12 ans, qui travaillent sur leurs émotions, leurs liens, leurs droits, ce qui les fait briller.<br><br>Du collectif. Du concret. Du positif. Sans étiquette.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">C'est ça BRILLE. Suis le compte — chaque mois j'explique un aspect de la QVE.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="juin-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">La vidéo fondatrice — c'est la plus importante de l'année. Elle pose qui tu es, ce que tu fais, et pourquoi. Elle doit refléter la solidité et la chaleur de BRILLE. Soigne-la plus que les autres.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">🖼️</div><div class="mes-text"><strong>Fond :</strong> mur blanc derrière toi. La Fleur QVE A3 encadrée visible dans le cadre, légèrement sur le côté — elle sert d'ancre visuelle BRILLE.</div></div>
+          <div class="mes-item"><div class="mes-icon">📱</div><div class="mes-text"><strong>Cadrage :</strong> mi-corps (taille jusqu'en haut de la tête). Téléphone sur trépied, à hauteur des yeux. Ne regarde pas l'écran — regarde l'objectif.</div></div>
+          <div class="mes-item"><div class="mes-icon">☀️</div><div class="mes-text"><strong>Lumière :</strong> lumière naturelle de face (fenêtre devant toi). Si tu filmes le soir, lampe de bureau face à toi, pas de côté.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎙️</div><div class="mes-text"><strong>Son :</strong> micro-trépied, voix claire, zéro musique pendant que tu parles. Silence dans la pièce.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">✨</div><div class="mes-text"><strong>Tenue fondatrice :</strong> col en V ou encolure marquée (valorise ton décolleté et la silhouette), ceinturée ou avec taille marquée. Couleur sobre ou ton pastel BRILLE (pêche, vert doux).</div></div>
+          <div class="mes-item"><div class="mes-icon">💍</div><div class="mes-text"><strong>Accessoires :</strong> longues boucles d'oreilles (équilibrent le visage rond), pas de collier encombrant.</div></div>
+          <div class="mes-item"><div class="mes-icon">🚫</div><div class="mes-text"><strong>À éviter :</strong> rayures horizontales, hauts à col roulé fermé, couleurs qui "disparaissent" dans le fond blanc.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">🔁</div><div class="mes-text"><strong>Méthode :</strong> lis le script à voix haute 2-3 fois avant de filmer. Puis filme par blocs (hook / corps / CTA) — pas en une seule prise.</div></div>
+          <div class="mes-item"><div class="mes-icon">⏸️</div><div class="mes-text"><strong>Pauses :</strong> marque des silences entre les idées. Ne parle pas trop vite — c'est une vidéo de fond, pas un TikTok.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌺</div><div class="mes-text"><strong>Prop optionnel :</strong> tenir la Fleur QVE imprimée en A4 au moment où tu l'expliques — visuel fort, très mémorable.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage & sous-titres</div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Sous-titres :</strong> obligatoires sur toutes les plateformes. Utilise CapCut (gratuit) — génération automatique puis correction manuelle.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎵</div><div class="mes-text"><strong>Musique :</strong> si tu veux un fond, musique douce en intro/outro seulement. Volume très bas. Jamais pendant que tu parles.</div></div>
+          <div class="mes-item"><div class="mes-icon">🏷️</div><div class="mes-text"><strong>Logo :</strong> logo BRILLE en bas à droite, petit, visible mais discret. Couleur blanche sur fond foncé ou fond blanc avec contour.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">💪</div><div class="mes-text"><strong>Ton :</strong> posé, assuré, chaleureux. Tu n'es pas en train de "vendre" — tu partages une conviction. Parle comme tu parlerais à une collègue intelligente.</div></div>
+          <div class="mes-item"><div class="mes-icon">😊</div><div class="mes-text"><strong>Énergie :</strong> sourire intérieur — pas forcé. Cette vidéo te présente, elle doit refléter qui tu es vraiment.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>Le mot à ne pas dire :</strong> "thérapie". Dis toujours "ingénierie", "collectif", "non-thérapeutique".</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- JUILLET -->
+<!-- ======================================================= -->
+<div class="mois-section" id="juillet">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--rose)">Juillet 2026</div>
+    <div>
+      <div class="mois-titre">Mes émotions apprivoisées</div>
+      <div class="mois-petale">🌸 Pétale QVE · Pourquoi ton enfant "explose"</div>
+    </div>
+  </div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('juillet','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('juillet','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('juillet','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('juillet','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('juillet','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="juillet-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Angle professionnel</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Dans les centres sociaux, les accompagnateurs du soutien scolaire me disent tous la même chose : le soir, certains enfants explosent. Crises, larmes, blocages. Et personne ne sait vraiment quoi faire.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Ce n'est pas un problème de comportement. C'est souvent un problème de vocabulaire émotionnel.<br><br>Ces enfants ne savent pas nommer ce qu'ils ressentent. Et ce qu'on ne peut pas nommer, on ne peut pas réguler.<br><br>Le premier pétale de la Fleur QVE s'appelle "Mes émotions apprivoisées". Ce pétale travaille trois choses : nommer l'émotion, l'exprimer, la réguler. Dans cet ordre. Sans diagnostic. Sans thérapie.<br><br>Dans mes ateliers collectifs, on crée un espace où l'enfant apprend à mettre des mots sur ce qu'il vit. Pas pour le "réparer" — mais pour lui donner des outils qu'il utilisera toute sa vie.<br><br>Et ce travail bénéficie aussi aux parents et aux accompagnateurs. Parce qu'un enfant qui sait dire "je suis frustré" plutôt que de claquer la porte, ça change tout le climat familial.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Si vous pilotez un dispositif d'accompagnement à la scolarité ou un café-parents, ce pétale peut faire partie d'un atelier BRILLE dans votre structure. Contactez-moi en message privé.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="juillet-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Liste engageante</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">3 signes que ton enfant a du mal à gérer ses émotions — et ce n'est pas ce que tu crois.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Premier signe : il dit "je sais pas" quand tu lui demandes comment il se sent. Ce n'est pas de l'indifférence. Il n'a juste pas le vocabulaire.<br><br>Deuxième signe : il explose pour des "petites choses". En fait, ces petites choses s'accumulent depuis le matin et il n'a pas pu les exprimer.<br><br>Troisième signe : il préfère se taire ou s'isoler. C'est sa façon à lui de réguler — mais seul, sans outils.<br><br>Dans les ateliers BRILLE on travaille exactement ça : nommer, exprimer, réguler. En groupe, avec des enfants de 6 à 12 ans. Dans les centres sociaux.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Tu reconnais ton enfant dans ces signes ? Dis-moi en commentaire.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="juillet-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Vécu maman</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Est-ce que ça t'arrive, le soir, que ton enfant rentre de l'école et que ça explose pour rien ? Le cartable qui tombe, la collation pas à son goût — et là c'est la crise.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Moi oui. Et pendant longtemps j'ai cru que c'était un problème de caractère, de discipline. Jusqu'à ce que je comprenne, à travers mon travail sur la QVE, que mon enfant n'avait tout simplement pas les mots.<br><br>Toute la journée, il ressent des choses — de la frustration, de la fatigue, de la déception — et il ne sait pas comment les exprimer. Alors ça sort comme ça peut. En explosion.<br><br>Le premier pétale de la Fleur QVE travaille exactement ça. Nommer ce qu'on ressent, l'exprimer sans blesser, se réguler. Ce n'est pas de la psychologie. Ce n'est pas de la thérapie. Ce sont des outils concrets, en groupe, adaptés aux enfants de 6 à 12 ans.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Est-ce que tu reconnais cette situation chez toi ? Partage en commentaire — je lis tout.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="juillet-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Hook provoc</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Les accompagnateurs scolaires me disent que les enfants explosent le soir. Voilà pourquoi — et ce n'est pas un problème de discipline.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Toute la journée, ces enfants accumulent des émotions qu'ils ne savent pas nommer. Frustration, fatigue, déception. Et le soir, ça sort. Pas parce qu'ils sont "difficiles". Parce qu'ils n'ont pas le vocabulaire émotionnel pour faire autrement.<br><br>Ce que je fais dans les ateliers BRILLE : leur donner ce vocabulaire. Nommer. Exprimer. Réguler. En groupe. Sans diagnostic. Sans étiquette.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Je suis Tsiory, ingénieure QVE. C'est le pétale "Mes émotions apprivoisées" de la Fleur QVE.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="juillet-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Juillet c'est l'été — profite de la lumière naturelle. Le sujet est chaleureux et concret (les émotions des enfants). Ta posture peut être un peu plus détendue qu'en juin, tout en restant experte.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">🖼️</div><div class="mes-text"><strong>Fond :</strong> mur blanc ou fond légèrement coloré (rose pâle ou pêche BRILLE). Fleur QVE visible, pétale rose/émotions mis en évidence si possible.</div></div>
+          <div class="mes-item"><div class="mes-icon">☀️</div><div class="mes-text"><strong>Lumière :</strong> lumière d'été de face. Évite le contre-jour. Si tu filmnes en plein été, le matin tôt ou en fin d'après-midi pour une lumière douce.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎙️</div><div class="mes-text"><strong>Son :</strong> micro-trépied. Fenêtres fermées si rue bruyante l'été.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">🌸</div><div class="mes-text"><strong>Couleur :</strong> ton rose doux ou pêche BRILLE — en écho au pétale "émotions". Taille marquée, V-neck.</div></div>
+          <div class="mes-item"><div class="mes-icon">💍</div><div class="mes-text"><strong>Accessoires :</strong> boucles longues, couleur chaude (dorée, corail). Légèreté estivale assumée.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">✋</div><div class="mes-text"><strong>Gestes :</strong> pour la version Instagram (les 3 signes), lève un doigt à chaque signe — "premier signe", "deuxième signe". Simple, visuel, mémorable.</div></div>
+          <div class="mes-item"><div class="mes-icon">💬</div><div class="mes-text"><strong>Ton :</strong> plus chaleureux et proche qu'en juin. Tu parles à une maman, pas à un directeur de centre. Laisse entrer un peu de ta propre expérience.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">🔢</div><div class="mes-text"><strong>Sur Instagram :</strong> affiche les 3 signes en texte à l'écran au moment où tu les énonces. Format liste visuelle très partageable.</div></div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Sous-titres :</strong> toujours obligatoires. Mots-clés : "émotions", "nommer", "réguler", "enfant 6-12 ans".</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">❤️</div><div class="mes-text"><strong>Double casquette :</strong> tu parles en tant que maman ET experte. Ne cache pas la maman — c'est ce qui rend ce contenu authentique et différent.</div></div>
+          <div class="mes-item"><div class="mes-icon">🚫</div><div class="mes-text"><strong>À éviter :</strong> être trop clinique sur ce sujet. Les émotions c'est humain — parle-en de façon humaine.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- AOÛT -->
+<!-- ======================================================= -->
+<div class="mois-section" id="aout">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--lilas)">Août 2026</div>
+    <div><div class="mois-titre">Pourquoi les 6-12 ans ?</div><div class="mois-petale">💬 Positionnement · La prévention plutôt que la réparation</div></div>
+  </div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('aout','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('aout','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('aout','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('aout','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('aout','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="aout-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Argument professionnel</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Quand je dis que j'interviens auprès des enfants de 6 à 12 ans, on me répond souvent : "Mais ce sont les adolescents qui sont vraiment en difficulté, non ?" C'est une question légitime. Voilà ma réponse.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Les 6-12 ans, c'est la fenêtre de construction. C'est là que se forment l'estime de soi, les repères relationnels, le rapport à l'apprentissage, la capacité à exprimer ses émotions.<br><br>Si ces fondations sont solides à 12 ans, l'adolescence sera plus navigable. Si elles sont fragiles, l'adolescence amplifie ces fragilités.<br><br>Intervenir à 8 ou 10 ans, c'est de la prévention. Intervenir à 15 ans, c'est souvent de la réparation. Et la réparation coûte infiniment plus — en temps, en ressources, en souffrance pour l'enfant et sa famille.<br><br>Ma démarche QVE s'inscrit dans une logique de prévention précoce et de promotion du bien-être.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Et vous, dans vos structures, comment pensez-vous la prévention chez les "grands petits" ? Je serais curieuse d'échanger.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="aout-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Opinion directe</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Tout le monde parle des ados. Moi j'ai choisi les 6-12 ans. Voilà pourquoi.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Parce que c'est entre 6 et 12 ans que tout se construit. L'estime de soi. Le rapport aux autres. La façon de gérer les émotions. La confiance en ses capacités.<br><br>Ce que l'enfant construit — ou ne construit pas — pendant ces années, il le porte dans son adolescence et dans sa vie d'adulte.<br><br>Travailler avec les 6-12 ans, c'est planter des graines. Et les graines plantées tôt, elles poussent fort.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Tu es d'accord avec ce choix ? Dis-moi en commentaire.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="aout-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Discussion ouverte</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Est-ce que tu trouves que ton enfant de 8 ou 9 ans reçoit suffisamment de soutien — pas scolaire, mais pour lui, pour ce qu'il vit, ce qu'il ressent ?</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Moi quand je regarde mes propres enfants à cet âge, je vois des êtres qui grandissent vite, qui absorbent tout, qui font face à beaucoup — sans toujours avoir les outils pour traverser ce qu'ils vivent.<br><br>On attend souvent l'adolescence pour s'inquiéter. Mais l'adolescence, c'est souvent là où les fondations fragiles se révèlent.<br><br>C'est pour ça que j'ai choisi les 6-12 ans. Cette tranche d'âge qu'on appelle "les grands petits" — trop grands pour être des bébés, pas encore des ados. Et souvent un peu oubliés dans les dispositifs de soutien.<br><br>BRILLE c'est fait pour eux.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Et toi, tu ressens quoi par rapport à cet âge-là chez ton enfant ? J'aimerais vraiment savoir.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="aout-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Affirmation forte</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Non, ce ne sont pas les ados les plus fragiles. Ce sont les 6-12 ans qu'on oublie.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Entre 6 et 12 ans, tout se construit. L'estime de soi. Les émotions. Les relations. Le sens de ce qu'on apprend.<br><br>Si ces bases sont solides, l'adolescence est navigable. Si elles sont fragiles, l'adolescence les fracture.<br><br>Moi je travaille avec les 6-12 ans. La prévention vaut mieux que la réparation. Et ces enfants méritent qu'on s'occupe d'eux maintenant.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">C'est ça BRILLE. Je suis Tsiory, ingénieure QVE.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="aout-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Août c'est une vidéo de positionnement — tu assumes un choix face à des objections. Le ton doit être direct, assuré, sans agressivité. C'est une conversation honnête, pas un débat.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">🖼️</div><div class="mes-text"><strong>Fond :</strong> mur blanc, setup habituel. Pas de distraction visuelle — cette vidéo c'est toi et ton argument. La Fleur QVE peut être présente mais moins mise en avant.</div></div>
+          <div class="mes-item"><div class="mes-icon">☀️</div><div class="mes-text"><strong>Lumière :</strong> lumière douce, pas trop dure. Août peut être fort en lumière directe — diffuse avec un rideau fin si besoin.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">💜</div><div class="mes-text"><strong>Couleur :</strong> mauve ou lilas BRILLE — écho à la couleur du mois (positionnement). Ou tenue sobre et affirmée, taille marquée.</div></div>
+          <div class="mes-item"><div class="mes-icon">💍</div><div class="mes-text"><strong>Accessoires :</strong> boucles longues, posture assumée. Pas trop chargée — le message doit primer.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">👁️</div><div class="mes-text"><strong>Regard :</strong> regarde l'objectif en permanence sur cette vidéo. Tu réponds à une objection — le regard direct renforce la conviction.</div></div>
+          <div class="mes-item"><div class="mes-icon">⏱️</div><div class="mes-text"><strong>Rythme :</strong> un peu plus dynamique que juin. Tu peux accélérer légèrement sur le corps et ralentir sur la conclusion.</div></div>
+          <div class="mes-item"><div class="mes-icon">✋</div><div class="mes-text"><strong>Geste clé :</strong> sur TikTok/Instagram, pointer du doigt vers la caméra au moment du hook renforce l'impact.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">📊</div><div class="mes-text"><strong>Visuel optionnel :</strong> sur LinkedIn, ajouter une slide simple "Prévention vs Réparation" en insert peut renforcer l'argument professionnel.</div></div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Texte à l'écran :</strong> "6-12 ans = fenêtre de construction" — phrase clé à afficher lors du montage.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">💪</div><div class="mes-text"><strong>Ton :</strong> conviction calme. Tu n'es pas en train de te défendre — tu expliques un choix réfléchi. La différence est importante dans l'énergie.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌱</div><div class="mes-text"><strong>Image forte :</strong> la métaphore des "graines plantées tôt" est ta signature visuelle ce mois-ci. Dis-la avec l'énergie qu'elle mérite.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- SEPTEMBRE -->
+<!-- ======================================================= -->
+<div class="mois-section" id="septembre">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--mauve)">Septembre 2026</div>
+    <div><div class="mois-titre">Le sens de mes apprentissages</div><div class="mois-petale">📚 Pétale QVE · La rentrée autrement</div></div>
+  </div>
+  <div class="temps-fort-band"><div class="tf-icon">⚡</div><div><div class="tf-titre">Temps fort rentrée</div><div class="tf-text">Publier dans la première semaine de septembre. C'est le pic de visibilité naturel pour tout contenu lié aux enfants et à l'école.</div></div></div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('septembre','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('septembre','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('septembre','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('septembre','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('septembre','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="septembre-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Ancrage pédagogique</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">C'est la rentrée. Et la première question qu'on pose à un enfant c'est : "Tu as eu quoi comme notes ?" Pas : "Est-ce que tu comprends pourquoi tu apprends ça ?"</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Le deuxième pétale de la Fleur QVE s'appelle "Le sens de mes apprentissages". Il travaille la curiosité, la motivation intrinsèque, et le rapport personnel de l'enfant à ce qu'il apprend.<br><br>Parce qu'un enfant qui ne comprend pas pourquoi il apprend ne peut pas vraiment apprendre. Il peut mémoriser. Il peut performer. Mais apprendre au sens profond — intégrer, questionner, relier à sa vie — ça demande du sens.<br><br>Un atelier BRILLE sur ce pétale en début d'année scolaire peut faire une vraie différence sur la motivation et l'engagement des enfants dans l'accompagnement.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Vous démarrez des dispositifs d'accompagnement à la scolarité cet automne ? Parlons-en.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="septembre-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Contenu de rentrée</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Ce que ton enfant a besoin d'entendre en ce début d'année — et que l'école ne lui dira pas.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Il a besoin d'entendre que ce qu'il apprend peut avoir du sens pour lui. Pas juste pour avoir des bonnes notes. Pas juste pour faire plaisir. Mais pour lui, sa vie, ce qui l'intéresse.<br><br>Un enfant qui trouve du sens à ce qu'il apprend, il accroche. Même quand c'est difficile.<br><br>La rentrée c'est le bon moment pour poser cette question avec lui : qu'est-ce que tu as envie de découvrir cette année ?</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Bonne rentrée à toi et à tes enfants. C'est quoi leur matière préférée ? Dis-moi en commentaire.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="septembre-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Vécu maman, rentrée</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">La rentrée c'est souvent : les fournitures, les cartables, les emplois du temps. Et puis la question qui revient : est-ce qu'il va bien travailler cette année ?</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Moi aussi je me pose cette question en tant que maman. Mais j'ai appris à me poser une autre question d'abord : est-ce que mon enfant trouve du sens à ce qu'il apprend ?<br><br>Parce que la motivation scolaire, ça ne vient pas de la pression. Ça vient du sens. Un enfant qui comprend pourquoi il apprend quelque chose, il y met de l'énergie.<br><br>Dans les ateliers BRILLE, on travaille ce pétale : "le sens de mes apprentissages". On aide l'enfant à relier ce qu'il apprend à qui il est, à ce qui l'intéresse.<br><br>Ce n'est pas du soutien scolaire. C'est donner à l'enfant une raison d'apprendre.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Et toi, comment tu motives ton enfant à l'école ? Je lis tous vos partages.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="septembre-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Hook rentrée</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">La rentrée c'est dans quelques jours. Voilà ce que je ne dirai plus jamais à mes enfants.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">"Tu dois avoir de bonnes notes." Parce que ça ne crée pas de motivation. Ça crée de la pression.<br><br>Ce que j'ai appris à leur dire à la place : "Qu'est-ce qui t'a intéressé aujourd'hui ?"<br><br>Un enfant qui cherche du sens dans ce qu'il apprend, il accroche. C'est le pétale "le sens de mes apprentissages" de la Fleur QVE. Je suis Tsiory, ingénieure QVE.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Bonne rentrée à tout le monde.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="septembre-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Septembre = rentrée. C'est LE moment le plus fort de l'année pour ce sujet. Publie impérativement dans les 3 premiers jours de septembre. La vidéo doit sentir la rentrée — légèrement plus dynamique, énergie "nouveau départ".</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">📚</div><div class="mes-text"><strong>Prop optionnel :</strong> quelques livres empilés visibles dans le cadre (fond) — évocation de la rentrée sans être trop scolaire.</div></div>
+          <div class="mes-item"><div class="mes-icon">🖼️</div><div class="mes-text"><strong>Fond :</strong> mur blanc habituel. Lumière de rentrée — septembre a une lumière dorée magnifique, profites-en.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">💜</div><div class="mes-text"><strong>Couleur :</strong> mauve ou bleu doux BRILLE — écho à la couleur du pétale apprentissages. Ou tenue "rentrée" : sobre, posée, professionnelle mais accessible.</div></div>
+          <div class="mes-item"><div class="mes-icon">✨</div><div class="mes-text"><strong>Énergie tenue :</strong> ni trop décontracté (été fini) ni trop formel. Rentrée = nouveau départ, tenue qui le reflète.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">⚡</div><div class="mes-text"><strong>Rythme :</strong> légèrement plus vif qu'en été. La rentrée a une énergie — laisse-la dans ta voix et ton débit.</div></div>
+          <div class="mes-item"><div class="mes-icon">🗓️</div><div class="mes-text"><strong>Timing :</strong> filmer fin août, publier le 1er ou 2 septembre. Ne rate pas la fenêtre.</div></div>
+          <div class="mes-item"><div class="mes-icon">💬</div><div class="mes-text"><strong>TikTok :</strong> la phrase "ce que je ne dirai plus jamais" doit être dite avec un sourire complice — pas culpabilisant. Tu parles aussi de toi.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Texte à l'écran :</strong> affiche la phrase clé "Qu'est-ce qui t'a intéressé aujourd'hui ?" en grand lors du montage. C'est la phrase mémorable du mois.</div></div>
+          <div class="mes-item"><div class="mes-icon">🏷️</div><div class="mes-text"><strong>Hashtags :</strong> #rentrée2026 #enfants612 #QVE #parentalité — septembre est la meilleure période pour toucher une nouvelle audience.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">🌱</div><div class="mes-text"><strong>Angle maman :</strong> ce mois-ci particulièrement, la double posture maman-ingénieure est très forte. Tu vis la rentrée toi aussi. Dis-le.</div></div>
+          <div class="mes-item"><div class="mes-icon">🚫</div><div class="mes-text"><strong>À éviter :</strong> culpabiliser les parents sur les notes. Le ton est bienveillant et constructif, pas moralisateur.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- OCTOBRE -->
+<!-- ======================================================= -->
+<div class="mois-section" id="octobre">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--vert)">Octobre 2026</div>
+    <div><div class="mois-titre">Pourquoi les centres sociaux ?</div><div class="mois-petale">💬 Positionnement · Terrain vs en ligne</div></div>
+  </div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('octobre','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('octobre','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('octobre','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('octobre','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('octobre','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="octobre-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Choix stratégique</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">On m'a demandé si j'avais peur d'être "bridée" en travaillant avec les centres sociaux plutôt qu'en ligne. C'est une vraie question. Et ma réponse est non — et voilà pourquoi.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Le centre social n'est pas une contrainte pour BRILLE. C'est un choix d'ingénieure.<br><br>Parce que les familles que je veux toucher — les enfants de 6 à 12 ans issus de contextes divers, les parents qui ont besoin de soutien à la parentalité — ces familles ne vont pas chercher une formation en ligne. Elles vont au centre social du quartier, là où elles ont déjà confiance.<br><br>Travailler en partenariat avec les centres sociaux me permet aussi de m'inscrire dans des dispositifs de financement reconnus — comme le REAAP de la CAF — ce qui rend mes ateliers accessibles aux familles sans coût direct pour elles.<br><br>C'est ça l'ingénierie socio-éducative : choisir le bon cadre pour que l'intervention soit efficace, accessible et durable.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Vous êtes directeur ou directrice d'un centre social en Île-de-France ? Parlons de ce qu'on peut construire ensemble.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="octobre-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Réponse directe</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Ma réponse à tous ceux qui me disent de tout faire en ligne.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Je pourrais vendre des formations en ligne. Des lives, des programmes numériques, des PDF téléchargeables. Mais ce n'est pas ma vision.<br><br>BRILLE c'est du collectif, du présentiel, du réel. Des enfants qui se regardent, qui se parlent, qui font ensemble. Des parents dans un espace de confiance.<br><br>Ça, on ne peut pas le faire en ligne. Et les familles que j'accompagne n'ont pas besoin d'un écran de plus — elles ont besoin d'un espace humain.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Tu penses quoi du tout-numérique dans l'accompagnement des familles ? Dis-moi en commentaire.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="octobre-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Pour les parents</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Est-ce que tu fais confiance à ton centre social ? Parce que moi, c'est là que je choisis d'intervenir. Et ce n'est pas un hasard.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Le centre social c'est un endroit que les familles connaissent. Un endroit de proximité, sans jugement. C'est là que les mamans se retrouvent au café-parents. C'est là que les enfants viennent après l'école.<br><br>J'aurais pu faire des ateliers BRILLE en ligne ou dans un cabinet privé. Mais ce n'est pas ma vision.<br><br>Ma vision c'est que les ateliers soient accessibles à toutes les familles. Et pour ça, le centre social est le meilleur endroit. C'est là que la confiance existe déjà. Et c'est là que BRILLE peut faire le plus de bien.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Tu connais un centre social près de chez toi ? Parle-leur de BRILLE — ou partage cette vidéo avec eux.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="octobre-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Contre-pied</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Tout le monde me dit de vendre des formations en ligne. Voilà pourquoi je ne le ferai pas.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Parce que les familles que j'accompagne n'ont pas besoin d'un écran de plus. Elles ont besoin d'un espace réel, collectif, humain.<br><br>Je travaille avec les centres sociaux. Pas parce que c'est la solution facile — mais parce que c'est là que les familles ont déjà confiance. Et la confiance, ça ne se crée pas en ligne.<br><br>BRILLE c'est du présentiel, du collectif, du terrain. Et j'assume ce choix à 100%.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">C'est quoi ta vision de l'accompagnement des familles ? Je veux savoir.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="octobre-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Octobre c'est le mois où tu parles de ton modèle économique et de tes choix stratégiques. Vidéo de conviction — tu n'es pas en train de te justifier, tu affirmes. Automne = énergie de rentrée encore présente, légèrement plus posée.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">🏠</div><div class="mes-text"><strong>Fond :</strong> mur blanc habituel. Lumière d'automne — plus chaude, plus dorée. Laisse-la travailler pour toi.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌺</div><div class="mes-text"><strong>Prop :</strong> la Fleur QVE encadrée bien visible — elle symbolise l'ancrage terrain de BRILLE dans cette vidéo.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">💚</div><div class="mes-text"><strong>Couleur :</strong> vert doux BRILLE ou tenue aux tons automne (ocre, terracotta) — chaleureux et ancré. Évite le bleu froid ce mois-ci.</div></div>
+          <div class="mes-item"><div class="mes-icon">💼</div><div class="mes-text"><strong>Style :</strong> légèrement plus structuré — veste ou haut avec col. Le sujet est professionnel et stratégique.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">👁️</div><div class="mes-text"><strong>Regard caméra :</strong> encore plus important ce mois-ci. Tu assumes un choix face à des personnes qui te remettent en question. Le contact visuel est ta force.</div></div>
+          <div class="mes-item"><div class="mes-icon">🗣️</div><div class="mes-text"><strong>Articulation :</strong> soigne ton articulation sur "ingénierie socio-éducative" et "REAAP" — des mots techniques qui doivent sonner naturel dans ta bouche.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Phrase clé à afficher :</strong> "La confiance, ça ne se crée pas en ligne." — texte à l'écran au moment où tu la dis.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>LinkedIn :</strong> tu peux ajouter un insert texte "REAAP CAF" au moment où tu l'évoques — ça crédibilise immédiatement auprès des professionnels.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">💪</div><div class="mes-text"><strong>Ton :</strong> assumé, sans arrogance. Tu n'es pas en train de critiquer le digital — tu expliques ton choix positif pour les familles.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌍</div><div class="mes-text"><strong>Mot-clé :</strong> "accessible". Dis-le. C'est la valeur centrale de cette vidéo — les ateliers accessibles à toutes les familles.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- NOVEMBRE -->
+<!-- ======================================================= -->
+<div class="mois-section" id="novembre">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--bleu)">Novembre 2026</div>
+    <div><div class="mois-titre">Ma place et mes droits</div><div class="mois-petale">⚖️ Pétale QVE · CIDE + Code civil</div></div>
+  </div>
+  <div class="temps-fort-band"><div class="tf-icon">🎂</div><div><div class="tf-titre">20 novembre — Journée internationale des droits de l'enfant</div><div class="tf-text">Vidéo principale du mois + vidéo courte spéciale le 20/11. Fort potentiel de partage organique ce jour-là.</div></div></div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('novembre','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('novembre','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('novembre','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('novembre','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('novembre','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="novembre-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Ancrage légal CIDE</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Le 20 novembre c'est l'anniversaire de la Convention Internationale des Droits de l'Enfant. Et je voudrais vous expliquer pourquoi ce texte est au cœur de ce que fait BRILLE.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">La CIDE n'est pas juste un texte symbolique. C'est un cadre légal international qui reconnaît l'enfant comme sujet de droits — pas juste comme objet de protection.<br><br>Et en parallèle, le Code civil, notamment l'article 371-1, définit l'autorité parentale comme un ensemble de droits ET de devoirs — des parents envers l'enfant, mais aussi de l'enfant dans le cadre familial.<br><br>Pourquoi c'est important pour BRILLE ? Parce que mes ateliers partent de ce fondement : l'enfant a des droits. Il a aussi des responsabilités. Et comprendre les deux ensemble, c'est lui donner sa place — pas comme un objet qu'on protège, mais comme un être qui participe.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">En ce mois de novembre, si vous organisez des actions autour des droits de l'enfant dans votre structure, BRILLE peut apporter un atelier dédié. Contactez-moi.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="novembre-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">Vidéo + série stories 20/11</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Est-ce que ton enfant connaît ses droits ? Pas dans les livres — vraiment, dans sa vie.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">La Convention Internationale des Droits de l'Enfant dit que chaque enfant a le droit d'être entendu. Le droit à l'éducation. Le droit de s'exprimer. Le droit au repos et au jeu.<br><br>Mais est-ce que nos enfants savent que ces droits existent ?<br><br>Dans les ateliers BRILLE on part de ces droits pour aider l'enfant à comprendre sa place. Et en même temps ses responsabilités. Les deux ensemble.<br><br>Parce qu'un enfant qui connaît ses droits est un enfant qui se respecte — et qui respecte les autres.</div></div>
+        <div class="script-block"><div class="block-label note-label">📅 Note 20 novembre</div><div class="script-text note-text">Série stories du 17 au 20/11 : 1 droit CIDE par jour illustré aux couleurs BRILLE. Le 20/11 : vidéo courte spéciale "Joyeux anniversaire à la CIDE — 37 ans de droits pour les enfants".</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="novembre-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Quiz parents</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Combien de droits de la CIDE est-ce que tu connais ? Sérieusement. Sans chercher sur Google.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">La Convention Internationale des Droits de l'Enfant a 54 articles. Et elle fête ses 37 ans ce mois-ci.<br><br>Un enfant qui sait qu'il a le droit d'être entendu va oser parler. Un enfant qui sait qu'il a le droit au repos va moins culpabiliser de ne pas "toujours travailler". Un enfant qui sait qu'il a une place dans la famille, il grandit autrement.<br><br>Dans les ateliers BRILLE on travaille les deux côtés ensemble. Les droits et les responsabilités. Parce que l'un sans l'autre ne tient pas.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Dis-moi en commentaire : c'est quoi le droit de l'enfant qui te touche le plus en tant que parent ?</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="novembre-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · 20 novembre</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Aujourd'hui c'est l'anniversaire de la CIDE. Et voici 3 droits que même les adultes oublient.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Un : le droit d'être entendu. Pas juste écouté — entendu. Dans les décisions qui concernent l'enfant.<br><br>Deux : le droit au repos et au jeu. Oui, le jeu c'est un droit. Pas une récompense.<br><br>Trois : le droit à l'identité. Chaque enfant a le droit d'être qui il est — sa culture, sa langue, son histoire.<br><br>Ces droits, je les travaille dans les ateliers BRILLE. Parce qu'un enfant qui connaît ses droits sait qu'il a une place.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Joyeux anniversaire à la CIDE. 37 ans de droits pour les enfants.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="novembre-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Novembre c'est le mois le plus "institutionnel" de l'année — CIDE, Code civil. Mais ne tombe pas dans le cours magistral. Reste incarnée. Et pour le 20/11, prépare une vidéo courte distincte — c'est une opportunité de visibilité rare.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">📋</div><div class="mes-text"><strong>Prop clé :</strong> imprime la Fleur QVE avec le pétale "Ma place et mes droits" coloré en bleu bien visible. Tiens-la ou pose-la visible dans le cadre.</div></div>
+          <div class="mes-item"><div class="mes-icon">📖</div><div class="mes-text"><strong>Prop optionnel :</strong> un exemplaire imprimé de la CIDE (disponible en PDF gratuit) visible dans le fond — signal fort de légitimité.</div></div>
+          <div class="mes-item"><div class="mes-icon">💡</div><div class="mes-text"><strong>Lumière :</strong> novembre est sombre — soigne particulièrement l'éclairage. Lampe de bureau face à toi si nécessaire.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">💙</div><div class="mes-text"><strong>Couleur :</strong> bleu doux ou bleu ciel BRILLE — écho direct au pétale "droits". Couleur institutionnelle mais en version pastel, donc accessible.</div></div>
+          <div class="mes-item"><div class="mes-icon">👔</div><div class="mes-text"><strong>Style :</strong> le plus structuré de l'année. Veste ou haut avec col. Ce mois-ci tu incarnes l'ingénieure experte en droit de l'enfant.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">🎂</div><div class="mes-text"><strong>Vidéo 20/11 :</strong> filmer séparément, courte (30-45 sec), ton plus festif et célébratoire. "Joyeux anniversaire CIDE" c'est un moment joyeux, pas solennel.</div></div>
+          <div class="mes-item"><div class="mes-icon">✋</div><div class="mes-text"><strong>TikTok :</strong> lève un doigt à chaque droit énoncé ("un", "deux", "trois"). Format simple, hyper lisible sur mobile.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">📘</div><div class="mes-text"><strong>Texte à l'écran :</strong> affiche "CIDE — 37 ans" et les 3 droits en texte lors du TikTok. Lisibilité maximale.</div></div>
+          <div class="mes-item"><div class="mes-icon">🏷️</div><div class="mes-text"><strong>Hashtags 20/11 :</strong> #droitsdelenfant #CIDE #20novembre — peak de visibilité ce jour-là, sois présente.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">⚖️</div><div class="mes-text"><strong>Ton :</strong> sérieux mais accessible. Tu parles de droit sans faire un cours de droit. L'enjeu c'est que les familles se sentent concernées, pas dépassées.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌟</div><div class="mes-text"><strong>Phrase à incarner :</strong> "L'enfant a des droits. Il a aussi des responsabilités. Les deux ensemble." Dis-la posément, c'est la thèse centrale.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================================================= -->
+<!-- DÉCEMBRE -->
+<!-- ======================================================= -->
+<div class="mois-section" id="decembre">
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--jaune)">Décembre 2026</div>
+    <div><div class="mois-titre">Ce qui me fait briller</div><div class="mois-petale">✨ Pétale QVE · Bilan d'année, récit fondatrice</div></div>
+  </div>
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('decembre','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('decembre','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('decembre','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('decembre','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('decembre','mes',this)">🎬 Mise en scène</button>
+  </div>
+  <div class="tab-content visible" id="decembre-linkedin">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header linkedin-header"><div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div><div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Bilan professionnel</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">En 2026, j'ai lancé BRILLE Ingénierie. Et ce que cette année m'a appris sur l'ingénierie socio-éducative — et sur moi-même — je veux le partager.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">BRILLE c'est une micro-entreprise d'ingénierie QVE. J'ai déployé les premiers ateliers dans les centres sociaux. J'ai construit des partenariats. J'ai appris à tenir ma posture d'ingénieure face aux attentes du terrain.<br><br>Ce que j'ai appris cette année : que le positionnement non-thérapeutique est à la fois ce qui différencie BRILLE — et ce qui demande le plus de pédagogie auprès des partenaires. Que les familles répondent présentes quand l'espace est collectif et sans jugement. Que l'ingénierie socio-éducative est un métier à part entière.<br><br>Ce qui me fait briller c'est ça : voir un enfant repartir d'un atelier en sachant un peu mieux qui il est.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Merci à tous ceux qui ont suivi BRILLE cette année. En 2027, on continue — et on va plus loin.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="decembre-instagram">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header insta-header"><div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div><div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Émotionnel, authentique</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">Cette année m'a appris quelque chose que je n'attendais pas. Voilà ce que BRILLE a allumé en moi.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">J'ai lancé BRILLE pour les enfants. Pour les familles. Et cette année, sans m'y attendre, c'est moi aussi que j'ai appris à mieux connaître.<br><br>Ce qui me fait briller — le septième pétale de la Fleur QVE — c'est les talents, les forces, les petites victoires qu'on ne voit pas toujours en soi.<br><br>J'ai vu des enfants repartir d'un atelier les yeux qui brillaient. J'ai vu des parents se détendre. J'ai compris que mon travail, c'est créer des espaces où la lumière peut sortir.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Merci d'avoir suivi cette aventure. Et toi — qu'est-ce qui t'a fait briller cette année ?</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="decembre-facebook">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header fb-header"><div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div><div><div class="plateforme-name">Facebook</div><div class="plateforme-format">2-3 min · Message de fin d'année</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">C'est la fin de l'année. Et avant de souffler, je voulais prendre un moment pour vous dire merci — et vous dire ce que cette année a construit.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Merci à ceux qui ont suivi BRILLE depuis le début. Merci aux familles qui ont fait confiance. Merci aux partenaires qui ont ouvert leurs portes.<br><br>Cette année j'ai déployé les premiers ateliers QVE. J'ai travaillé les émotions, les apprentissages, les droits, les liens. Et j'ai vu concrètement ce que ça change pour les enfants et leurs familles.<br><br>En 2027, je continue. De nouveaux ateliers, de nouveaux partenariats. Et toujours la même conviction : chaque enfant a une lumière en lui. Mon travail c'est de créer l'espace pour qu'elle puisse sortir.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Bonnes fêtes à vous et à vos familles. À l'année prochaine.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="decembre-tiktok">
+    <div class="plateformes-grille"><div class="script-card">
+      <div class="script-card-header tiktok-header"><div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div><div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Honnête et direct</div></div></div>
+      <div class="script-body">
+        <div class="script-block"><div class="block-label hook-label">🎯 Hook</div><div class="script-text hook-text">J'ai lancé BRILLE en 2026. Et voilà ce que personne ne m'avait dit.</div></div>
+        <div class="script-block"><div class="block-label corps-label">📝 Corps</div><div class="script-text">Que tenir sa posture d'experte face au terrain, ça s'apprend. Que les familles répondent présentes quand l'espace est vrai. Que chaque enfant qui repart d'un atelier en sachant un peu mieux qui il est — ça vaut tout.<br><br>Cette année j'ai appris ce qui me fait briller. C'est le dernier pétale de la Fleur QVE. Et cette année, je l'ai vécu.</div></div>
+        <div class="script-block"><div class="block-label cta-label">✅ Call to action</div><div class="script-text cta-text">Merci pour cette année. À vous, à vos enfants, à vos familles. On se retrouve en 2027.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="tab-content" id="decembre-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Décembre c'est la vidéo la plus personnelle et la plus émotionnelle de l'année. Bilan, gratitude, projection. Elle peut être légèrement moins "produite" que les autres — l'authenticité prime ici sur la perfection technique.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">📍 Setup & décor</div>
+          <div class="mes-item"><div class="mes-icon">🌟</div><div class="mes-text"><strong>Ambiance :</strong> tu peux ajouter une lumière douce en fond (guirlande lumineuse discrète, bougie hors cadre) — chaleur de fin d'année sans être trop "Noël".</div></div>
+          <div class="mes-item"><div class="mes-icon">🌺</div><div class="mes-text"><strong>Fleur QVE :</strong> présente et bien visible — cette vidéo c'est le bouclage de toute l'année. La fleur complète, les 7 pétales, c'est ce que tu as construit.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue recommandée</div>
+          <div class="mes-item"><div class="mes-icon">✨</div><div class="mes-text"><strong>Tenue de célébration :</strong> la plus belle tenue BRILLE de l'année. Couleur chaude — orange doux, pêche, ou dorée. Tu fêtes une année. Ça se voit dans la tenue.</div></div>
+          <div class="mes-item"><div class="mes-icon">💍</div><div class="mes-text"><strong>Accessoires :</strong> boucles longues et lumineuses. Cette vidéo c'est toi qui brilles — au sens littéral.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">❤️</div><div class="mes-text"><strong>Permission d'être émue :</strong> si tu ressens de l'émotion en filmant ce bilan, ne la cache pas. L'authenticité de décembre est ta plus grande force.</div></div>
+          <div class="mes-item"><div class="mes-icon">🐢</div><div class="mes-text"><strong>Rythme :</strong> le plus lent de l'année. Prends le temps. Les silences sont permis. C'est un moment de bilan, pas d'urgence.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>Une seule prise idéalement :</strong> la spontanéité de décembre vaut plus que la perfection. Si tu trébuches sur un mot, continue.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">✂️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">🎵</div><div class="mes-text"><strong>Musique :</strong> le seul mois où une musique de fond douce pendant toute la vidéo est acceptable. Instrumentale, chaleureuse. Volume très bas.</div></div>
+          <div class="mes-item"><div class="mes-icon">📸</div><div class="mes-text"><strong>Option :</strong> si tu as des photos des ateliers (sans visages d'enfants identifiables), tu peux les insérer en fin de vidéo. Très impactant.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🧘 Posture & énergie</div>
+          <div class="mes-item"><div class="mes-icon">🌸</div><div class="mes-text"><strong>Ton :</strong> gratitude sincère. Cette vidéo n'est pas un bilan de performance — c'est un merci humain à ceux qui t'ont accompagnée.</div></div>
+          <div class="mes-item"><div class="mes-icon">🔮</div><div class="mes-text"><strong>Projection 2027 :</strong> termine sur une phrase d'élan, pas de conclusion. "On continue" plutôt que "c'est fini". L'énergie doit donner envie de te suivre l'année prochaine.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showMois(id, btn) {
+  document.querySelectorAll('.mois-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showTab(mois, tab, btn) {
+  const section = document.getElementById(mois);
+  section.querySelectorAll('.tab-content').forEach(t => t.classList.remove('visible'));
+  section.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(mois + '-' + tab).classList.add('visible');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

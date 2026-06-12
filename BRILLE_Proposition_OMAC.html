@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRILLE Ingénierie — Proposition de partenariat OMAC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap');
+
+:root {
+  --orange: #f49f4c;
+  --rose: #f5abaf;
+  --peche: #fdd5a5;
+  --jaune: #f8f4b8;
+  --bleu: #a4c2e7;
+  --ciel: #a8dbeb;
+  --vert: #cbe1b6;
+  --mauve: #b8aed7;
+  --rose-p: #ebc6e0;
+  --noir: #000000;
+  --blanc: #ffffff;
+  --gris: #5a5a5a;
+  --gris-b: #e8e6e2;
+  --creme: #faf9f7;
+  /* Offres */
+  --lueur: #f8f4b8;
+  --lueur-bord: #c8b840;
+  --lueur-txt: #6b5c00;
+  --main: #a4c2e7;
+  --main-bord: #5a8abf;
+  --main-txt: #1a3a5a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 300;
+  background: var(--creme);
+  color: var(--noir);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+/* ── PAGE LAYOUT ── */
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--blanc);
+  box-shadow: 0 0 40px rgba(0,0,0,0.08);
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--blanc);
+  border-bottom: 4px solid var(--orange);
+  padding: 32px 48px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logo-text {
+  font-family: 'Gruppo', serif;
+  font-size: 36px;
+  color: var(--noir);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.logo-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--orange);
+  border-radius: 50%;
+  margin-left: 3px;
+  vertical-align: super;
+}
+
+.logo-sub {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gris);
+}
+
+.doc-meta {
+  text-align: right;
+  font-size: 11px;
+  color: var(--gris);
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.doc-meta strong {
+  font-weight: 700;
+  color: var(--noir);
+  display: block;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+/* ── HERO BAND ── */
+.hero {
+  background: var(--orange);
+  padding: 24px 48px;
+  color: var(--blanc);
+}
+
+.hero h1 {
+  font-family: 'Gruppo', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.hero p {
+  font-size: 12.5px;
+  opacity: 0.9;
+  font-weight: 300;
+}
+
+/* ── BODY ── */
+.body {
+  padding: 40px 48px;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-family: 'Gruppo', serif;
+  font-size: 15px;
+  color: var(--noir);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--gris-b);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--orange);
+  flex-shrink: 0;
+}
+
+/* ── INTRO BLOC ── */
+.intro-bloc {
+  background: var(--creme);
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+/* ── POSITIONING TAGS ── */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.tag-vert   { background: var(--vert);  color: #2d5a1a; }
+.tag-bleu   { background: var(--bleu);  color: #1a3a5a; }
+.tag-peche  { background: var(--peche); color: #7a3a00; }
+.tag-mauve  { background: var(--mauve); color: #2d1a5a; }
+
+/* ── ATELIER CARD ── */
+.atelier-card {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1.5px solid var(--gris-b);
+}
+
+.atelier-header {
+  padding: 18px 24px 14px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.atelier-header.lueur {
+  background: var(--lueur);
+  border-bottom: 2px solid var(--lueur-bord);
+}
+
+.atelier-header.main {
+  background: var(--main);
+  border-bottom: 2px solid var(--main-bord);
+}
+
+.atelier-nom {
+  font-family: 'Gruppo', serif;
+  font-size: 20px;
+  color: var(--noir);
+  margin-bottom: 2px;
+}
+
+.atelier-sous {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--gris);
+}
+
+.atelier-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.badge-lueur { background: #c8b840; color: #fff; }
+.badge-main  { background: #5a8abf; color: #fff; }
+
+.atelier-body {
+  padding: 20px 24px;
+  background: var(--blanc);
+}
+
+/* ── INFO GRID ── */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.info-item {
+  background: var(--creme);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.info-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gris);
+  margin-bottom: 3px;
+}
+
+.info-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--noir);
+}
+
+/* ── THEMATIQUES ── */
+.them-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.them-list li {
+  padding: 5px 0 5px 18px;
+  position: relative;
+  font-size: 12.5px;
+  border-bottom: 1px solid #f0efed;
+}
+
+.them-list li:last-child { border-bottom: none; }
+
+.them-list li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--orange);
+  font-size: 9px;
+  top: 7px;
+}
+
+/* ── TARIF TABLE ── */
+.tarif-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 12.5px;
+}
+
+.tarif-table th {
+  background: var(--noir);
+  color: var(--blanc);
+  font-family: 'Gruppo', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+}
+
+.tarif-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--gris-b);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.tarif-table tr:last-child td { border-bottom: none; }
+.tarif-table tr:nth-child(even) td { background: var(--creme); }
+
+.prix {
+  font-family: 'Gruppo', serif;
+  font-size: 16px;
+  color: var(--orange);
+  white-space: nowrap;
+}
+
+/* ── NOTE POSITIONNEMENT ── */
+.note-positionnement {
+  background: var(--vert);
+  border-left: 3px solid #7baa5a;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  font-size: 12px;
+  color: #2d5a1a;
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+.note-positionnement strong {
+  font-weight: 700;
+}
+
+/* ── REAAP BLOC ── */
+.reaap-bloc {
+  background: var(--jaune);
+  border: 1.5px solid #c8b840;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--lueur-txt);
+  line-height: 1.65;
+}
+
+.reaap-bloc strong {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+/* ── ETAPES ── */
+.etapes-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: etape;
+}
+
+.etapes-list li {
+  counter-increment: etape;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gris-b);
+  font-size: 13px;
+}
+
+.etapes-list li:last-child { border-bottom: none; }
+
+.etape-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: var(--blanc);
+  font-family: 'Gruppo', serif;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--noir);
+  color: var(--blanc);
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-logo {
+  font-family: 'Gruppo', serif;
+  font-size: 18px;
+  color: var(--blanc);
+}
+
+.footer-contact {
+  font-size: 11.5px;
+  font-weight: 300;
+  color: #bbb;
+  text-align: right;
+  line-height: 1.7;
+}
+
+.footer-contact a {
+  color: var(--peche);
+  text-decoration: none;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { background: white; }
+  .page { box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-zone">
+      <div class="logo-text">brille<span class="logo-dot"></span></div>
+      <div class="logo-sub">Ingénierie QVE</div>
+    </div>
+    <div class="doc-meta">
+      <strong>Proposition de partenariat</strong>
+      À l'attention de Saloie ATEMNI<br>
+      Référente famille · OMAC<br>
+      Juin 2026
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Proposition d'intervention — Centre social OMAC</h1>
+    <p>Ateliers collectifs QVE · Enfants 6–12 ans &amp; Parents · Tsiory LEONARD, Ingénieure QVE</p>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- INTRO -->
+    <div class="section">
+      <div class="section-title">Qui suis-je</div>
+      <div class="intro-bloc">
+        Je suis <strong>Tsiory LEONARD, Ingénieure QVE</strong>, fondatrice de BRILLE Ingénierie. Je conçois et anime des dispositifs socio-éducatifs collectifs fondés sur la Qualité de Vie de l'Enfant (QVE). Mon approche s'appuie sur 7 pétales QVE — des dimensions clés de l'épanouissement de l'enfant — et se déploie en milieu ordinaire : centres sociaux, centres de loisirs, écoles.
+        <br><br>
+        J'interviens en complément des équipes en place, sans me substituer aux professionnels du travail social ou du soin.
+      </div>
+      <div class="tags">
+        <span class="tag tag-vert">Intervention collective</span>
+        <span class="tag tag-bleu">Non thérapeutique</span>
+        <span class="tag tag-peche">Sans suivi nominatif individuel</span>
+        <span class="tag tag-mauve">Cadre non médical</span>
+      </div>
+    </div>
+
+    <!-- ATELIER ETINCELLE -->
+    <div class="section">
+      <div class="section-title">Atelier Étincelle — Binômes parent-enfant</div>
+      <div class="atelier-card">
+        <div class="atelier-header" style="background:#cbe1b6;border-bottom:2px solid #7baa5a;">
+          <div>
+            <div class="atelier-nom">Atelier Étincelle</div>
+            <div class="atelier-sous">Atelier QVE binôme · Parent + enfant · Prêt à déployer</div>
+          </div>
+          <span class="atelier-badge" style="background:#7baa5a;color:#fff;">Offre Étincelle</span>
+        </div>
+        <div class="atelier-body">
+          <div class="info-grid">
+            <div class="info-item"><div class="info-label">Public</div><div class="info-val">Binômes parent-enfant<br><span style="font-weight:300;font-size:11.5px;">5 binômes maximum</span></div></div>
+            <div class="info-item"><div class="info-label">Format</div><div class="info-val">1 séance<br><span style="font-weight:300;font-size:11.5px;">Déployable immédiatement</span></div></div>
+            <div class="info-item"><div class="info-label">Durée</div><div class="info-val">2h</div></div>
+            <div class="info-item"><div class="info-label">Lieu</div><div class="info-val">Dans vos locaux<br><span style="font-weight:300;font-size:11.5px;">Centre social OMAC</span></div></div>
+          </div>
+          <div class="info-label" style="margin-bottom:8px;margin-top:16px;">Thématiques trav. — pétales QVE</div>
+          <ul class="them-list">
+            <li>🌸 Pétale <em>Mes émotions apprivoisées</em> → Partager et reconnaître les émotions à deux</li>
+            <li>🌸 Pétale <em>Ce qui me fait briller</em> → Identifier les forces et talents de l’enfant ensemble</li>
+            <li>🌸 Pétale <em>Mes liens et ma parole</em> → Renforcer l’expression et l’écoute au sein du binôme</li>
+            <li>🌸 Pétale <em>Ma place et mes droits</em> → Découverte participative de la CIDE — droits de l’enfant en récit commun</li>
+          </ul>
+          <div style="margin-top:20px;"><div class="info-label" style="margin-bottom:8px;">Tarification</div>
+          <table class="tarif-table"><thead><tr><th>Formule</th><th>Tarif / séance</th><th>Inclus</th></tr></thead><tbody>
+            <tr><td>Sans compte rendu</td><td><span class="prix">300 €</span></td><td>Animation, préparation, matériel pédagogique (cartes CIDE, fleur géante, cartes souvenir)</td></tr>
+            <tr><td>Avec compte rendu collectif</td><td><span class="prix">450 €</span></td><td>Animation + compte rendu collectif remis sous 5 jours, utilisable CAF / REAAP</td></tr>
+          </tbody></table></div>
+          <div class="note-positionnement"><strong>Note :</strong> L’Atelier Étincelle est le dispositif phare de BRILLE — participatif, festif, ancré dans les droits de l’enfant. Il est finalisé et déployable immédiatement.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATELIER LUEUR -->
+    <div class="section">
+      <div class="section-title">Atelier Lueur — Enfants 6–12 ans</div>
+
+      <div class="atelier-card">
+        <div class="atelier-header lueur">
+          <div>
+            <div class="atelier-nom">Atelier Lueur</div>
+            <div class="atelier-sous">Intervention QVE collective · Enfants · Soutien scolaire OMAC</div>
+          </div>
+          <span class="atelier-badge badge-lueur">Offre Lueur</span>
+        </div>
+        <div class="atelier-body">
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Public</div>
+              <div class="info-val">Enfants 6–12 ans<br><span style="font-weight:300;font-size:11.5px;">Groupe de 10 maximum</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Format</div>
+              <div class="info-val">Minimum 2 séances<br><span style="font-weight:300;font-size:11.5px;">Extensible selon besoins</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Durée par séance</div>
+              <div class="info-val">1h30</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Lieu</div>
+              <div class="info-val">Dans vos locaux<br><span style="font-weight:300;font-size:11.5px;">Centre social OMAC</span></div>
+            </div>
+          </div>
+
+          <div class="info-label" style="margin-bottom:8px;">Thématiques travaillées — ancrées dans les pétales QVE</div>
+          <ul class="them-list">
+            <li><strong>Séance 1 — "Ce que je ressens et ce que je vaux"</strong><br>
+              🌸 Pétale <em>Mes émotions apprivoisées</em> → Nommer, exprimer et réguler ses émotions dans le groupe<br>
+              🌸 Pétale <em>Ce qui me fait briller</em> → Identifier ses talents, forces et petites victoires</li>
+            <li><strong>Séance 2 — "Ma place ici et mes liens"</strong><br>
+              🌸 Pétale <em>Mes liens et ma parole</em> → La constellation de mes relations — fratrie, pairs, famille<br>
+              🌸 Pétale <em>Ma place et mes droits</em> → Mon sentiment d'appartenance, ce que j'ai le droit d'être</li>
+            <li><strong>Séance 3 (extension possible) — "J'apprends et je m'organise"</strong><br>
+              🌸 Pétale <em>Le sens de mes apprentissages</em> → Curiosité, rapport à l'école, motivation<br>
+              🌸 Pétale <em>Mon organisation et autonomie</em> → Routines, responsabilités, confiance en soi scolaire</li>
+          </ul>
+
+          <div style="margin-top:20px;">
+            <div class="info-label" style="margin-bottom:8px;">Tarification</div>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Formule</th>
+                  <th>Tarif / séance</th>
+                  <th>Inclus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sans compte rendu</td>
+                  <td><span class="prix">300 €</span></td>
+                  <td>Animation, préparation, matériel pédagogique</td>
+                </tr>
+                <tr>
+                  <td>Avec compte rendu collectif</td>
+                  <td><span class="prix">450 €</span></td>
+                  <td>Animation + compte rendu collectif d'intervention remis sous 5 jours, utilisable comme pièce justificative CAF / REAAP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-positionnement">
+            <strong>Note de positionnement :</strong> Le compte rendu produit est un <strong>compte rendu collectif d'intervention</strong>. Il porte sur le déroulé de l'atelier et les dynamiques de groupe — il ne contient aucune évaluation individuelle ni nominative des enfants.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ATELIER MAIN TENDUE -->
+    <div class="section">
+      <div class="section-title">Atelier Main Tendue — Parents</div>
+
+      <div class="atelier-card">
+        <div class="atelier-header main">
+          <div>
+            <div class="atelier-nom">Atelier Main Tendue</div>
+            <div class="atelier-sous">Atelier QVE collectif · Parents · Lien parent-enfant</div>
+          </div>
+          <span class="atelier-badge badge-main">Offre Main Tendue</span>
+        </div>
+        <div class="atelier-body">
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Public</div>
+              <div class="info-val">Parents<br><span style="font-weight:300;font-size:11.5px;">Notamment mamans, contexte migratoire</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Format</div>
+              <div class="info-val">Minimum 2 séances<br><span style="font-weight:300;font-size:11.5px;">Extensible selon besoins</span></div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Durée par séance</div>
+              <div class="info-val">2h</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Lieu</div>
+              <div class="info-val">Dans vos locaux<br><span style="font-weight:300;font-size:11.5px;">Centre social OMAC</span></div>
+            </div>
+          </div>
+
+          <div class="info-label" style="margin-bottom:8px;">Thématiques travaillées — ancrées dans les pétales QVE</div>
+          <ul class="them-list">
+            <li><strong>Séance 1 — "Comprendre ce que vit mon enfant"</strong><br>
+              🌸 Pétale <em>Mes émotions apprivoisées</em> → Décrypter les émotions de son enfant sans les absorber<br>
+              🌸 Pétale <em>Mon équilibre et mon énergie</em> → Rythmes, corps, sommeil — les signaux que l'enfant envoie</li>
+            <li><strong>Séance 2 — "Le lien qui tient, même quand on ne comprend pas tout"</strong><br>
+              🌸 Pétale <em>Mes liens et ma parole</em> → La relation parent-enfant comme ancre inconditionnelle<br>
+              🌸 Pétale <em>Ce qui me fait briller</em> → Les savoir-faire éducatifs culturels des parents comme ressource</li>
+          </ul>
+
+          <div style="margin-top:20px;">
+            <div class="info-label" style="margin-bottom:8px;">Tarification</div>
+            <table class="tarif-table">
+              <thead>
+                <tr>
+                  <th>Formule</th>
+                  <th>Tarif / séance</th>
+                  <th>Inclus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sans compte rendu</td>
+                  <td><span class="prix">300 €</span></td>
+                  <td>Animation, préparation, matériel pédagogique</td>
+                </tr>
+                <tr>
+                  <td>Avec compte rendu collectif</td>
+                  <td><span class="prix">450 €</span></td>
+                  <td>Animation + compte rendu collectif d'intervention remis sous 5 jours, utilisable comme pièce justificative CAF / REAAP</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note-positionnement">
+            <strong>Note de positionnement :</strong> L'atelier Main Tendue n'est pas un espace de parole thérapeutique ni d'accompagnement individuel. Il s'agit d'un atelier collectif de soutien à la parentalité, dans une posture d'ingénierie socio-éducative.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- REAAP -->
+    <div class="section">
+      <div class="section-title">Financement — Mécanisme REAAP / CAF</div>
+      <div class="reaap-bloc">
+        <strong>Ces ateliers sont éligibles au dispositif REAAP (Réseau d'Écoute, d'Appui et d'Accompagnement des Parents)</strong>
+        Le compte rendu collectif d'intervention (formule à 450 €/séance) est rédigé dans un format compatible avec les exigences des financeurs CAF. Il peut être joint directement à un dossier de demande de financement REAAP, permettant au centre social de mobiliser ce levier pour tout ou partie du coût des interventions.
+      </div>
+    </div>
+
+    <!-- PROCHAINES ETAPES -->
+    <div class="section">
+      <div class="section-title">Prochaines étapes</div>
+      <ol class="etapes-list">
+        <li>
+          <div class="etape-num">1</div>
+          <div><strong>Validation de la proposition</strong> — Retour de Saloie ATEMNI sur les deux ateliers (format, tarification, calendrier souhaité)</div>
+        </li>
+        <li>
+          <div class="etape-num">2</div>
+          <div><strong>Calage du calendrier d'intervention</strong> — Définition des dates de séances en accord avec le planning du centre</div>
+        </li>
+        <li>
+          <div class="etape-num">3</div>
+          <div><strong>Signature d'une convention de partenariat</strong> — Formalisation des engagements réciproques</div>
+        </li>
+        <li>
+          <div class="etape-num">4</div>
+          <div><strong>Déploiement des ateliers</strong> — Démarrage dès validation, matériel pédagogique fourni par BRILLE</div>
+        </li>
+      </ol>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">brille ingénierie</div>
+    <div class="footer-contact">
+      Tsiory LEONARD · Ingénieure QVE<br>
+      <a href="tel:0745323090">07 45 32 30 90</a> · <a href="mailto:tsioryleonard@gmail.com">tsioryleonard@gmail.com</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
