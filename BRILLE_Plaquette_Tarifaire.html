@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BRILLE Ingénierie · Plaquette Tarifaire 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Gruppo&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#f49f4c;--rose:#f5abaf;--peche:#fdd5a5;--jaune:#f8f4b8;
+  --lavande:#a4c2e7;--bleu:#a8dbeb;--vert:#cbe1b6;--mauve:#b8aed7;--lilas:#ebc6e0;
+  --text:#2c2c2c;--muted:#6b6b6b;--border:#e8e8e8;
+}
+@media print{
+  .no-print{display:none!important}
+  .print-only{display:block!important}
+  body{background:white;font-size:11px}
+  .version-panel{display:block!important;page-break-after:always}
+  .version-panel:last-child{page-break-after:auto}
+  .version-panel.hidden-panel{display:block!important}
+}
+body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f0ede8;color:var(--text);line-height:1.6}
+
+.topnav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;height:52px;gap:0;overflow-x:auto}
+.nav-brand{font-family:'Gruppo',cursive;font-size:16px;color:var(--orange);margin-right:24px;flex-shrink:0}
+.tab-btn{font-size:12px;font-weight:400;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;height:52px;padding:0 16px;cursor:pointer;font-family:'Quicksand',sans-serif;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--orange);font-weight:500}
+.btn-print{margin-left:auto;flex-shrink:0;background:var(--orange);color:white;border:none;border-radius:20px;padding:7px 18px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+
+.version-panel{display:none}
+.version-panel.active-panel{display:block}
+.hidden-panel{display:none}
+
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+.hero{background:white;border-radius:20px;padding:2.5rem;margin-bottom:1.8rem;border:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:var(--orange);opacity:.08}
+.hero::after{content:'';position:absolute;bottom:-30px;left:-30px;width:130px;height:130px;border-radius:50%;background:var(--peche);opacity:.2}
+.hero-inner{position:relative;z-index:1}
+.hero-eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:.6rem}
+.hero h1{font-family:'Gruppo',cursive;font-size:2.6rem;font-weight:400;line-height:1.05;margin-bottom:.5rem}
+.hero h1 span{color:var(--orange)}
+.hero-sub{font-size:13px;color:var(--muted);margin-bottom:1.4rem;max-width:520px}
+.hero-contact{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.hero-contact span{display:flex;align-items:center;gap:5px}
+
+.posit-box{background:white;border-radius:14px;padding:1.4rem 1.6rem;margin-bottom:1.8rem;border:1px solid var(--border);border-left:4px solid var(--orange)}
+.posit-box p{font-size:13px;line-height:1.7;color:var(--text)}
+.posit-box strong{font-weight:500;color:var(--orange)}
+
+.offre-section{margin-bottom:1.8rem}
+.offre-title-row{display:flex;align-items:center;gap:12px;margin-bottom:1rem;flex-wrap:wrap}
+.offre-badge{font-family:'Gruppo',cursive;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;white-space:nowrap}
+.offre-section-title{font-family:'Gruppo',cursive;font-size:1.4rem;font-weight:400}
+.offre-section-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+.tarifs-grid{display:grid;gap:12px}
+.tarifs-2{grid-template-columns:1fr 1fr}
+@media(max-width:640px){.tarifs-2{grid-template-columns:1fr}}
+
+.tarif-card{background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);display:flex;flex-direction:column;gap:.5rem;position:relative;overflow:hidden}
+.tarif-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.tarif-card.tc-vert::before{background:var(--vert)}
+.tarif-card.tc-jaune::before{background:var(--jaune)}
+.tarif-card.tc-lavande::before{background:var(--lavande)}
+.tarif-tag{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;font-weight:500;padding:2px 8px;border-radius:8px;display:inline-block;margin-bottom:2px}
+.tarif-name{font-family:'Gruppo',cursive;font-size:1.15rem;line-height:1.2}
+.tarif-desc{font-size:11.5px;color:var(--muted);line-height:1.5}
+.tarif-prix{font-family:'Gruppo',cursive;font-size:2rem;line-height:1;margin:.3rem 0}
+.tarif-prix span{font-family:'Quicksand',sans-serif;font-size:12px;font-weight:300;color:var(--muted)}
+.tarif-inclus{margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border)}
+.inclus-title{font-size:9.5px;letter-spacing:.8px;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:.4rem}
+.inclus-list{display:flex;flex-direction:column;gap:3px}
+.inclus-item{display:flex;align-items:flex-start;gap:6px;font-size:11.5px;line-height:1.4}
+.inclus-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.tarif-highlight{background:var(--jaune);border-color:#e8d800;border-width:1.5px}
+.tarif-highlight .tarif-name{color:#5a4e00}
+
+.forfait-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:640px){.forfait-row{grid-template-columns:1fr}}
+.forfait-card{background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1.5px dashed var(--border);display:flex;flex-direction:column;gap:.4rem}
+.forfait-badge{font-size:9.5px;letter-spacing:1px;text-transform:uppercase;font-weight:500;padding:2px 8px;border-radius:8px;display:inline-block}
+.forfait-name{font-family:'Gruppo',cursive;font-size:1.1rem}
+.forfait-calc{font-size:11px;color:var(--muted);line-height:1.5}
+.forfait-prix{display:flex;align-items:baseline;gap:8px;margin:.3rem 0}
+.forfait-prix .fp-main{font-family:'Gruppo',cursive;font-size:1.8rem;color:var(--text)}
+.forfait-prix .fp-instead{font-size:11px;color:var(--muted);text-decoration:line-through}
+.forfait-prix .fp-eco{font-size:11px;color:#2a5a1a;font-weight:500;background:#cbe1b633;padding:2px 7px;border-radius:8px}
+
+.cs-box{background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);margin-top:12px}
+.cs-title{font-family:'Gruppo',cursive;font-size:1.1rem;margin-bottom:.8rem;display:flex;align-items:center;gap:8px}
+.cs-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:600px){.cs-grid{grid-template-columns:1fr}}
+.cs-item{background:#f7f5f0;border-radius:10px;padding:10px 12px}
+.cs-offre{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:3px}
+.cs-prix{font-family:'Gruppo',cursive;font-size:1.3rem;margin-bottom:2px}
+.cs-detail{font-size:10.5px;color:var(--muted);line-height:1.4}
+.cs-criteres{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.cs-criteres-title{font-size:10px;letter-spacing:.8px;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:.5rem}
+.cs-criteres-list{display:flex;flex-wrap:wrap;gap:6px}
+.cs-crit{background:#f7f5f0;border:1px solid var(--border);border-radius:8px;padding:3px 10px;font-size:11px;color:var(--muted)}
+
+.conditions-box{background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);margin-top:1.8rem}
+.cond-title{font-family:'Gruppo',cursive;font-size:1.1rem;margin-bottom:.8rem}
+.cond-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.cond-grid{grid-template-columns:1fr}}
+.cond-item{font-size:12px;line-height:1.5;padding:8px 10px;background:#f7f5f0;border-radius:8px}
+.cond-item strong{font-weight:500;display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:2px}
+
+.note-interne{background:#a4c2e718;border:1px solid var(--lavande);border-radius:14px;padding:1.4rem 1.6rem;margin-top:1.8rem}
+.note-interne h3{font-family:'Gruppo',cursive;font-size:1.1rem;color:#1a4a7a;margin-bottom:.8rem}
+.note-interne p{font-size:12.5px;line-height:1.7;color:var(--text);margin-bottom:.5rem}
+.note-interne p:last-child{margin-bottom:0}
+.note-interne strong{font-weight:500}
+
+.synth-table{width:100%;border-collapse:collapse;margin-top:.8rem}
+.synth-table th{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:500;text-align:left;padding:6px 10px;border-bottom:1px solid var(--border)}
+.synth-table td{padding:10px 10px;font-size:12.5px;border-bottom:1px solid #f0f0f0;vertical-align:top;line-height:1.4}
+.synth-table tr:last-child td{border-bottom:none}
+.synth-table .price-cell{font-family:'Gruppo',cursive;font-size:1.1rem;white-space:nowrap}
+
+footer{text-align:center;padding:2rem;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:2rem}
+footer strong{color:var(--orange);font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="topnav no-print">
+  <span class="nav-brand">BRILLE</span>
+  <button class="tab-btn active" onclick="showTab('pro')">Version professionnelle</button>
+  <button class="tab-btn" onclick="showTab('interne')">Version interne</button>
+  <button class="btn-print" onclick="window.print()">🖨 Imprimer</button>
+</div>
+
+<!-- VERSION PRO -->
+<div class="version-panel active-panel" id="panel-pro">
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">BRILLE Ingénierie · Tsiory Leonard · Ingénieure QVE</div>
+      <h1>Nos <span>offres</span><br>d'intervention</h1>
+      <p class="hero-sub">Interventions QVE collectives non thérapeutiques · Enfants 6–12 ans et leurs familles · Île-de-France</p>
+      <div class="hero-contact">
+        <span>📞 07 45 32 30 90</span>
+        <span>✉️ tsioryleonard@gmail.com</span>
+        <span>📅 Disponible en 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="posit-box">
+    <p>BRILLE Ingénierie conçoit et anime des ateliers de <strong>médiation socio-éducative collective</strong> fondés sur la Qualité de Vie de l'Enfant (QVE). Les interventions sont <strong>non thérapeutiques</strong>, sans suivi nominatif individuel, et s'inscrivent dans une logique de <strong>partenariat avec les structures</strong> (centres sociaux, centres de loisirs, établissements scolaires). Chaque atelier mobilise la Fleur QVE — 7 pétales structurant les dimensions du bien-être de l'enfant et de la famille.</p>
+  </div>
+
+  <!-- ÉTINCELLE -->
+  <div class="offre-section">
+    <div class="offre-title-row">
+      <span class="offre-badge" style="background:var(--vert);color:#2a5a1a">Étincelle</span>
+      <div>
+        <div class="offre-section-title">Atelier Étincelle</div>
+        <div class="offre-section-sub">Intervention QVE · Centres sociaux · Séance ponctuelle ou cycle</div>
+      </div>
+    </div>
+    <div class="tarifs-grid tarifs-2">
+      <div class="tarif-card tc-vert">
+        <span class="tarif-tag" style="background:#cbe1b633;color:#2a5a1a">Formule Essentielle</span>
+        <div class="tarif-name">Étincelle Ponctuelle</div>
+        <div class="tarif-desc">Animation de séance + préparation + bilan collectif oral à la structure</div>
+        <div class="tarif-prix">300€ <span>/ séance</span></div>
+        <div class="tarif-inclus">
+          <div class="inclus-title">Inclus</div>
+          <div class="inclus-list">
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--vert)"></span>Préparation et adaptation des supports</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--vert)"></span>Animation de la séance (2h)</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--vert)"></span>Matériels pédagogiques fournis</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--vert)"></span>Bilan collectif oral avec le référent</div>
+          </div>
+        </div>
+      </div>
+      <div class="tarif-card tc-vert tarif-highlight">
+        <span class="tarif-tag" style="background:#f8f4b8;color:#5a4e00">Formule Financement</span>
+        <div class="tarif-name">Étincelle + Compte Rendu</div>
+        <div class="tarif-desc">Animation + bilan écrit structuré utilisable comme pièce justificative auprès des financeurs</div>
+        <div class="tarif-prix">450€ <span>/ séance</span></div>
+        <div class="tarif-inclus">
+          <div class="inclus-title">Tout inclus dans Essentielle, plus</div>
+          <div class="inclus-list">
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Compte rendu écrit structuré (objectifs, déroulé, observations collectives, indicateurs)</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Format transmissible à CAF, REAAP, MSA, fondations</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Livrables dans un délai de 5 jours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUEUR -->
+  <div class="offre-section">
+    <div class="offre-title-row">
+      <span class="offre-badge" style="background:var(--jaune);color:#5a4e00">Lueur</span>
+      <div>
+        <div class="offre-section-title">Atelier Lueur</div>
+        <div class="offre-section-sub">Enfants 6–12 ans · Soutien scolaire / centres de loisirs · Cycle 2-3 séances</div>
+      </div>
+    </div>
+    <div class="tarifs-grid tarifs-2">
+      <div class="tarif-card tc-jaune">
+        <span class="tarif-tag" style="background:#f8f4b833;color:#5a4e00">Formule Essentielle</span>
+        <div class="tarif-name">Lueur · Séance</div>
+        <div class="tarif-desc">Animation d'une séance QVE collective + bilan oral à la structure</div>
+        <div class="tarif-prix">300€ <span>/ séance</span></div>
+        <div class="tarif-inclus">
+          <div class="inclus-title">Inclus</div>
+          <div class="inclus-list">
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--jaune)"></span>Préparation et supports pédagogiques</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--jaune)"></span>Animation (1h30) · 10 enfants max</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--jaune)"></span>Matériels fournis (posters, fiches, pochettes)</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--jaune)"></span>Bilan collectif oral au référent</div>
+          </div>
+        </div>
+      </div>
+      <div class="tarif-card tc-jaune tarif-highlight">
+        <span class="tarif-tag" style="background:#f8f4b8;color:#5a4e00">Formule Financement</span>
+        <div class="tarif-name">Lueur + Compte Rendu</div>
+        <div class="tarif-desc">Animation + bilan écrit structuré pour financeurs (CAF, REAAP, MSA, fondations)</div>
+        <div class="tarif-prix">450€ <span>/ séance</span></div>
+        <div class="tarif-inclus">
+          <div class="inclus-title">Tout inclus dans Essentielle, plus</div>
+          <div class="inclus-list">
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Compte rendu écrit (objectifs, observations collectives, indicateurs QVE)</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Format transmissible aux financeurs</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--orange)"></span>Délai de livraison : 5 jours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="forfait-row">
+      <div class="forfait-card">
+        <span class="forfait-badge" style="background:#f8f4b833;color:#5a4e00">Forfait Cycle · Formule Essentielle</span>
+        <div class="forfait-name">Cycle Lueur · 2 séances</div>
+        <div class="forfait-calc">2 séances × 300€ — remise 10%</div>
+        <div class="forfait-prix">
+          <span class="fp-main">540€</span>
+          <span class="fp-instead">600€</span>
+          <span class="fp-eco">− 60€</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">Séances 1 et 2 — extension S3 possible sur devis</div>
+      </div>
+      <div class="forfait-card">
+        <span class="forfait-badge" style="background:#f8f4b8;color:#5a4e00">Forfait Cycle · 3 séances</span>
+        <div class="forfait-name">Cycle Lueur · 3 séances</div>
+        <div class="forfait-calc">3 séances × 300€ — remise 10%</div>
+        <div class="forfait-prix">
+          <span class="fp-main">810€</span>
+          <span class="fp-instead">900€</span>
+          <span class="fp-eco">− 90€</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">Cycle complet avec extension Apprentissages/Organisation</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN TENDUE -->
+  <div class="offre-section">
+    <div class="offre-title-row">
+      <span class="offre-badge" style="background:var(--lavande);color:#0e3260">Main Tendue</span>
+      <div>
+        <div class="offre-section-title">Atelier Main Tendue</div>
+        <div class="offre-section-sub">Parents · Groupe de parole constitué · Cycle 2 séances en miroir QVE</div>
+      </div>
+    </div>
+    <div class="tarifs-grid tarifs-2">
+      <div class="tarif-card tc-lavande">
+        <span class="tarif-tag" style="background:#a4c2e733;color:#1a4a7a">Intervention Ponctuelle</span>
+        <div class="tarif-name">Main Tendue · Séance</div>
+        <div class="tarif-desc">Animation d'une séance QVE parents dans un groupe de parole constitué</div>
+        <div class="tarif-prix">300€ <span>/ séance</span></div>
+        <div class="tarif-inclus">
+          <div class="inclus-title">Inclus</div>
+          <div class="inclus-list">
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--lavande)"></span>Préparation et supports pédagogiques</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--lavande)"></span>Animation (2h) · groupe adultes</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--lavande)"></span>Matériels fournis (posters miroir, fiches)</div>
+            <div class="inclus-item"><span class="inclus-dot" style="background:var(--lavande)"></span>Bilan collectif oral au référent</div>
+          </div>
+        </div>
+      </div>
+      <div class="tarif-card tc-lavande" style="border-style:dashed">
+        <span class="tarif-tag" style="background:#a4c2e733;color:#1a4a7a">ℹ️ Note</span>
+        <div class="tarif-name" style="color:#1a4a7a;font-size:1rem">Pas de compte rendu nominatif</div>
+        <div class="tarif-desc" style="margin-top:.3rem">L'Atelier Main Tendue est une animation collective de groupe de parole. Il n'inclut pas de suivi individuel des participants ni de compte rendu nominatif — conformément au positionnement BRILLE de médiation non thérapeutique.</div>
+        <div style="margin-top:.8rem;font-size:11.5px;color:#1a4a7a;background:#a4c2e718;border-radius:8px;padding:8px 10px;line-height:1.5">Un bilan collectif oral ou écrit (sans données nominatives) peut être fourni sur demande pour les financeurs.</div>
+      </div>
+    </div>
+    <div class="forfait-row">
+      <div class="forfait-card">
+        <span class="forfait-badge" style="background:#a4c2e733;color:#1a4a7a">Forfait Cycle Complet</span>
+        <div class="forfait-name">Cycle Main Tendue · 2 séances</div>
+        <div class="forfait-calc">2 séances × 300€ — remise 10%</div>
+        <div class="forfait-prix">
+          <span class="fp-main">540€</span>
+          <span class="fp-instead">600€</span>
+          <span class="fp-eco">− 60€</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">2 pétales QVE en miroir · Groupe Oxygène</div>
+      </div>
+      <div class="forfait-card">
+        <span class="forfait-badge" style="background:#ebc6e033;color:#5a1a5a">Offre Miroir · Package</span>
+        <div class="forfait-name">Lueur + Main Tendue · Cycle complet</div>
+        <div class="forfait-calc">Cycle Lueur 2S (540€) + Cycle MT 2S (540€) — remise partenariat 5%</div>
+        <div class="forfait-prix">
+          <span class="fp-main">1 026€</span>
+          <span class="fp-instead">1 080€</span>
+          <span class="fp-eco">− 54€</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted)">Dispositif miroir complet · Posters partagés · Même structure</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARIF PARTENAIRE CAF -->
+  <div class="offre-section">
+    <div class="cs-box">
+      <div class="cs-title">
+        <span style="background:var(--vert);color:#2a5a1a;border-radius:8px;padding:3px 10px;font-size:10px;font-family:'Quicksand',sans-serif;font-weight:500;letter-spacing:.8px;text-transform:uppercase">Tarif partenaire</span>
+        Structures partenaires CAF
+      </div>
+      <div class="cs-grid">
+        <div class="cs-item">
+          <div class="cs-offre">Étincelle</div>
+          <div class="cs-prix" style="color:#2a5a1a">300€ <span style="font-family:'Quicksand',sans-serif;font-size:11px;font-weight:300;color:var(--muted)">/ séance</span></div>
+          <div class="cs-detail">Tarif base · Bilan oral<br><em style="color:var(--orange)">+150€ avec compte rendu financeur</em></div>
+        </div>
+        <div class="cs-item">
+          <div class="cs-offre">Lueur</div>
+          <div class="cs-prix" style="color:#5a4e00">300€ <span style="font-family:'Quicksand',sans-serif;font-size:11px;font-weight:300;color:var(--muted)">/ séance</span></div>
+          <div class="cs-detail">Tarif base · Bilan oral<br><em style="color:var(--orange)">+150€ avec compte rendu financeur</em></div>
+        </div>
+        <div class="cs-item">
+          <div class="cs-offre">Main Tendue</div>
+          <div class="cs-prix" style="color:#1a4a7a">300€ <span style="font-family:'Quicksand',sans-serif;font-size:11px;font-weight:300;color:var(--muted)">/ séance</span></div>
+          <div class="cs-detail">Tarif base · Bilan collectif oral<br><em style="color:var(--muted)">Pas de compte rendu nominatif</em></div>
+        </div>
+      </div>
+      <div class="cs-criteres">
+        <div class="cs-criteres-title">Critères d'éligibilité au tarif partenaire CAF</div>
+        <div class="cs-criteres-list">
+          <span class="cs-crit">Partenaire officiel de la CAF (convention CTG ou PSO)</span>
+          <span class="cs-crit">Centre social agréé CAF</span>
+          <span class="cs-crit">Centre social municipal ou associatif</span>
+          <span class="cs-crit">Structure labellisée REAAP</span>
+          <span class="cs-crit">Association loi 1901 financée par la CAF</span>
+          <span class="cs-crit">Structure sous convention avec la CAF départementale</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONDITIONS -->
+  <div class="conditions-box">
+    <div class="cond-title">Conditions générales d'intervention</div>
+    <div class="cond-grid">
+      <div class="cond-item"><strong>Déplacement</strong>Calculé au kilométrage · Barème fiscal en vigueur (0,25€/km) · Aller-retour depuis le domicile · Précisé dans chaque devis</div>
+      <div class="cond-item"><strong>Matériels</strong>Supports pédagogiques fournis par BRILLE · Salle et mobilier à la charge de la structure</div>
+      <div class="cond-item"><strong>Devis</strong>Devis gratuit sous 48h · Devis valable 30 jours</div>
+      <div class="cond-item"><strong>Facturation</strong>Facture émise après chaque séance ou en début de cycle selon accord</div>
+      <div class="cond-item"><strong>Annulation</strong>Annulation sans frais jusqu'à 5 jours ouvrés avant · 50% au-delà</div>
+      <div class="cond-item"><strong>Convention</strong>Convention de partenariat disponible sur demande</div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Tsiory Leonard, Ingénieure QVE · Master 2 Ingénierie de Formation · BAFA spécialisation 6–12 ans<br style="margin-bottom:4px"/>
+  07 45 32 30 90 · tsioryleonard@gmail.com · Micro-entreprise · 2026
+</footer>
+</div>
+
+<!-- VERSION INTERNE -->
+<div class="version-panel hidden-panel" id="panel-interne">
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Document interne · Non destiné à la diffusion</div>
+      <h1>Grille tarifaire <span>interne</span></h1>
+      <p class="hero-sub">Synthèse complète des tarifs, marges et logique de construction — usage personnel et négociation</p>
+    </div>
+  </div>
+
+  <div style="background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);margin-bottom:1.5rem">
+    <div class="cond-title" style="margin-bottom:1rem">Synthèse tarifaire complète</div>
+    <table class="synth-table">
+      <thead>
+        <tr>
+          <th>Offre</th>
+          <th>Format</th>
+          <th>Tarif plein</th>
+          <th>Tarif partenaire CAF</th>
+          <th>Forfait cycle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span style="background:#cbe1b633;color:#2a5a1a;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500">Étincelle</span></td>
+          <td>Séance base</td>
+          <td class="price-cell">300€</td>
+          <td class="price-cell" style="color:#2a5a1a">300€</td>
+          <td style="color:var(--muted);font-size:11px">Sur devis selon nb séances</td>
+        </tr>
+        <tr>
+          <td><span style="background:#cbe1b633;color:#2a5a1a;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500">Étincelle</span></td>
+          <td>Séance + CR financeur</td>
+          <td class="price-cell">450€</td>
+          <td class="price-cell" style="color:#2a5a1a">450€</td>
+          <td style="color:var(--muted);font-size:11px">—</td>
+        </tr>
+        <tr>
+          <td><span style="background:#f8f4b833;color:#5a4e00;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500">Lueur</span></td>
+          <td>Séance base</td>
+          <td class="price-cell">300€</td>
+          <td class="price-cell" style="color:#2a5a1a">300€</td>
+          <td class="price-cell">540€ <span style="font-family:'Quicksand',sans-serif;font-size:10px;color:var(--muted)">2S −10%</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#f8f4b833;color:#5a4e00;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500">Lueur</span></td>
+          <td>Séance + CR financeur</td>
+          <td class="price-cell">450€</td>
+          <td class="price-cell" style="color:#2a5a1a">450€</td>
+          <td class="price-cell">810€ <span style="font-family:'Quicksand',sans-serif;font-size:10px;color:var(--muted)">3S −10%</span></td>
+        </tr>
+        <tr>
+          <td><span style="background:#a4c2e733;color:#1a4a7a;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500">Main Tendue</span></td>
+          <td>Séance</td>
+          <td class="price-cell">300€</td>
+          <td class="price-cell" style="color:#2a5a1a">300€</td>
+          <td class="price-cell">540€ <span style="font-family:'Quicksand',sans-serif;font-size:10px;color:var(--muted)">2S −10%</span></td>
+        </tr>
+        <tr style="background:#f8f4b818">
+          <td colspan="2"><strong style="font-weight:500">Package Miroir</strong> — Lueur 2S + Main Tendue 2S</td>
+          <td class="price-cell">1 026€</td>
+          <td class="price-cell" style="color:#2a5a1a">Sur devis</td>
+          <td style="font-size:11px;color:#2a5a1a">Remise 5% incluse</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note-interne">
+    <h3>Notes de construction tarifaire</h3>
+    <p><strong>Logique des 2 niveaux Étincelle et Lueur :</strong> le compte rendu écrit représente 2–3h de travail supplémentaire (rédaction, mise en forme, vérification). La différence de 150€ est justifiée par ce temps de travail invisible. C'est aussi un argument de vente : la structure peut présenter le CR à ses financeurs CAF/REAAP pour valoriser l'action.</p>
+    <p><strong>Pourquoi pas de CR nominatif pour Main Tendue :</strong> positionnement non thérapeutique, groupe de parole adulte, confidentialité du groupe. Un bilan collectif anonymisé peut être produit sur demande — mais sans surcoût car c'est une synthèse courte.</p>
+    <p><strong>Tarif partenaire CAF :</strong> 300€/séance — identique au tarif plein. La différenciation n'est pas sur le prix de séance mais sur la relation partenariale : facturation simplifiée, priorité agenda, convention cadre. Le tarif partenaire CAF n'est pas une réduction — c'est un positionnement de partenariat structurel. En dessous de 250€/séance, le modèle n'est plus viable (préparation + déplacement kilométrique + matériels ≈ 2h de travail non facturable).</p>
+    <p><strong>Déplacement au kilométrage :</strong> barème fiscal en vigueur (0,25€/km), aller-retour depuis le domicile, précisé systématiquement dans chaque devis. Pour une structure à 20 km : 10€ aller-retour. Ne pas oublier de l'inclure — sur un cycle de plusieurs séances ça représente un montant non négligeable.</p>
+    <p><strong>Remises cycle :</strong> 10% sur les forfaits 2-3 séances. Ne pas dépasser 15% — sinon le prix plancher devient trop bas.</p>
+    <p><strong>Seuil plancher absolu :</strong> ne jamais descendre en dessous de <strong>250€/séance</strong> même en négociation, même pour un premier partenariat. En dessous, le signal de valeur est mauvais et le modèle économique fragile.</p>
+    <p><strong>Argument REAAP :</strong> les centres sociaux agréés REAAP peuvent se faire rembourser une partie des interventions parentales. Mettre en avant que Main Tendue est éligible REAAP — c'est un argument fort pour convaincre un directeur de centre social hésitant sur le budget.</p>
+  </div>
+
+  <div style="background:white;border-radius:14px;padding:1.4rem 1.6rem;border:1px solid var(--border);margin-top:1.5rem">
+    <div class="cond-title" style="margin-bottom:.8rem">Argumentaire pour la négociation</div>
+    <div class="cond-grid">
+      <div class="cond-item"><strong>Si on demande une réduction</strong>Proposer le forfait cycle plutôt qu'une baisse du tarif séance. Préserver le prix unitaire.</div>
+      <div class="cond-item"><strong>Si budget très serré</strong>Proposer 1 séance test à tarif partenaire CAF (300€) avant d'engager le cycle. Porte d'entrée.</div>
+      <div class="cond-item"><strong>Si structure sans agrément</strong>Expliquer que l'agrément CAF ouvre des financements — et proposer un accompagnement à la rédaction de leur dossier comme service complémentaire.</div>
+      <div class="cond-item"><strong>Si on compare à d'autres prestataires</strong>Mettre en avant la Fleur QVE, le cycle en miroir, les matériels fournis et la double formation (ingénierie de formation + BAFA). C'est une offre clé en main.</div>
+    </div>
+  </div>
+
+</div>
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Document interne · Usage personnel · Non diffusable · 2026
+</footer>
+</div>
+
+<script>
+function showTab(tab){
+  document.querySelectorAll('.version-panel').forEach(p=>p.classList.remove('active-panel'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active-panel');
+  document.getElementById('panel-'+tab).classList.remove('hidden-panel');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    if(b.getAttribute('onclick').includes(tab)) b.classList.add('active');
+  });
+}
+</script>
+</body>
+</html>

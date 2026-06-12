@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Atelier Main Tendue · Guides Séances 1–7 · BRILLE Ingénierie</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Gruppo&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#f49f4c;--rose:#f5abaf;--peche:#fdd5a5;--jaune:#f8f4b8;
+  --lavande:#a4c2e7;--bleu:#a8dbeb;--vert:#cbe1b6;--mauve:#b8aed7;--lilas:#ebc6e0;
+  --text:#2c2c2c;--muted:#6b6b6b;--border:#e8e8e8;
+}
+@media print{
+  .no-print{display:none!important}
+  body{font-size:11px;background:white}
+  .seance-block{page-break-before:always;page-break-inside:avoid;box-shadow:none!important;border:1px solid var(--border)!important}
+  .seance-block:first-of-type{page-break-before:auto}
+}
+body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f0ede8;color:var(--text);line-height:1.6}
+
+nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;height:52px;overflow-x:auto;gap:0}
+.nav-brand{font-family:'Gruppo',cursive;font-size:15px;color:var(--bleu);filter:brightness(.85);margin-right:16px;flex-shrink:0;white-space:nowrap}
+nav a{font-size:11.5px;color:var(--muted);text-decoration:none;padding:0 9px;height:52px;display:flex;align-items:center;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+nav a:hover,nav a.active{color:var(--text);border-bottom-color:var(--bleu)}
+.btn-print{margin-left:auto;flex-shrink:0;background:var(--bleu);color:#0a4a5a;border:none;border-radius:20px;padding:7px 16px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+
+.page-wrap{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+.hero{background:white;border-radius:20px;padding:2.2rem 2.5rem 1.8rem;margin-bottom:2rem;border:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:var(--bleu);opacity:.2}
+.hero::after{content:'';position:absolute;bottom:-25px;left:-25px;width:100px;height:100px;border-radius:50%;background:var(--mauve);opacity:.18}
+.hero-inner{position:relative;z-index:1}
+.hero-badge{display:inline-block;background:var(--bleu);color:#0a4a5a;font-family:'Gruppo',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:.9rem}
+.hero h1{font-family:'Gruppo',cursive;font-size:2.2rem;font-weight:400;line-height:1.1;margin-bottom:.4rem}
+.hero-sub{font-size:13px;color:var(--muted);margin-bottom:1.2rem}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:#f7f5f0;border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:11.5px;color:var(--muted)}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+.seance-block{background:white;border-radius:18px;margin-bottom:2rem;border:1px solid var(--border);overflow:hidden}
+.seance-header{padding:1.6rem 2rem 1.2rem;border-bottom:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+.seance-num-big{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Gruppo',cursive;font-size:22px;flex-shrink:0}
+.n1{background:var(--rose);color:#5a1e24}.n2{background:var(--peche);color:#5a3800}
+.n3{background:var(--jaune);color:#5a4e00}.n4{background:var(--lavande);color:#0e3260}
+.n5{background:var(--vert);color:#2a5a1a}.n6{background:var(--lilas);color:#5a1a5a}
+.n7{background:var(--orange);color:#5a2800}
+.seance-header-info{flex:1;min-width:180px}
+.seance-header-info h2{font-family:'Gruppo',cursive;font-size:1.5rem;font-weight:400;line-height:1.2;margin-bottom:3px}
+.seance-header-info p{font-size:12px;color:var(--muted)}
+.seance-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:.5rem}
+.meta-pill{background:#f7f5f0;border:1px solid var(--border);border-radius:10px;padding:3px 10px;font-size:11px;color:var(--muted)}
+.petale-tag{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;margin-top:.4rem}
+.miroir-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px;border-radius:8px;margin-top:4px;background:#f7f5f0;color:var(--muted);border:1px solid var(--border)}
+
+.seance-body{padding:1.6rem 2rem 2rem}
+
+.objectifs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+@media(max-width:640px){.objectifs-grid{grid-template-columns:1fr}}
+.obj-card{background:#f7f5f0;border-radius:12px;padding:12px 14px;border-left:3px solid transparent}
+.obj-card .obj-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.obj-card .obj-text{font-size:12.5px;line-height:1.5}
+
+.tl{position:relative}
+.tl::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;padding-left:52px;margin-bottom:1.4rem}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:11px;top:3px;width:17px;height:17px;border-radius:50%;border:2px solid white;z-index:1}
+.tl-time{font-size:9.5px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.tl-title{font-family:'Gruppo',cursive;font-size:15px;margin-bottom:5px}
+.tl-body{font-size:12.5px;line-height:1.6}
+.tl-body p{margin-bottom:.45rem}
+.tl-body p:last-child{margin-bottom:0}
+.consigne{background:#f7f5f0;border-left:3px solid var(--bleu);border-radius:0 8px 8px 0;padding:9px 13px;margin:7px 0;font-size:12.5px;font-style:italic;color:#0a4a5a;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chip{background:white;border:1px solid var(--border);border-radius:8px;padding:2px 8px;font-size:10.5px;color:var(--muted)}
+.attn{background:#f5abaf18;border:1px solid #f5abaf66;border-radius:8px;padding:9px 13px;margin:7px 0;font-size:12px;line-height:1.5;color:#7a1f26}
+.attn strong{font-weight:500}
+
+.mat-section{background:#f7f5f0;border-radius:12px;padding:14px 16px;margin-top:1.2rem}
+.mat-title{font-family:'Gruppo',cursive;font-size:13px;margin-bottom:8px}
+.mat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+@media(max-width:560px){.mat-grid{grid-template-columns:1fr}}
+.mat-item{display:flex;align-items:flex-start;gap:7px;font-size:12px;padding:6px 8px;background:white;border-radius:8px}
+.mat-dot{width:5px;height:5px;border-radius:50%;background:var(--bleu);flex-shrink:0;margin-top:5px}
+
+.posture-section{margin-top:1.2rem;padding:14px 16px;border-radius:12px;border:1px solid}
+.posture-title{font-family:'Gruppo',cursive;font-size:13px;margin-bottom:8px}
+.posture-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ptag{border-radius:20px;padding:3px 10px;font-size:11px}
+
+.transition-box{margin-top:1.2rem;padding:10px 14px;border-radius:0 10px 10px 0;font-size:12px;line-height:1.6;border-left:3px solid var(--vert);background:#cbe1b618}
+.transition-box strong{font-weight:500}
+
+.ph-accueil .tl-dot{background:var(--vert)}
+.ph-mvt .tl-dot{background:var(--rose)}
+.ph-activite .tl-dot{background:var(--peche)}
+.ph-partage .tl-dot{background:var(--lavande)}
+.ph-appro .tl-dot{background:var(--mauve)}
+.ph-cloture .tl-dot{background:var(--bleu)}
+
+.note-positionnement{background:#fff8e0;border:1px solid var(--jaune);border-radius:10px;padding:10px 14px;font-size:11.5px;line-height:1.6;color:#5a4e00;margin-top:1rem}
+.note-positionnement strong{font-weight:500}
+
+footer{text-align:center;padding:2rem;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:1rem}
+footer strong{color:var(--bleu);font-weight:500}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:64px}
+</style>
+</head>
+<body>
+
+<nav class="no-print">
+  <span class="nav-brand">BRILLE · Main Tendue</span>
+  <a href="#s1">S1</a><a href="#s2">S2</a><a href="#s3">S3</a>
+  <a href="#s4">S4</a><a href="#s5">S5</a><a href="#s6">S6</a><a href="#s7">S7</a>
+  <button class="btn-print" onclick="window.print()">🖨 Imprimer</button>
+</nav>
+
+<div class="page-wrap">
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">Offre Main Tendue · Groupe Oxygène · Centre social</span>
+    <h1>Guides animateur · Atelier Main Tendue</h1>
+    <p class="hero-sub">7 séances complètes · Parents · Cycle QVE en miroir · Groupe de parole constitué · Contexte multiculturel</p>
+    <p class="hero-sub" style="margin-top:-.6rem"><em>Version cycle complet (1 pétale/séance) — structure alternative à la version courte 2 séances de la proposition OMAC.</em></p>
+    <div class="pills">
+      <span class="pill"><span class="pdot" style="background:var(--rose)"></span>S1 · Émotions de parent</span>
+      <span class="pill"><span class="pdot" style="background:var(--peche)"></span>S2 · Équilibre / énergie</span>
+      <span class="pill"><span class="pdot" style="background:var(--jaune)"></span>S3 · Organisation / posture</span>
+      <span class="pill"><span class="pdot" style="background:var(--lavande)"></span>S4 · Liens / parole</span>
+      <span class="pill"><span class="pdot" style="background:var(--vert)"></span>S5 · Place / droits CIDE</span>
+      <span class="pill"><span class="pdot" style="background:var(--lilas)"></span>S6 · Transmission / sens</span>
+      <span class="pill"><span class="pdot" style="background:var(--orange)"></span>S7 · Ce qui me fait briller</span>
+    </div>
+  </div>
+</div>
+
+<!-- S1 -->
+<section id="s1"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n1">1</div>
+    <div class="seance-header-info">
+      <h2>Mes émotions de parent</h2>
+      <p>Porte d'entrée du cycle · S'appuie sur le groupe déjà constitué</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span><span class="meta-pill">📍 Salle centre social</span></div>
+      <span class="petale-tag" style="background:#f5abaf33;color:#7a1f26;border:1px solid #f5abaf88">🌸 Pétale · Mes émotions apprivoisées</span>
+      <span class="miroir-tag">↔ Miroir Lueur S1</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--rose)"><div class="obj-label">Objectif principal</div><div class="obj-text">Nommer ce que je ressens en tant que parent — fierté, épuisement, inquiétude, culpabilité, amour</div></div>
+      <div class="obj-card" style="border-color:var(--peche)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Découvrir que ces émotions sont partagées — briser l'isolement émotionnel parental</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Conscience émotionnelle · Régulation · Lien émotion–comportement parental</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–15 min · Accueil et cadrage BRILLE</div>
+        <div class="tl-title">Installer le cadre et présenter BRILLE</div>
+        <div class="tl-body">
+          <p>Respecter le rituel d'ouverture habituel du groupe Oxygène. Se présenter brièvement. Poser le cadre BRILLE sans jargon.</p>
+          <div class="consigne">« Je m'appelle Tsiory. Je travaille avec les enfants — et aujourd'hui je suis là avec vous parce que vous êtes la première ressource de votre enfant. Ce qu'on va faire ici, ce n'est pas un cours de parentalité. C'est un espace pour vous, pour ce que vous ressentez. »</div>
+          <p>Co-construire les règles : confidentialité, droit au silence, pas de jugement. Les noter et laisser affichées. Si la référente famille est présente — lui laisser faire l'introduction.</p>
+          <div class="chips"><span class="chip">Paper-board</span><span class="chip">Feutres épais</span><span class="chip">Flyer BRILLE</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">15–30 min · Mise en mouvement</div>
+        <div class="tl-title">Les émotions — on les nomme ensemble</div>
+        <div class="tl-body">
+          <p>Étaler les cartes émotions au centre. 30 secondes de silence d'observation.</p>
+          <div class="consigne">« Regardez ces cartes. Est-ce que vous reconnaissez des émotions que vous avez ressenties cette semaine en tant que parent ? Pas besoin d'expliquer — juste regarder. »</div>
+          <p>Tour de table sans obligation — chaque participant peut prendre une carte ou nommer une émotion. L'animatrice note sur le paper-board sans attribuer à personne.</p>
+          <div class="consigne">« Vous voyez — on est plusieurs à avoir cité "épuisement" et "fierté" dans la même semaine. C'est ça, être parent. Les deux peuvent coexister. »</div>
+          <div class="chips"><span class="chip">Cartes émotions adulte</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">30–65 min · Activité principale</div>
+        <div class="tl-title">La roue des émotions de parent</div>
+        <div class="tl-body">
+          <p>Distribuer la roue adulte + feutres.</p>
+          <div class="consigne">« Coloriez les émotions que vous avez ressenties cette semaine en tant que parent. Plus vous les avez ressenties fort, plus vous coloriez vers l'extérieur. »</div>
+          <p>Pendant le remplissage (12 min) : circuler sans s'imposer. Si quelqu'un est bloqué : <em>« Ce matin en voyant votre enfant partir à l'école — vous ressentiez quoi ? »</em></p>
+          <p>Sous-groupes de 3 (15 min) : partager une émotion et la situation qui l'a provoquée. Écoute sans interprétation.</p>
+          <p>Retour grand groupe (10 min) : chaque sous-groupe partage une observation générale — pas un contenu privé.</p>
+          <div class="chips"><span class="chip">Roue adulte A4 × participants</span><span class="chip">Feutres fins</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">65–80 min · Approfondissement</div>
+        <div class="tl-title">L'émotion et le lien parent-enfant</div>
+        <div class="tl-body">
+          <div class="consigne">« Quand vous ressentez cette émotion — la plus forte sur votre roue — qu'est-ce qui se passe dans votre relation avec votre enfant ce jour-là ? »</div>
+          <p>Laisser venir librement. Amener naturellement si non dit : <em>notre état émotionnel circule — l'enfant le ressent, même sans mots. Ce n'est pas une faute. C'est une information.</em></p>
+          <div class="consigne">« Votre enfant ne sait pas toujours nommer ce qu'il ressent — mais il ressent ce que vous ressentez. C'est pour ça que ce travail sur vous-même est aussi un travail pour lui. »</div>
+          <div class="attn"><strong>Si un parent exprime une souffrance importante</strong> (violence, dépression, isolement) : accueillir calmement, ne pas approfondir en groupe. Informer discrètement la référente famille après la séance.</div>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">80–90 min · Clôture</div>
+        <div class="tl-title">Rituel de sortie et intention pour la semaine</div>
+        <div class="tl-body">
+          <div class="consigne">« Avant de partir — un seul mot. Ce que vous repartez avec aujourd'hui. »</div>
+          <p>Micro-intention : <em>« Cette semaine, si vous remarquez une émotion forte avec votre enfant — nommez-la juste pour vous. Juste la reconnaître. »</em></p>
+          <p>Annoncer S2 : <em>« La prochaine fois : ce qui nous donne de l'énergie, et ce qui nous en prend. »</em></p>
+          <div class="chips"><span class="chip">Roues terminées — à garder</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S1</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Roue émotions adulte A4 × participants +2</div>
+      <div class="mat-item"><span class="mat-dot"></span>Cartes émotions adulte ×20</div>
+      <div class="mat-item"><span class="mat-dot"></span>Feutres fins toutes couleurs</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board + feutres épais</div>
+      <div class="mat-item"><span class="mat-dot"></span>Flyer BRILLE Ingénierie</div>
+      <div class="mat-item"><span class="mat-dot"></span>Enveloppes kraft (si à conserver)</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S2 :</strong> Consigne de sortie : <em>« Cette semaine, notez — même mentalement — une chose qui vous a rechargé et une chose qui vous a vidé. On en parlera la prochaine fois. »</em></div>
+  </div>
+</div></section>
+
+<!-- S2 -->
+<section id="s2"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n2">2</div>
+    <div class="seance-header-info">
+      <h2>Mon équilibre et mon énergie</h2>
+      <p>Prendre soin de soi pour prendre soin — la ressource parentale</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#fdd5a533;color:#7a4a00;border:1px solid #fdd5a588">⚡ Pétale · Mon équilibre et mon énergie</span>
+      <span class="miroir-tag">↔ Miroir Lueur — Équilibre énergie</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--peche)"><div class="obj-label">Objectif principal</div><div class="obj-text">Identifier ses sources d'énergie et ses facteurs d'épuisement en tant que parent</div></div>
+      <div class="obj-card" style="border-color:var(--orange)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Construire un petit rituel de ressourcement personnel réaliste</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Écoute de soi · Gestion de l'énergie · Prévention de l'épuisement parental</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil et retour S1</div>
+        <div class="tl-title">Rituel d'ouverture et lien avec S1</div>
+        <div class="tl-body">
+          <div class="consigne">« La semaine dernière on a parlé de nos émotions. Est-ce que quelqu'un a remarqué une chose qui vous a rechargé — ou vidé — cette semaine ? »</div>
+          <p>2–3 partages libres, brefs. Tisser le lien : <em>les émotions de la séance 1 sont souvent liées à notre niveau d'énergie.</em></p>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Mise en mouvement</div>
+        <div class="tl-title">Le scan corporel — où est mon énergie ?</div>
+        <div class="tl-body">
+          <p>Proposer 2 minutes de silence les yeux fermés : <em>« Où est-ce que vous sentez votre énergie en ce moment dans votre corps ? »</em> Partage libre à voix haute.</p>
+          <div class="consigne">« L'épuisement parental n'est pas un échec — c'est un signal du corps. Aujourd'hui on va apprendre à l'écouter. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–60 min · Activité principale</div>
+        <div class="tl-title">Le thermomètre de l'énergie</div>
+        <div class="tl-body">
+          <p>Distribuer le thermomètre A4 et des post-it de deux couleurs. Consigne en deux temps :</p>
+          <div class="consigne">« Sur les post-it JAUNES, écrivez ce qui vous recharge — même de petites choses. Sur les post-it ROSES, ce qui vous vide. Placez-les sur le thermomètre. »</div>
+          <p>Partage en grand groupe : coller les post-it sur un thermomètre collectif au paper-board. Observer les points communs sans jugement.</p>
+          <p>Deuxième temps : chaque participant choisit <em>un seul</em> rituel de ressourcement réaliste — quelque chose de faisable cette semaine (5 min de marche, une tasse de thé sans téléphone, un appel à un ami…).</p>
+          <div class="consigne">« On ne cherche pas un grand changement. Juste une petite chose — pour vous, rien que pour vous — que vous vous autorisez cette semaine. »</div>
+          <div class="chips"><span class="chip">Thermomètre A4 × participants</span><span class="chip">Post-it jaunes et roses</span><span class="chip">Paper-board collectif</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">60–78 min · Approfondissement</div>
+        <div class="tl-title">L'énergie parentale et l'enfant</div>
+        <div class="tl-body">
+          <div class="consigne">« Quand vous êtes épuisé·e — comment vous sentez-vous avec votre enfant ce jour-là ? Et quand vous avez pris soin de vous ? »</div>
+          <p>Lien à tisser : <em>un parent qui prend soin de lui n'est pas égoïste — il est disponible.</em> Ne pas le dire directement — laisser le groupe y arriver.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">78–90 min · Clôture</div>
+        <div class="tl-title">Un mot et une intention</div>
+        <div class="tl-body">
+          <div class="consigne">« Un mot — ce que vous repartez avec. Et l'intention de la semaine : votre petit rituel de ressourcement. »</div>
+          <p>Annoncer S3 : <em>« La prochaine fois : comment on trouve sa posture de parent — entre cadre et liberté. »</em></p>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S2</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Thermomètre énergie A4 × participants</div>
+      <div class="mat-item"><span class="mat-dot"></span>Post-it jaunes et roses × 20 chaque</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board grand thermomètre collectif</div>
+      <div class="mat-item"><span class="mat-dot"></span>Feutres fins</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S3 :</strong> <em>« Cette semaine, essayez votre rituel. La prochaine fois on vous demandera si vous l'avez fait — sans jugement, juste pour partager. »</em></div>
+  </div>
+</div></section>
+
+<!-- S3 -->
+<section id="s3"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n3">3</div>
+    <div class="seance-header-info">
+      <h2>Mon organisation et ma posture de parent</h2>
+      <p>Entre cadre et liberté — trouver sa juste place</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#f8f4b833;color:#5a4e00;border:1px solid #f8f4b888">📅 Pétale · Mon organisation et autonomie</span>
+      <span class="miroir-tag">↔ Miroir Lueur — Organisation autonomie</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--jaune)"><div class="obj-label">Objectif principal</div><div class="obj-text">Explorer sa posture parentale entre cadre et liberté — sans jugement ni idéal</div></div>
+      <div class="obj-card" style="border-color:var(--orange)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Identifier les moments de tension dans la relation et trouver une piste concrète</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Posture parentale · Autonomie de l'enfant · Cadre sécurisant</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil et retour S2</div>
+        <div class="tl-title">Retour sur les rituels de ressourcement</div>
+        <div class="tl-body">
+          <div class="consigne">« La semaine dernière vous avez choisi un rituel de ressourcement. Est-ce que quelqu'un veut partager — sans obligation — si vous l'avez fait, et ce que ça a changé ? »</div>
+          <p>Accueillir les deux : ceux qui l'ont fait et ceux qui n'ont pas pu. Pas de culpabilité — c'est une information sur la semaine.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Mise en mouvement</div>
+        <div class="tl-title">L'axe cadre ↔ liberté</div>
+        <div class="tl-body">
+          <p>Tracer une ligne imaginaire dans la salle : un bout = "je donne beaucoup de cadre et de règles", l'autre = "je laisse beaucoup de liberté". Chaque participant se place sur l'axe sans se justifier.</p>
+          <div class="consigne">« Il n'y a pas de bonne réponse. Vous allez vous placer où vous vous sentez le plus souvent avec votre enfant. »</div>
+          <p>Observer ensemble la répartition. Nommer que les deux extrêmes ont leur logique — et que la plupart des parents naviguent entre les deux selon les situations.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–58 min · Activité principale</div>
+        <div class="tl-title">Les cartes de situations parentales</div>
+        <div class="tl-body">
+          <p>Distribuer des cartes situations (5–6 scénarios du quotidien : devoirs, heure du coucher, téléphone, dispute entre frères, refus de manger…). En sous-groupes de 3, chaque groupe choisit une carte et discute : <em>comment je réagis habituellement ? Et comment j'aimerais réagir ?</em></p>
+          <div class="consigne">« Pour chaque situation — qu'est-ce que vous faites d'habitude ? Et si vous pouviez refaire cette scène — qu'est-ce que vous changeriez ? »</div>
+          <p>Retour grand groupe : chaque sous-groupe présente sa situation et une piste. L'animatrice reformule sans juger ni donner de recette.</p>
+          <p>Point clé à tisser : <em>la cohérence prime sur la perfection. Un parent cohérent dans ses limites — même imparfait — est plus sécurisant qu'un parent parfait mais imprévisible.</em></p>
+          <div class="chips"><span class="chip">Cartes situations ×15</span><span class="chip">Paper-board</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">58–76 min · Approfondissement</div>
+        <div class="tl-title">Organisation et autonomie de l'enfant</div>
+        <div class="tl-body">
+          <div class="consigne">« Est-ce que votre enfant a des responsabilités à la maison — même petites ? Comment vous l'avez décidé ? »</div>
+          <p>Lien miroir avec les enfants : pendant que les parents réfléchissent à leur posture, les enfants travaillent sur leur propre organisation et autonomie. Pas besoin de le dire — juste le savoir en tant qu'animatrice.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">76–90 min · Clôture</div>
+        <div class="tl-title">Un mot et une intention</div>
+        <div class="tl-body">
+          <div class="consigne">« Un mot — ce que vous repartez avec. »</div>
+          <p>Intention semaine : <em>« Choisissez une situation du quotidien avec votre enfant et essayez juste d'observer votre réaction — sans vous juger. »</em></p>
+          <p>Annoncer S4 : <em>« La prochaine fois : les personnes qui comptent dans notre vie de parent — et les liens qui nous soutiennent. »</em></p>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S3</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Cartes situations parentales ×15 (à préparer)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board + feutres</div>
+      <div class="mat-item"><span class="mat-dot"></span>Espace libre pour l'axe corporel</div>
+      <div class="mat-item"><span class="mat-dot"></span>Post-it pour noter les pistes</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S4 :</strong> <em>« Cette semaine, si vous avez un moment difficile avec votre enfant — pensez : est-ce que je suis plutôt côté cadre ou liberté là ? »</em></div>
+  </div>
+</div></section>
+
+<!-- S4 -->
+<section id="s4"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n4">4</div>
+    <div class="seance-header-info">
+      <h2>Mes liens et ma parole de parent</h2>
+      <p>La relation parent-enfant dans un contexte de migration — la relation prime</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#a4c2e733;color:#1a4a7a;border:1px solid #a4c2e788">💛 Pétale · Mes liens et ma parole</span>
+      <span class="miroir-tag">↔ Miroir Lueur S2</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--lavande)"><div class="obj-label">Objectif principal</div><div class="obj-text">Explorer le lien parent-enfant dans un contexte biculturel — comprendre sans tout expliquer</div></div>
+      <div class="obj-card" style="border-color:var(--bleu)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Identifier ses soutiens personnels — les personnes-ressources dans sa vie de parent</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Liens affectifs · Appartenance · Communication parent-enfant · Identité culturelle</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil</div>
+        <div class="tl-title">Retour et ouverture</div>
+        <div class="tl-body">
+          <div class="consigne">« La semaine dernière on a parlé de notre posture de parent. Aujourd'hui on va parler des personnes qui nous entourent — et du lien le plus important : celui avec notre enfant. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Mise en mouvement</div>
+        <div class="tl-title">La question centrale de la séance</div>
+        <div class="tl-body">
+          <div class="consigne">« Voici une question que beaucoup de parents posent. Est-ce que vous vous y reconnaissez ? "Comment comprendre mon enfant — même quand il vit dans un monde que je n'ai pas connu ?" »</div>
+          <p>Laisser les réponses venir. Valider les difficultés sans les minimiser. Tisser : <em>on n'a pas besoin de tout comprendre pour que le lien soit fort. La relation prime.</em></p>
+          <div class="consigne">« Vous n'avez pas grandi ici. Votre enfant grandit dans deux mondes à la fois. C'est complexe — et c'est aussi une richesse. Le lien parent-enfant, lui, il existe dans tous les mondes. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–58 min · Activité principale</div>
+        <div class="tl-title">La carte de mon monde — version parent</div>
+        <div class="tl-body">
+          <p>Distribuer le gabarit cercles concentriques adulte.</p>
+          <div class="consigne">« Sur cette carte, vous êtes au centre. Placez les personnes qui comptent pour vous en tant que parent — celles qui vous soutiennent, vous comprennent, vous aident à tenir. Elles peuvent être ici, au pays, ou à distance. »</div>
+          <p>Pendant l'activité : observer avec attention les cartes très vides (isolement parental) — noter discrètement pour la référente famille.</p>
+          <p>Échange en binôme (10 min) : partager une personne sur sa carte et ce qu'elle apporte.</p>
+          <p>Retour grand groupe : nommer les soutiens collectifs présents dans la salle — <em>« Ce groupe lui-même est une ressource. »</em></p>
+          <div class="chips"><span class="chip">Gabarit cercles adulte ×participants</span><span class="chip">Feutres</span><span class="chip">Magazines + colle</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">58–76 min · Approfondissement</div>
+        <div class="tl-title">Parler à son enfant — sans les mots parfaits</div>
+        <div class="tl-body">
+          <div class="consigne">« Est-ce qu'il y a des choses que vous voudriez dire à votre enfant — mais vous ne savez pas comment ? Ou dans quelle langue ? »</div>
+          <p>Accueillir les réponses avec douceur. Ce moment peut être émotionnellement chargé — tenir la sécurité du groupe. Ne pas approfondir les histoires personnelles. Nommer que l'intention compte plus que les mots parfaits.</p>
+          <div class="consigne">« Un regard, un geste, un repas partagé — c'est aussi du lien. La parole n'est pas la seule façon de dire à son enfant qu'on l'aime. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">76–90 min · Clôture</div>
+        <div class="tl-title">Un mot et une intention</div>
+        <div class="tl-body">
+          <div class="consigne">« Un mot — ce que vous repartez avec. »</div>
+          <p>Intention semaine : <em>« Cette semaine, faites une chose avec votre enfant — sans objectif, juste pour être ensemble. Même 5 minutes. »</em></p>
+          <p>Annoncer S5 : <em>« La prochaine fois : les droits de votre enfant — pas comme une contrainte, mais comme une fondation pour votre relation. »</em></p>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S4</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Gabarit carte de mon monde adulte × participants</div>
+      <div class="mat-item"><span class="mat-dot"></span>Feutres fins + magazines + colle</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board pour notes collectives</div>
+      <div class="mat-item"><span class="mat-dot"></span>Mouchoirs (séance potentiellement chargée)</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S5 :</strong> <em>« Cette semaine : faites une chose ensemble, juste pour être ensemble. »</em></div>
+  </div>
+</div></section>
+
+<!-- S5 -->
+<section id="s5"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n5">5</div>
+    <div class="seance-header-info">
+      <h2>Ma place et les droits de mon enfant</h2>
+      <p>La CIDE comme outil de lien — pas comme contrainte</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#cbe1b633;color:#2a5a1a;border:1px solid #cbe1b688">⚖️ Pétale · Ma place et mes droits</span>
+      <span class="miroir-tag">↔ Miroir Lueur — Ma place et mes droits</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Objectif principal</div><div class="obj-text">Découvrir les droits fondamentaux de l'enfant (CIDE) depuis le regard du parent</div></div>
+      <div class="obj-card" style="border-color:var(--lavande)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Relier les droits de l'enfant à des moments concrets du quotidien familial</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Connaissance des droits · Place du parent comme garant · Lien droit–relation</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil</div>
+        <div class="tl-title">Retour sur l'intention semaine</div>
+        <div class="tl-body">
+          <div class="consigne">« La semaine dernière, je vous ai proposé de faire une chose avec votre enfant juste pour être ensemble. Est-ce que quelqu'un veut partager ce qu'il a vécu ? »</div>
+          <p>Écoute courte — 2–3 partages. Valoriser même les petits moments.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–28 min · Mise en mouvement</div>
+        <div class="tl-title">Qu'est-ce qu'un droit de l'enfant ?</div>
+        <div class="tl-body">
+          <div class="consigne">« Est-ce que vous connaissez la Convention des droits de l'enfant ? Est-ce que vous pouvez citer un droit que votre enfant a ? »</div>
+          <p>Recueillir les réponses sans juger. Certains parents connaîtront bien, d'autres pas du tout. Présenter la CIDE simplement : <em>un texte international, adopté en 1989, qui dit ce dont chaque enfant a besoin pour grandir bien — dans le monde entier.</em></p>
+          <div class="consigne">« Ces droits ne sont pas là pour accuser les parents. Ils sont là pour dire : voici ce dont les enfants ont besoin. Et vous, parents, êtes les premiers à pouvoir les garantir. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">28–62 min · Activité principale</div>
+        <div class="tl-title">Les 5 droits en récit parental</div>
+        <div class="tl-body">
+          <p>Distribuer 5 cartes CIDE illustrées (droits choisis : éducation, santé, identité, protection, jeu). En sous-groupes de 2–3, chaque groupe prend une carte et répond à la question : <em>comment ce droit se traduit dans votre quotidien avec votre enfant ?</em></p>
+          <div class="consigne">« Lisez votre carte. Ce droit — est-ce que vous le garantissez à votre enfant ? Comment ? Est-ce qu'il y a des moments où c'est difficile ? »</div>
+          <p>Retour grand groupe : chaque sous-groupe raconte. L'animatrice relie les récits au droit correspondant — sans jugement, avec valorisation.</p>
+          <p>Point spécifique contexte migratoire : droit à l'identité culturelle. <em>« Votre enfant a le droit de connaître ses origines, sa langue, sa culture. Le garder en lien avec votre pays d'origine, c'est aussi garantir un droit. »</em></p>
+          <div class="chips"><span class="chip">Cartes CIDE adulte ×5 types</span><span class="chip">Paper-board</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">62–78 min · Approfondissement</div>
+        <div class="tl-title">Ma place comme garant</div>
+        <div class="tl-body">
+          <div class="consigne">« Parmi ces droits — lequel vous touche le plus ? Lequel vous semble le plus difficile à garantir aujourd'hui ? »</div>
+          <p>Écoute ouverte. Ne pas résoudre. Nommer que certains droits sont difficiles à garantir dans un contexte de précarité ou de migration — et que le reconnaître est déjà une force.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">78–90 min · Clôture</div>
+        <div class="tl-title">Un mot et une intention</div>
+        <div class="tl-body">
+          <div class="consigne">« Un mot. Et cette semaine : dites à votre enfant un droit qu'il a — à votre façon, dans vos mots. »</div>
+          <p>Annoncer S6 : <em>« La prochaine fois : ce que vous transmettez à votre enfant — sans toujours le savoir. »</em></p>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S5</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Cartes CIDE adulte ×5 types × 3 exemplaires</div>
+      <div class="mat-item"><span class="mat-dot"></span>Affiche CIDE simplifiée (facultatif)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board + feutres</div>
+      <div class="mat-item"><span class="mat-dot"></span>Post-it pour les réactions personnelles</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S6 :</strong> <em>« Dites à votre enfant un droit qu'il a — à votre façon. »</em></div>
+  </div>
+</div></section>
+
+<!-- S6 -->
+<section id="s6"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n6">6</div>
+    <div class="seance-header-info">
+      <h2>Le sens de ce que je transmets</h2>
+      <p>Ce que j'enseigne sans le savoir — valeurs, langue, culture</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#ebc6e033;color:#5a1a5a;border:1px solid #ebc6e088">📚 Pétale · Le sens de mes apprentissages</span>
+      <span class="miroir-tag">↔ Miroir Lueur — Sens des apprentissages</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--lilas)"><div class="obj-label">Objectif principal</div><div class="obj-text">Identifier ce qu'on transmet à son enfant — valeurs, habitudes, rapport au savoir, culture d'origine</div></div>
+      <div class="obj-card" style="border-color:var(--mauve)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Redonner sens et fierté à la transmission culturelle dans un contexte de migration</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Transmission · Identité · Rapport à l'école · Fierté culturelle parentale</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil</div>
+        <div class="tl-title">Retour et ouverture</div>
+        <div class="tl-body">
+          <div class="consigne">« La semaine dernière on a parlé des droits de votre enfant. Aujourd'hui on va parler de ce que vous lui donnez — pas des obligations, mais de ce que vous transmettez, souvent sans vous en rendre compte. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Mise en mouvement</div>
+        <div class="tl-title">Ce que j'ai reçu de mes parents</div>
+        <div class="tl-body">
+          <div class="consigne">« Pensez à vos propres parents ou à ceux qui vous ont élevé. Quelle est la chose la plus précieuse qu'ils vous ont transmise — même sans le dire avec des mots ? »</div>
+          <p>Tour de table libre. Accueillir toutes les réponses : la rigueur, le sens de la fête, le respect des aînés, la langue maternelle, la cuisine, la foi, le courage de migrer… Tout compte.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–60 min · Activité principale</div>
+        <div class="tl-title">L'arbre de transmission</div>
+        <div class="tl-body">
+          <p>Distribuer le gabarit arbre A4. Consigne en trois temps :</p>
+          <div class="consigne">« Dans les racines — ce que vous avez reçu de votre famille, de votre culture, de votre pays. Dans le tronc — ce que vous êtes aujourd'hui en tant que parent. Dans les branches et feuilles — ce que vous transmettez ou voulez transmettre à votre enfant. »</div>
+          <p>Temps de remplissage (20 min) en silence ou doucement. Puis partage en sous-groupes de 2–3.</p>
+          <p>Retour grand groupe : chaque participant partage une chose dans ses racines et une chose dans ses branches.</p>
+          <p><strong style="font-weight:500">Point clé :</strong> valoriser explicitement les transmissions culturelles souvent dévalorisées. <em>« Transmettre votre langue d'origine, votre cuisine, votre façon de respecter les anciens — ce sont des richesses que votre enfant portera toute sa vie. »</em></p>
+          <div class="chips"><span class="chip">Gabarit arbre A4 × participants</span><span class="chip">Feutres fins + épais</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">60–76 min · Approfondissement</div>
+        <div class="tl-title">Le rapport à l'école et au savoir</div>
+        <div class="tl-body">
+          <div class="consigne">« Comment vous parliez de l'école quand vous étiez enfant ? Et maintenant — comment vous en parlez avec votre enfant ? »</div>
+          <p>Explorer le lien entre le rapport au savoir des parents et celui de l'enfant — sans culpabiliser. <em>Ce que vous dites de l'école le soir au dîner compte autant que ce qui se passe en classe.</em></p>
+          <div class="consigne">« Vous n'avez pas besoin de comprendre les devoirs de votre enfant pour lui donner envie d'apprendre. Votre regard sur le savoir suffit. »</div>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">76–90 min · Clôture</div>
+        <div class="tl-title">Un mot et une intention</div>
+        <div class="tl-body">
+          <div class="consigne">« Un mot — ce que vous repartez avec. »</div>
+          <p>Intention semaine : <em>« Partagez avec votre enfant quelque chose de vos racines — une histoire, une chanson, une recette, un souvenir. »</em></p>
+          <p>Annoncer S7 : <em>« La prochaine fois, c'est notre dernière séance. On va parler de ce qui vous fait briller en tant que parent — de vos forces, celles que vous ne voyez pas toujours. »</em></p>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S6</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Gabarit arbre de transmission A4 × participants</div>
+      <div class="mat-item"><span class="mat-dot"></span>Feutres fins toutes couleurs</div>
+      <div class="mat-item"><span class="mat-dot"></span>Paper-board pour partage collectif</div>
+      <div class="mat-item"><span class="mat-dot"></span>Musique douce en fond (facultatif)</div>
+    </div></div>
+    <div class="transition-box"><strong>Transition S7 :</strong> <em>« Partagez quelque chose de vos racines avec votre enfant cette semaine. Et préparez-vous pour la prochaine fois — on va parler de ce qui vous rend uniques en tant que parent. »</em></div>
+  </div>
+</div></section>
+
+<!-- S7 -->
+<section id="s7"><div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big n7">7</div>
+    <div class="seance-header-info">
+      <h2>Ce qui me fait briller comme parent</h2>
+      <p>Clôture du cycle · Forces parentales · Pétale et phrase souvenir</p>
+      <div class="seance-meta"><span class="meta-pill">⏱ 1h30</span><span class="meta-pill">👥 Groupe Oxygène</span></div>
+      <span class="petale-tag" style="background:#f49f4c22;color:#7a3a00;border:1px solid #f49f4c88">✨ Pétale · Ce qui me fait briller</span>
+      <span class="miroir-tag">↔ Miroir Lueur S3</span>
+    </div>
+  </div>
+  <div class="seance-body">
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--orange)"><div class="obj-label">Objectif principal</div><div class="obj-text">Reconnaître ses forces parentales — ce qu'on fait bien, même imparfaitement, même silencieusement</div></div>
+      <div class="obj-card" style="border-color:var(--peche)"><div class="obj-label">Objectif secondaire</div><div class="obj-text">Clore le cycle avec une production symbolique et une trace positive durable</div></div>
+      <div class="obj-card" style="border-color:var(--vert)"><div class="obj-label">Compétence QVE</div><div class="obj-text">Estime de soi parentale · Identité positive · Reconnaissance de soi · Clôture sécurisée</div></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–15 min · Accueil et voyage dans le cycle</div>
+        <div class="tl-title">Rappel du chemin parcouru ensemble</div>
+        <div class="tl-body">
+          <div class="consigne">« C'est notre dernière séance ensemble. On a fait un long chemin. On a parlé de nos émotions, de notre énergie, de notre posture, de nos liens, des droits de nos enfants, de ce qu'on transmet. Aujourd'hui on va parler de vous — de ce qui vous fait briller en tant que parent. »</div>
+          <p>Si les productions des séances précédentes ont été conservées (roues, arbres, cartes) — les exposer dans la salle comme trace du chemin parcouru.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-mvt">
+        <div class="tl-dot"></div>
+        <div class="tl-time">15–30 min · Mise en mouvement</div>
+        <div class="tl-title">Ce que le groupe voit en moi</div>
+        <div class="tl-body">
+          <p>Chaque participant reçoit un post-it. Consigne : écrire <em>une force parentale qu'il a observée chez un autre parent du groupe</em> et lui remettre anonymement.</p>
+          <div class="consigne">« Regardez les personnes autour de vous. Vous les connaissez depuis plusieurs semaines maintenant. Qu'est-ce que vous avez vu en eux comme force de parent — même petite, même invisible à leurs yeux ? »</div>
+          <p>Chaque participant lit le post-it qu'il a reçu à voix haute — ou en silence. L'animatrice observe les réactions : souvent surprise, émotion, incrédulité. Accueillir calmement.</p>
+          <div class="consigne">« Ce que les autres voient en nous, c'est souvent ce qu'on ne voit pas nous-mêmes. »</div>
+          <div class="chips"><span class="chip">Post-it colorés × participants ×2</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">30–65 min · Activité principale</div>
+        <div class="tl-title">Mon pétale de parent</div>
+        <div class="tl-body">
+          <p>Distribuer le pétale parent A4 + feutres.</p>
+          <div class="consigne">« Dans chaque bulle, notez une force en tant que parent. Ça peut être ce que quelqu'un vient de dire de vous, quelque chose que vous avez découvert pendant ce cycle, ou quelque chose que vous savez depuis toujours mais que vous n'oserez jamais dire. »</div>
+          <p>Pendant le remplissage (20 min) : circuler avec douceur. Si quelqu'un est bloqué : <em>« Qu'est-ce que votre enfant dirait de vous en bien — même s'il ne le dit pas toujours ? »</em></p>
+          <p>Chaque participant remplit sa phrase souvenir : <em>« Je brille parce que je suis le parent de _______ »</em>. Laisser le temps. C'est la phrase la plus importante du cycle.</p>
+          <p>Tour de table : chaque participant lit sa phrase souvenir à voix haute s'il le souhaite. L'animatrice écoute, valorise, ne commente pas.</p>
+          <div class="chips"><span class="chip">Pétale parent A4 × participants</span><span class="chip">Feutres fins + épais</span></div>
+        </div>
+      </div>
+      <div class="tl-item ph-appro">
+        <div class="tl-dot"></div>
+        <div class="tl-time">65–78 min · Clôture du cycle</div>
+        <div class="tl-title">Ce que je reporte à mon enfant</div>
+        <div class="tl-body">
+          <div class="consigne">« Dans ce cycle on a beaucoup parlé de vous. Mais tout ça — vos émotions mieux connues, votre énergie mieux gérée, vos liens renforcés, vos droits connus, votre transmission assumée, vos forces reconnues — tout ça va jusqu'à votre enfant. C'est ça le lien. »</div>
+          <p>Laisser un moment de silence. Ne pas le meubler.</p>
+        </div>
+      </div>
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">78–90 min · Rituel de fin de cycle</div>
+        <div class="tl-title">Le dernier mot — ce que je garde</div>
+        <div class="tl-body">
+          <div class="consigne">« On a fait sept séances ensemble. Qu'est-ce que vous repartez avec — de tout ce chemin ? Un seul mot, ou une phrase. »</div>
+          <p>L'animatrice dit le sien en dernier. Sincère, court, ancré dans ce qui s'est réellement passé dans ce groupe.</p>
+          <p>Distribuer si possible une petite carte personnalisée à chaque parent avec leur prénom et une phrase préparée à l'avance — quelque chose de vrai observé pendant le cycle.</p>
+          <p>Rappel positionnel final : <em>« Ce groupe continue d'exister. BRILLE est intervenu dans votre espace — mais cet espace vous appartient. »</em></p>
+          <div class="chips"><span class="chip">Cartes personnalisées préparées</span><span class="chip">Pétales terminés à garder</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="mat-section"><div class="mat-title">Matériel · S7</div><div class="mat-grid">
+      <div class="mat-item"><span class="mat-dot"></span>Pétale parent A4 × participants +2</div>
+      <div class="mat-item"><span class="mat-dot"></span>Post-it colorés × participants ×2</div>
+      <div class="mat-item"><span class="mat-dot"></span>Feutres fins + épais toutes couleurs</div>
+      <div class="mat-item"><span class="mat-dot"></span>Cartes souvenir personnalisées (à préparer)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Productions des séances précédentes à exposer</div>
+      <div class="mat-item"><span class="mat-dot"></span>Musique douce en fond (facultatif)</div>
+    </div></div>
+    <div class="posture-section" style="background:#f49f4c12;border-color:#f49f4c88">
+      <div class="posture-title" style="color:#7a3a00">Posture animatrice · S7 — clôture</div>
+      <div class="posture-tags">
+        <span class="ptag" style="background:#f49f4c22;color:#7a3a00">Tenir l'émotion de clôture calmement</span>
+        <span class="ptag" style="background:#f49f4c22;color:#7a3a00">Ne pas précipiter les silences</span>
+        <span class="ptag" style="background:#f49f4c22;color:#7a3a00">Valoriser sans surinvestir</span>
+        <span class="ptag" style="background:#f49f4c22;color:#7a3a00">Rappeler que le groupe leur appartient</span>
+        <span class="ptag" style="background:#f49f4c22;color:#7a3a00">Bilan oral à la référente famille uniquement</span>
+      </div>
+    </div>
+    <div class="transition-box" style="border-color:var(--orange);background:#f49f4c12">
+      <strong>Après le cycle :</strong> Bilan oral avec la référente famille — sans compte rendu nominatif. Évoquer les dynamiques de groupe, les thèmes qui ont résonné, les besoins identifiés collectivement. Proposer si pertinent un cycle complémentaire ou une séance de suivi 3 mois après.
+    </div>
+  </div>
+</div></section>
+
+</div>
+
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Tsiory Leonard, Ingénieure QVE · 07 45 32 30 90 · tsioryleonard@gmail.com
+  <br style="margin-bottom:4px"/>
+  Document de travail interne · Non destiné à la diffusion externe sans accord préalable
+</footer>
+
+<script>
+const sections=document.querySelectorAll('section[id]');
+const links=document.querySelectorAll('nav a[href^="#"]');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const lk=document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(lk)lk.classList.add('active');
+    }
+  });
+},{threshold:0.25});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lueur & Main Tendue — BRILLE Ingénierie</title>
+<link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--vert:#cbe1b6;--bleu:#a8dbeb;--mauve:#b8aed7;--orange:#f49f4c;--rose:#f5abaf;--jaune:#f8f4b8;--peche:#fdd5a5;--noir:#1a1a2e;--gris:#666;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Quicksand',sans-serif;background:#f5f3ef;color:var(--noir);}
+h1,h2,h3,h4{font-family:'Gruppo',sans-serif;font-weight:400;}
+
+/* TOPNAV — même style que Scintille */
+.topnav{background:var(--noir);padding:12px 18px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;}
+.topnav img{height:32px;width:32px;border-radius:50%;object-fit:cover;}
+.topnav .ttl{color:var(--peche);font-family:'Gruppo',sans-serif;font-size:13px;letter-spacing:2px;flex:1;}
+.topnav a.back{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);border-radius:10px;padding:6px 12px;font-family:'Quicksand',sans-serif;font-size:11px;cursor:pointer;text-decoration:none;}
+
+/* HERO */
+.mc{max-width:960px;margin:0 auto;padding:20px;}
+.hero{background:white;border-radius:20px;padding:28px 24px;margin-bottom:20px;box-shadow:0 3px 14px rgba(0,0,0,.07);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:var(--lueur,var(--jaune));opacity:.35;}
+.hero::after{content:'';position:absolute;bottom:-30px;left:-30px;width:110px;height:110px;border-radius:50%;background:var(--bleu);opacity:.3;}
+.hero-inner{position:relative;z-index:1;}
+.hero-badge{display:inline-block;background:var(--peche);color:#7a3a00;font-family:'Gruppo',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:10px;}
+.hero h1{font-size:1.9rem;margin-bottom:6px;}
+.hero p{font-size:13px;color:var(--gris);max-width:520px;line-height:1.6;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.pill{display:inline-flex;align-items:center;gap:5px;background:#f7f5f0;border:1px solid #eee;border-radius:20px;padding:4px 11px;font-size:11px;color:var(--gris);}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* SECTION TITLE */
+.stl{font-size:11px;font-weight:700;color:var(--gris);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;margin-top:6px;}
+
+/* ATELIER CARDS */
+.atelier-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.atelier-tag{font-family:'Gruppo',sans-serif;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;}
+
+/* FILE/LINK ITEM — même style que fi-item de Scintille */
+.fi-item{background:white;border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);cursor:pointer;border:2px solid transparent;transition:border .2s;text-decoration:none;color:var(--noir);}
+.fi-item:hover{border-color:var(--orange);}
+.fi-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.fi-info{flex:1;min-width:0;}
+.fi-title{font-family:'Gruppo',sans-serif;font-size:14px;line-height:1.3;margin-bottom:2px;}
+.fi-sub{font-size:11px;color:var(--gris);line-height:1.4;}
+.fi-arrow{font-size:16px;color:#ccc;flex-shrink:0;}
+
+/* PILL STATUS */
+.statpill{display:inline-block;padding:2px 9px;border-radius:12px;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;}
+.st-ready{background:#eaf6ee;color:#306040;}
+.st-ext{background:#fff0e0;color:#a04000;}
+
+.sep{height:1px;background:#f0f0f0;margin:18px 0;}
+
+/* FOOTER */
+footer{text-align:center;padding:24px 20px;font-size:11px;color:var(--gris);}
+footer strong{color:var(--orange);}
+
+/* NOTE BOX */
+.note{background:#e8f4fb;border:1px solid var(--bleu);border-radius:14px;padding:14px 16px;font-size:12px;line-height:1.6;color:#1a3a5a;margin-bottom:16px;}
+.note strong{font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <img src="brille-logo.png" alt="brille" onerror="this.style.display='none'">
+  <span class="ttl">LUEUR &amp; MAIN TENDUE</span>
+  <a class="back" href="index.html">← Scintille</a>
+</div>
+
+<div class="mc">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge">Bibliothèque BRILLE · Ateliers groupes</span>
+      <h1>Lueur &amp; Main Tendue</h1>
+      <p>Guides animateur complets, matériels imprimables et posters partagés pour les ateliers QVE collectifs — enfants 6–12 ans (Lueur) et parents (Main Tendue). Structure validée avec la proposition OMAC, adaptable pour chaque nouveau centre partenaire.</p>
+      <div class="hero-pills">
+        <span class="pill"><span class="pdot" style="background:var(--jaune)"></span>Lueur · 3 séances · 6-12 ans</span>
+        <span class="pill"><span class="pdot" style="background:var(--bleu)"></span>Main Tendue · 2 séances · parents</span>
+        <span class="pill"><span class="pdot" style="background:var(--vert)"></span>Posters partagés · dispositif miroir</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Comment utiliser cette bibliothèque :</strong> chaque guide ci-dessous est un fichier autonome — imprimable, modifiable. Pour un nouveau centre, dupliquer le fichier source et adapter (horaires, nombre d'enfants, tarifs) sans toucher à l'original.
+  </div>
+
+  <!-- ATELIER LUEUR -->
+  <div class="atelier-row">
+    <span class="atelier-tag" style="background:var(--jaune);color:#6b5c00;">Atelier Lueur</span>
+    <span style="font-size:12px;color:var(--gris);align-self:center;">Enfants 6–12 ans · Groupes de 10 max · 1h30/séance</span>
+  </div>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#lueur-s1" target="_blank">
+    <div class="fi-av" style="background:#fce8ec;">🌤️</div>
+    <div class="fi-info">
+      <div class="fi-title">Séance 1 — Ce que je ressens et ce que je vaux</div>
+      <div class="fi-sub">Météo intérieure + Constellation des talents · Émotions &amp; Briller</div>
+    </div>
+    <span class="statpill st-ready">Prêt</span>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#lueur-s2" target="_blank">
+    <div class="fi-av" style="background:#fff0e0;">🧭</div>
+    <div class="fi-info">
+      <div class="fi-title">Séance 2 — Ma place ici et mes liens</div>
+      <div class="fi-sub">Boussole des alliés + Charte des droits · Liens &amp; Droits</div>
+    </div>
+    <span class="statpill st-ready">Prêt</span>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#lueur-s3" target="_blank">
+    <div class="fi-av" style="background:#e8f4fb;">🌳</div>
+    <div class="fi-info">
+      <div class="fi-title">Séance 3 — J'apprends et je m'organise</div>
+      <div class="fi-sub">Arbre des possibles + QG du commandant · Apprentissages &amp; Organisation</div>
+    </div>
+    <span class="statpill st-ext">Extension</span>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <div class="sep"></div>
+
+  <!-- ATELIER MAIN TENDUE -->
+  <div class="atelier-row">
+    <span class="atelier-tag" style="background:var(--bleu);color:#1a3a5a;">Atelier Main Tendue</span>
+    <span style="font-size:12px;color:var(--gris);align-self:center;">Parents · Groupe de parole · 2h/séance</span>
+  </div>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#mt-s1" target="_blank">
+    <div class="fi-av" style="background:#e8f4fb;">🌤️</div>
+    <div class="fi-info">
+      <div class="fi-title">Séance 1 — Comprendre ce que vit mon enfant</div>
+      <div class="fi-sub">Météo à deux niveaux + Thermomètre énergie · Miroir de Lueur S1</div>
+    </div>
+    <span class="statpill st-ready">Prêt</span>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#mt-s2" target="_blank">
+    <div class="fi-av" style="background:#f0eafa;">🧭</div>
+    <div class="fi-info">
+      <div class="fi-title">Séance 2 — Le lien qui tient, même quand on ne comprend pas tout</div>
+      <div class="fi-sub">Boussole de parent + Constellation de savoir-faire · Miroir de Lueur S2</div>
+    </div>
+    <span class="statpill st-ready">Prêt</span>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <div class="sep"></div>
+
+  <!-- MATÉRIELS & RESSOURCES -->
+  <div class="stl">Matériels &amp; ressources</div>
+
+  <a class="fi-item" href="OMAC_Guides_Detailles.html#materiels" target="_blank">
+    <div class="fi-av" style="background:#eaf6ee;">🖨️</div>
+    <div class="fi-info">
+      <div class="fi-title">Posters &amp; fiches imprimables</div>
+      <div class="fi-sub">3 posters A3 partagés (météo, boussole, constellation) + 8 fiches A4 individuelles</div>
+    </div>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="BRILLE_Plaquette_Tarifaire.html" target="_blank">
+    <div class="fi-av" style="background:#fff8e0;">💶</div>
+    <div class="fi-info">
+      <div class="fi-title">Plaquette tarifaire</div>
+      <div class="fi-sub">Étincelle, Lueur, Main Tendue · Tarif partenaire CAF · Conditions générales</div>
+    </div>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="BRILLE_Proposition_OMAC.html" target="_blank">
+    <div class="fi-av" style="background:#fce8ec;">📄</div>
+    <div class="fi-info">
+      <div class="fi-title">Proposition de partenariat — modèle</div>
+      <div class="fi-sub">Trame réutilisable pour un nouveau centre partenaire (basée sur OMAC)</div>
+    </div>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <div class="sep"></div>
+
+  <!-- LUEUR + MAIN TENDUE SEPARES (anciens fichiers) -->
+  <div class="stl">Guides détaillés par séance — versions individuelles</div>
+
+  <a class="fi-item" href="Lueur_Guides_S1_S2_S3.html" target="_blank">
+    <div class="fi-av" style="background:#fff8e0;">📘</div>
+    <div class="fi-info">
+      <div class="fi-title">Atelier Lueur — Guides S1 à S3</div>
+      <div class="fi-sub">Version détaillée 1 pétale/séance (structure alternative)</div>
+    </div>
+    <span class="fi-arrow">→</span>
+  </a>
+
+  <a class="fi-item" href="MainTendue_Guides_S1_S7.html" target="_blank">
+    <div class="fi-av" style="background:#e8f4fb;">📘</div>
+    <div class="fi-info">
+      <div class="fi-title">Atelier Main Tendue — Guides S1 à S7</div>
+      <div class="fi-sub">Version détaillée cycle complet 7 séances (structure alternative)</div>
+    </div>
+    <span class="fi-arrow">→</span>
+  </a>
+
+</div>
+
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Tsiory Leonard, Ingénieure QVE · 07 45 32 30 90 · tsioryleonard@gmail.com
+</footer>
+
+</body>
+</html>

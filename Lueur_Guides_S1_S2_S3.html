@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Atelier Lueur · Guides Séances 1–3 · BRILLE Ingénierie</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600&family=Gruppo&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#f49f4c;--rose:#f5abaf;--peche:#fdd5a5;--jaune:#f8f4b8;
+  --lavande:#a4c2e7;--bleu:#a8dbeb;--vert:#cbe1b6;--mauve:#b8aed7;--lilas:#ebc6e0;
+  --text:#2c2c2c;--muted:#6b6b6b;--border:#e8e8e8;
+}
+@media print{
+  .no-print{display:none!important}
+  body{font-size:11px;background:white}
+  .seance-block{page-break-before:always;page-break-inside:avoid;box-shadow:none!important;border:1px solid var(--border)!important}
+  .seance-block:first-of-type{page-break-before:auto}
+}
+body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f0ede8;color:var(--text);line-height:1.6}
+
+nav{position:sticky;top:0;z-index:100;background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;display:flex;align-items:center;height:52px;overflow-x:auto;gap:0}
+.nav-brand{font-family:'Gruppo',cursive;font-size:15px;color:var(--jaune);filter:brightness(.8);margin-right:18px;flex-shrink:0;white-space:nowrap}
+nav a{font-size:12px;color:var(--muted);text-decoration:none;padding:0 11px;height:52px;display:flex;align-items:center;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+nav a:hover,nav a.active{color:var(--text);border-bottom-color:var(--orange)}
+.btn-print{margin-left:auto;flex-shrink:0;background:var(--orange);color:white;border:none;border-radius:20px;padding:7px 16px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:500;cursor:pointer}
+
+.page-wrap{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+.hero{background:white;border-radius:20px;padding:2.2rem 2.5rem 1.8rem;margin-bottom:2rem;border:1px solid var(--border);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:var(--jaune);opacity:.4}
+.hero::after{content:'';position:absolute;bottom:-25px;left:-25px;width:100px;height:100px;border-radius:50%;background:var(--peche);opacity:.35}
+.hero-inner{position:relative;z-index:1}
+.hero-badge{display:inline-block;background:var(--jaune);color:#5a4e00;font-family:'Gruppo',cursive;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:.9rem}
+.hero h1{font-family:'Gruppo',cursive;font-size:2.2rem;font-weight:400;line-height:1.1;margin-bottom:.4rem}
+.hero-sub{font-size:13px;color:var(--muted);margin-bottom:1.2rem}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{display:inline-flex;align-items:center;gap:5px;background:#f7f5f0;border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:11.5px;color:var(--muted)}
+.pdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* SÉANCE BLOCK */
+.seance-block{background:white;border-radius:18px;margin-bottom:2rem;border:1px solid var(--border);overflow:hidden}
+.seance-header{padding:1.6rem 2rem 1.2rem;border-bottom:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+.seance-num-big{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Gruppo',cursive;font-size:22px;font-weight:400;flex-shrink:0}
+.s1bg{background:var(--rose);color:#5a1e24}
+.s2bg{background:var(--peche);color:#5a3800}
+.s3bg{background:var(--lavande);color:#0e3260}
+.seance-header-info{flex:1;min-width:180px}
+.seance-header-info h2{font-family:'Gruppo',cursive;font-size:1.5rem;font-weight:400;line-height:1.2;margin-bottom:3px}
+.seance-header-info p{font-size:12px;color:var(--muted)}
+.seance-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:.6rem}
+.meta-pill{background:#f7f5f0;border:1px solid var(--border);border-radius:10px;padding:3px 10px;font-size:11px;color:var(--muted)}
+.petale-tag{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:500;margin-top:.4rem}
+
+.seance-body{padding:1.6rem 2rem 2rem}
+
+/* OBJECTIFS */
+.objectifs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+@media(max-width:640px){.objectifs-grid{grid-template-columns:1fr}}
+.obj-card{background:#f7f5f0;border-radius:12px;padding:12px 14px;border-left:3px solid transparent}
+.obj-card .obj-label{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:500;margin-bottom:4px}
+.obj-card .obj-text{font-size:12.5px;line-height:1.5}
+
+/* TIMELINE */
+.tl{position:relative}
+.tl::before{content:'';position:absolute;left:19px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;padding-left:52px;margin-bottom:1.4rem}
+.tl-item:last-child{margin-bottom:0}
+.tl-dot{position:absolute;left:11px;top:3px;width:17px;height:17px;border-radius:50%;border:2px solid white;z-index:1}
+.tl-time{font-size:9.5px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.tl-title{font-family:'Gruppo',cursive;font-size:15px;margin-bottom:5px}
+.tl-body{font-size:12.5px;line-height:1.6}
+.tl-body p{margin-bottom:.45rem}
+.tl-body p:last-child{margin-bottom:0}
+.consigne{background:#f7f5f0;border-left:3px solid var(--orange);border-radius:0 8px 8px 0;padding:9px 13px;margin:7px 0;font-size:12.5px;font-style:italic;color:#4a3a20;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.chip{background:white;border:1px solid var(--border);border-radius:8px;padding:2px 8px;font-size:10.5px;color:var(--muted)}
+
+/* VARIANTES ÂGE */
+.variantes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+@media(max-width:560px){.variantes{grid-template-columns:1fr}}
+.var-card{border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5}
+.var-6{background:#f5abaf18;border:1px solid #f5abaf66}
+.var-6 strong{color:#7a1f26}
+.var-10{background:#a4c2e718;border:1px solid #a4c2e766}
+.var-10 strong{color:#1a4a7a}
+
+/* MATÉRIEL */
+.mat-section{background:#f7f5f0;border-radius:12px;padding:14px 16px;margin-top:1.2rem}
+.mat-title{font-family:'Gruppo',cursive;font-size:13px;color:var(--text);margin-bottom:8px}
+.mat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+@media(max-width:560px){.mat-grid{grid-template-columns:1fr}}
+.mat-item{display:flex;align-items:flex-start;gap:7px;font-size:12px;padding:6px 8px;background:white;border-radius:8px}
+.mat-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);flex-shrink:0;margin-top:5px}
+
+/* POSTURE */
+.posture-section{margin-top:1.2rem;padding:14px 16px;border-radius:12px;border:1px solid}
+.posture-title{font-family:'Gruppo',cursive;font-size:13px;margin-bottom:8px}
+.posture-tags{display:flex;flex-wrap:wrap;gap:6px}
+.ptag{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:400}
+
+/* TRANSITION */
+.transition-box{margin-top:1.2rem;padding:10px 14px;border-radius:0 10px 10px 0;font-size:12px;line-height:1.6;border-left:3px solid var(--vert)}
+.transition-box strong{font-weight:500}
+
+/* phase dots */
+.ph-accueil .tl-dot{background:var(--vert)}
+.ph-decouv .tl-dot{background:var(--rose)}
+.ph-activite .tl-dot{background:var(--peche)}
+.ph-partage .tl-dot{background:var(--lavande)}
+.ph-cloture .tl-dot{background:var(--orange)}
+
+footer{text-align:center;padding:2rem;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:1rem}
+footer strong{color:var(--orange);font-weight:500}
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:64px}
+</style>
+</head>
+<body>
+
+<nav class="no-print">
+  <span class="nav-brand">BRILLE · Lueur</span>
+  <a href="#s1">Séance 1</a>
+  <a href="#s2">Séance 2</a>
+  <a href="#s3">Séance 3</a>
+  <button class="btn-print" onclick="window.print()">🖨 Imprimer</button>
+</nav>
+
+<div class="page-wrap">
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-badge">Offre Lueur · Soutien scolaire · Centre social</span>
+    <h1>Guides animateur · Atelier Lueur</h1>
+    <p class="hero-sub">3 séances complètes · Enfants 6–12 ans · Intervention QVE collective non thérapeutique</p>
+    <div class="pills">
+      <span class="pill"><span class="pdot" style="background:var(--rose)"></span>Séance 1 · Émotions apprivoisées</span>
+      <span class="pill"><span class="pdot" style="background:var(--peche)"></span>Séance 2 · Mes liens et ma parole</span>
+      <span class="pill"><span class="pdot" style="background:var(--lavande)"></span>Séance 3 · Ce qui me fait briller</span>
+      <span class="pill"><span class="pdot" style="background:var(--vert)"></span>10 enfants max · 16h30–18h</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SÉANCE 1 — ÉMOTIONS APPRIVOISÉES
+══════════════════════════════════════ -->
+<section id="s1">
+<div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big s1bg">1</div>
+    <div class="seance-header-info">
+      <h2>Mes émotions apprivoisées</h2>
+      <p>Porte d'entrée du cycle · Fonctionne aussi en séance unique</p>
+      <div class="seance-meta">
+        <span class="meta-pill">⏱ 1h–1h30</span>
+        <span class="meta-pill">👥 6–10 enfants</span>
+        <span class="meta-pill">🎯 6–12 ans</span>
+        <span class="meta-pill">📍 Salle soutien scolaire</span>
+      </div>
+      <div><span class="petale-tag" style="background:#f5abaf33;color:#7a1f26;border:1px solid #f5abaf88">🌸 Pétale · Mes émotions apprivoisées</span></div>
+    </div>
+  </div>
+  <div class="seance-body">
+
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--rose)">
+        <div class="obj-label">Objectif principal</div>
+        <div class="obj-text">Identifier et nommer ses émotions dans des situations du quotidien</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--peche)">
+        <div class="obj-label">Objectif secondaire</div>
+        <div class="obj-text">Découvrir que les émotions sont universelles — tout le monde ressent</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--vert)">
+        <div class="obj-label">Compétence QVE</div>
+        <div class="obj-text">Conscience émotionnelle · Régulation douce · Expression sécurisée</div>
+      </div>
+    </div>
+
+    <div class="tl">
+
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil et rituel d'entrée</div>
+        <div class="tl-title">Installation et règles du groupe</div>
+        <div class="tl-body">
+          <p>Accueillir chaque enfant à l'entrée par son prénom. Disposer les enfants en cercle ou demi-cercle — pas de bureau. Placer un objet doux au centre (boule anti-stress, foulard).</p>
+          <div class="consigne">« Bonjour à tous ! Je m'appelle [prénom]. Je suis là aujourd'hui pour qu'on explore quelque chose de très important : ce qu'on ressent à l'intérieur. Il n'y a pas de bonne ou de mauvaise réponse ici — tout ce que vous dites est précieux. »</div>
+          <p>Co-construire les règles du groupe avec les enfants : <em>« Pour se sentir bien ici, on a besoin de quoi ? »</em> Écrire 3 mots sur un paper-board : <strong style="font-weight:500">écoute / pas de moqueries / droit de ne pas parler.</strong> Laisser affiché toute la séance.</p>
+          <div class="chips"><span class="chip">Boule anti-stress</span><span class="chip">Paper-board</span><span class="chip">Feutres épais</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-decouv">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Exploration collective</div>
+        <div class="tl-title">Découverte des émotions — le grand tour</div>
+        <div class="tl-body">
+          <p>Étaler les cartes émotions face visible au centre. Laisser 30 secondes de silence d'observation.</p>
+          <div class="consigne">« Regardez ces cartes. Chacune montre une émotion différente. Est-ce que vous en reconnaissez certaines ? Comment vous savez que c'est cette émotion-là ? »</div>
+          <p>Nommer ensemble chaque émotion visible. Adapter selon l'âge :</p>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — rester sur 4 à 6 émotions de base : joie, colère, tristesse, peur, surprise, dégoût. Utiliser les visages dessinés.</div>
+            <div class="var-card var-10"><strong>8–12 ans</strong> — aller vers des nuances : fierté, frustration, jalousie, inquiétude, nostalgie. Demander des exemples de situations.</div>
+          </div>
+          <p>Tour de table rapide : chaque enfant prend une carte qui correspond à comment il se sent <em>en ce moment</em>, la pose devant lui. Pas d'obligation de parler — juste montrer.</p>
+          <div class="chips"><span class="chip">Cartes émotions ×20</span><span class="chip">Espace central dégagé</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–50 min · Activité principale</div>
+        <div class="tl-title">La roue des émotions</div>
+        <div class="tl-body">
+          <p>Distribuer une roue des émotions imprimée à chaque enfant + feutres de couleur.</p>
+          <div class="consigne">« Sur votre roue, vous allez colorier ou entourer les émotions que vous avez ressenties cette semaine. Vous pouvez en choisir autant que vous voulez. Plus vous les avez ressenties fort, plus vous pouvez colorier vers l'extérieur de la roue. »</div>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — roue simplifiée 6 émotions illustrées. L'enfant colle une gommette sur celles qu'il reconnaît. Pas d'obligation d'écrire.</div>
+            <div class="var-card var-10"><strong>10–12 ans</strong> — ajouter : <em>« Écris dans la marge une situation où tu as ressenti cette émotion cette semaine. »</em></div>
+          </div>
+          <p>Pendant le coloriage (10 min) : circuler doucement, observer, être disponible sans s'imposer. Si un enfant est bloqué : <em>« Et ce matin en te levant, tu te sentais comment ? »</em> Ne jamais commenter les choix.</p>
+          <div class="chips"><span class="chip">Roue A4 ×12</span><span class="chip">Feutres fins</span><span class="chip">Gommettes (6–7 ans)</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-partage">
+        <div class="tl-dot"></div>
+        <div class="tl-time">50–65 min · Partage en groupe</div>
+        <div class="tl-title">Expression collective et validation</div>
+        <div class="tl-body">
+          <p>Reformer le cercle. Chaque enfant peut — s'il le souhaite — montrer sa roue et dire une émotion qu'il a choisie.</p>
+          <div class="consigne">« Qui veut partager une émotion sur sa roue ? Tu n'es pas obligé de tout expliquer — tu peux juste dire le nom si tu veux. »</div>
+          <p><strong style="font-weight:500">Rôle de l'animatrice :</strong> reformuler sans interpréter. Si un enfant dit <em>« j'ai mis la colère »</em>, répondre : <em>« La colère, tu l'as reconnue cette semaine — c'est courageux de le dire. »</em> Ne jamais demander pourquoi.</p>
+          <p>Mettre en lumière les points communs : <em>« On est plusieurs à avoir mis la joie — et aussi plusieurs avec la tristesse. On ressent tous des choses différentes et des choses pareilles. »</em></p>
+          <p><strong style="font-weight:500">Si un enfant exprime quelque chose de fort</strong> (souffrance, violence) : accueillir calmement, ne pas approfondir en groupe. Note mentale pour informer la référente famille en privé après la séance — sans compte rendu nominatif écrit.</p>
+        </div>
+      </div>
+
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">65–75 min · Clôture</div>
+        <div class="tl-title">Rituel de sortie — le mot du départ</div>
+        <div class="tl-body">
+          <p>Reformer le cercle. Chaque enfant dit un mot — ce qu'il repart avec aujourd'hui. L'animatrice dit le sien en dernier.</p>
+          <div class="consigne">« Avant de partir, chacun dit un mot — juste un — qui résume ce qu'il repart avec aujourd'hui. Ça peut être une émotion, un mot, une image. »</div>
+          <p>L'animatrice modélise en dernier : <em>« Moi je repars avec le mot "courage", parce que vous avez tous été très courageux aujourd'hui. »</em></p>
+          <p>Les roues peuvent être gardées par les enfants ou affichées avec leur accord. Si cycle de 3 séances — annoncer la suite : <em>« La prochaine fois, on parlera des personnes qui comptent pour nous. »</em></p>
+          <div class="chips"><span class="chip">Roues terminées</span><span class="chip">Enveloppes kraft ×10</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mat-section">
+      <div class="mat-title">Matériel complet · Séance 1</div>
+      <div class="mat-grid">
+        <div class="mat-item"><span class="mat-dot"></span>Roue des émotions imprimée A4 ×12 (2 de réserve)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Cartes émotions illustrées ×20–25</div>
+        <div class="mat-item"><span class="mat-dot"></span>Feutres fins toutes couleurs ×2 sets</div>
+        <div class="mat-item"><span class="mat-dot"></span>Gommettes colorées (pour les 6–7 ans)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Boule anti-stress ou objet doux (rituel)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Paper-board + feutres épais</div>
+        <div class="mat-item"><span class="mat-dot"></span>Enveloppes kraft ×10</div>
+        <div class="mat-item"><span class="mat-dot"></span>Minuterie discrète (téléphone silencieux)</div>
+      </div>
+    </div>
+
+    <div class="posture-section" style="background:#cbe1b618;border-color:#cbe1b6">
+      <div class="posture-title" style="color:#2a5a1a">Posture animatrice · Séance 1</div>
+      <div class="posture-tags">
+        <span class="ptag" style="background:#cbe1b633;color:#2a5a1a">Pas d'interprétation</span>
+        <span class="ptag" style="background:#cbe1b633;color:#2a5a1a">Droit au silence respecté</span>
+        <span class="ptag" style="background:#cbe1b633;color:#2a5a1a">Zéro jugement culturel</span>
+        <span class="ptag" style="background:#cbe1b633;color:#2a5a1a">Valoriser chaque expression</span>
+        <span class="ptag" style="background:#cbe1b633;color:#2a5a1a">Pas de "pourquoi"</span>
+      </div>
+    </div>
+
+    <div class="transition-box" style="background:#cbe1b618;border-color:var(--vert)">
+      <strong>Transition vers la séance 2 :</strong> La semaine suivante, chaque enfant peut repartir avec sa roue. Consigne à donner en sortant : <em>« Si tu remarques une émotion forte cette semaine — essaie de lui donner un nom, juste pour toi. »</em>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SÉANCE 2 — MES LIENS ET MA PAROLE
+══════════════════════════════════════ -->
+<section id="s2">
+<div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big s2bg">2</div>
+    <div class="seance-header-info">
+      <h2>Mes liens et ma parole</h2>
+      <p>Explorer ses relations et sa place dans le groupe</p>
+      <div class="seance-meta">
+        <span class="meta-pill">⏱ 1h–1h30</span>
+        <span class="meta-pill">👥 6–10 enfants</span>
+        <span class="meta-pill">🎯 6–12 ans</span>
+        <span class="meta-pill">📍 Salle soutien scolaire</span>
+      </div>
+      <div><span class="petale-tag" style="background:#fdd5a533;color:#7a4a00;border:1px solid #fdd5a588">💛 Pétale · Mes liens et ma parole</span></div>
+    </div>
+  </div>
+  <div class="seance-body">
+
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--peche)">
+        <div class="obj-label">Objectif principal</div>
+        <div class="obj-text">Explorer ses relations proches (fratrie, amis, famille) et sa place dans le groupe</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--orange)">
+        <div class="obj-label">Objectif secondaire</div>
+        <div class="obj-text">Reconnaître les personnes-ressources dans sa vie et la valeur du lien</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--vert)">
+        <div class="obj-label">Compétence QVE</div>
+        <div class="obj-text">Liens affectifs · Appartenance · Prise de parole sécurisée</div>
+      </div>
+    </div>
+
+    <div class="tl">
+
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil et rappel</div>
+        <div class="tl-title">Rituel d'entrée et retour sur la séance 1</div>
+        <div class="tl-body">
+          <p>Même rituel qu'à la séance 1 — cercle, objet doux au centre, rappel des règles du groupe.</p>
+          <div class="consigne">« La semaine dernière, on a parlé de nos émotions. Est-ce que quelqu'un a remarqué une émotion forte cette semaine et lui a donné un nom ? »</div>
+          <p>Laisser 2–3 enfants répondre librement. Ne pas s'attarder — juste tisser le lien avec la séance précédente. Même ceux qui ne partagent pas ont fait le chemin intérieur.</p>
+          <div class="chips"><span class="chip">Objet doux</span><span class="chip">Paper-board règles (même feuille)</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-decouv">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–25 min · Mise en mouvement</div>
+        <div class="tl-title">Jeu d'introduction — la toile des liens</div>
+        <div class="tl-body">
+          <p>Assis en cercle, tenir une pelote de laine. Chaque enfant dit le prénom de quelqu'un qui compte pour lui et envoie la pelote à un autre enfant en gardant un bout du fil. La toile se tisse progressivement.</p>
+          <div class="consigne">« Je vais dire le prénom de quelqu'un qui compte pour moi et envoyer la pelote à [enfant]. Ensuite c'est à toi. On garde tous notre bout du fil. »</div>
+          <p>À la fin : regarder la toile ensemble.</p>
+          <div class="consigne">« Regardez ce qu'on a créé. Chacun de nous est relié aux autres. Quand l'un bouge, toute la toile bouge. C'est ça, un lien. »</div>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — simplifier : juste dire un prénom de quelqu'un à la maison. Pas besoin d'expliquer la relation.</div>
+            <div class="var-card var-10"><strong>10–12 ans</strong> — demander aussi : <em>« Qu'est-ce que cette personne t'apporte ? »</em> Une réponse, pas une liste.</div>
+          </div>
+          <div class="chips"><span class="chip">Pelote de laine</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">25–55 min · Activité principale</div>
+        <div class="tl-title">La carte de mon monde</div>
+        <div class="tl-body">
+          <p>Distribuer le gabarit cercles concentriques A4 + feutres + magazines à découper (si disponibles).</p>
+          <div class="consigne">« Sur cette carte, vous êtes au centre. Autour de vous, vous allez placer les personnes qui comptent pour vous. Les plus proches vont tout près de vous, les autres plus loin. Vous pouvez écrire leur prénom, dessiner, ou découper une image. »</div>
+          <p>Pendant l'activité (20 min) : circuler doucement. Si un enfant hésite : <em>« Pense à ce matin. Qui as-tu vu en te levant ? »</em> Ne pas guider les choix — chaque enfant construit sa propre carte.</p>
+          <p><strong style="font-weight:500">Point d'attention :</strong> certains enfants peuvent placer peu de personnes (isolement) ou beaucoup (besoin d'appartenance fort). Accueillir les deux sans commentaire. Si une carte semble indiquer un isolement profond — noter mentalement pour la référente famille.</p>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — gabarit avec 2 cercles seulement (moi / ma famille proche). Dessiner plutôt qu'écrire.</div>
+            <div class="var-card var-10"><strong>10–12 ans</strong> — ajouter un 4e cercle : <em>« quelqu'un à qui tu aimerais parler mais à qui tu n'oses pas ».</em></div>
+          </div>
+          <p>Échange en binôme (8 min) : chaque enfant montre une personne sur sa carte à son voisin et dit une phrase sur cette personne. L'animatrice circule, écoute.</p>
+          <div class="chips"><span class="chip">Gabarit cercles ×12</span><span class="chip">Feutres</span><span class="chip">Magazines + colle</span><span class="chip">Ciseaux</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-partage">
+        <div class="tl-dot"></div>
+        <div class="tl-time">55–68 min · Partage en grand groupe</div>
+        <div class="tl-title">La parole sur les liens</div>
+        <div class="tl-body">
+          <p>Retour en cercle. Tour de table libre : chaque enfant dit une chose sur sa carte, ou une chose qu'il a remarquée chez son voisin en binôme.</p>
+          <div class="consigne">« Qui veut partager quelque chose sur sa carte — ou sur ce qu'il a découvert en binôme ? »</div>
+          <p>L'animatrice observe et peut nommer des thèmes communs : <em>« Beaucoup d'entre vous ont mis un frère ou une sœur très près. Les liens dans la fratrie sont souvent très forts — même quand ça se dispute. »</em></p>
+          <p>Point spécifique au groupe (contexte multiculturel) : valoriser les liens avec la famille au pays d'origine. <em>« Certains ont mis des personnes qui sont loin — dans un autre pays. Un lien peut être fort même à distance. »</em></p>
+        </div>
+      </div>
+
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">68–75 min · Clôture</div>
+        <div class="tl-title">Rituel de sortie — un mot et une intention</div>
+        <div class="tl-body">
+          <p>Cercle final. Chaque enfant dit un mot — ce qu'il repart avec. L'animatrice en dernier.</p>
+          <div class="consigne">« Un seul mot. Ce que vous repartez avec aujourd'hui. »</div>
+          <p>Micro-intention pour la semaine : <em>« Cette semaine, si vous pensez à quelqu'un sur votre carte — pourquoi pas lui dire un mot gentil, ou juste lui sourire. »</em></p>
+          <p>Annoncer la séance 3 : <em>« La prochaine fois, on va parler de vous — de ce qui vous rend uniques, de ce qui vous fait briller. »</em></p>
+          <div class="chips"><span class="chip">Cartes conservées ou affichées</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mat-section">
+      <div class="mat-title">Matériel complet · Séance 2</div>
+      <div class="mat-grid">
+        <div class="mat-item"><span class="mat-dot"></span>Gabarit carte de mon monde A4 ×12</div>
+        <div class="mat-item"><span class="mat-dot"></span>Feutres fins toutes couleurs ×2 sets</div>
+        <div class="mat-item"><span class="mat-dot"></span>Magazines à découper (images de personnes)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Colle en bâton ×6 + ciseaux ×6</div>
+        <div class="mat-item"><span class="mat-dot"></span>Pelote de laine (jeu d'introduction)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Objet doux + paper-board règles</div>
+      </div>
+    </div>
+
+    <div class="posture-section" style="background:#fdd5a518;border-color:#fdd5a5">
+      <div class="posture-title" style="color:#7a4a00">Posture animatrice · Séance 2</div>
+      <div class="posture-tags">
+        <span class="ptag" style="background:#fdd5a533;color:#7a4a00">Valoriser les liens distants</span>
+        <span class="ptag" style="background:#fdd5a533;color:#7a4a00">Pas de jugement sur la structure familiale</span>
+        <span class="ptag" style="background:#fdd5a533;color:#7a4a00">Observer sans commenter les choix</span>
+        <span class="ptag" style="background:#fdd5a533;color:#7a4a00">Accueillir l'isolement sans alarmer</span>
+      </div>
+    </div>
+
+    <div class="transition-box" style="background:#fdd5a518;border-color:var(--peche)">
+      <strong>Transition vers la séance 3 :</strong> Les cartes peuvent être gardées par les enfants. Consigne de sortie : <em>« La semaine prochaine, pensez à quelque chose que vous aimez faire, quelque chose dans quoi vous êtes bons — ou quelque chose qui vous rend différents des autres. On en aura besoin ! »</em>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SÉANCE 3 — CE QUI ME FAIT BRILLER
+══════════════════════════════════════ -->
+<section id="s3">
+<div class="seance-block">
+  <div class="seance-header">
+    <div class="seance-num-big s3bg">3</div>
+    <div class="seance-header-info">
+      <h2>Ce qui me fait briller</h2>
+      <p>Clôture du cycle · Production du pétale individuel et de la fleur collective</p>
+      <div class="seance-meta">
+        <span class="meta-pill">⏱ 1h15–1h30</span>
+        <span class="meta-pill">👥 6–10 enfants</span>
+        <span class="meta-pill">🎯 6–12 ans</span>
+        <span class="meta-pill">📍 Salle soutien scolaire</span>
+      </div>
+      <div><span class="petale-tag" style="background:#a4c2e733;color:#1a4a7a;border:1px solid #a4c2e788">✨ Pétale · Ce qui me fait briller</span></div>
+    </div>
+  </div>
+  <div class="seance-body">
+
+    <div class="objectifs-grid">
+      <div class="obj-card" style="border-color:var(--lavande)">
+        <div class="obj-label">Objectif principal</div>
+        <div class="obj-text">Reconnaître ses forces, ce qui rend chaque enfant unique y compris ses origines culturelles</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--bleu)">
+        <div class="obj-label">Objectif secondaire</div>
+        <div class="obj-text">Clore le cycle avec une production collective visible et valorisante</div>
+      </div>
+      <div class="obj-card" style="border-color:var(--vert)">
+        <div class="obj-label">Compétence QVE</div>
+        <div class="obj-text">Estime de soi · Identité positive · Fierté culturelle · Appartenance au groupe</div>
+      </div>
+    </div>
+
+    <div class="tl">
+
+      <div class="tl-item ph-accueil">
+        <div class="tl-dot"></div>
+        <div class="tl-time">0–10 min · Accueil et rappel du cycle</div>
+        <div class="tl-title">Rituel d'entrée et voyage dans les 2 séances</div>
+        <div class="tl-body">
+          <p>Cercle, objet doux, règles. Rappel du chemin parcouru ensemble :</p>
+          <div class="consigne">« On a fait deux séances ensemble. La première, on a parlé de nos émotions. La deuxième, des personnes qui comptent pour nous. Aujourd'hui c'est la dernière séance du cycle — et on va parler de vous, de ce qui vous rend uniques. »</div>
+          <p>Si des cartes ou roues ont été conservées — les poser au centre comme trace du chemin parcouru.</p>
+        </div>
+      </div>
+
+      <div class="tl-item ph-decouv">
+        <div class="tl-dot"></div>
+        <div class="tl-time">10–22 min · Mise en mouvement</div>
+        <div class="tl-title">Jeu des superpouvoirs</div>
+        <div class="tl-body">
+          <p>Jeu rapide en cercle : chaque enfant dit une chose dans laquelle il est bon, une chose qu'il aime, ou quelque chose qui le rend différent des autres. Pas de jugement — toutes les réponses sont valides.</p>
+          <div class="consigne">« Je vais vous poser une question et chacun répond avec la première chose qui lui vient. Prêts ? Qu'est-ce que vous faites mieux que tout le monde dans votre famille ou à l'école — même si c'est petit ? »</div>
+          <p>Accueillir toutes les réponses : <em>« Je sais faire des crêpes »</em>, <em>« Je console mes amis »</em>, <em>« Je parle deux langues »</em>, <em>« Je dessine vite »</em>. Chaque réponse est valorisée.</p>
+          <p>Point spécifique : valoriser explicitement le bilinguisme, les traditions culturelles, les savoir-faire familiaux transmis. <em>« Parler deux langues, c'est une force extraordinaire — beaucoup de gens aimeraient ça. »</em></p>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — question simplifiée : <em>« Qu'est-ce que tu sais faire que tu aimes faire ? »</em></div>
+            <div class="var-card var-10"><strong>10–12 ans</strong> — question bonus : <em>« Qu'est-ce que les gens disent de toi en bien — même si toi tu n'y crois pas toujours ? »</em></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-activite">
+        <div class="tl-dot"></div>
+        <div class="tl-time">22–55 min · Activité principale</div>
+        <div class="tl-title">Mon pétale Ce qui me fait briller</div>
+        <div class="tl-body">
+          <p>Distribuer le pétale BRILLE imprimé A4 à chaque enfant + feutres.</p>
+          <div class="consigne">« Dans chaque bulle de votre pétale, vous allez mettre une chose qui vous rend unique. Ça peut être un mot, un dessin, une phrase. Il y a 3 bulles — 3 forces, 3 choses qui vous font briller. »</div>
+          <p>Pendant le remplissage (18–20 min) : circuler doucement. Si un enfant dit <em>« je sais pas »</em> : <em>« Qu'est-ce que tu as dit dans le jeu tout à l'heure ? »</em> ou <em>« Qu'est-ce que quelqu'un t'a déjà dit de bien sur toi ? »</em></p>
+          <div class="variantes">
+            <div class="var-card var-6"><strong>6–7 ans</strong> — 1 ou 2 bulles seulement. Dessin autorisé à 100 %. L'animatrice peut écrire sous la dictée de l'enfant si besoin.</div>
+            <div class="var-card var-10"><strong>10–12 ans</strong> — encourager une force liée à la culture ou à la famille d'origine dans l'une des bulles.</div>
+          </div>
+          <p>Chaque enfant écrit sa phrase souvenir en bas du pétale : <em>« Je brille parce que je suis _______ »</em>. L'animatrice peut lire les phrases à voix haute si les enfants l'acceptent.</p>
+          <div class="chips"><span class="chip">Pétale BRILLE A4 ×12</span><span class="chip">Feutres fins + épais</span></div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-partage">
+        <div class="tl-dot"></div>
+        <div class="tl-time">55–70 min · Construction collective</div>
+        <div class="tl-title">La fleur du groupe</div>
+        <div class="tl-body">
+          <p>Chaque enfant colle ou pose son pétale sur la grande fleur collective affichée au mur ou sur la table.</p>
+          <div class="consigne">« Votre pétale va rejoindre ceux des autres pour former une fleur. Une fleur qui appartient à tout le groupe — et qui restera dans cette salle pour rappeler que vous êtes passés ici. »</div>
+          <p>Chaque enfant peut — s'il le souhaite — lire sa phrase souvenir avant de coller son pétale. Personne n'est obligé.</p>
+          <p>Une fois tous les pétales collés : regarder la fleur ensemble en silence quelques secondes, puis :</p>
+          <div class="consigne">« Regardez ce qu'on a fait ensemble. Chaque pétale est différent — et ensemble ils font quelque chose de beau. C'est comme vous. »</div>
+        </div>
+      </div>
+
+      <div class="tl-item ph-cloture">
+        <div class="tl-dot"></div>
+        <div class="tl-time">70–80 min · Clôture du cycle</div>
+        <div class="tl-title">Rituel de fin de cycle — ce que je garde</div>
+        <div class="tl-body">
+          <p>Cercle final. Chaque enfant dit ce qu'il repart avec <em>du cycle entier</em> — pas juste de la séance. L'animatrice dit le sien en dernier.</p>
+          <div class="consigne">« On a fait trois séances ensemble. Qu'est-ce que vous repartez avec — de tout ce chemin ? Un mot, une image, quelque chose que vous n'oublierez pas. »</div>
+          <p>L'animatrice clôt avec une phrase forte, sincère et courte. Par exemple : <em>« Moi je repars avec chacun d'entre vous. Parce que vous m'avez montré que vous avez beaucoup à donner au monde. »</em></p>
+          <p>Distribuer si possible un souvenir personnel à chaque enfant : une petite carte avec leur prénom et un mot positif préparé à l'avance par l'animatrice.</p>
+          <div class="chips"><span class="chip">Fleur collective affichée</span><span class="chip">Cartes souvenir préparées</span><span class="chip">Colle / patafix pour la fleur</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mat-section">
+      <div class="mat-title">Matériel complet · Séance 3</div>
+      <div class="mat-grid">
+        <div class="mat-item"><span class="mat-dot"></span>Pétale BRILLE imprimé A4 ×12</div>
+        <div class="mat-item"><span class="mat-dot"></span>Fleur collective grand format (A2 ou affichage)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Feutres fins + épais toutes couleurs</div>
+        <div class="mat-item"><span class="mat-dot"></span>Colle en bâton ×6 + patafix ou scotch pour affichage</div>
+        <div class="mat-item"><span class="mat-dot"></span>Cartes souvenir personnalisées (préparées avant)</div>
+        <div class="mat-item"><span class="mat-dot"></span>Objet doux + paper-board règles</div>
+      </div>
+    </div>
+
+    <div class="posture-section" style="background:#a4c2e718;border-color:#a4c2e7">
+      <div class="posture-title" style="color:#1a4a7a">Posture animatrice · Séance 3</div>
+      <div class="posture-tags">
+        <span class="ptag" style="background:#a4c2e733;color:#1a4a7a">Valoriser la fierté culturelle explicitement</span>
+        <span class="ptag" style="background:#a4c2e733;color:#1a4a7a">Ne jamais minimiser une force</span>
+        <span class="ptag" style="background:#a4c2e733;color:#1a4a7a">Aider sans orienter les contenus</span>
+        <span class="ptag" style="background:#a4c2e733;color:#1a4a7a">Tenir l'émotion de clôture calmement</span>
+        <span class="ptag" style="background:#a4c2e733;color:#1a4a7a">Pas de comparaison entre enfants</span>
+      </div>
+    </div>
+
+    <div class="transition-box" style="background:#a4c2e718;border-color:var(--lavande)">
+      <strong>Après le cycle :</strong> Informer la référente famille de la bonne tenue des séances — bilan collectif oral, sans compte rendu nominatif. La fleur reste dans la salle, propriété du groupe. Si un cycle de 5 séances est envisagé, les séances 4 et 5 peuvent être dédiées aux pétales Organisation/autonomie et Équilibre/énergie selon les besoins observés.
+    </div>
+
+  </div>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Tsiory Leonard, Ingénieure QVE · 07 45 32 30 90 · tsioryleonard@gmail.com
+  <br style="margin-bottom:4px"/>
+  Document de travail interne · Non destiné à la diffusion externe sans accord préalable
+</footer>
+
+<script>
+const sections=document.querySelectorAll('section[id]');
+const links=document.querySelectorAll('nav a[href^="#"]');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const lk=document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(lk)lk.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
