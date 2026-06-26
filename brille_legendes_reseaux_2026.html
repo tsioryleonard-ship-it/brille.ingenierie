@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Légendes Réseaux Sociaux – BRILLE 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Gruppo&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #f49f4c;
+    --rose: #f5abaf;
+    --peche: #fdd5a5;
+    --jaune: #f8f4b8;
+    --bleu: #a4c2e7;
+    --cyan: #a8dbeb;
+    --vert: #cbe1b6;
+    --mauve: #b8aed7;
+    --lilas: #ebc6e0;
+    --blanc: #ffffff;
+    --gris-clair: #f7f7f5;
+    --gris: #888;
+    --noir: #1a1a1a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 400;
+    background: var(--gris-clair);
+    color: var(--noir);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--noir);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo { font-family: 'Gruppo', sans-serif; color: var(--orange); font-size: 22px; letter-spacing: 1px; }
+  .nav-sub { color: #aaa; font-size: 13px; font-weight: 300; }
+
+  /* HEADER */
+  header {
+    background: var(--blanc);
+    padding: 48px 40px 36px;
+    border-bottom: 2px solid var(--orange);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; top: -50px; right: -50px;
+    width: 180px; height: 180px;
+    border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+    background: var(--jaune); opacity: 0.5;
+  }
+  header::after {
+    content: '';
+    position: absolute; bottom: -40px; left: -30px;
+    width: 140px; height: 140px;
+    border-radius: 40% 60% 30% 70% / 60% 40% 70% 30%;
+    background: var(--vert); opacity: 0.4;
+  }
+  h1 { font-family: 'Gruppo', sans-serif; font-size: 32px; color: var(--noir); position: relative; z-index: 1; }
+  .header-sub { font-size: 15px; color: var(--gris); margin-top: 8px; font-weight: 300; position: relative; z-index: 1; }
+  .header-note {
+    margin-top: 20px;
+    background: var(--peche);
+    border-left: 4px solid var(--orange);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    font-weight: 500;
+    position: relative; z-index: 1;
+    max-width: 700px;
+  }
+
+  /* MONTH TABS NAV */
+  .months-nav {
+    background: var(--blanc);
+    padding: 0 32px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    border-bottom: 1px solid #e8e8e8;
+    scrollbar-width: none;
+  }
+  .months-nav::-webkit-scrollbar { display: none; }
+  .month-tab {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    color: var(--gris);
+  }
+  .month-tab:hover { color: var(--noir); }
+  .month-tab.active { border-bottom-color: var(--orange); color: var(--noir); }
+
+  /* CONTENT */
+  .content { max-width: 960px; margin: 0 auto; padding: 32px 24px; }
+
+  .month-section { display: none; }
+  .month-section.active { display: block; }
+
+  /* MONTH HEADER */
+  .month-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    border-radius: 16px;
+    background: var(--blanc);
+    border: 1px solid #eee;
+  }
+  .month-emoji { font-size: 36px; }
+  .month-info h2 { font-family: 'Gruppo', sans-serif; font-size: 24px; }
+  .month-petale {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* PLATFORM CARDS */
+  .platform-grid { display: grid; gap: 20px; }
+
+  .platform-card {
+    background: var(--blanc);
+    border-radius: 16px;
+    border: 1px solid #eee;
+    overflow: hidden;
+  }
+
+  .platform-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .platform-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .platform-name { font-weight: 700; font-size: 15px; }
+  .platform-specs { font-size: 12px; color: var(--gris); font-weight: 400; }
+
+  .legend-block { padding: 20px; }
+
+  .copy-zone {
+    background: #fafaf8;
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+    font-family: 'Quicksand', sans-serif;
+  }
+  .copy-zone:hover { background: #f0f0ee; }
+
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-family: 'Quicksand', sans-serif;
+  }
+  .copy-zone:hover .copy-btn { opacity: 1; }
+
+  .hashtags {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: var(--gris-clair);
+    border-radius: 8px;
+    font-size: 12px;
+    color: #5a5aaa;
+    font-weight: 500;
+    line-height: 1.7;
+  }
+  .hashtags-label { font-size: 11px; color: var(--gris); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+
+  .tip {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--jaune);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #7a6a00;
+  }
+  .tip::before { content: '💡 '; }
+
+  /* LI = LINKEDIN | IG = INSTAGRAM | FB = FACEBOOK | TT = TIKTOK */
+  .li .platform-icon { background: #e8f0fe; }
+  .ig .platform-icon { background: linear-gradient(135deg, #fceabb, #f5abaf); }
+  .fb .platform-icon { background: #e7f0fc; }
+  .tt .platform-icon { background: #f0e8ff; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    color: var(--gris);
+    font-weight: 300;
+  }
+  footer strong { color: var(--orange); }
+
+  @media (max-width: 600px) {
+    header { padding: 32px 20px 24px; }
+    h1 { font-size: 24px; }
+    .content { padding: 20px 12px; }
+    .month-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .month-emoji { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">BRILLE</span>
+  <span class="nav-sub">Légendes réseaux sociaux · Juin – Décembre 2026</span>
+</nav>
+
+<header>
+  <h1>Légendes par mois & par plateforme</h1>
+  <p class="header-sub">Copiez-collez directement depuis ce document au moment de la publication.</p>
+  <div class="header-note">
+    📌 Chaque légende est adaptée au format et au ton de chaque réseau. Cliquez sur la zone texte pour copier.
+  </div>
+</header>
+
+<div class="months-nav" id="monthsNav">
+  <div class="month-tab active" onclick="showMonth('juin')">Juin</div>
+  <div class="month-tab" onclick="showMonth('juillet')">Juillet</div>
+  <div class="month-tab" onclick="showMonth('aout')">Août</div>
+  <div class="month-tab" onclick="showMonth('septembre')">Septembre</div>
+  <div class="month-tab" onclick="showMonth('octobre')">Octobre</div>
+  <div class="month-tab" onclick="showMonth('novembre')">Novembre</div>
+  <div class="month-tab" onclick="showMonth('decembre')">Décembre</div>
+</div>
+
+<div class="content">
+
+<!-- ==================== JUIN ==================== -->
+<div class="month-section active" id="juin">
+  <div class="month-header" style="border-left: 5px solid #cbe1b6;">
+    <span class="month-emoji">🌱</span>
+    <div class="month-info">
+      <h2>Juin 2026</h2>
+      <span class="month-petale" style="background:#cbe1b6;">Pétale 1 · Émotions apprivoisées</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">Vidéo fondatrice — Présentation de BRILLE & de la QVE</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div>
+          <div class="platform-name">LinkedIn</div>
+          <div class="platform-specs">Ton professionnel · 1 300 car. max recommandé · pas de limite de hashtags</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Et si on arrêtait de chercher pourquoi un enfant "ne s'adapte pas", pour commencer à lui donner les outils pour le faire ?
+
+C'est exactement ce que je fais avec BRILLE Ingénierie.
+
+Je m'appelle Tsiory, je suis ingénieure QVE — Qualité de Vie de l'Enfant. J'interviens dans les centres sociaux auprès des enfants de 6 à 12 ans et de leurs familles, à travers des ateliers collectifs non-thérapeutiques.
+
+Mon outil : la Fleur QVE à 7 pétales.
+Une méthode que j'ai transposée de la QVT (qualité de vie au travail) — mon mémoire de Master 2 — pour l'adapter à l'enfant.
+
+Pas de diagnostic. Pas de suivi individuel. Juste un espace collectif où l'enfant devient acteur de son propre épanouissement.
+
+Ce mois-ci, je démarre par le premier pétale : les émotions apprivoisées.
+
+Parce qu'un enfant qui sait nommer ce qu'il ressent, c'est un enfant qui peut apprendre, créer des liens, et s'affirmer.
+
+Si vous êtes directeur·rice de centre social, référent·e famille, ou que vous travaillez avec des enfants de 6-12 ans — ce que je construis vous concerne.
+
+👇 Je vous dis tout en vidéo.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #QualitéDeVieDeLEnfant #BRILLEIngenierie #ActionSociale #CentreSocial #SoutienÀLaParentalité #IngenierieFormation #Émotions #Épanouissement #Enfants612
+        </div>
+        <div class="tip">Sur LinkedIn, publier en semaine (mardi-jeudi, 8h-9h ou 12h). Ajoutez en commentaire : "Je lis tous les retours 👇"</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div>
+          <div class="platform-name">Instagram</div>
+          <div class="platform-specs">Ton chaleureux · 2 200 car. max · 3–5 hashtags visibles + reste en commentaire</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Tu sais ce moment où ton enfant est en crise et tu ne sais pas quoi faire ? 😤
+
+Moi aussi j'ai vécu ça en tant que maman. Et c'est pour ça que j'ai créé BRILLE.
+
+Je suis Tsiory, ingénieure QVE — la Qualité de Vie de l'Enfant. J'organise des ateliers collectifs dans les centres sociaux pour aider les enfants de 6 à 12 ans à apprivoiser leurs émotions, trouver leur place, et s'épanouir.
+
+Ce n'est pas de la thérapie. Ce n'est pas un suivi individuel. C'est un espace collectif, concret, et bienveillant 🌸
+
+Ce mois-ci on commence par les émotions — le premier pétale de la Fleur QVE.
+
+👉 Teste l'auto-audit QVE (7 questions, lien en bio) pour voir où en est ton enfant.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #QVE #BRILLEIngenierie #SoutienParentalité
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #Émotions #Épanouissement #Enfants #ActionSociale #CentreSocial #ParentalitéPositive #MamanEntrepreneur #IngenierieFormation #Enfants612 #QualitéDeVie
+        </div>
+        <div class="tip">En story le jour J : sondage "Tu connais la QVE ?" OUI / NON — redirige vers le Reel en swipe up / lien bio.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div>
+          <div class="platform-name">Facebook</div>
+          <div class="platform-specs">Ton communautaire · pas de limite · partage groupes recommandé · hashtags optionnels</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Je me lance ! 🌱
+
+Je m'appelle Tsiory, je suis maman de 3 enfants et ingénieure en QVE — Qualité de Vie de l'Enfant.
+
+J'ai créé BRILLE Ingénierie pour proposer des ateliers collectifs dans les centres sociaux, à destination des enfants de 6 à 12 ans et de leurs familles.
+
+Ce n'est pas de la thérapie. Ce n'est pas un accompagnement individuel. C'est un espace collectif, concret, où l'enfant apprend à mieux se connaître — et la famille aussi.
+
+Mon outil : la Fleur QVE à 7 pétales. Ce mois-ci, on explore le premier pétale : les émotions apprivoisées. 🌸
+
+Regardez la vidéo, dites-moi ce que vous en pensez, et partagez si ça parle à quelqu'un autour de vous 💛
+
+👉 Et si vous voulez évaluer la qualité de vie de votre enfant, testez l'auto-audit QVE gratuit (lien en commentaire).</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #BRILLE #QVE #ActionSociale #Parentalité #CentreSocial
+        </div>
+        <div class="tip">Postez dans les groupes : "Parents d'Île-de-France", "Action sociale et animation", groupes locaux de votre ville. Mettez le lien auto-audit en 1er commentaire.</div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div>
+          <div class="platform-name">TikTok</div>
+          <div class="platform-specs">Ton direct · 2 200 car. max · 3–5 hashtags · hook = 1ère phrase de la légende</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Je suis maman de 3 et j'ai créé des ateliers pour les enfants qui débordent d'émotions 🌊
+
+Pas de thérapie. Pas de psy. Juste des outils collectifs pour apprendre à ressentir, nommer, et avancer.
+
+C'est ça, la QVE. Et c'est ce que je fais avec BRILLE ✨
+
+#QVE #Émotions #Enfants #Parentalité #BRILLEIngenierie #ActionSociale #CentreSocial</div>
+        <div class="tip">La légende TikTok est courte — c'est normal. L'accroche visuelle et les 3 premières secondes font tout le travail. Finissez la vidéo par "abonne-toi pour suivre les 7 pétales".</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== JUILLET ==================== -->
+<div class="month-section" id="juillet">
+  <div class="month-header" style="border-left: 5px solid #a8dbeb;">
+    <span class="month-emoji">☀️</span>
+    <div class="month-info">
+      <h2>Juillet 2026</h2>
+      <span class="month-petale" style="background:#a8dbeb;">Pétale 2 · Sens des apprentissages</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">Pourquoi mon enfant n'aime pas l'école ?</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div><div class="platform-name">LinkedIn</div><div class="platform-specs">Ton professionnel · 1 300 car. max</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>"Il n'aime pas l'école." C'est souvent la porte d'entrée des familles qui arrivent dans nos ateliers.
+
+Mais derrière ce mot, il y a une question plus profonde : est-ce que cet enfant comprend à quoi ça sert, d'apprendre ?
+
+C'est ce que j'appelle le sens des apprentissages — le deuxième pétale de la Fleur QVE.
+
+Dans les ateliers BRILLE, on ne refait pas les cours. On travaille sur ce qui permet à l'apprentissage d'exister : la curiosité, la confiance, le rapport à l'effort.
+
+Et ça change tout.
+
+Pour les professionnels qui travaillent avec des familles d'enfants de 6-12 ans : si vous observez des enfants en rupture avec l'école, ce pétale est souvent la clé manquante.
+
+📩 Je suis disponible pour échanger sur une mise en place dans votre structure.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #SensDesApprentissages #BRILLEIngenierie #CentreSocial #ActionSociale #Épanouissement #Enfants612 #Parentalité #IngenierieFormation #EcoleEtFamille
+        </div>
+        <div class="tip">En juillet, les partenaires institutionnels préparent leur rentrée. C'est le bon moment pour envoyer un message privé LinkedIn après la publication.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram</div><div class="platform-specs">Ton chaleureux · lien bio auto-audit</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>"Il n'aime pas l'école" 😔 — je l'entends souvent dans les ateliers.
+
+Et souvent, ce n'est pas un problème d'intelligence ou de volonté. C'est un problème de sens.
+
+Est-ce que mon enfant comprend pourquoi il apprend ? Est-ce qu'il se sent capable ? Est-ce qu'il a confiance ?
+
+Dans les ateliers BRILLE, on travaille sur ça. Pas en refaisant les cours — en aidant l'enfant à retrouver le goût d'apprendre 💡
+
+Ce mois-ci : le pétale "sens des apprentissages".
+
+👉 Teste l'auto-audit QVE gratuit (lien en bio) — 7 questions pour mieux cerner où en est ton enfant.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #QVE #BRILLEIngenierie #Apprentissages
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #Enfants612 #Parentalité #SoutienParentalité #EcoleEtFamille #CentreSocial #ActionSociale #MamanEntrepreneur #Épanouissement #QualitéDeVie #ParentalitéBienveillante
+        </div>
+        <div class="tip">Story idéale : "Ton enfant aime l'école ?" avec sondage OUI / PAS TOUJOURS / NON. Répondez en stories à chaque réponse le lendemain.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook</div><div class="platform-specs">Ton communautaire · partage groupes</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Est-ce que votre enfant vous a déjà dit "à quoi ça sert l'école ?" 📚
+
+Si oui, vous n'êtes pas seul·e. Et non, ça ne veut pas dire qu'il est paresseux.
+
+Ça veut dire qu'il n'a pas encore trouvé le lien entre ce qu'il apprend et ce qui fait sens pour lui.
+
+C'est exactement ce qu'on travaille dans les ateliers BRILLE : le deuxième pétale de la Fleur QVE — le sens des apprentissages.
+
+Regardez la vidéo, et dites-moi en commentaire : votre enfant, il aime apprendre ? Qu'est-ce qui l'intéresse le plus ? 👇
+
+(Lien auto-audit QVE gratuit en commentaire 👇)</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #Apprentissages #Parentalité #CentreSocial #BRILLE
+        </div>
+        <div class="tip">Posez une question ouverte en commentaire pour stimuler les réactions. Facebook valorise les publications avec beaucoup de commentaires.</div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok</div><div class="platform-specs">Hook en 1ère phrase · format court</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Ton enfant déteste l'école ? Voici pourquoi c'est normal — et ce qu'on peut faire 📚✨
+
+Ce n'est pas une question d'intelligence. C'est une question de sens.
+
+Et ça, ça se travaille 💪
+
+#QVE #Apprentissages #Enfants #Parentalité #École #BRILLEIngenierie</div>
+        <div class="tip">Commencez par une mise en situation filmée (ex. : tableau blanc avec "À quoi ça sert l'école ?") avant de vous adresser à la caméra.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== AOÛT ==================== -->
+<div class="month-section" id="aout">
+  <div class="month-header" style="border-left: 5px solid #ebc6e0;">
+    <span class="month-emoji">🔗</span>
+    <div class="month-info">
+      <h2>Août 2026</h2>
+      <span class="month-petale" style="background:#ebc6e0;">Pétale 3 · Liens et parole</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">Pourquoi BRILLE dans les centres sociaux ?</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div><div class="platform-name">LinkedIn</div><div class="platform-specs">Ton professionnel · avant la rentrée</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Pourquoi les centres sociaux ? C'est la question que me posent souvent les partenaires.
+
+La réponse est simple : parce que c'est là que les familles viennent. Vraiment.
+
+Le centre social, ce n'est pas un lieu de soin ou de prise en charge. C'est un lieu de vie collective, de confiance, de lien entre habitants.
+
+Et c'est exactement ce dont BRILLE a besoin pour fonctionner.
+
+Mes ateliers ne sont pas thérapeutiques. Ils ne font pas de diagnostic. Ils créent un espace collectif où l'enfant apprend à parler, à écouter, à exister parmi les autres — le pétale "liens et parole".
+
+Ce travail ne peut se faire que dans un cadre qui n'effraie pas. Et le centre social, c'est ce cadre.
+
+Directeurs de centres, référents famille, travailleurs sociaux : je serais ravie d'échanger sur ce que BRILLE peut apporter à votre programmation de rentrée.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #CentreSocial #ActionSociale #QVE #BRILLEIngenierie #LienSocial #SoutienParentalité #Rentrée2026 #IngenierieFormation #Enfants612 #PartenariatsInstitutionnels
+        </div>
+        <div class="tip">Août = préparation rentrée institutionnelle. Envoyez en complément un message privé aux contacts LinkedIn déjà identifiés.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram</div><div class="platform-specs">Ton chaleureux · avant la rentrée</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Ce pétale, c'est celui qui me touche le plus 💙
+
+Les liens et la parole.
+
+Parce que j'ai vu des enfants de 6 ans qui ne savaient pas mettre des mots sur ce qu'ils ressentaient. Des enfants de 10 ans qui ne savaient pas comment demander de l'aide.
+
+Dans les ateliers BRILLE, on crée cet espace. Pas pour tout résoudre. Mais pour que chaque enfant sache qu'il a le droit de parler — et que quelqu'un écoutera.
+
+La rentrée approche. C'est le bon moment pour poser des fondations 🌸
+
+👉 Auto-audit QVE gratuit en bio — 7 questions pour mieux connaître votre enfant avant la rentrée.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #LiensEtParole #QVE #BRILLEIngenierie
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #Enfants612 #Parentalité #CommunicationEnfant #SoutienParentalité #CentreSocial #ActionSociale #Rentrée #Épanouissement #ParentalitéBienveillante #QualitéDeVie
+        </div>
+        <div class="tip">Reliez à la rentrée : "Avant septembre, comment parle-t-on à notre enfant ?" — angle pertinent pour les parents en août.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook</div><div class="platform-specs">Ton communautaire · avant-rentrée</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>La rentrée, c'est dans quelques semaines. Et si on prenait le temps, avant ça, de vraiment parler avec notre enfant ? 💬
+
+Pas juste "tu as bien dormi ?" ou "tu as mangé quoi ?". Mais vraiment : "comment tu te sens ? qu'est-ce qui te fait peur ? qu'est-ce qui t'excite ?"
+
+Dans les ateliers BRILLE, on travaille ça : les liens et la parole. Créer des moments où l'enfant peut s'exprimer librement, dans un groupe bienveillant.
+
+Regardez la vidéo — et dites-moi : vous, comment vous préparez votre enfant à la rentrée ?
+
+👇 Lien auto-audit QVE gratuit en commentaire — 7 questions pour évaluer la qualité de vie de votre enfant.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #Rentrée #Parentalité #CentreSocial #BRILLE
+        </div>
+        <div class="tip">Angle "avant la rentrée" très fort en août. Proposez en commentaire de partager une astuce de communication parent-enfant — ça génère de l'engagement.</div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok</div><div class="platform-specs">Hook en 1ère phrase</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Ton enfant sait te parler de ce qu'il ressent vraiment ? 💬 Voici comment l'aider à trouver les mots.
+
+C'est le pétale "liens et parole" dans les ateliers BRILLE. Et ça change tout avant la rentrée 🌸
+
+#LiensEtParole #QVE #Enfants #Parentalité #Rentrée #BRILLEIngenierie</div>
+        <div class="tip">Testez le format "question ouverte face caméra" — "Est-ce que vous arrivez à parler avec votre enfant de ce qu'il ressent ?" puis répondez vous-même.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SEPTEMBRE ==================== -->
+<div class="month-section" id="septembre">
+  <div class="month-header" style="border-left: 5px solid #b8aed7;">
+    <span class="month-emoji">🎒</span>
+    <div class="month-info">
+      <h2>Septembre 2026</h2>
+      <span class="month-petale" style="background:#b8aed7;">Pétale 4 · Place et droits</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">Rentrée — À publier dans les 3 premiers jours de septembre</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div><div class="platform-name">LinkedIn</div><div class="platform-specs">⚠️ À publier J+1 ou J+2 de la rentrée · ton stratégique</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>C'est la rentrée. Et avec elle, toutes les questions qu'on ne pose pas assez souvent.
+
+Est-ce que cet enfant sait qu'il a des droits ?
+Est-ce qu'il sait qu'il a sa place — à l'école, dans sa famille, dans son quartier ?
+Est-ce qu'il sait qu'on peut l'écouter, pas seulement le corriger ?
+
+Dans les ateliers BRILLE, on travaille le pétale "place et droits". En lien avec la Convention Internationale des Droits de l'Enfant.
+
+Pas comme un cours de civisme. Comme une expérience vécue, collective, où chaque enfant comprend concrètement ce que "avoir des droits" veut dire.
+
+La rentrée, c'est le bon moment pour (re)poser cette question avec les familles que vous accompagnez.
+
+Vous souhaitez intégrer BRILLE à votre programmation ? Je suis disponible pour en discuter.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #Rentrée2026 #QVE #PlaceEtDroits #CIDE #BRILLEIngenierie #CentreSocial #ActionSociale #DroitsDeLEnfant #Épanouissement #Enfants612
+        </div>
+        <div class="tip">C'est la vidéo la plus stratégique de l'année. Sponsorisez-la si vous avez un budget pub LinkedIn. Répondez à TOUS les commentaires dans les 24h.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram</div><div class="platform-specs">⚠️ J+1 ou J+2 rentrée · ton proche</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>C'est la rentrée 🎒 Et la question que j'ai envie de vous poser ce mois-ci :
+
+Est-ce que votre enfant sait qu'il a des droits ?
+
+Pas comme une leçon. Vraiment — est-ce qu'il sait qu'on doit l'écouter ? Qu'il a le droit d'avoir une opinion ? Qu'il a une place qui lui appartient ?
+
+Dans les ateliers BRILLE, c'est ce qu'on travaille ce mois-ci : le pétale "place et droits", en lien avec la Convention des Droits de l'Enfant 🌸
+
+Parce qu'un enfant qui se sait "légitime" dans sa vie, c'est un enfant qui avance avec confiance.
+
+👉 Auto-audit QVE gratuit en bio — savoir où en est votre enfant, c'est déjà un premier pas.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #Rentrée #QVE #BRILLEIngenierie
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #DroitsDeLEnfant #CIDE #PlaceEtDroits #Enfants612 #Parentalité #CentreSocial #ActionSociale #SoutienParentalité #Épanouissement #ParentalitéBienveillante
+        </div>
+        <div class="tip">Story J-1 (veille rentrée) : comptdown rentrée + "demain je publie quelque chose d'important" — crée l'attente.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook</div><div class="platform-specs">⚠️ J+1 ou J+2 rentrée</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>C'est la rentrée ! 🎒
+
+Et si cette année, on commençait par poser une question différente à nos enfants ?
+
+Pas "t'as bien travaillé ?" mais "est-ce que tu te sens à ta place ?"
+
+C'est ça, le pétale "place et droits" dans les ateliers BRILLE. Aider l'enfant à comprendre qu'il a une place dans le monde — et qu'il a des droits pour la tenir.
+
+Je partage la vidéo de ce mois-ci avec vous. Dites-moi en commentaire : votre enfant, est-ce qu'il parle facilement de ses droits ? 👇
+
+(Lien auto-audit QVE en commentaire 👇)</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #Rentrée #QVE #DroitsDeLEnfant #Parentalité #BRILLE
+        </div>
+        <div class="tip">Partagez dans tous vos groupes locaux. C'est le mois avec le plus fort potentiel de portée organique.</div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok</div><div class="platform-specs">⚠️ J+1 ou J+2 rentrée</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>C'est la rentrée — et la question que tout le monde oublie de poser à son enfant 🎒
+
+"Est-ce que tu sais que tu as des droits ?"
+
+Ça change tout. Et c'est ce qu'on travaille dans les ateliers BRILLE 🌸
+
+#Rentrée #DroitsDeLEnfant #QVE #Enfants #Parentalité #BRILLEIngenierie</div>
+        <div class="tip">Tournez en extérieur le jour de la rentrée si possible — cartable, école en fond. La scène parle d'elle-même.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== OCTOBRE ==================== -->
+<div class="month-section" id="octobre">
+  <div class="month-header" style="border-left: 5px solid #f49f4c;">
+    <span class="month-emoji">⚡</span>
+    <div class="month-info">
+      <h2>Octobre 2026</h2>
+      <span class="month-petale" style="background:#fdd5a5;">Pétale 5 · Équilibre et énergie</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">QVE vs thérapie — La question qu'on me pose tout le temps</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div><div class="platform-name">LinkedIn</div><div class="platform-specs">Positionnement clair · partenaires</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>"C'est comme de la thérapie ?" — C'est souvent la première question que me posent les partenaires institutionnels.
+
+La réponse est claire : non.
+
+BRILLE n'est pas un dispositif thérapeutique. Je ne pose pas de diagnostic. Je ne fais pas de suivi individuel nominatif. Je n'interviens pas à la place des professionnels de santé ou du médico-social.
+
+Ce que je fais : de l'ingénierie socio-éducative collective.
+
+Ce mois-ci, le pétale "équilibre et énergie" — parce qu'un enfant épuisé, surstimulé ou en manque de repères ne peut pas apprendre, créer des liens, ou s'affirmer.
+
+Mon rôle, c'est de créer les conditions collectives pour que ça redevienne possible.
+
+Si vous travaillez avec des familles et que vous cherchez un dispositif complémentaire à votre accompagnement : je serais heureuse d'en parler.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #NonThérapeutique #IngénierieSocioÉducative #BRILLEIngenierie #CentreSocial #ÉquilibreEtÉnergie #ActionSociale #Enfants612 #Positionnement #SoutienParentalité
+        </div>
+        <div class="tip">Ce post repositionne clairement BRILLE face aux partenaires hésitants. Épinglez-le en haut de votre profil LinkedIn ce mois-ci.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram</div><div class="platform-specs">Ton chaleureux · démystifier</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>"C'est quoi la différence avec un psy ?" 🤔
+
+Je réponds à ça tout le temps — et c'est une super bonne question.
+
+La thérapie traite. BRILLE, ça accompagne.
+
+Je ne diagnostique rien. Je ne suis pas une professionnelle de santé. Ce que je fais, c'est créer un espace collectif où l'enfant peut souffler, recharger ses batteries, et retrouver de l'équilibre.
+
+Ce mois-ci : le pétale "équilibre et énergie" ⚡
+
+Parce qu'un enfant épuisé ne peut rien apprendre. Et un enfant qui a retrouvé son énergie, c'est un enfant qui peut tout.
+
+👉 Teste l'auto-audit QVE en bio — évalue l'équilibre de ton enfant en 7 questions.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #ÉquilibreEtÉnergie #QVE #BRILLEIngenierie
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #Enfants612 #Parentalité #NonThérapeutique #SoutienParentalité #CentreSocial #ActionSociale #ÉquilibreEnfant #Épanouissement #QualitéDeVie #ParentalitéBienveillante
+        </div>
+        <div class="tip">Story interactive : "Votre enfant est plutôt 🔥 (trop d'énergie) ou 🪫 (vidé) ?" — très bon engagement.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook</div><div class="platform-specs">Ton communautaire · démystifier</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>On me demande souvent : "c'est comme un suivi psy ?" 🤔
+
+Non — et c'est important de le dire clairement.
+
+BRILLE, c'est un atelier collectif. Pas une thérapie. Pas un diagnostic. Pas un suivi individuel.
+
+C'est un espace où les enfants de 6 à 12 ans viennent ensemble, apprennent à gérer leur énergie, à trouver leur équilibre, et à se retrouver.
+
+Ce mois-ci, le pétale "équilibre et énergie" — parce que des enfants épuisés ou surstimulés, on en voit de plus en plus.
+
+Regardez la vidéo et dites-moi : votre enfant, comment il gère son énergie au quotidien ? 👇
+
+(Lien auto-audit QVE gratuit en commentaire 👇)</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #Équilibre #Parentalité #CentreSocial #BRILLE
+        </div>
+        <div class="tip">Ce post peut être partagé par des professionnels du médico-social — rendez-le facile à partager avec une formulation claire et non polémique.</div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok</div><div class="platform-specs">Hook en 1ère phrase</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Non, je ne suis pas psy. Mais je fais quelque chose d'aussi important pour les enfants ⚡
+
+Des ateliers collectifs pour retrouver l'équilibre — sans diagnostic, sans suivi individuel.
+
+Juste un espace pour recharger 🌸
+
+#QVE #ÉquilibreEnfant #Enfants #Parentalité #BRILLEIngenierie #NonThérapeutique</div>
+        <div class="tip">Format "démystification" très performant sur TikTok. Tournez avec une posture détendue, souriante — ne soyez pas sur la défensive.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== NOVEMBRE ==================== -->
+<div class="month-section" id="novembre">
+  <div class="month-header" style="border-left: 5px solid #f5abaf;">
+    <span class="month-emoji">🌍</span>
+    <div class="month-info">
+      <h2>Novembre 2026</h2>
+      <span class="month-petale" style="background:#f5abaf;">Pétale 6 · Ce qui me fait briller · CIDE 20 novembre</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">2 publications : vidéo principale + vidéo courte 20 novembre</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li" style="border: 2px solid var(--rose);">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div>
+          <div class="platform-name">LinkedIn — Vidéo principale</div>
+          <div class="platform-specs">Début novembre · pétale "ce qui me fait briller"</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Qu'est-ce qui vous fait briller, vous ?
+
+Je pose cette question aux enfants dans mes ateliers. Et les réponses me surprennent à chaque fois.
+
+"Je fais briller les autres quand je les écoute."
+"Je brille quand je dessine."
+"Je brille quand ma maman sourit."
+
+Le pétale "ce qui me fait briller" — le 6ème de la Fleur QVE — c'est celui qui touche à l'identité de l'enfant. Ses talents, ses forces, ce qui le rend unique.
+
+Dans une société qui valorise la performance scolaire avant tout, aider un enfant de 6 à 12 ans à identifier ce qu'il fait briller — c'est un acte profondément éducatif.
+
+C'est aussi ce que je célèbre, en novembre, à l'approche du 20 novembre — Journée Mondiale des Droits de l'Enfant.
+
+📩 Vous souhaitez intégrer ce travail dans votre structure ? Parlons-en.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #CeQuiMeFaitBriller #QVE #BRILLEIngenierie #DroitsDeLEnfant #CIDE #20Novembre #ActionSociale #CentreSocial #Épanouissement #IngénierieSocioÉducative
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div>
+          <div class="platform-name">LinkedIn — Vidéo 20 novembre (CIDE)</div>
+          <div class="platform-specs">À publier le 20 novembre · ton solennel et chaleureux</div>
+        </div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Il y a 37 ans, la Convention Internationale des Droits de l'Enfant était adoptée.
+
+37 ans. Et pourtant, des milliers d'enfants grandissent encore sans savoir qu'ils ont des droits. Sans savoir qu'ils ont une voix. Une place. Un droit à l'épanouissement.
+
+C'est pour ça que BRILLE existe.
+
+Pas pour remplacer les professionnels. Pas pour soigner. Pour créer un espace collectif où chaque enfant de 6 à 12 ans peut vivre — concrètement — ce que ses droits veulent dire.
+
+Aujourd'hui, 20 novembre, je m'arrête pour dire merci à tous les professionnels, bénévoles et familles qui font vivre ces droits au quotidien.
+
+Et je vous invite à regarder cette courte vidéo — parce que certains droits méritent qu'on les rappelle. Ensemble.
+
+#20Novembre #CIDE #DroitsDeLEnfant</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #20Novembre #CIDE #DroitsDeLEnfant #QVE #BRILLEIngenierie #ActionSociale #CentreSocial #Épanouissement #JourneeMondialeDroitsDeLEnfant
+        </div>
+        <div class="tip">Épinglez ce post le 20 novembre. Ajoutez en commentaire un lien vers la CIDE officielle (unicef.fr). Répondez à tous les commentaires.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram — Vidéo principale</div><div class="platform-specs">Début novembre</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Si je demandais à votre enfant "qu'est-ce qui te fait briller ?" — il pourrait répondre ? ✨
+
+C'est ma question préférée. Parce que les réponses sont toujours magnifiques.
+
+"Je brille quand je chante."
+"Quand je protège mon petit frère."
+"Quand quelqu'un me dit merci."
+
+Ce pétale — "ce qui me fait briller" — c'est celui qui touche à l'identité de votre enfant. Ses forces. Ce qui le rend unique.
+
+Et en novembre, à l'approche du 20 novembre, il prend encore plus de sens 🌍
+
+👉 Auto-audit QVE en bio — découvrez les forces de votre enfant avec 7 questions simples.</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #CeQuiMeFaitBriller #QVE #BRILLEIngenierie
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #Enfants612 #Parentalité #DroitsDeLEnfant #CIDE #20Novembre #SoutienParentalité #CentreSocial #Épanouissement #TalentsEnfants #ParentalitéBienveillante
+        </div>
+        <div class="tip">Série de stories 17-20 novembre : un droit de l'enfant par jour (art. CIDE) en slide coloré. Le 20 : vidéo courte dédiée.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram — 20 novembre (CIDE)</div><div class="platform-specs">À publier le 20 novembre</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Aujourd'hui, 20 novembre 🌍
+
+Journée Mondiale des Droits de l'Enfant.
+
+Il y a 37 ans, la CIDE a posé quelque chose de fondamental : chaque enfant a des droits. Le droit d'être entendu. Le droit à l'éducation. Le droit au jeu. Le droit d'être protégé.
+
+Chez BRILLE, on les fait vivre — collectivement, concrètement, dans les centres sociaux.
+
+Parce que connaître ses droits, c'est déjà commencer à les vivre ✨
+
+Bonne journée à tous les enfants, et à tous ceux qui les accompagnent 🌸</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #20Novembre #CIDE #DroitsDeLEnfant
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #JourneeMondialeDroitsDeLEnfant #QVE #BRILLEIngenierie #Enfants #ActionSociale #CentreSocial #Épanouissement #ParentalitéBienveillante
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook — Vidéo principale</div><div class="platform-specs">Début novembre</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Je vous pose une question ce mois-ci 💛
+
+Votre enfant — qu'est-ce qui le fait briller ?
+
+Pas à l'école forcément. Dans sa vie. Dans ce qu'il aime. Dans ce qu'il fait quand personne ne regarde.
+
+C'est la question au cœur du 6ème pétale de la Fleur QVE : "ce qui me fait briller".
+
+Et c'est souvent la réponse la plus surprenante — parce qu'on découvre des enfants incroyables qu'on ne voyait pas encore.
+
+Regardez la vidéo, et dites-moi en commentaire : votre enfant, qu'est-ce qui le fait briller ? 🌟
+
+(Lien auto-audit QVE en commentaire 👇)</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #QVE #TalentsEnfants #Parentalité #CentreSocial #BRILLE
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok — Vidéo principale</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Demandez ça à votre enfant ce soir : "Qu'est-ce qui te fait briller ?" ✨
+
+Les réponses vont vous surprendre. Je vous promets.
+
+C'est le pétale que je préfère dans les ateliers BRILLE 🌸
+
+#CeQuiMeFaitBriller #QVE #Enfants #Parentalité #BRILLEIngenierie #TalentsEnfants</div>
+        <div class="tip">Ce TikTok peut devenir viral si vous montrez de vraies réponses d'enfants (avec autorisation parentale bien sûr). Sinon, simulez avec "une enfant m'a dit..."</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== DÉCEMBRE ==================== -->
+<div class="month-section" id="decembre">
+  <div class="month-header" style="border-left: 5px solid #f8f4b8;">
+    <span class="month-emoji">🌟</span>
+    <div class="month-info">
+      <h2>Décembre 2026</h2>
+      <span class="month-petale" style="background:#f8f4b8;">Pétale 7 · Organisation et autonomie · Bilan personnel</span>
+      <p style="font-size:13px;color:#888;margin-top:4px;font-weight:300;">Vidéo la plus personnelle — Tsiory & BRILLE en 2026</p>
+    </div>
+  </div>
+
+  <div class="platform-grid">
+
+    <div class="platform-card li">
+      <div class="platform-header">
+        <div class="platform-icon">💼</div>
+        <div><div class="platform-name">LinkedIn</div><div class="platform-specs">Ton sincère · bilan & vision · fin d'année</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>2026 s'achève. Et avant de passer à 2027, j'ai envie de m'arrêter.
+
+BRILLE Ingénierie a été créée en février 2026. Il y a moins d'un an.
+
+Cette année, j'ai appris que :
+– une ingénieure QVE, ça ne s'explique pas en 30 secondes. Et c'est ok.
+– les partenaires institutionnels ont besoin de clarté, pas de séduction.
+– ma double posture de maman et d'ingénieure, c'est ma force — pas un paradoxe.
+– un enfant qui "ne s'adapte pas", c'est souvent un enfant qui attend qu'on crée les bonnes conditions pour lui.
+
+Le 7ème pétale de la Fleur QVE — organisation et autonomie — c'est aussi ce que j'ai travaillé pour moi cette année.
+
+Poser un cadre. Construire des rituels. Avancer malgré l'incertitude.
+
+En 2027, BRILLE continue. Plus de structures partenaires. Plus d'ateliers. Et toujours le même ADN : le collectif, le terrain, le vrai.
+
+Merci à celles et ceux qui ont suivi ce chemin. 💛</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #Bilan2026 #QVE #BRILLEIngenierie #Entrepreneuriat #ActionSociale #CentreSocial #OrganisationEtAutonomie #IngenierieFormation #Épanouissement #FinDAnnée
+        </div>
+        <div class="tip">C'est votre post le plus humain de l'année. Pas de CTA commercial — juste l'authenticité. Il peut générer des prises de contact naturelles sans le demander.</div>
+      </div>
+    </div>
+
+    <div class="platform-card ig">
+      <div class="platform-header">
+        <div class="platform-icon">📸</div>
+        <div><div class="platform-name">Instagram</div><div class="platform-specs">Ton intime · maman-ingénieure · fin d'année</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>Décembre 🌟 Le mois où j'aime me poser et regarder le chemin parcouru.
+
+BRILLE a été créée il y a moins d'un an. Et cette année m'a appris des choses que je n'attendais pas.
+
+J'ai appris que mon double rôle — maman et ingénieure — c'est mon plus grand atout. Pas une contradiction.
+
+J'ai appris que les enfants de 6 à 12 ans sont incroyablement capables, quand on leur crée les bonnes conditions.
+
+Et j'ai appris à m'organiser. À construire des routines. À avancer même quand ce n'est pas parfait.
+
+C'est ça, le 7ème pétale : organisation et autonomie. Et cette année, il valait pour moi aussi 💛
+
+Merci d'être là. En 2027, on continue 🌸
+
+👉 Et vous — qu'est-ce qui vous a le plus fait briller cette année ? Dites-moi en commentaire 👇</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags (post)</div>
+          #Bilan2026 #QVE #BRILLEIngenierie
+          <br><br>
+          <div class="hashtags-label">Hashtags (1er commentaire)</div>
+          #MamanEntrepreneur #OrganisationEtAutonomie #Épanouissement #ActionSociale #CentreSocial #SoutienParentalité #Entrepreneuriat #FinDAnnée #QualitéDeVie #Parentalité
+        </div>
+        <div class="tip">Story le 31 décembre : rétrospective avec les moments forts BRILLE 2026 en slides. Simple, sincère, sans trop de production.</div>
+      </div>
+    </div>
+
+    <div class="platform-card fb">
+      <div class="platform-header">
+        <div class="platform-icon">👥</div>
+        <div><div class="platform-name">Facebook</div><div class="platform-specs">Ton communautaire · fin d'année</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>C'est la fin de l'année 🌟
+
+Et avant de souffler les bougies de 2026, j'ai envie de vous remercier.
+
+BRILLE a démarré en février. Depuis, j'ai rencontré des professionnels de l'action sociale, des familles, des parents qui cherchent à faire mieux pour leurs enfants.
+
+Et cette année m'a confirmé une chose : les enfants de 6 à 12 ans ont besoin d'espaces collectifs où ils peuvent souffler, grandir, et découvrir ce qui les fait briller.
+
+Le 7ème pétale de la Fleur QVE — organisation et autonomie — c'est aussi ce que j'ai travaillé pour moi en 2026. Me structurer. Trouver mon rythme. Avancer.
+
+Merci d'avoir suivi ce chemin avec moi 💛
+
+Et vous — votre enfant, qu'est-ce qui l'a fait briller cette année ? Partagez en commentaire 👇
+
+(Lien auto-audit QVE en commentaire 👇)</div>
+        <div class="hashtags">
+          <div class="hashtags-label">Hashtags</div>
+          #Bilan2026 #QVE #Parentalité #CentreSocial #BRILLE
+        </div>
+      </div>
+    </div>
+
+    <div class="platform-card tt">
+      <div class="platform-header">
+        <div class="platform-icon">🎵</div>
+        <div><div class="platform-name">TikTok</div><div class="platform-specs">Hook en 1ère phrase · bilan personnel</div></div>
+      </div>
+      <div class="legend-block">
+        <div class="copy-zone" onclick="copyText(this)">
+<button class="copy-btn">Copier</button>J'ai créé une entreprise cette année. Et voilà ce que j'ai vraiment appris 🌟
+
+Pas le business plan. Pas les factures.
+
+Ce que j'ai appris, c'est que mon rôle de maman m'a rendue meilleure ingénieure. Et vice versa.
+
+Merci 2026. En 2027 — BRILLE continue ✨
+
+#Bilan2026 #MamanEntrepreneur #QVE #BRILLEIngenierie #Entrepreneuriat #Épanouissement</div>
+        <div class="tip">Tournez ce TikTok de façon plus détendue, peut-être en tenue quotidienne. C'est le mois le plus humain — laissez tomber la posture "experte" pour cette vidéo.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- end .content -->
+
+<footer>
+  <strong>BRILLE Ingénierie</strong> · Tsiory Léonard · 07 45 32 30 90 · tsioryleonard@gmail.com<br>
+  Légendes réseaux sociaux · Juin – Décembre 2026
+</footer>
+
+<script>
+function showMonth(id) {
+  document.querySelectorAll('.month-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.month-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function copyText(el) {
+  const btn = el.querySelector('.copy-btn');
+  const text = el.innerText.replace('Copier', '').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copié !';
+    btn.style.background = '#4caf50';
+    setTimeout(() => {
+      btn.textContent = 'Copier';
+      btn.style.background = '#f49f4c';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
