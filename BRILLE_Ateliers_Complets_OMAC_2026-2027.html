@@ -34,9 +34,9 @@ body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f7f7f7;color
 .tab-btn.bonus-btn:hover,.tab-btn.bonus-btn.active{opacity:1;background:#9b82c4;}
 
 /* CONTENU */
-.main{margin-left:90px;padding-top:56px;min-height:100vh;}
-.tab-content{display:none;padding:24px;}
-.tab-content.active{display:block;}
+.main{margin-left:90px;padding-top:56px;min-height:100vh;box-sizing:border-box;}
+.tab-content{display:none;padding:20px 16px;}
+.tab-content.active{display:block;width:100%;box-sizing:border-box;}
 
 /* HEADER ATELIER */
 .atelier-header{display:flex;align-items:center;gap:20px;background:#fff;border-radius:20px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,0.07);}
@@ -111,21 +111,19 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   body{background:#fff;}
 }
 
-.print-month-title{grid-column:1/-1;font-family:'Gruppo',sans-serif;font-size:1.1rem;
-  color:#f49f4c;border-bottom:2px solid #f8f4b8;padding-bottom:6px;margin-top:12px;}
-.print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:4px 0;overflow:hidden;}
-.print-card{background:white;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden;min-width:0;}
-.print-card-meta{display:flex;align-items:flex-start;gap:8px;min-width:0;}
+.print-month-title{grid-column:1/-1;font-family:'Gruppo',sans-serif;font-size:1rem;
+  color:#f49f4c;border-bottom:2px solid #f8f4b8;padding-bottom:5px;margin-top:10px;width:100%;}
+.print-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:4px 0;width:100%;}
+.print-card{background:white;border-radius:14px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden;min-width:0;width:100%;box-sizing:border-box;}
+.print-card-meta{display:flex;flex-direction:column;gap:0;min-width:0;width:100%;}
 .print-card-title{font-family:'Gruppo',sans-serif;font-size:.95rem;color:#1a1a1a;margin-bottom:4px;
   overflow-wrap:break-word;word-break:break-word;min-width:0;}
 .print-card-tag{font-size:.76rem;color:#f49f4c;font-weight:600;margin-bottom:4px;
   overflow-wrap:break-word;word-break:break-word;}
 .print-card-qty{font-size:.76rem;color:#888;overflow-wrap:break-word;word-break:break-word;}
-.print-fiche-btn{margin-left:auto;flex-shrink:0;background:linear-gradient(135deg,#f49f4c,#fdd5a5);
-  color:white;border:none;border-radius:10px;padding:6px 10px;cursor:pointer;font-size:.78rem;
-  font-family:'Quicksand',sans-serif;white-space:nowrap;align-self:flex-start;}
+.print-fiche-btn{flex-shrink:0;background:var(--orange);color:white;border:none;border-radius:8px;padding:5px 10px;cursor:pointer;font-size:.78rem;font-family:'Quicksand',sans-serif;white-space:nowrap;align-self:flex-start;display:block;margin-top:8px;width:100%;text-align:center;}
 .print-fiche-btn:hover{background:#e08a35;}
-.print-tab-content{overflow:hidden;max-width:100%;}
+.print-tab-content{width:100%;}
 .print-card > div{min-width:0;}
 
 
@@ -201,6 +199,37 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   .cl-atelier{box-shadow:none;border:1px solid #eee;break-inside:avoid;}
   .cl-item input{display:inline-block;}
 }
+
+
+/* CR INTERACTIF */
+.cr-input-field{border:1px solid #ddd;border-radius:2mm;padding:6px 10px;
+  min-height:34px;background:#fafafa;font-size:.85rem;color:#444;
+  font-family:'Quicksand',sans-serif;width:100%;outline:none;box-sizing:border-box;}
+.cr-input-field:focus{border-color:#f49f4c;background:#fff;box-shadow:0 0 0 2px #fdd5a520;}
+.cr-input-field.sign{min-height:48px;}
+.cr-input-field.small-i{min-height:28px;font-size:.8rem;}
+.cr-textarea-field{border:1px solid #ddd;border-radius:2mm;padding:8px 10px;
+  min-height:70px;background:#fafafa;font-size:.87rem;color:#444;
+  font-family:'Quicksand',sans-serif;width:100%;resize:vertical;
+  outline:none;box-sizing:border-box;line-height:1.5;}
+.cr-textarea-field.small{min-height:50px;}
+.cr-textarea-field:focus{border-color:#f49f4c;background:#fff;}
+.cr-star-btn{cursor:pointer;font-size:1.4rem;color:#ddd;transition:color .15s;
+  background:none;border:none;padding:0 2px;}
+.cr-star-btn.filled{color:#f49f4c;}
+.cr-star-btn:hover{color:#f49f4c;opacity:.7;}
+.cr-header{margin-bottom:20px;border-bottom:2px solid var(--orange);
+  padding-bottom:12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.cr-header-left{flex:1;}
+.cr-header h3{color:var(--orange);font-size:1.1rem;}
+.print-cr-btn{background:linear-gradient(135deg,#f49f4c,#fdd5a5);color:#fff;
+  border:none;border-radius:12px;padding:8px 16px;cursor:pointer;
+  font-family:'Quicksand',sans-serif;font-size:.82rem;white-space:nowrap;
+  flex-shrink:0;display:flex;align-items:center;gap:6px;}
+.print-cr-btn:hover{background:#e08a35;}
+.cr-save-bar{background:#f8f4b8;border-radius:10px;padding:8px 14px;
+  margin-bottom:16px;font-size:.82rem;color:#888;display:flex;
+  align-items:center;gap:8px;}
 
 </style>
 </head>
@@ -375,44 +404,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-sept" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Septembre 2026</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Septembre 2026</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Le sens de ce que j'apprends"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Le sens de ce que j'apprends</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -553,44 +586,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-oct" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Octobre 2026</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Octobre 2026</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Mes liens & ma parole"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Mes liens & ma parole</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -723,44 +760,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-nov" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Novembre 2026</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Novembre 2026</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Ma place & mes droits dans la famille"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Ma place & mes droits dans la famille</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -885,44 +926,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-dec" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Décembre 2026</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Décembre 2026</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Qui je suis & ce qui me fait briller"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Qui je suis & ce qui me fait briller</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1055,44 +1100,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-jan" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Janvier 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Janvier 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Mon organisation & mon autonomie"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Mon organisation & mon autonomie</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1225,44 +1274,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-fev" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Février 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Février 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Mes émotions, je les apprivoise"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Mes émotions, je les apprivoise</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1395,44 +1448,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-mars" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Mars 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Mars 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Mon équilibre & mon énergie"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Mon équilibre & mon énergie</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1550,44 +1607,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-avr" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Avril 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Avril 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Piqûre de rappel"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Piqûre de rappel</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1673,44 +1734,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-mai" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Mai 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Mai 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Ensemble"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Ensemble</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -1796,44 +1861,48 @@ h4{font-size:.95rem;margin:16px 0 10px;color:var(--fonce);}
   <div id="cr-juin" class="sub-content">
     <div class="cr-bloc">
       <div class="cr-header">
-        <h3>📄 Compte Rendu OMAC — Juin 2027</h3>
-        <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  <div class="cr-header-left">
+    <h3>📄 Compte Rendu OMAC — Juin 2027</h3>
+    <div class="cr-subtitle">À remettre à la directrice de l'OMAC après chaque séance</div>
+  </div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer ce CR</button>
+</div>
+<div class="cr-save-bar">💾 Vos saisies sont conservées pendant la session — imprimez le CR rempli avant de fermer l'onglet.</div>
+      <div class="cr-grid">
+        <div class="cr-field"><label>Date de la séance</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Heure</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Lieu</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Animatrice</label><input type="text" class="cr-input-field" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
       </div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date de la séance</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Heure</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Lieu</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Animatrice</label><div class="cr-input">Tsiory Rindra Léonard — BRILLE Ingénierie</div></div>
+        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><input type="text" class="cr-input-field" placeholder="…"></div>
+        <div class="cr-field"><label>Pétale / Thème du mois</label><input type="text" class="cr-input-field" value="Célébration"></div>
       </div>
-      <div class="cr-grid">
-        <div class="cr-field"><label>Nombre de participants Lueur (enfants)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Nombre de participants Main Tendue (parents)</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Taux de présence estimé vs inscrits</label><div class="cr-input"></div></div>
-        <div class="cr-field"><label>Pétale / Thème du mois</label><div class="cr-input">Célébration</div></div>
-      </div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><div class="cr-textarea"></div></div>
-      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><div class="cr-textarea"></div></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Lueur (enfants)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Résumé du déroulé Atelier Main Tendue (parents)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Observations collectives — dynamique de groupe, participation, ambiance</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
+      <div class="cr-section"><label>Thèmes émergents / mots-clés exprimés par les participants (anonyme, collectif)</label><textarea class="cr-textarea-field" rows="4" placeholder="Votre texte ici…"></textarea></div>
       <div class="cr-grid">
         <div class="cr-field"><label>Niveau de participation (1 faible → 5 très actif)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
         <div class="cr-field"><label>Climat du groupe (1 tendu → 5 très bienveillant)</label>
-          <div class="cr-stars"><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span><span class="cr-star">☆</span></div></div>
+          <div class="cr-star-group"><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button><button type="button" class="cr-star-btn" onclick="rateStar(this)">☆</button></div></div>
       </div>
-      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><div class="cr-textarea small"></div></div>
-      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><div class="cr-textarea small"></div></div>
+      <div class="cr-section"><label>Points d'attention collectifs (sans nominatif)</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
+      <div class="cr-section"><label>Perspectives pour le mois suivant / ajustements envisagés</label><textarea class="cr-textarea-field small" rows="2" placeholder="Votre texte…"></textarea></div>
       <div class="cr-grid">
-        <div class="cr-field"><label>Date et signature de l'animatrice</label><div class="cr-input sign"></div></div>
-        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><div class="cr-input sign"></div></div>
+        <div class="cr-field"><label>Date et signature de l'animatrice</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
+        <div class="cr-field"><label>Date et visa de la directrice OMAC</label><input type="text" class="cr-input-field sign" placeholder="Signature…"></div>
       </div>
       <div class="cr-indicateurs">
         <h4>📊 Indicateurs REAAP/CAF (si applicable)</h4>
         <div class="cr-grid">
-          <div class="cr-field"><label>Nb familles touchées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances réalisées (mois)</label><div class="cr-input small-i"></div></div>
-          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><div class="cr-input small-i"></div></div>
+          <div class="cr-field"><label>Nb familles touchées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb familles cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances réalisées (mois)</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
+          <div class="cr-field"><label>Nb séances cumulé depuis sept.</label><input type="text" class="cr-input-field small-i" placeholder="…"></div>
         </div>
       </div>
     </div></div>
@@ -4329,7 +4398,148 @@ function printFiche(id) {
       footer.print-footer{margin-top:4mm;border-top:1px solid #eee;padding-top:2mm;font-size:6.5pt;color:#bbb;display:flex;justify-content:space-between;align-items:center;page-break-inside:avoid;break-inside:avoid;}
       footer.print-footer img{height:9mm;width:auto;opacity:.85;}
     </style>
-  </head><body>${recto}${verso}</body></html>`);
+  </head><body>${recto}${verso}
+<script>
+
+// ── STAR RATING ──
+function rateStar(btn) {
+  const group = btn.closest('.cr-star-group');
+  const stars = group.querySelectorAll('.cr-star-btn');
+  const idx = Array.from(stars).indexOf(btn);
+  stars.forEach((s, i) => {
+    s.classList.toggle('filled', i <= idx);
+    s.textContent = i <= idx ? '★' : '☆';
+  });
+}
+
+// ── PRINT CR ──
+function printCR(btn) {
+  const bloc = btn.closest('.cr-bloc');
+  const title = bloc.querySelector('.cr-header h3').textContent.trim();
+
+  // Collecter toutes les données saisies
+  const sections = [];
+  
+  // Grilles (cr-grid)
+  bloc.querySelectorAll('.cr-grid').forEach(grid => {
+    const fields = [];
+    grid.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      if (!label) return;
+      const inp = field.querySelector('.cr-input-field');
+      const ta = field.querySelector('.cr-textarea-field');
+      const stars = field.querySelector('.cr-star-group');
+      let value = '—';
+      if (inp) value = inp.value.trim() || '—';
+      else if (ta) value = ta.value.trim() || '—';
+      else if (stars) {
+        const filled = stars.querySelectorAll('.cr-star-btn.filled').length;
+        value = '★'.repeat(filled) + '☆'.repeat(5-filled) + ' (' + filled + '/5)';
+      }
+      fields.push({ label: label.textContent.trim(), value, multi: !!ta });
+    });
+    if (fields.length) sections.push({ type: 'grid', fields });
+  });
+
+  // Sections texte (cr-section)
+  bloc.querySelectorAll('.cr-section').forEach(section => {
+    const label = section.querySelector('label');
+    const ta = section.querySelector('.cr-textarea-field');
+    if (label && ta) {
+      sections.push({ type: 'section', label: label.textContent.trim(), value: ta.value.trim() || '—' });
+    }
+  });
+
+  // Indicateurs
+  const indic = bloc.querySelector('.cr-indicateurs');
+  if (indic) {
+    const indicFields = [];
+    indic.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      const inp = field.querySelector('.cr-input-field');
+      if (label && inp) indicFields.push({ label: label.textContent.trim(), value: inp.value.trim() || '—' });
+    });
+    if (indicFields.length) sections.push({ type: 'indicateurs', fields: indicFields });
+  }
+
+  // Générer le HTML d'impression
+  let fieldsHtml = '';
+  sections.forEach(sec => {
+    if (sec.type === 'grid') {
+      fieldsHtml += '<div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield ${f.multi ? 'multi' : ''}">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value.replace(/\n/g,'<br>')}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div>';
+    } else if (sec.type === 'section') {
+      fieldsHtml += `<div class="pfield multi">
+        <div class="plabel">${sec.label}</div>
+        <div class="pvalue multi">${sec.value.replace(/\n/g,'<br>')}</div>
+      </div>`;
+    } else if (sec.type === 'indicateurs') {
+      fieldsHtml += '<div class="pindicateurs"><div class="plabel section-label">📊 Indicateurs REAAP/CAF</div><div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div></div>';
+    }
+  });
+
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.write(`<!DOCTYPE html><html lang="fr"><head>
+    <meta charset="UTF-8"><title>${title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      @page { size: A4 portrait; margin: 12mm; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Quicksand', Arial, sans-serif; font-weight: 300; color: #1a1a1a; font-size: 10pt; }
+      .hdr { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f49f4c; padding-bottom: 4mm; margin-bottom: 5mm; }
+      .hdr img { height: 12mm; width: auto; }
+      .hdr .hn { font-family: 'Gruppo', serif; font-size: 18pt; line-height: 1; }
+      .hdr .ht { font-size: 8pt; color: #888; margin-top: 2px; }
+      .hdr .date-box { margin-left: auto; border: 1px solid #ddd; border-radius: 3mm; padding: 3mm 8mm; font-size: 8pt; color: #aaa; }
+      .cr-title { font-family: 'Gruppo', serif; font-size: 13pt; color: #f49f4c; margin-bottom: 5mm; }
+      .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; margin-bottom: 4mm; }
+      .pfield { break-inside: avoid; margin-bottom: 3mm; }
+      .pfield.multi { grid-column: 1 / -1; }
+      .plabel { font-size: 7.5pt; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.5mm; }
+      .plabel.section-label { font-size: 9pt; color: #f49f4c; font-family: 'Gruppo', serif; text-transform: none; letter-spacing: 0; margin: 5mm 0 3mm; }
+      .pvalue { font-size: 10pt; background: #fafafa; border-radius: 2mm; padding: 2.5mm 3mm; min-height: 8mm; border: 1px solid #eee; word-break: break-word; }
+      .pvalue.multi { min-height: 18mm; }
+      .pindicateurs { background: #f8f4b8; border-radius: 3mm; padding: 3mm 4mm; margin-top: 4mm; }
+      .pindicateurs .pvalue { background: white; }
+      footer { margin-top: 8mm; border-top: 1px solid #eee; padding-top: 3mm; font-size: 7pt; color: #bbb; display: flex; justify-content: space-between; align-items: center; }
+      footer img { height: 8mm; width: auto; }
+    </style>
+  </head><body>
+    <div class="hdr">
+      <img src="${LOGO_B64}" alt="brille">
+      <div><div class="hn">brille</div><div class="ht">BRILLE Ingénierie · Compte Rendu d'intervention · SIREN 100611193</div></div>
+      <div class="date-box">Imprimé le : ${new Date().toLocaleDateString('fr-FR')}</div>
+    </div>
+    <div class="cr-title">${title}</div>
+    ${fieldsHtml}
+    <footer>
+      <span style="display:flex;align-items:center;gap:5px">
+        <img src="${LOGO_B64}" alt="">
+        <span>© BRILLE Ingénierie · Document protégé · SIREN 100611193 · Reproduction interdite</span>
+      </span>
+      <span>tsioryleonard@gmail.com · 07 45 32 30 90</span>
+    </footer>
+  </body></html>`);
+  w.document.close();
+  w.addEventListener('load', () => setTimeout(() => w.print(), 700));
+}
+
+</script>
+</body></html>`);
   w.document.close();
   w.addEventListener('load', () => setTimeout(() => w.print(), 700));
 }
@@ -4419,9 +4629,291 @@ function printChecklist(id) {
       </span>
       <span>tsioryleonard@gmail.com · 07 45 32 30 90</span>
     </footer>
+  
+<script>
+
+// ── STAR RATING ──
+function rateStar(btn) {
+  const group = btn.closest('.cr-star-group');
+  const stars = group.querySelectorAll('.cr-star-btn');
+  const idx = Array.from(stars).indexOf(btn);
+  stars.forEach((s, i) => {
+    s.classList.toggle('filled', i <= idx);
+    s.textContent = i <= idx ? '★' : '☆';
+  });
+}
+
+// ── PRINT CR ──
+function printCR(btn) {
+  const bloc = btn.closest('.cr-bloc');
+  const title = bloc.querySelector('.cr-header h3').textContent.trim();
+
+  // Collecter toutes les données saisies
+  const sections = [];
+  
+  // Grilles (cr-grid)
+  bloc.querySelectorAll('.cr-grid').forEach(grid => {
+    const fields = [];
+    grid.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      if (!label) return;
+      const inp = field.querySelector('.cr-input-field');
+      const ta = field.querySelector('.cr-textarea-field');
+      const stars = field.querySelector('.cr-star-group');
+      let value = '—';
+      if (inp) value = inp.value.trim() || '—';
+      else if (ta) value = ta.value.trim() || '—';
+      else if (stars) {
+        const filled = stars.querySelectorAll('.cr-star-btn.filled').length;
+        value = '★'.repeat(filled) + '☆'.repeat(5-filled) + ' (' + filled + '/5)';
+      }
+      fields.push({ label: label.textContent.trim(), value, multi: !!ta });
+    });
+    if (fields.length) sections.push({ type: 'grid', fields });
+  });
+
+  // Sections texte (cr-section)
+  bloc.querySelectorAll('.cr-section').forEach(section => {
+    const label = section.querySelector('label');
+    const ta = section.querySelector('.cr-textarea-field');
+    if (label && ta) {
+      sections.push({ type: 'section', label: label.textContent.trim(), value: ta.value.trim() || '—' });
+    }
+  });
+
+  // Indicateurs
+  const indic = bloc.querySelector('.cr-indicateurs');
+  if (indic) {
+    const indicFields = [];
+    indic.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      const inp = field.querySelector('.cr-input-field');
+      if (label && inp) indicFields.push({ label: label.textContent.trim(), value: inp.value.trim() || '—' });
+    });
+    if (indicFields.length) sections.push({ type: 'indicateurs', fields: indicFields });
+  }
+
+  // Générer le HTML d'impression
+  let fieldsHtml = '';
+  sections.forEach(sec => {
+    if (sec.type === 'grid') {
+      fieldsHtml += '<div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield ${f.multi ? 'multi' : ''}">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value.replace(/\n/g,'<br>')}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div>';
+    } else if (sec.type === 'section') {
+      fieldsHtml += `<div class="pfield multi">
+        <div class="plabel">${sec.label}</div>
+        <div class="pvalue multi">${sec.value.replace(/\n/g,'<br>')}</div>
+      </div>`;
+    } else if (sec.type === 'indicateurs') {
+      fieldsHtml += '<div class="pindicateurs"><div class="plabel section-label">📊 Indicateurs REAAP/CAF</div><div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div></div>';
+    }
+  });
+
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.write(`<!DOCTYPE html><html lang="fr"><head>
+    <meta charset="UTF-8"><title>${title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      @page { size: A4 portrait; margin: 12mm; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Quicksand', Arial, sans-serif; font-weight: 300; color: #1a1a1a; font-size: 10pt; }
+      .hdr { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f49f4c; padding-bottom: 4mm; margin-bottom: 5mm; }
+      .hdr img { height: 12mm; width: auto; }
+      .hdr .hn { font-family: 'Gruppo', serif; font-size: 18pt; line-height: 1; }
+      .hdr .ht { font-size: 8pt; color: #888; margin-top: 2px; }
+      .hdr .date-box { margin-left: auto; border: 1px solid #ddd; border-radius: 3mm; padding: 3mm 8mm; font-size: 8pt; color: #aaa; }
+      .cr-title { font-family: 'Gruppo', serif; font-size: 13pt; color: #f49f4c; margin-bottom: 5mm; }
+      .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; margin-bottom: 4mm; }
+      .pfield { break-inside: avoid; margin-bottom: 3mm; }
+      .pfield.multi { grid-column: 1 / -1; }
+      .plabel { font-size: 7.5pt; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.5mm; }
+      .plabel.section-label { font-size: 9pt; color: #f49f4c; font-family: 'Gruppo', serif; text-transform: none; letter-spacing: 0; margin: 5mm 0 3mm; }
+      .pvalue { font-size: 10pt; background: #fafafa; border-radius: 2mm; padding: 2.5mm 3mm; min-height: 8mm; border: 1px solid #eee; word-break: break-word; }
+      .pvalue.multi { min-height: 18mm; }
+      .pindicateurs { background: #f8f4b8; border-radius: 3mm; padding: 3mm 4mm; margin-top: 4mm; }
+      .pindicateurs .pvalue { background: white; }
+      footer { margin-top: 8mm; border-top: 1px solid #eee; padding-top: 3mm; font-size: 7pt; color: #bbb; display: flex; justify-content: space-between; align-items: center; }
+      footer img { height: 8mm; width: auto; }
+    </style>
+  </head><body>
+    <div class="hdr">
+      <img src="${LOGO_B64}" alt="brille">
+      <div><div class="hn">brille</div><div class="ht">BRILLE Ingénierie · Compte Rendu d'intervention · SIREN 100611193</div></div>
+      <div class="date-box">Imprimé le : ${new Date().toLocaleDateString('fr-FR')}</div>
+    </div>
+    <div class="cr-title">${title}</div>
+    ${fieldsHtml}
+    <footer>
+      <span style="display:flex;align-items:center;gap:5px">
+        <img src="${LOGO_B64}" alt="">
+        <span>© BRILLE Ingénierie · Document protégé · SIREN 100611193 · Reproduction interdite</span>
+      </span>
+      <span>tsioryleonard@gmail.com · 07 45 32 30 90</span>
+    </footer>
   </body></html>`);
   w.document.close();
+  w.addEventListener('load', () => setTimeout(() => w.print(), 700));
+}
+
+</script>
+</body></html>`);
+  w.document.close();
   w.addEventListener('load', () => setTimeout(() => w.print(), 600));
+}
+
+</script>
+
+<script>
+
+// ── STAR RATING ──
+function rateStar(btn) {
+  const group = btn.closest('.cr-star-group');
+  const stars = group.querySelectorAll('.cr-star-btn');
+  const idx = Array.from(stars).indexOf(btn);
+  stars.forEach((s, i) => {
+    s.classList.toggle('filled', i <= idx);
+    s.textContent = i <= idx ? '★' : '☆';
+  });
+}
+
+// ── PRINT CR ──
+function printCR(btn) {
+  const bloc = btn.closest('.cr-bloc');
+  const title = bloc.querySelector('.cr-header h3').textContent.trim();
+
+  // Collecter toutes les données saisies
+  const sections = [];
+  
+  // Grilles (cr-grid)
+  bloc.querySelectorAll('.cr-grid').forEach(grid => {
+    const fields = [];
+    grid.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      if (!label) return;
+      const inp = field.querySelector('.cr-input-field');
+      const ta = field.querySelector('.cr-textarea-field');
+      const stars = field.querySelector('.cr-star-group');
+      let value = '—';
+      if (inp) value = inp.value.trim() || '—';
+      else if (ta) value = ta.value.trim() || '—';
+      else if (stars) {
+        const filled = stars.querySelectorAll('.cr-star-btn.filled').length;
+        value = '★'.repeat(filled) + '☆'.repeat(5-filled) + ' (' + filled + '/5)';
+      }
+      fields.push({ label: label.textContent.trim(), value, multi: !!ta });
+    });
+    if (fields.length) sections.push({ type: 'grid', fields });
+  });
+
+  // Sections texte (cr-section)
+  bloc.querySelectorAll('.cr-section').forEach(section => {
+    const label = section.querySelector('label');
+    const ta = section.querySelector('.cr-textarea-field');
+    if (label && ta) {
+      sections.push({ type: 'section', label: label.textContent.trim(), value: ta.value.trim() || '—' });
+    }
+  });
+
+  // Indicateurs
+  const indic = bloc.querySelector('.cr-indicateurs');
+  if (indic) {
+    const indicFields = [];
+    indic.querySelectorAll('.cr-field').forEach(field => {
+      const label = field.querySelector('label');
+      const inp = field.querySelector('.cr-input-field');
+      if (label && inp) indicFields.push({ label: label.textContent.trim(), value: inp.value.trim() || '—' });
+    });
+    if (indicFields.length) sections.push({ type: 'indicateurs', fields: indicFields });
+  }
+
+  // Générer le HTML d'impression
+  let fieldsHtml = '';
+  sections.forEach(sec => {
+    if (sec.type === 'grid') {
+      fieldsHtml += '<div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield ${f.multi ? 'multi' : ''}">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value.replace(/\n/g,'<br>')}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div>';
+    } else if (sec.type === 'section') {
+      fieldsHtml += `<div class="pfield multi">
+        <div class="plabel">${sec.label}</div>
+        <div class="pvalue multi">${sec.value.replace(/\n/g,'<br>')}</div>
+      </div>`;
+    } else if (sec.type === 'indicateurs') {
+      fieldsHtml += '<div class="pindicateurs"><div class="plabel section-label">📊 Indicateurs REAAP/CAF</div><div class="pgrid">';
+      sec.fields.forEach(f => {
+        fieldsHtml += `<div class="pfield">
+          <div class="plabel">${f.label}</div>
+          <div class="pvalue">${f.value}</div>
+        </div>`;
+      });
+      fieldsHtml += '</div></div>';
+    }
+  });
+
+  const w = window.open('', '_blank', 'width=900,height=700');
+  w.document.write(`<!DOCTYPE html><html lang="fr"><head>
+    <meta charset="UTF-8"><title>${title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      @page { size: A4 portrait; margin: 12mm; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Quicksand', Arial, sans-serif; font-weight: 300; color: #1a1a1a; font-size: 10pt; }
+      .hdr { display: flex; align-items: center; gap: 10px; border-bottom: 2px solid #f49f4c; padding-bottom: 4mm; margin-bottom: 5mm; }
+      .hdr img { height: 12mm; width: auto; }
+      .hdr .hn { font-family: 'Gruppo', serif; font-size: 18pt; line-height: 1; }
+      .hdr .ht { font-size: 8pt; color: #888; margin-top: 2px; }
+      .hdr .date-box { margin-left: auto; border: 1px solid #ddd; border-radius: 3mm; padding: 3mm 8mm; font-size: 8pt; color: #aaa; }
+      .cr-title { font-family: 'Gruppo', serif; font-size: 13pt; color: #f49f4c; margin-bottom: 5mm; }
+      .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; margin-bottom: 4mm; }
+      .pfield { break-inside: avoid; margin-bottom: 3mm; }
+      .pfield.multi { grid-column: 1 / -1; }
+      .plabel { font-size: 7.5pt; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 1.5mm; }
+      .plabel.section-label { font-size: 9pt; color: #f49f4c; font-family: 'Gruppo', serif; text-transform: none; letter-spacing: 0; margin: 5mm 0 3mm; }
+      .pvalue { font-size: 10pt; background: #fafafa; border-radius: 2mm; padding: 2.5mm 3mm; min-height: 8mm; border: 1px solid #eee; word-break: break-word; }
+      .pvalue.multi { min-height: 18mm; }
+      .pindicateurs { background: #f8f4b8; border-radius: 3mm; padding: 3mm 4mm; margin-top: 4mm; }
+      .pindicateurs .pvalue { background: white; }
+      footer { margin-top: 8mm; border-top: 1px solid #eee; padding-top: 3mm; font-size: 7pt; color: #bbb; display: flex; justify-content: space-between; align-items: center; }
+      footer img { height: 8mm; width: auto; }
+    </style>
+  </head><body>
+    <div class="hdr">
+      <img src="${LOGO_B64}" alt="brille">
+      <div><div class="hn">brille</div><div class="ht">BRILLE Ingénierie · Compte Rendu d'intervention · SIREN 100611193</div></div>
+      <div class="date-box">Imprimé le : ${new Date().toLocaleDateString('fr-FR')}</div>
+    </div>
+    <div class="cr-title">${title}</div>
+    ${fieldsHtml}
+    <footer>
+      <span style="display:flex;align-items:center;gap:5px">
+        <img src="${LOGO_B64}" alt="">
+        <span>© BRILLE Ingénierie · Document protégé · SIREN 100611193 · Reproduction interdite</span>
+      </span>
+      <span>tsioryleonard@gmail.com · 07 45 32 30 90</span>
+    </footer>
+  </body></html>`);
+  w.document.close();
+  w.addEventListener('load', () => setTimeout(() => w.print(), 700));
 }
 
 </script>
