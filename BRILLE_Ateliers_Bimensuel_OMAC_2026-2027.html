@@ -106,16 +106,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div>
 
 <div class="nav">
-<button class="tab-btn" id="btn-sept" onclick="switchTab('sept')">📚<br><small>Sept</small></button>
-<button class="tab-btn" id="btn-oct" onclick="switchTab('oct')">👫<br><small>Octo</small></button>
-<button class="tab-btn" id="btn-nov" onclick="switchTab('nov')">⚖️<br><small>Nove</small></button>
-<button class="tab-btn" id="btn-dec" onclick="switchTab('dec')">⭐<br><small>Déce</small></button>
-<button class="tab-btn" id="btn-jan" onclick="switchTab('jan')">📅<br><small>Janv</small></button>
-<button class="tab-btn" id="btn-fev" onclick="switchTab('fev')">💛<br><small>Févr</small></button>
-<button class="tab-btn" id="btn-mars" onclick="switchTab('mars')">🔋<br><small>Mars</small></button>
-<button class="tab-btn" id="btn-avr" onclick="switchTab('avr')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🔁<br><small>Avri</small></button>
-<button class="tab-btn" id="btn-mai" onclick="switchTab('mai')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🤝<br><small>Mai</small></button>
-<button class="tab-btn" id="btn-juin" onclick="switchTab('juin')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🎉<br><small>Juin</small></button>
+<button class="tab-btn" id="btn-sept" onclick="switchTab('sept')">📚<br><small>Octo</small></button><button class="tab-btn" id="btn-nov" onclick="switchTab('nov')">⚖️<br><small>Nove</small></button><button class="tab-btn" id="btn-oct" onclick="switchTab('oct')">👫<br><small>Déce</small></button><button class="tab-btn" id="btn-dec" onclick="switchTab('dec')">⭐<br><small>Janv</small></button><button class="tab-btn" id="btn-jan" onclick="switchTab('jan')">📅<br><small>Févr</small></button><button class="tab-btn" id="btn-fev" onclick="switchTab('fev')">💛<br><small>Mars</small></button><button class="tab-btn" id="btn-mars" onclick="switchTab('mars')">🔋<br><small>Avri</small></button><button class="tab-btn" id="btn-avr" onclick="switchTab('avr')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🔁<br><small>Mai</small></button><button class="tab-btn" id="btn-mai" onclick="switchTab('mai')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🤝<br><small>Juin</small></button><button class="tab-btn" id="btn-juin" onclick="switchTab('juin')" style="background:linear-gradient(135deg,#b8aed7,#9b82c4);color:#fff">🎉<br><small>Juil</small></button>
 <button class="tab-btn" id="btn-materiel" onclick="switchTab('materiel')" style="background:linear-gradient(135deg,#cbe1b6,#a8dbeb);color:#444">📋<br><small>Matériel</small></button>
 <button class="tab-btn" id="btn-imprimer" onclick="switchTab('imprimer')" style="background:linear-gradient(135deg,#f5abaf,#ebc6e0);color:#444">🖨️<br><small>Imprimer</small></button>
 
@@ -126,7 +117,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
   <div class="ah-badge">📚</div>
   <div class="ah-info">
-    <div class="ah-mois">Septembre 2026</div>
+    <div class="ah-mois">Octobre 2026</div>
     <div class="ah-petale">Le sens de ce que j'apprends</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -204,120 +195,6 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Un geste à maintenir tout le mois. Une chose à dire à votre enfant ce soir. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour rapide. Clôture chaleureuse.</span></div></div></div><div class="eval-box"><strong>✅</strong> Question flash : ce que ce mois a changé dans mon regard.</div>
 </div></div><div id="cr-sept" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Septembre 2026</h3><div class="cr-sub">À remettre après chaque séance</div></div>
-  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
-</div>
-<div class="cr-save">💾 Saisies conservées pendant la session.</div>
-<div class="cr-grid">
-  <div class="cr-field"><label>Date</label><input type="text" class="cri" placeholder="…"></div>
-  <div class="cr-field"><label>Type séance</label><input type="text" class="cri" placeholder="S1 Exploration / S2 Ancrage / MT S1 / MT S2"></div>
-  <div class="cr-field"><label>Animatrice</label><input type="text" class="cri" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
-  <div class="cr-field"><label>Thème / Pétale</label><input type="text" class="cri" value="Le sens de ce que j'apprends"></div>
-  <div class="cr-field"><label>Nb participants</label><input type="text" class="cri" placeholder="…"></div>
-  <div class="cr-field"><label>Lieu</label><input type="text" class="cri" placeholder="…"></div>
-</div>
-<div class="cr-sect"><label>Résumé du déroulé</label><textarea class="crt" rows="4" placeholder="…"></textarea></div>
-<div class="cr-sect"><label>Observations collectives</label><textarea class="crt" rows="3" placeholder="…"></textarea></div>
-<div class="cr-sect"><label>Thèmes émergents (anonyme)</label><textarea class="crt small" rows="2" placeholder="…"></textarea></div>
-<div class="cr-grid">
-  <div class="cr-field"><label>Participation (1→5)</label><div class="star-group"><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button></div></div>
-  <div class="cr-field"><label>Climat (1→5)</label><div class="star-group"><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button></div></div>
-</div>
-<div class="cr-sect"><label>Perspectives</label><textarea class="crt small" rows="2" placeholder="…"></textarea></div>
-<div class="cr-grid">
-  <div class="cr-field"><label>Signature animatrice</label><input type="text" class="cri sign" placeholder="…"></div>
-  <div class="cr-field"><label>Visa directrice OMAC</label><input type="text" class="cri sign" placeholder="…"></div>
-</div>
-<div class="cr-indic"><h4>📊 Indicateurs REAAP/CAF</h4>
-<div class="cr-grid">
-  <div class="cr-field"><label>Familles (mois)</label><input type="text" class="cri si" placeholder="…"></div>
-  <div class="cr-field"><label>Séances cumulées</label><input type="text" class="cri si" placeholder="…"></div>
-  <div class="cr-field"><label>CR produits</label><input type="text" class="cri si" placeholder="…"></div>
-  <div class="cr-field"><label>N° séance cycle</label><input type="text" class="cri si" placeholder="…"></div>
-</div></div>
-</div></div>
-</div><div class="tab-content" id="tab-oct">
-<div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
-  <div class="ah-badge">👫</div>
-  <div class="ah-info">
-    <div class="ah-mois">Octobre 2026</div>
-    <div class="ah-petale">Mes liens & ma parole</div>
-    <div class="ah-desc">⚡ Rythme bimensuel</div>
-  </div>
-  <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
-</div>
-<div class="sub-tabs"><button class="sub-btn" onclick="switchSub(this,'ls1-oct')">🌟 Lueur S1</button><button class="sub-btn" onclick="switchSub(this,'ls2-oct')">🌟 Lueur S2</button><button class="sub-btn" onclick="switchSub(this,'ms1-oct')">💙 MT S1</button><button class="sub-btn" onclick="switchSub(this,'ms2-oct')">💙 MT S2</button><button class="sub-btn" onclick="switchSub(this,'cr-oct')">📄 CR OMAC</button></div>
-<div id="ls1-oct" class="sub-content"><div class="section-bloc">
-<div class="sec-title" style="background:#d4a820"><span class="sec-tag">📋 Atelier Lueur S1 — Mes personnes ressources</span><span class="sec-dur">⏱ 1h30</span></div>
-<div class="phase-block">
-<div class="ph-header" style="background:#d4a820">
-  <span class="ph-num">Phase 1</span><span class="ph-nom">Météo + lien septembre</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo + depuis septembre : une chose retenue sur le sens. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#d4a820">
-  <span class="ph-num">Phase 2</span><span class="ph-nom">La toile des liens</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qui compte pour vous ? On crée ensemble une toile des liens. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Pelote de laine en cercle. Tour des prénoms chers.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si un enfant dit 'j'ai personne' : 'Et dans ce groupe ?'</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#d4a820">
-  <span class="ph-num">Phase 3</span><span class="ph-nom">Fiche Mes liens</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Dessinez qui est dans votre cercle proche, important, vos connaissances. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Remplissage individuel de la fiche silhouette.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Confidentialité — cette fiche leur appartient.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#d4a820">
-  <span class="ph-num">Phase 4</span><span class="ph-nom">Le téléphone des mots</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Jeu du téléphone arabe puis analyse : pourquoi le message change ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">2-3 tours. Discussion sur la communication.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Dédramatiser les erreurs.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#d4a820">
-  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture S1</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Un mot. En S2, on va plus loin sur 'Ma parole qui compte'. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour rapide.</span></div></div></div><div class="eval-box"><strong>✅</strong> Main ouverte : 5 mots dans les doigts — ce que j'ai retenu.</div>
-</div></div><div id="ls2-oct" class="sub-content"><div class="section-bloc">
-<div class="sec-title" style="background:#f49f4c"><span class="sec-tag">📋 Atelier Lueur S2 — Ma parole qui compte</span><span class="sec-dur">⏱ 1h15</span></div>
-<div class="phase-block">
-<div class="ph-header" style="background:#f49f4c">
-  <span class="ph-num">Phase 1</span><span class="ph-nom">Météo + retour S1</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Depuis S1 : avez-vous remarqué un moment où votre parole a eu de l'importance ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#f49f4c">
-  <span class="ph-num">Phase 2</span><span class="ph-nom">Relecture fiche liens</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Reprenez votre fiche. Y a-t-il quelqu'un à ajouter ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Temps individuel.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#f49f4c">
-  <span class="ph-num">Phase 3</span><span class="ph-nom">Cartes affirmations positives</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Je vous donne une carte avec une affirmation. Lisez-la — est-ce vrai pour vous ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Distribution + tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si 'c'est faux pour moi' : 'Dans quelle situation ce serait vrai ?'</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#f49f4c">
-  <span class="ph-num">Phase 4</span><span class="ph-nom">Lettre à un allié</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Écrivez quelques mots à quelqu'un de votre toile — un remerciement, un 'je pense à toi'. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Création individuelle. Partage volontaire.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">L'écrire suffit même si on n'envoie pas.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#f49f4c">
-  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture & exposition</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce mois, qu'est-ce que vous emportez ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de cercle. Affichage des cartes affirmations.</span></div></div></div><div class="eval-box"><strong>✅</strong> Gommette sur l'affirmation qui vous parle le plus.</div>
-</div></div><div id="ms1-oct" class="sub-content"><div class="section-bloc">
-<div class="sec-title" style="background:#5a8ab5"><span class="sec-tag">📋 Atelier Main Tendue S1 — Qualité d'écoute</span><span class="sec-dur">⏱ 1h30</span></div>
-<div class="phase-block">
-<div class="ph-header" style="background:#5a8ab5">
-  <span class="ph-num">Phase 1</span><span class="ph-nom">Retour septembre</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Le geste que vous aviez à tenter — qui a essayé quelque chose ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Normaliser si personne n'a rien tenté.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#5a8ab5">
-  <span class="ph-num">Phase 2</span><span class="ph-nom">Est-ce que j'écoute vraiment ?</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Quand votre enfant vous parle, êtes-vous vraiment là ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Discussion ouverte. Obstacles : téléphone, fatigue...</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Ne pas culpabiliser.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#5a8ab5">
-  <span class="ph-num">Phase 3</span><span class="ph-nom">Jeu de rôle doux</span><span class="ph-dur">⏱ 25 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre enfant rentre avec une mauvaise note. On joue 2 versions. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">L'animatrice joue les 2 versions. En binômes.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valoriser tous les essais.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#5a8ab5">
-  <span class="ph-num">Phase 4</span><span class="ph-nom">Boussole des alliés</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Et vous — qui est votre allié parental ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Remplissage de la fiche Boussole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si 'j'ai personne' : ce groupe peut être un allié.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#5a8ab5">
-  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture S1</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Cette semaine : 5 minutes de vraie écoute. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour d'engagement.</span></div></div></div><div class="eval-box"><strong>✅</strong> Post-it : 'Ce soir en rentrant, je vais faire différemment...'</div>
-</div></div><div id="ms2-oct" class="sub-content"><div class="section-bloc">
-<div class="sec-title" style="background:#7ba7d4"><span class="sec-tag">📋 Atelier Main Tendue S2 — Mon rituel d'écoute</span><span class="sec-dur">⏱ 1h</span></div>
-<div class="phase-block">
-<div class="ph-header" style="background:#7ba7d4">
-  <span class="ph-num">Phase 1</span><span class="ph-nom">Retour des 5 minutes</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Les 5 minutes de vraie écoute — comment ça s'est passé ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valoriser même les tentatives ratées.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#7ba7d4">
-  <span class="ph-num">Phase 2</span><span class="ph-nom">Ce que j'ai découvert</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qu'avez-vous appris sur votre enfant en l'écoutant vraiment ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Partage en groupe.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Ces découvertes montrent l'importance de la présence.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#7ba7d4">
-  <span class="ph-num">Phase 3</span><span class="ph-nom">Créer un rituel</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Comment intégrer durablement un moment d'écoute dans votre semaine ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Réflexion individuelle puis partage.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">La régularité prime sur la durée.</span></div></div></div><div class="phase-block">
-<div class="ph-header" style="background:#7ba7d4">
-  <span class="ph-num">Phase 4</span><span class="ph-nom">Clôture</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce rituel — notez-le quelque part pour ne pas l'oublier. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Clôture.</span></div></div></div><div class="eval-box"><strong>✅</strong> Photo mentale : 'Dans 1 mois, mon rituel d'écoute ressemble à...'</div>
-</div></div><div id="cr-oct" class="sub-content"><div class="cr-bloc">
-<div class="cr-hdr">
   <div><h3>📄 CR OMAC — Octobre 2026</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
@@ -326,7 +203,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
   <div class="cr-field"><label>Date</label><input type="text" class="cri" placeholder="…"></div>
   <div class="cr-field"><label>Type séance</label><input type="text" class="cri" placeholder="S1 Exploration / S2 Ancrage / MT S1 / MT S2"></div>
   <div class="cr-field"><label>Animatrice</label><input type="text" class="cri" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
-  <div class="cr-field"><label>Thème / Pétale</label><input type="text" class="cri" value="Mes liens & ma parole"></div>
+  <div class="cr-field"><label>Thème / Pétale</label><input type="text" class="cri" value="Le sens de ce que j'apprends"></div>
   <div class="cr-field"><label>Nb participants</label><input type="text" class="cri" placeholder="…"></div>
   <div class="cr-field"><label>Lieu</label><input type="text" class="cri" placeholder="…"></div>
 </div>
@@ -464,11 +341,125 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
   <div class="cr-field"><label>N° séance cycle</label><input type="text" class="cri si" placeholder="…"></div>
 </div></div>
 </div></div>
+</div><div class="tab-content" id="tab-oct">
+<div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
+  <div class="ah-badge">👫</div>
+  <div class="ah-info">
+    <div class="ah-mois">Décembre 2026</div>
+    <div class="ah-petale">Mes liens & ma parole</div>
+    <div class="ah-desc">⚡ Rythme bimensuel</div>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨️ Imprimer</button>
+</div>
+<div class="sub-tabs"><button class="sub-btn" onclick="switchSub(this,'ls1-oct')">🌟 Lueur S1</button><button class="sub-btn" onclick="switchSub(this,'ls2-oct')">🌟 Lueur S2</button><button class="sub-btn" onclick="switchSub(this,'ms1-oct')">💙 MT S1</button><button class="sub-btn" onclick="switchSub(this,'ms2-oct')">💙 MT S2</button><button class="sub-btn" onclick="switchSub(this,'cr-oct')">📄 CR OMAC</button></div>
+<div id="ls1-oct" class="sub-content"><div class="section-bloc">
+<div class="sec-title" style="background:#d4a820"><span class="sec-tag">📋 Atelier Lueur S1 — Mes personnes ressources</span><span class="sec-dur">⏱ 1h30</span></div>
+<div class="phase-block">
+<div class="ph-header" style="background:#d4a820">
+  <span class="ph-num">Phase 1</span><span class="ph-nom">Météo + lien octobre</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo + depuis octobre : une chose retenue sur le sens. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#d4a820">
+  <span class="ph-num">Phase 2</span><span class="ph-nom">La toile des liens</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qui compte pour vous ? On crée ensemble une toile des liens. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Pelote de laine en cercle. Tour des prénoms chers.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si un enfant dit 'j'ai personne' : 'Et dans ce groupe ?'</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#d4a820">
+  <span class="ph-num">Phase 3</span><span class="ph-nom">Fiche Mes liens</span><span class="ph-dur">⏱ 15 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Dessinez qui est dans votre cercle proche, important, vos connaissances. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Remplissage individuel de la fiche silhouette.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Confidentialité — cette fiche leur appartient.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#d4a820">
+  <span class="ph-num">Phase 4</span><span class="ph-nom">Le téléphone des mots</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Jeu du téléphone arabe puis analyse : pourquoi le message change ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">2-3 tours. Discussion sur la communication.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Dédramatiser les erreurs.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#d4a820">
+  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture S1</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Un mot. En S2, on va plus loin sur 'Ma parole qui compte'. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour rapide.</span></div></div></div><div class="eval-box"><strong>✅</strong> Main ouverte : 5 mots dans les doigts — ce que j'ai retenu.</div>
+</div></div><div id="ls2-oct" class="sub-content"><div class="section-bloc">
+<div class="sec-title" style="background:#f49f4c"><span class="sec-tag">📋 Atelier Lueur S2 — Ma parole qui compte</span><span class="sec-dur">⏱ 1h15</span></div>
+<div class="phase-block">
+<div class="ph-header" style="background:#f49f4c">
+  <span class="ph-num">Phase 1</span><span class="ph-nom">Météo + retour S1</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Depuis S1 : avez-vous remarqué un moment où votre parole a eu de l'importance ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#f49f4c">
+  <span class="ph-num">Phase 2</span><span class="ph-nom">Relecture fiche liens</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Reprenez votre fiche. Y a-t-il quelqu'un à ajouter ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Temps individuel.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#f49f4c">
+  <span class="ph-num">Phase 3</span><span class="ph-nom">Cartes affirmations positives</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Je vous donne une carte avec une affirmation. Lisez-la — est-ce vrai pour vous ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Distribution + tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si 'c'est faux pour moi' : 'Dans quelle situation ce serait vrai ?'</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#f49f4c">
+  <span class="ph-num">Phase 4</span><span class="ph-nom">Lettre à un allié</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Écrivez quelques mots à quelqu'un de votre toile — un remerciement, un 'je pense à toi'. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Création individuelle. Partage volontaire.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">L'écrire suffit même si on n'envoie pas.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#f49f4c">
+  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture & exposition</span><span class="ph-dur">⏱ 15 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce mois, qu'est-ce que vous emportez ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de cercle. Affichage des cartes affirmations.</span></div></div></div><div class="eval-box"><strong>✅</strong> Gommette sur l'affirmation qui vous parle le plus.</div>
+</div></div><div id="ms1-oct" class="sub-content"><div class="section-bloc">
+<div class="sec-title" style="background:#5a8ab5"><span class="sec-tag">📋 Atelier Main Tendue S1 — Qualité d'écoute</span><span class="sec-dur">⏱ 1h30</span></div>
+<div class="phase-block">
+<div class="ph-header" style="background:#5a8ab5">
+  <span class="ph-num">Phase 1</span><span class="ph-nom">Retour octobre</span><span class="ph-dur">⏱ 15 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Le geste que vous aviez à tenter — qui a essayé quelque chose ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Normaliser si personne n'a rien tenté.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#5a8ab5">
+  <span class="ph-num">Phase 2</span><span class="ph-nom">Est-ce que j'écoute vraiment ?</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Quand votre enfant vous parle, êtes-vous vraiment là ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Discussion ouverte. Obstacles : téléphone, fatigue...</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Ne pas culpabiliser.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#5a8ab5">
+  <span class="ph-num">Phase 3</span><span class="ph-nom">Jeu de rôle doux</span><span class="ph-dur">⏱ 25 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre enfant rentre avec une mauvaise note. On joue 2 versions. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">L'animatrice joue les 2 versions. En binômes.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valoriser tous les essais.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#5a8ab5">
+  <span class="ph-num">Phase 4</span><span class="ph-nom">Boussole des alliés</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Et vous — qui est votre allié parental ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Remplissage de la fiche Boussole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Si 'j'ai personne' : ce groupe peut être un allié.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#5a8ab5">
+  <span class="ph-num">Phase 5</span><span class="ph-nom">Clôture S1</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Cette semaine : 5 minutes de vraie écoute. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour d'engagement.</span></div></div></div><div class="eval-box"><strong>✅</strong> Post-it : 'Ce soir en rentrant, je vais faire différemment...'</div>
+</div></div><div id="ms2-oct" class="sub-content"><div class="section-bloc">
+<div class="sec-title" style="background:#7ba7d4"><span class="sec-tag">📋 Atelier Main Tendue S2 — Mon rituel d'écoute</span><span class="sec-dur">⏱ 1h</span></div>
+<div class="phase-block">
+<div class="ph-header" style="background:#7ba7d4">
+  <span class="ph-num">Phase 1</span><span class="ph-nom">Retour des 5 minutes</span><span class="ph-dur">⏱ 15 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Les 5 minutes de vraie écoute — comment ça s'est passé ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valoriser même les tentatives ratées.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#7ba7d4">
+  <span class="ph-num">Phase 2</span><span class="ph-nom">Ce que j'ai découvert</span><span class="ph-dur">⏱ 20 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qu'avez-vous appris sur votre enfant en l'écoutant vraiment ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Partage en groupe.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Ces découvertes montrent l'importance de la présence.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#7ba7d4">
+  <span class="ph-num">Phase 3</span><span class="ph-nom">Créer un rituel</span><span class="ph-dur">⏱ 15 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Comment intégrer durablement un moment d'écoute dans votre semaine ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Réflexion individuelle puis partage.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">La régularité prime sur la durée.</span></div></div></div><div class="phase-block">
+<div class="ph-header" style="background:#7ba7d4">
+  <span class="ph-num">Phase 4</span><span class="ph-nom">Clôture</span><span class="ph-dur">⏱ 10 min</span>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce rituel — notez-le quelque part pour ne pas l'oublier. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Clôture.</span></div></div></div><div class="eval-box"><strong>✅</strong> Photo mentale : 'Dans 1 mois, mon rituel d'écoute ressemble à...'</div>
+</div></div><div id="cr-oct" class="sub-content"><div class="cr-bloc">
+<div class="cr-hdr">
+  <div><h3>📄 CR OMAC — Décembre 2026</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
+</div>
+<div class="cr-save">💾 Saisies conservées pendant la session.</div>
+<div class="cr-grid">
+  <div class="cr-field"><label>Date</label><input type="text" class="cri" placeholder="…"></div>
+  <div class="cr-field"><label>Type séance</label><input type="text" class="cri" placeholder="S1 Exploration / S2 Ancrage / MT S1 / MT S2"></div>
+  <div class="cr-field"><label>Animatrice</label><input type="text" class="cri" value="Tsiory Rindra Léonard — BRILLE Ingénierie"></div>
+  <div class="cr-field"><label>Thème / Pétale</label><input type="text" class="cri" value="Mes liens & ma parole"></div>
+  <div class="cr-field"><label>Nb participants</label><input type="text" class="cri" placeholder="…"></div>
+  <div class="cr-field"><label>Lieu</label><input type="text" class="cri" placeholder="…"></div>
+</div>
+<div class="cr-sect"><label>Résumé du déroulé</label><textarea class="crt" rows="4" placeholder="…"></textarea></div>
+<div class="cr-sect"><label>Observations collectives</label><textarea class="crt" rows="3" placeholder="…"></textarea></div>
+<div class="cr-sect"><label>Thèmes émergents (anonyme)</label><textarea class="crt small" rows="2" placeholder="…"></textarea></div>
+<div class="cr-grid">
+  <div class="cr-field"><label>Participation (1→5)</label><div class="star-group"><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button></div></div>
+  <div class="cr-field"><label>Climat (1→5)</label><div class="star-group"><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button><button type="button" class="star-btn" onclick="rateStar(this)">☆</button></div></div>
+</div>
+<div class="cr-sect"><label>Perspectives</label><textarea class="crt small" rows="2" placeholder="…"></textarea></div>
+<div class="cr-grid">
+  <div class="cr-field"><label>Signature animatrice</label><input type="text" class="cri sign" placeholder="…"></div>
+  <div class="cr-field"><label>Visa directrice OMAC</label><input type="text" class="cri sign" placeholder="…"></div>
+</div>
+<div class="cr-indic"><h4>📊 Indicateurs REAAP/CAF</h4>
+<div class="cr-grid">
+  <div class="cr-field"><label>Familles (mois)</label><input type="text" class="cri si" placeholder="…"></div>
+  <div class="cr-field"><label>Séances cumulées</label><input type="text" class="cri si" placeholder="…"></div>
+  <div class="cr-field"><label>CR produits</label><input type="text" class="cri si" placeholder="…"></div>
+  <div class="cr-field"><label>N° séance cycle</label><input type="text" class="cri si" placeholder="…"></div>
+</div></div>
+</div></div>
 </div><div class="tab-content" id="tab-dec">
 <div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
   <div class="ah-badge">⭐</div>
   <div class="ah-info">
-    <div class="ah-mois">Décembre 2026</div>
+    <div class="ah-mois">Janvier 2027</div>
     <div class="ah-petale">Qui je suis & ce qui me fait briller</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -480,7 +471,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 1</span><span class="ph-nom">Météo de fin de trimestre</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo + une chose apprise sur vous depuis septembre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo + une chose apprise sur vous depuis octobre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 2</span><span class="ph-nom">Brainstorm super-pouvoirs</span><span class="ph-dur">⏱ 15 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Les super-héros ont des super-pouvoirs. Vous aussi — lesquels reconnaissez-vous dans notre groupe ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Brainstorming collectif. Chacun en choisit 3.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Inclure des super-pouvoirs pour tous les profils.</span></div></div></div><div class="phase-block">
@@ -540,7 +531,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Avant les vacances : quelque chose à dire à votre enfant que vous ne dites pas assez. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de table volontaire. Vœux de vacances.</span></div></div></div><div class="eval-box"><strong>✅</strong> En une phrase, ce que ce groupe m'a apporté ce trimestre.</div>
 </div></div><div id="cr-dec" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Décembre 2026</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Janvier 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -576,7 +567,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
   <div class="ah-badge">📅</div>
   <div class="ah-info">
-    <div class="ah-mois">Janvier 2027</div>
+    <div class="ah-mois">Février 2027</div>
     <div class="ah-petale">Mon organisation & mon autonomie</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -645,7 +636,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce que vous voulez observer ce mois-ci. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour. Clôture.</span></div></div></div><div class="eval-box"><strong>✅</strong> Échelle 1-5 : 'Je me sens mieux outillé pour accompagner l'autonomie.'</div>
 </div></div><div id="cr-jan" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Janvier 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Février 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -681,7 +672,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
   <div class="ah-badge">💛</div>
   <div class="ah-info">
-    <div class="ah-mois">Février 2027</div>
+    <div class="ah-mois">Mars 2027</div>
     <div class="ah-petale">Mes émotions, je les apprivoise</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -753,7 +744,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Ce mois sur les émotions, qu'est-ce qui change pour vous ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour. Respiration collective.</span></div></div></div><div class="eval-box"><strong>✅</strong> Post-it : 'La chose que je vais faire différemment quand mon enfant déborde.'</div>
 </div></div><div id="cr-fev" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Février 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Mars 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -789,7 +780,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f8f9fa,#e8f4ff)">
   <div class="ah-badge">🔋</div>
   <div class="ah-info">
-    <div class="ah-mois">Mars 2027</div>
+    <div class="ah-mois">Avril 2027</div>
     <div class="ah-petale">Mon équilibre & mon énergie</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -837,7 +828,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="phase-block">
 <div class="ph-header" style="background:#5a8ab5">
   <span class="ph-num">Phase 1</span><span class="ph-nom">Bilan de mi-parcours</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« On arrive à la fin des 7 pétales. Comment vous sentez-vous par rapport à septembre ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole libre.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« On arrive à la fin des 7 pétales. Comment vous sentez-vous par rapport à octobre ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole libre.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#5a8ab5">
   <span class="ph-num">Phase 2</span><span class="ph-nom">Observer l'énergie de mon enfant</span><span class="ph-dur">⏱ 20 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Son niveau d'énergie ce mois-ci sur 10 ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Discussion comparative. Marqueurs de fatigue.</span></div></div></div><div class="phase-block">
@@ -861,10 +852,10 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Coloriez votre roue QVE selon votre ressenti aujourd'hui. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Coloriage individuel.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#7ba7d4">
   <span class="ph-num">Phase 4</span><span class="ph-nom">Clôture & présentation des bonus</span><span class="ph-dur">⏱ 10 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« En avril piqûre de rappel, en mai on se retrouve ensemble, en juin on célèbre ! »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Annonce enthousiaste. Clôture du cycle.</span></div></div></div><div class="eval-box"><strong>✅</strong> Roue QVE parents colorée — comparaison possible avec septembre.</div>
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« En avril piqûre de rappel, en mai on se retrouve ensemble, en juin on célèbre ! »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Annonce enthousiaste. Clôture du cycle.</span></div></div></div><div class="eval-box"><strong>✅</strong> Roue QVE parents colorée — comparaison possible avec octobre.</div>
 </div></div><div id="cr-mars" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Mars 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Avril 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -900,7 +891,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f5eeff,#ebc6e0)">
   <div class="ah-badge">🔁</div>
   <div class="ah-info">
-    <div class="ah-mois">Avril 2027</div>
+    <div class="ah-mois">Mai 2027</div>
     <div class="ah-petale">Piqûre de rappel — Bilan approfondi</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -912,13 +903,13 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 1</span><span class="ph-nom">Météo spéciale bilan</span><span class="ph-dur">⏱ 5 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo — et une couleur pour décrire comment vous vous sentez depuis septembre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Moment souvent chargé émotionnellement.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Votre météo — et une couleur pour décrire comment vous vous sentez depuis octobre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour enrichi.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Moment souvent chargé émotionnellement.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 2</span><span class="ph-nom">Ma fleur des 7 pétales</span><span class="ph-dur">⏱ 25 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« On revisite ensemble tous les pétales. Pour chacun : est-ce qu'il a changé quelque chose ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Coloriage de la mini-fleur QVE. Comparaison avec mars.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valider toutes les perceptions.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 3</span><span class="ph-nom">Qu'est-ce qui a changé en moi ?</span><span class="ph-dur">⏱ 20 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Depuis septembre, qu'est-ce qui est différent dans votre façon de vous voir ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole volontaire.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Même un tout petit changement mérite d'être célébré.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Depuis octobre, qu'est-ce qui est différent dans votre façon de vous voir ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole volontaire.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Même un tout petit changement mérite d'être célébré.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#d4a820">
   <span class="ph-num">Phase 4</span><span class="ph-nom">Lettre à mon futur moi</span><span class="ph-dur">⏱ 10 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Une phrase pour juin : 'En juin, je veux me souvenir que...' »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Chaque enfant écrit sa phrase. Conservées pour juin.</span></div></div></div><div class="eval-box"><strong>✅</strong> Fleur QVE colorée — comparaison avec mars.</div>
@@ -930,7 +921,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Bonne surprise — vos lettres à vous-mêmes de janvier ! »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Distribution + lecture silencieuse. Tour : 'Surpris ?'</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#f49f4c">
   <span class="ph-num">Phase 2</span><span class="ph-nom">Ma carte du chemin</span><span class="ph-dur">⏱ 30 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Dessinez votre chemin depuis septembre — hauts, bas, découvertes. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Création libre individuelle.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Pas de bonne façon de représenter un chemin.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Dessinez votre chemin depuis octobre — hauts, bas, découvertes. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Création libre individuelle.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Pas de bonne façon de représenter un chemin.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#f49f4c">
   <span class="ph-num">Phase 3</span><span class="ph-nom">Galerie du chemin</span><span class="ph-dur">⏱ 15 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« On affiche nos cartes. Promenade silencieuse, puis un mot chacun. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Galerie collective. Tour final.</span></div></div></div><div class="phase-block">
@@ -948,7 +939,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Pour chaque pétale : qu'avez-vous tenté à la maison ? Qu'est-ce qui a marché ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour avec retours d'expérience.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Valoriser même les tentatives ratées.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#5a8ab5">
   <span class="ph-num">Phase 3</span><span class="ph-nom">Ce que j'ai observé chez mon enfant</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qu'avez-vous remarqué de différent depuis septembre ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole. Synthèse.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Qu'avez-vous remarqué de différent depuis octobre ? »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour de parole. Synthèse.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#5a8ab5">
   <span class="ph-num">Phase 4</span><span class="ph-nom">Mon engagement pour juin</span><span class="ph-dur">⏱ 5 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Une chose à consolider d'ici juin. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Tour rapide. Clôture.</span></div></div></div><div class="eval-box"><strong>✅</strong> Auto-évaluation : ce que ce parcours a changé pour moi en tant que parent.</div>
@@ -969,7 +960,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« En mai, vous rejoignez vos enfants pour la Grande Rencontre ! »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Annonce. Clôture.</span></div></div></div><div class="eval-box"><strong>✅</strong> Témoignage collectif rédigé — mobilisable pour le dossier REAAP/CAF.</div>
 </div></div><div id="cr-avr" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Avril 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Mai 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -1005,7 +996,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f5eeff,#ebc6e0)">
   <div class="ah-badge">🤝</div>
   <div class="ah-info">
-    <div class="ah-mois">Mai 2027</div>
+    <div class="ah-mois">Juin 2027</div>
     <div class="ah-petale">Grande Rencontre — Préparation + Séance Ensemble</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -1065,7 +1056,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Vous avez fait un voyage chacun. Aujourd'hui vous avez marché ensemble. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Grand cercle. Un mot chacun. Photo souvenir.</span></div></div></div><div class="eval-box"><strong>✅</strong> Carte 'Ce que j'emporte' remplie par chaque personne.</div>
 </div></div><div id="cr-mai" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Mai 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Juin 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
@@ -1101,7 +1092,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="ah" style="background:linear-gradient(135deg,#f5eeff,#ebc6e0)">
   <div class="ah-badge">🎉</div>
   <div class="ah-info">
-    <div class="ah-mois">Juin 2027</div>
+    <div class="ah-mois">Juillet 2027</div>
     <div class="ah-petale">Célébration — Clôture du cycle 2026-2027</div>
     <div class="ah-desc">⚡ Rythme bimensuel</div>
   </div>
@@ -1146,7 +1137,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 <div class="phase-block">
 <div class="ph-header" style="background:#9b82c4">
   <span class="ph-num">Phase 1</span><span class="ph-nom">Installation festive</span><span class="ph-dur">⏱ 15 min</span>
-</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Bienvenue dans notre fête de fin d'année ! On célèbre tout depuis septembre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Exposition de toutes les productions de l'année.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Décoration aux couleurs BRILLE.</span></div></div></div><div class="phase-block">
+</div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Bienvenue dans notre fête de fin d'année ! On célèbre tout depuis octobre. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Exposition de toutes les productions de l'année.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Décoration aux couleurs BRILLE.</span></div></div></div><div class="phase-block">
 <div class="ph-header" style="background:#9b82c4">
   <span class="ph-num">Phase 2</span><span class="ph-nom">Galerie de l'année</span><span class="ph-dur">⏱ 20 min</span>
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Promenez-vous librement. Retrouvez vos créations, regardez celles des autres. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Visite libre. Discussions spontanées.</span></div><div class="pr conseil"><span class="pl">💡 Conseil</span><span class="pv">Ne pas surstructurer.</span></div></div></div><div class="phase-block">
@@ -1164,7 +1155,7 @@ h2,h3,.ah-petale,.sec-tag,.ph-nom{font-family:'Gruppo',sans-serif;font-weight:40
 </div><div class="ph-body"><div class="pr"><span class="pl">💬 Animatrice dit</span><span class="pv italic">« Et maintenant — on fête ! C'est la tradition BRILLE. »</span></div><div class="pr"><span class="pl">🔄 Activité</span><span class="pv">Goûter convivial libre. Photos. Clôture informelle.</span></div></div></div><div class="eval-box"><strong>✅</strong> Questionnaire bilan annuel — données pour le rapport final OMAC.</div>
 </div></div><div id="cr-juin" class="sub-content"><div class="cr-bloc">
 <div class="cr-hdr">
-  <div><h3>📄 CR OMAC — Juin 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
+  <div><h3>📄 CR OMAC — Juillet 2027</h3><div class="cr-sub">À remettre après chaque séance</div></div>
   <button class="print-cr-btn" onclick="printCR(this)">🖨️ Imprimer</button>
 </div>
 <div class="cr-save">💾 Saisies conservées pendant la session.</div>
