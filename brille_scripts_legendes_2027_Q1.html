@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripts Vidéo BRILLE 2027 — Q1</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+  :root {
+    --blanc:#ffffff;--noir:#000000;--orange:#f49f4c;--rose:#f5abaf;
+    --peche:#fdd5a5;--jaune:#f8f4b8;--bleu:#a4c2e7;--cyan:#a8dbeb;
+    --vert:#cbe1b6;--mauve:#b8aed7;--lilas:#ebc6e0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Quicksand',sans-serif;font-weight:300;background:#f7f7f5;color:#222;}
+
+  /* NAV MOIS */
+  nav.nav-mois{position:sticky;top:0;z-index:100;background:var(--blanc);border-bottom:1px solid #eee;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  nav.nav-mois::-webkit-scrollbar{display:none;}
+  .nav-btn{padding:14px 16px;font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;border:none;background:none;cursor:pointer;white-space:nowrap;color:#aaa;border-bottom:3px solid transparent;transition:all 0.2s;}
+  .nav-btn.active,.nav-btn:hover{color:#222;border-bottom-color:#222;}
+
+  /* HEADER */
+  header{background:var(--blanc);padding:36px 40px 28px;border-bottom:1px solid #eee;}
+  .logo{font-size:32px;font-weight:700;letter-spacing:-1px;}
+  .logo span{display:inline-block;width:26px;height:16px;border-radius:0 0 16px 16px;background:linear-gradient(135deg,#a8dbeb,#f8f4b8,#f49f4c);margin-left:3px;vertical-align:middle;transform:translateY(1px);}
+  .header-sub{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#aaa;margin-top:4px;}
+
+  /* MOIS SECTION */
+  .mois-section{display:none;padding:28px 40px;max-width:1200px;margin:0 auto;}
+  .mois-section.visible{display:block;}
+  .mois-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #eee;flex-wrap:wrap;}
+  .mois-badge{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .mois-titre{font-size:20px;font-weight:700;}
+  .mois-petale{font-size:13px;color:#888;margin-top:2px;}
+
+  /* ONGLETS */
+  .tabs-bar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{padding:8px 18px;border-radius:20px;border:2px solid #eee;background:var(--blanc);font-family:'Quicksand',sans-serif;font-size:12px;font-weight:600;color:#aaa;cursor:pointer;transition:all 0.2s;}
+  .tab-btn.active{border-color:#222;color:#222;background:#fff;}
+  .tab-btn.mise-en-scene-btn{border-color:var(--orange);color:var(--orange);}
+  .tab-btn.mise-en-scene-btn.active{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+  .tab-content{display:none;}
+  .tab-content.visible{display:block;}
+
+  /* GRILLE PLATEFORMES */
+  .plateformes-grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:20px;}
+
+  /* SCRIPT CARD */
+  .script-card{background:var(--blanc);border-radius:16px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .script-card-header{padding:14px 20px;display:flex;align-items:center;gap:10px;}
+  .plateforme-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
+  .plateforme-name{font-size:13px;font-weight:700;}
+  .plateforme-format{font-size:11px;color:#888;margin-top:1px;}
+  .linkedin-header{background:#e8f0f9;}
+  .insta-header{background:#fde8f5;}
+  .fb-header{background:#e8eef9;}
+  .tiktok-header{background:#e0f5f5;}
+  .script-body{padding:18px 20px;}
+  .script-block{margin-bottom:14px;}
+  .block-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:5px;}
+  .hook-label{color:#f49f4c;}
+  .corps-label{color:#888;}
+  .cta-label{color:#a4c2e7;}
+  .note-label{color:#b8aed7;}
+  .audit-label{color:#f49f4c;}
+  .audit-text{border-left-color:#f49f4c;background:#fffaf3;font-size:12px;}
+  .script-text{font-size:13px;line-height:1.7;color:#333;background:#fafafa;border-radius:10px;padding:12px 14px;border-left:3px solid transparent;}
+  .hook-text{border-left-color:#f49f4c;background:#fffbf5;}
+  .cta-text{border-left-color:#a4c2e7;background:#f5f8fd;}
+  .note-text{border-left-color:#b8aed7;background:#f8f5fd;font-style:italic;font-size:12px;}
+
+  /* MISE EN SCÈNE */
+  .mise-en-scene-card{background:var(--blanc);border-radius:16px;padding:28px;box-shadow:0 2px 10px rgba(0,0,0,0.05);}
+  .mes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:20px;}
+  .mes-bloc{border-radius:12px;padding:16px 18px;}
+  .mes-bloc-titre{font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:10px;}
+  .mes-item{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+  .mes-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+  .mes-text{font-size:13px;line-height:1.5;color:#333;}
+  .mes-text strong{font-weight:600;}
+  .bloc-setup{background:#fffbf5;}
+  .bloc-setup .mes-bloc-titre{color:#f49f4c;}
+  .bloc-tenue{background:#fde8f5;}
+  .bloc-tenue .mes-bloc-titre{color:#c4608a;}
+  .bloc-tournage{background:#f0f7ff;}
+  .bloc-tournage .mes-bloc-titre{color:#2d6fa3;}
+  .bloc-montage{background:#f0f9f0;}
+  .bloc-montage .mes-bloc-titre{color:#4a7a4a;}
+  .bloc-posture{background:#f8f5fd;}
+  .bloc-posture .mes-bloc-titre{color:#7a5a9a;}
+  .mes-intro{font-size:14px;line-height:1.6;color:#555;padding:16px;background:#f9f9f7;border-radius:10px;margin-bottom:4px;}
+
+  /* TEMPS FORT */
+  .temps-fort-band{background:linear-gradient(135deg,#fff8ef,#fff);border:1px solid #fdd5a5;border-radius:12px;padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;}
+  .tf-icon{font-size:20px;flex-shrink:0;}
+  .tf-titre{font-size:12px;font-weight:700;color:#f49f4c;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+  .tf-text{font-size:12px;color:#666;line-height:1.5;}
+
+  @media(max-width:768px){
+    .plateformes-grille{grid-template-columns:1fr;}
+    .mes-grid{grid-template-columns:1fr;}
+    header,.mois-section{padding:20px;}
+  }
+
+  /* LÉGENDES */
+  .tab-btn.legende-btn{border-color:#b8aed7;color:#7a5a9a;}
+  .tab-btn.legende-btn.active{background:#b8aed7;color:#fff;border-color:#b8aed7;}
+  .legende-intro{font-size:13px;line-height:1.6;color:#555;background:#f8f5fd;border:1px solid #e0d8f0;border-radius:10px;padding:14px 16px;margin-bottom:20px;}
+  .legende-intro strong{color:#7a5a9a;}
+  .legende-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:18px;}
+  .legende-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .legende-card-header{padding:12px 18px;display:flex;align-items:center;gap:10px;}
+  .legende-card-header .pl-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+  .legende-card-header .pl-name{font-size:13px;font-weight:700;}
+  .legende-card-header .pl-spec{font-size:11px;color:#999;margin-top:1px;}
+  .lh-li{background:#e8f0f9;}
+  .lh-ig{background:linear-gradient(135deg,#fde8f5,#fff3e8);}
+  .lh-fb{background:#e8eef9;}
+  .lh-tt{background:#e0f5f5;}
+  .legende-body{padding:16px 18px;}
+  .copy-wrap{position:relative;margin-bottom:10px;}
+  .copy-zone{display:block;width:100%;background:#fafaf8;border:1px dashed #ddd;border-radius:9px;padding:13px 14px;font-size:13px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:#333;font-family:'Quicksand',sans-serif;cursor:pointer;transition:background .18s;}
+  .copy-zone:hover{background:#f3f0ee;}
+  .copy-btn-leg{position:absolute;top:9px;right:9px;background:#b8aed7;color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;opacity:0;transition:opacity .18s;font-family:'Quicksand',sans-serif;pointer-events:none;}
+  .copy-wrap:hover .copy-btn-leg{opacity:1;pointer-events:auto;}
+  .hashtags-block{background:#f4f0fb;border-radius:8px;padding:10px 13px;margin-bottom:8px;}
+  .hashtags-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;color:#9a82c4;margin-bottom:3px;}
+  .hashtags-text{font-size:12px;color:#5a5aaa;line-height:1.7;}
+  .legende-tip{background:#fffaf3;border-left:3px solid #f49f4c;border-radius:0 8px 8px 0;padding:9px 12px;font-size:12px;color:#8a6020;font-weight:500;}
+  .legende-tip::before{content:'💡 ';}
+  @media(max-width:768px){.legende-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">brille<span></span></div>
+  <div class="header-sub">Scripts vidéo · Légendes réseaux sociaux · Janvier – Mars 2027 · 4 plateformes + mise en scène</div>
+</header>
+
+<nav class="nav-mois">
+  <button class="nav-btn active" onclick="showMois('janvier',this)">Janvier</button>
+  <button class="nav-btn" onclick="showMois('fevrier',this)">Février</button>
+  <button class="nav-btn" onclick="showMois('mars',this)">Mars</button>
+</nav>
+
+<!-- ======================================================= -->
+<!-- JANVIER -->
+<!-- ======================================================= -->
+<div class="mois-section visible" id="janvier">
+
+  <div class="temps-fort-band">
+    <div class="tf-icon">⚡</div>
+    <div>
+      <div class="tf-titre">Atelier Main Tendue — 23 janvier 2027 · OMAC &amp; Torcy · Thème galette des rois</div>
+      <div class="tf-text">Publier la vidéo dans les premiers jours de janvier pour créer de l'élan avant l'atelier. Annoncer la date dans le CTA de chaque plateforme.</div>
+    </div>
+  </div>
+
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--vert)">Janvier 2027</div>
+    <div>
+      <div class="mois-titre">Mon organisation &amp; mon autonomie</div>
+      <div class="mois-petale">🗂️ Pétale 4 de la Fleur QVE · Premier pétale inédit en vidéo</div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('janvier','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('janvier','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('janvier','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('janvier','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('janvier','mes',this)">🎬 Mise en scène</button>
+    <button class="tab-btn legende-btn" onclick="showTab('janvier','legende',this)">📋 Légendes</button>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="tab-content visible" id="janvier-linkedin">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header linkedin-header">
+          <div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div>
+          <div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Posture experte · Cibler les partenaires institutionnels</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Et si les crises du matin n'étaient pas un problème de discipline — mais un problème d'organisation ?</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Moi c'est Tsiory, ingénieure QVE. Depuis quelques mois j'interviens dans les centres sociaux avec la méthode BRILLE — des ateliers collectifs non thérapeutiques, pour les enfants de 6 à 12 ans et leurs parents.<br><br>Ce mois-ci, je veux vous parler du quatrième pétale de la Fleur QVE : mon organisation et mon autonomie.<br><br>Ce pétale ne parle pas de ranger sa chambre. Il parle de quelque chose de beaucoup plus profond : est-ce que cet enfant a des repères ? Un cadre stable qui le sécurise ? Des rituels qui lui appartiennent vraiment — pas des règles imposées, mais des habitudes qu'il a construites avec sa famille ?<br><br>Ce que la recherche en développement de l'enfant confirme : entre 6 et 12 ans, les routines ne contraignent pas — elles libèrent. Elles libèrent de l'énergie cognitive pour apprendre, créer des liens, et s'affirmer.<br><br>Dans les ateliers BRILLE Main Tendue, je travaille ce pétale avec les parents. Pas pour leur donner une liste de règles supplémentaires — mais pour les aider à co-construire avec leur enfant des rituels qui font sens pour eux deux.<br><br>C'est ça, l'ingénierie QVE : créer les conditions collectives pour que chaque enfant ait une boussole interne.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Si vous pilotez un centre social, un dispositif de soutien à la parentalité, ou un accompagnement à la scolarité — je serai à l'OMAC le 23 janvier pour un atelier Main Tendue sur ce pétale. Et je serais ravie d'échanger sur une mise en place dans votre structure.</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire — Auto-audit QVE</div>
+            <div class="script-text audit-text">Pour évaluer la qualité de vie d'un enfant sur ce pétale et les 6 autres — l'auto-audit QVE est gratuit, 28 questions, 5 minutes. Lien dans ma bio.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <div class="tab-content" id="janvier-instagram">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header insta-header">
+          <div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div>
+          <div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec Reel · Ton maman-ingénieure · Liste engageante</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook (dire face caméra, les 3 premières secondes)</div>
+            <div class="script-text hook-text">3 rituels du matin qui changent vraiment la vie — et celui que j'ai arrêté d'utiliser.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Premier rituel : le chant du réveil. Pas pour les réveiller — pour marquer la transition. Notre cerveau a besoin de rituels de transition pour passer d'un état à un autre. J'ai appris ça en animant des ateliers avec des parents, pas dans un livre.<br><br>Deuxième rituel : le sac préparé la veille. Pas parce que c'est pratique — parce que ça supprime une décision le matin. Et les décisions, ça épuise. Pour les enfants aussi.<br><br>Troisième rituel : la question du matin. Pas "tu as tout ?" — mais "c'est quoi ton truc de ce matin ?" Une petite chose positive à regarder dans la journée.<br><br>Et le rituel que j'ai arrêté ? Crier "on est en retard". Parce que ça crée de l'anxiété, pas de l'organisation.<br><br>Dans les ateliers BRILLE, on travaille ça avec les parents — pas pour imposer des règles, mais pour co-construire des rituels avec leur enfant. C'est le pétale "mon organisation et mon autonomie" de la Fleur QVE 🗂️<br><br>Tu reconnais un de ces rituels chez toi ? Dis-moi en commentaire 👇</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">👉 Si tu veux faire le point sur l'organisation et l'autonomie de ton enfant — et les 6 autres pétales — l'auto-audit QVE gratuit est en bio. 28 questions, 5 minutes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACEBOOK -->
+  <div class="tab-content" id="janvier-facebook">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header fb-header">
+          <div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div>
+          <div><div class="plateforme-name">Facebook</div><div class="plateforme-format">60-90 sec · Ton récit · Sondage + annonce atelier</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Est-ce que le matin, c'est la guerre chez vous aussi ? 😅</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Pendant longtemps j'ai cru que c'était un problème de caractère. Que mes enfants étaient juste "difficiles le matin".<br><br>Et puis en créant BRILLE, en travaillant le pétale "mon organisation et mon autonomie" avec des familles — j'ai compris que le problème c'était souvent l'organisation, pas l'enfant.<br><br>Un enfant sans repères clairs le matin, sans rituel stable, sans routine qui lui appartient un peu — il ne peut pas être autonome. Même s'il est grand. Même s'il a 10 ans.<br><br>L'organisation, ça ne se décrète pas. Ça se construit, ensemble, à son rythme.<br><br>C'est ce qu'on travaille dans les ateliers BRILLE Main Tendue — avec les parents, pour les aider à créer ces repères avec leur enfant.<br><br>Et justement — je vous attends le 23 janvier pour un atelier sur ce thème 🗂️ (lien en commentaire)</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Dites-moi en commentaire : chez vous, le matin c'est plutôt fluide ou chaos organisé ? 😄 Et partagez si ça parle à quelqu'un autour de vous 💛</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire</div>
+            <div class="script-text audit-text">Lien auto-audit QVE gratuit en commentaire — 28 questions, 5 minutes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIKTOK -->
+  <div class="tab-content" id="janvier-tiktok">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header tiktok-header">
+          <div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div>
+          <div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Hook fort · Contre-pied parental</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook (dire exactement cette phrase en regardant la caméra)</div>
+            <div class="script-text hook-text">Je ne dis plus à mes enfants de ranger leur chambre. Voilà ce que je fais à la place — et ça marche vraiment.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">La chambre rangée, c'est la règle. Le rituel "je mets mes affaires à leur place avant de dormir parce que demain matin j'ai besoin de trouver mes chaussures" — c'est l'autonomie.<br><br>La différence ? L'un vient de moi. L'autre vient d'eux.<br><br>Entre 6 et 12 ans, les enfants ont besoin de rituels qui leur appartiennent — pas de règles imposées. C'est ce que j'ai appris en animant les ateliers BRILLE 🗂️<br><br>Je suis Tsiory, ingénieure QVE. Suis le compte pour le pétale du mois chaque mois.</div></div>
+          <div class="script-block"><div class="block-label note-label">📌 Note montage</div>
+            <div class="script-text note-text">Filmer face caméra, tenue décontractée. Couper après "je suis Tsiory". Sous-titrage automatique activé. Pas de B-roll nécessaire — votre regard direct est l'accroche.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISE EN SCÈNE -->
+  <div class="tab-content" id="janvier-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Janvier : premier pétale inédit en vidéo. Ton posé, concret, expert. Vous êtes en plein cycle d'ateliers — votre posture terrain est votre plus grande force ce mois-ci.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">🕐 Setup</div>
+          <div class="mes-item"><div class="mes-icon">📍</div><div class="mes-text"><strong>Lieu :</strong> intérieur calme — votre espace de travail ou cuisine épurée. Ambiance "rentrée hiver", lumière naturelle de côté.</div></div>
+          <div class="mes-item"><div class="mes-icon">📱</div><div class="mes-text"><strong>Format :</strong> format portrait 9:16 pour Reel/TikTok, recadrable en 4:5 pour LinkedIn/Facebook.</div></div>
+          <div class="mes-item"><div class="mes-icon">💡</div><div class="mes-text"><strong>Lumière :</strong> fenêtre de côté ou ring light à droite — visage bien éclairé, fond légèrement flou.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎙️</div><div class="mes-text"><strong>Son :</strong> micro-cravate ou distance réduite à 30 cm max. Pas de musique en fond pour LinkedIn et Facebook — musique douce optionnelle pour Reel/TikTok.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue &amp; visuel</div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Couleur du pétale :</strong> vert #cbe1b6 — un détail vert dans la tenue (foulard, veste, accessoire) ancre visuellement le pétale du mois.</div></div>
+          <div class="mes-item"><div class="mes-icon">✨</div><div class="mes-text"><strong>Style :</strong> tenue pro décontractée — ingénieure et maman à la fois. Pas de tenue formelle stricte.</div></div>
+          <div class="mes-item"><div class="mes-icon">🗂️</div><div class="mes-text"><strong>Prop optionnel :</strong> un agenda ou cahier ouvert visible — ancre visuellement le thème organisation sans l'expliquer.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>Angle LinkedIn/Facebook :</strong> légèrement en contre-plongée ou frontal — posture experte et stable.</div></div>
+          <div class="mes-item"><div class="mes-icon">📸</div><div class="mes-text"><strong>Angle Instagram/TikTok :</strong> frontal à hauteur d'yeux — proximité, ton complice.</div></div>
+          <div class="mes-item"><div class="mes-icon">✂️</div><div class="mes-text"><strong>Durée tournage :</strong> filmez 3 à 4 minutes en continu. Vous découperez au montage selon la plateforme (2-3 min LI, 90 sec IG/FB, 60 sec TT).</div></div>
+          <div class="mes-item"><div class="mes-icon">🔁</div><div class="mes-text"><strong>Astuce :</strong> filmez le hook deux fois — une version plus lente (LinkedIn) et une version plus directe et rapide (TikTok/Reel).</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">🖥️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">🟢</div><div class="mes-text"><strong>Intro :</strong> démarrez directement sur le hook — pas de générique, pas de "bonjour c'est Tsiory".</div></div>
+          <div class="mes-item"><div class="mes-icon">📝</div><div class="mes-text"><strong>Sous-titres :</strong> activés sur tous les formats. Police lisible, couleur contrastée — vérifiez sur mobile.</div></div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Vignette :</strong> fond vert #cbe1b6 + emoji 🗂️ + "MON ORGANISATION &amp; MON AUTONOMIE" en Quicksand bold. Cohérence avec la charte BRILLE.</div></div>
+          <div class="mes-item"><div class="mes-icon">📅</div><div class="mes-text"><strong>Publication :</strong> J1-J3 de janvier. LinkedIn : mardi ou jeudi 8h-9h. Instagram/TikTok : en soirée 18h-20h.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🌸 Posture &amp; ton</div>
+          <div class="mes-item"><div class="mes-icon">💛</div><div class="mes-text"><strong>Ce mois-ci :</strong> ingénieure qui partage un outil concret. Ni donneuse de leçons, ni trop académique. Ancrée dans le vécu parental.</div></div>
+          <div class="mes-item"><div class="mes-icon">🗣️</div><div class="mes-text"><strong>Ton :</strong> bienveillant et direct. Vous parlez à un parent qui galère le matin — vous l'avez été aussi.</div></div>
+          <div class="mes-item"><div class="mes-icon">⚠️</div><div class="mes-text"><strong>À éviter :</strong> lire votre script mot à mot. Mémorisez les 3 points clés, parlez librement.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÉGENDES -->
+  <div class="tab-content" id="janvier-legende">
+    <p class="legende-intro"><strong>Janvier — Pétale 4 : Mon organisation &amp; mon autonomie.</strong> Atelier Main Tendue le 23 janvier à l'OMAC et Torcy. Toutes les légendes intègrent cette annonce dans le CTA. Cliquez sur la zone texte pour copier.</p>
+    <div class="legende-grid">
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-li">
+          <div class="pl-icon" style="background:#2d6fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">in</div>
+          <div><div class="pl-name">LinkedIn</div><div class="pl-spec">Ton professionnel · 1 300 car. recommandés</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Et si les crises du matin n'étaient pas un problème de discipline — mais un problème d'organisation ?
+
+C'est la question que je pose aux parents dans les ateliers BRILLE Main Tendue.
+
+Entre 6 et 12 ans, l'autonomie ne se donne pas. Elle se construit — à travers des rituels stables, co-construits avec l'enfant, qui lui donnent une boussole interne.
+
+Ce n'est pas une liste de règles supplémentaires. C'est le quatrième pétale de la Fleur QVE : "Mon organisation et mon autonomie". Et ça change la dynamique familiale du matin au soir.
+
+Si vous pilotez un centre social ou un dispositif de soutien à la parentalité, je serai à l'OMAC (Guédon) et à Torcy le 23 janvier pour un atelier sur ce pétale.
+
+📩 Contactez-moi si vous souhaitez mettre en place un atelier BRILLE dans votre structure.</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#QVE #OrganisationEnfant #BRILLEIngenierie #CentreSocial #ActionSociale</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#Autonomie #Enfants612 #SoutienParentalité #IngenierieFormation #Routines #Épanouissement #FleurQVE #MainTendue #IngénierieSocioÉducative #Parentalité</div>
+          </div>
+          <div class="legende-tip">Publier mardi ou jeudi 8h-9h. Répondez à tous les commentaires dans les 24h.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-ig">
+          <div class="pl-icon" style="font-size:18px;">📸</div>
+          <div><div class="pl-name">Instagram</div><div class="pl-spec">Reel 60-90 sec · auto-audit en bio · hashtags en commentaire</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">3 rituels du matin qui changent vraiment la vie 🗂️ (et celui que j'ai arrêté)
+
+Parce que les crises du matin, c'est rarement un problème de caractère. C'est souvent un problème d'organisation — et surtout, de rituels qui appartiennent vraiment à l'enfant.
+
+Dans les ateliers BRILLE, on travaille ça avec les parents : co-construire des repères stables avec leur enfant de 6-12 ans. Pas des règles imposées — des habitudes choisies ensemble.
+
+C'est le pétale "Mon organisation et mon autonomie" de la Fleur QVE 🌿
+
+Et si tu veux faire le point sur ce pétale — et les 6 autres — l'auto-audit QVE gratuit est en bio. 28 questions, 5 minutes.
+
+👉 Tu reconnais un de ces rituels chez toi ? Dis-moi en commentaire 👇</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#QVE #OrganisationEnfant #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#Parentalité #Autonomie #Enfants612 #CentreSocial #ActionSociale #SoutienParentalité #RituelsEnfant #Épanouissement #FleurQVE #MamanEntrepreneur</div>
+          </div>
+          <div class="legende-tip">Story le jour J : sondage "Le matin chez vous c'est 😅 chaos ou 🌿 fluide ?" — redirige vers le Reel en lien bio.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-fb">
+          <div class="pl-icon" style="background:#3a5fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">f</div>
+          <div><div class="pl-name">Facebook</div><div class="pl-spec">Ton récit · annonce atelier · partage groupes</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Est-ce que le matin, c'est la guerre chez vous aussi ? 😅
+
+Pendant longtemps j'ai cru que c'était un problème de caractère. Et puis en travaillant avec des familles dans les ateliers BRILLE, j'ai compris : ce n'est pas l'enfant qui est difficile — c'est que les rituels ne lui appartiennent pas encore.
+
+Un enfant de 6-12 ans qui a des repères stables, des habitudes co-construites avec sa famille — il est plus serein, plus autonome, et les matins se passent mieux. Pas parfaitement. Mais mieux.
+
+C'est le pétale "Mon organisation et mon autonomie" de la Fleur QVE 🗂️
+
+Et justement — si vous êtes dans le coin, je serai le 23 janvier à l'OMAC (Guédon) et à Torcy pour un atelier Main Tendue sur ce thème. Venez ! 💛
+
+Dites-moi en commentaire : chez vous, c'est plutôt fluide ou chaos organisé le matin ? 😄
+
+(Lien auto-audit QVE gratuit en commentaire 👇)</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags</div>
+            <div class="hashtags-text">#QVE #Parentalité #CentreSocial #BRILLE #OrganisationEnfant</div>
+          </div>
+          <div class="legende-tip">Partagez dans vos groupes locaux (Guédon, Torcy, Roissy-en-Brie). Mettez le lien auto-audit + lien inscription atelier en 1er commentaire.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-tt">
+          <div class="pl-icon" style="background:#1a7a7a;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">♪</div>
+          <div><div class="pl-name">TikTok</div><div class="pl-spec">45-60 sec · Hook direct · 5 hashtags max</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Je ne dis plus à mes enfants de ranger leur chambre. Voilà ce que je fais à la place 🗂️
+
+La règle vient de moi. Le rituel vient d'eux. Et c'est toute la différence.
+
+Entre 6 et 12 ans, les enfants ont besoin de rituels qui leur appartiennent — pas de règles imposées. C'est le pétale "organisation et autonomie" de la Fleur QVE 🌿
+
+Je suis Tsiory, ingénieure QVE. Chaque mois un pétale — suis le compte.
+
+#QVE #OrganisationEnfant #Parentalité #Autonomie #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags (dans la légende)</div>
+            <div class="hashtags-text">#QVE #OrganisationEnfant #Parentalité #Autonomie #BRILLEIngenierie</div>
+          </div>
+          <div class="legende-tip">Regard direct caméra sur le hook. Finir par "suis le compte". Pas de CTA atelier sur TikTok — trop local pour ce réseau.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- FÉVRIER -->
+<!-- ======================================================= -->
+<div class="mois-section" id="fevrier">
+
+  <div class="temps-fort-band">
+    <div class="tf-icon">💞</div>
+    <div>
+      <div class="tf-titre">Atelier Main Tendue — 13 février 2027 · OMAC &amp; Torcy · Thème Saint-Valentin</div>
+      <div class="tf-text">Double angle : liens parent-enfant + liens dans le couple (thème imposé Saint-Valentin). Publier en début de semaine du 8 février pour surfer sur la visibilité Saint-Valentin.</div>
+    </div>
+  </div>
+
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--lilas)">Février 2027</div>
+    <div>
+      <div class="mois-titre">Mes liens &amp; ma parole</div>
+      <div class="mois-petale">💞 Pétale 3 de la Fleur QVE · Angle Saint-Valentin + communication parent-enfant</div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('fevrier','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('fevrier','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('fevrier','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('fevrier','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('fevrier','mes',this)">🎬 Mise en scène</button>
+    <button class="tab-btn legende-btn" onclick="showTab('fevrier','legende',this)">📋 Légendes</button>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="tab-content visible" id="fevrier-linkedin">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header linkedin-header">
+          <div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div>
+          <div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Posture experte · Angle travailleurs sociaux</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Le lien de confiance entre un enfant et un adulte — c'est la condition préalable à tout. Avant l'apprentissage, avant l'autonomie, avant même l'épanouissement.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Je suis Tsiory, ingénieure QVE chez BRILLE Ingénierie. Ce mois-ci, je veux vous parler du troisième pétale de la Fleur QVE : mes liens et ma parole.<br><br>Ce pétale, c'est celui qui m'a demandé le plus de réflexion. Parce qu'il touche à quelque chose de fondamental dans le développement de l'enfant : sa capacité à s'exprimer — non pas à parler, mais à dire quelque chose de vrai.<br><br>Un enfant qui répond "ça va" à toutes vos questions ne vous ment pas. Il n'a tout simplement pas les mots, l'espace, ou la sécurité pour dire autre chose.<br><br>Ce que la psychologie du développement nous dit : les enfants de 6 à 12 ans sont en pleine construction de leur identité sociale. Ils ont besoin d'adultes qui ne résolvent pas leurs problèmes à leur place — mais qui créent les conditions pour qu'ils puissent les formuler eux-mêmes.<br><br>Dans les ateliers BRILLE Main Tendue, je travaille ce pétale avec les parents — en distinguant entendre et écouter, en les aidant à créer des rituels de parole avec leur enfant. Ce n'est pas de la thérapie familiale. C'est de l'ingénierie de la relation.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">L'atelier sur ce pétale se tient le 13 février à l'OMAC (Guédon) et à Torcy. Si vous connaissez des familles qui pourraient en bénéficier — partagez.</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire</div>
+            <div class="script-text audit-text">Auto-audit QVE gratuit, 28 questions, 5 minutes. Lien dans ma bio.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <div class="tab-content" id="fevrier-instagram">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header insta-header">
+          <div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div>
+          <div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec Reel · Twist Saint-Valentin · Ton maman-ingénieure</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">La Saint-Valentin, c'est le 14 février. Moi, ce soir, j'envoie un message à mes enfants — pas à mon partenaire. Voilà pourquoi.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Ce n'est pas pour oublier mon partenaire — c'est parce que j'ai réalisé quelque chose en animant les ateliers BRILLE.<br><br>Les enfants de 6-12 ans, ils savent quand on les aime. Mais est-ce qu'ils savent qu'on les entend vraiment ?<br><br>Pas "j'ai entendu ce que tu as dit". Mais "j'ai entendu ce que tu essayais de dire".<br><br>La différence entre les deux — c'est tout le pétale "mes liens et ma parole" de la Fleur QVE 💞<br><br>Ce soir, essayez ça avec votre enfant : posez une question et ne proposez aucune réponse. Juste : "et toi, tu penses quoi ?" Et attendez.<br><br>Dites-moi en commentaire ce qu'il vous a répondu 👇</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">👉 Auto-audit QVE gratuit en bio — le pétale "liens et parole" est l'un des 7. Faites le point en 28 questions, 5 minutes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACEBOOK -->
+  <div class="tab-content" id="fevrier-facebook">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header fb-header">
+          <div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div>
+          <div><div class="plateforme-name">Facebook</div><div class="plateforme-format">60-90 sec · Vécu · Question ouverte + annonce atelier</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Votre enfant vous dit "ça va" à toutes vos questions ? Il ne vous ment pas. Il n'a juste pas encore l'espace pour dire autre chose. 💬</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">J'ai appris ça en animant les ateliers BRILLE avec des parents. Le problème n'est jamais dans l'enfant qui "ne communique pas". Il est dans l'espace qu'on lui crée — ou pas — pour parler vraiment.<br><br>Ce pétale — "mes liens et ma parole" — c'est celui des enfants qui ont du mal à formuler. Des parents qui ne savent plus comment poser les bonnes questions. Et des liens qui s'effilochent sans qu'on s'en rende compte.<br><br>Dans les ateliers BRILLE, on travaille ça ensemble — pas en thérapie, mais en groupe, avec des outils concrets pour créer des rituels de parole à la maison.<br><br>Et si la Saint-Valentin c'est le moment d'envoyer un message à nos proches — pourquoi pas à nos enfants aussi ? 💞<br><br>Je vous attends le 13 février à l'OMAC (Guédon) et à Torcy pour cet atelier. (Lien en commentaire)</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Dites-moi : votre enfant, il vous parle vraiment de ce qu'il ressent ? Ou plutôt "ça va" ? 👇 Je lis tout.</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire</div>
+            <div class="script-text audit-text">Lien auto-audit QVE gratuit en commentaire — 28 questions, 5 minutes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIKTOK -->
+  <div class="tab-content" id="fevrier-tiktok">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header tiktok-header">
+          <div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div>
+          <div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · Saint-Valentin · Format phrase à ne plus dire</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">La phrase à ne plus jamais dire à son enfant — et celle qui change tout. 💬</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">La phrase à arrêter : "Tu n'as rien à me dire ?" Parce que ça appelle "non" comme réponse.<br><br>La phrase qui change tout : "T'as vécu quoi d'intéressant aujourd'hui ?" Parce que ça invite — sans imposer.<br><br>Entre 6 et 12 ans, les enfants ne savent pas toujours comment commencer une conversation. Mais ils répondent quand on leur ouvre une porte — pas quand on leur pose une question fermée.<br><br>C'est le pétale "mes liens et ma parole" de la Fleur QVE 💞 Je suis Tsiory, ingénieure QVE. Suis le compte pour le pétale du mois.</div></div>
+          <div class="script-block"><div class="block-label note-label">📌 Note montage</div>
+            <div class="script-text note-text">Affichez les deux phrases à l'écran en texte — une en rouge barrée, l'autre en vert. Effet visuel fort, très partageable autour du 14 février.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISE EN SCÈNE -->
+  <div class="tab-content" id="fevrier-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Février : le pétale le plus émotionnel de ce trimestre. Le twist Saint-Valentin vous donne une accroche forte sur Instagram et TikTok. Garder un ton chaleureux et direct — ce n'est pas un cours de communication, c'est du vécu.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">🕐 Setup</div>
+          <div class="mes-item"><div class="mes-icon">📍</div><div class="mes-text"><strong>Lieu :</strong> intérieur doux — votre salon ou espace chaleureux. Un bouquet ou des fleurs simples en fond optionnel pour l'angle Saint-Valentin.</div></div>
+          <div class="mes-item"><div class="mes-icon">💡</div><div class="mes-text"><strong>Lumière :</strong> lumière chaude de préférence ce mois-ci — correspond à l'émotion du pétale.</div></div>
+          <div class="mes-item"><div class="mes-icon">📱</div><div class="mes-text"><strong>Format :</strong> portrait 9:16. Filmez deux versions du hook : une avec le twist Saint-Valentin (IG/TikTok), une sans (LinkedIn/Facebook).</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue &amp; visuel</div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Couleur du pétale :</strong> jaune #f8f4b8 — un détail jaune doux dans la tenue ou en fond. Couleur tiède, différente du rouge Saint-Valentin traditionnel.</div></div>
+          <div class="mes-item"><div class="mes-icon">💞</div><div class="mes-text"><strong>Prop optionnel :</strong> un carnet de notes ou une petite carte — ancre le thème "parole" sans le surindiquer.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>Angle clé Instagram/TikTok :</strong> commencez la vidéo en regardant votre téléphone (comme si vous rédigiez un message) — puis relevez les yeux caméra sur "je l'envoie à mes enfants". Très fort visuellement.</div></div>
+          <div class="mes-item"><div class="mes-icon">🔁</div><div class="mes-text"><strong>TikTok :</strong> affichez les deux phrases à l'écran au moment où vous les dites — effet visuel fort, très partageable.</div></div>
+          <div class="mes-item"><div class="mes-icon">📅</div><div class="mes-text"><strong>Publication :</strong> débuter la semaine du 10 février. Reel Instagram : le 12 ou 13 février idéalement. TikTok : le 14 à 7h ou 18h.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">🖥️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Vignette :</strong> fond lilas/jaune doux #ebc6e0 ou #f8f4b8 + emoji 💞 + "MES LIENS &amp; MA PAROLE".</div></div>
+          <div class="mes-item"><div class="mes-icon">🎵</div><div class="mes-text"><strong>Musique Reel/TikTok :</strong> musique douce et positive — pas de musique d'amour romantique, garder le ton "famille bienveillante".</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🌸 Posture &amp; ton</div>
+          <div class="mes-item"><div class="mes-icon">💛</div><div class="mes-text"><strong>Ce mois-ci :</strong> maman avant tout. Parlez de ce que vous vivez avec vos propres enfants — c'est votre authenticité la plus forte.</div></div>
+          <div class="mes-item"><div class="mes-icon">⚠️</div><div class="mes-text"><strong>À éviter :</strong> le ton "cours de communication". Vous n'enseignez pas — vous partagez ce que vous avez découvert en animant les ateliers.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÉGENDES -->
+  <div class="tab-content" id="fevrier-legende">
+    <p class="legende-intro"><strong>Février — Pétale 3 : Mes liens &amp; ma parole.</strong> Atelier Main Tendue le 13 février à l'OMAC et Torcy. Angle Saint-Valentin sur Instagram et TikTok — angle communication parent-enfant sur LinkedIn et Facebook. Cliquez sur la zone texte pour copier.</p>
+    <div class="legende-grid">
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-li">
+          <div class="pl-icon" style="background:#2d6fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">in</div>
+          <div><div class="pl-name">LinkedIn</div><div class="pl-spec">Ton professionnel · Angle développement enfant</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Le lien de confiance entre un enfant et un adulte — c'est la condition préalable à tout.
+
+Avant l'apprentissage, avant l'autonomie, avant l'épanouissement.
+
+Et pourtant, c'est souvent le premier lien qu'on néglige — pas par manque d'amour, mais par manque d'espace et d'outils.
+
+Dans les ateliers BRILLE Main Tendue, je travaille ce troisième pétale de la Fleur QVE avec les parents : "Mes liens et ma parole". Pas en thérapie familiale — en ingénierie de la relation. Des outils concrets pour créer des rituels de parole avec leur enfant de 6-12 ans.
+
+L'atelier se tient le 13 février à l'OMAC (Guédon) et à Torcy — avec un angle Saint-Valentin élargi : les liens qui nourrissent, dans toute la famille.
+
+📩 Contactez-moi si vous souhaitez un atelier BRILLE dans votre structure.</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#QVE #LiensEtParole #BRILLEIngenierie #CentreSocial #ActionSociale</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#CommunicationEnfant #Parentalité #Enfants612 #SoutienParentalité #ÉcouteActive #IngenierieFormation #FleurQVE #MainTendue #Épanouissement #IngéniérieSocioÉducative</div>
+          </div>
+          <div class="legende-tip">Publiez le 10 ou 11 février — assez tôt pour bénéficier de la visibilité Saint-Valentin sans être noyée dans les contenus du 14.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-ig">
+          <div class="pl-icon" style="font-size:18px;">📸</div>
+          <div><div class="pl-name">Instagram</div><div class="pl-spec">Reel · twist Saint-Valentin · auto-audit bio</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">La Saint-Valentin, c'est le 14 février. Ce soir, j'envoie un message à mes enfants 💞
+
+Pas pour oublier mon partenaire. Parce que j'ai réalisé en animant les ateliers BRILLE que les liens qui nourrissent le plus nos enfants — ce ne sont pas ceux qu'on suppose, c'est ceux qu'on entretient vraiment.
+
+Un enfant qui se sait entendu — pas juste écouté — c'est un enfant qui ose parler. Qui ose exprimer ce qu'il ressent. Qui ose demander de l'aide.
+
+Ce soir, essayez : posez une question et attendez, sans proposer la réponse. Juste "et toi, tu penses quoi ?" 💬
+
+C'est le pétale "Mes liens et ma parole" de la Fleur QVE 🌿
+
+👉 Auto-audit QVE gratuit en bio — 28 questions, 5 minutes. Voyez où en sont les liens dans la vie de votre enfant.
+
+Dites-moi en commentaire ce qu'il vous répond ce soir 👇</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#LiensEtParole #QVE #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#SaintValentin #Parentalité #CommunicationEnfant #Enfants612 #SoutienParentalité #CentreSocial #ÉcouteActive #Épanouissement #FleurQVE #MamanEntrepreneur</div>
+          </div>
+          <div class="legende-tip">Story le 14 : "Vous avez essayé la question ce soir ? Partagez-moi en DM ce que votre enfant vous a dit 💞"</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-fb">
+          <div class="pl-icon" style="background:#3a5fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">f</div>
+          <div><div class="pl-name">Facebook</div><div class="pl-spec">Ton vécu · annonce atelier · engagement</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Votre enfant vous dit "ça va" à toutes vos questions ? Il ne vous ment pas. Il n'a juste pas encore l'espace pour dire autre chose 💬
+
+C'est l'une des choses que j'entends le plus dans les ateliers BRILLE. Et ce que j'ai appris en travaillant ce pétale avec des parents : le problème n'est jamais dans l'enfant qui "ne communique pas". Il est dans l'espace qu'on lui crée — ou pas — pour parler vraiment.
+
+En ce mois de février — mois des liens — je vous parle du pétale "Mes liens et ma parole" de la Fleur QVE 💞
+
+Et si vous êtes dans le coin, je vous attends le 13 février pour un atelier Main Tendue sur ce thème à l'OMAC (Guédon) et à Torcy. Venez avec vos questions, vos doutes, votre vécu. C'est fait pour ça.
+
+Est-ce que votre enfant vous parle vraiment de ce qu'il ressent ? Dites-moi en commentaire 👇
+
+(Lien auto-audit QVE gratuit + inscription atelier en commentaire 👇)</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags</div>
+            <div class="hashtags-text">#QVE #LiensEtParole #Parentalité #CentreSocial #BRILLE</div>
+          </div>
+          <div class="legende-tip">Partagez dans les groupes locaux Guédon, Torcy. Répondez à chaque commentaire — ce pétale génère des confidences, accueillez-les avec soin.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-tt">
+          <div class="pl-icon" style="background:#1a7a7a;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">♪</div>
+          <div><div class="pl-name">TikTok</div><div class="pl-spec">45-60 sec · Format "phrase à bannir" · Saint-Valentin</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">La phrase à ne plus jamais dire à son enfant — et celle qui change tout 💬
+
+❌ "Tu n'as rien à me dire ?" → ça appelle "non".
+✅ "T'as vécu quoi d'intéressant aujourd'hui ?" → ça invite.
+
+Entre 6 et 12 ans, les enfants ne savent pas toujours comment commencer. Mais ils répondent quand on leur ouvre une porte.
+
+C'est le pétale "mes liens et ma parole" de la Fleur QVE 💞 Je suis Tsiory, ingénieure QVE. Chaque mois un pétale — suis le compte.
+
+#LiensEtParole #QVE #CommunicationEnfant #Parentalité #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags</div>
+            <div class="hashtags-text">#LiensEtParole #QVE #CommunicationEnfant #Parentalité #BRILLEIngenierie</div>
+          </div>
+          <div class="legende-tip">Affichez ❌ et ✅ à l'écran en texte au moment où vous les dites. Effet visuel fort, très partageable autour du 14 février.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ======================================================= -->
+<!-- MARS -->
+<!-- ======================================================= -->
+<div class="mois-section" id="mars">
+
+  <div class="temps-fort-band">
+    <div class="tf-icon">🌸</div>
+    <div>
+      <div class="tf-titre">Premier retour terrain · Atelier Roissy-en-Brie (9 oct. 2026) · Journée des droits des femmes (8 mars)</div>
+      <div class="tf-text">Mars est la première vidéo où vous parlez d'expérience terrain, pas de théorie. Exploitez ce tournant — c'est votre preuve sociale la plus forte. Double angle : retour terrain + 8 mars.</div>
+    </div>
+  </div>
+
+  <div class="mois-header">
+    <div class="mois-badge" style="background:var(--rose)">Mars 2027</div>
+    <div>
+      <div class="mois-titre">Mon organisation &amp; mon autonomie — retour terrain</div>
+      <div class="mois-petale">🌊 Pétale 4 · Ce que l'atelier de Roissy-en-Brie m'a appris · 8 mars</div>
+    </div>
+  </div>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="showTab('mars','linkedin',this)">LinkedIn</button>
+    <button class="tab-btn" onclick="showTab('mars','instagram',this)">Instagram</button>
+    <button class="tab-btn" onclick="showTab('mars','facebook',this)">Facebook</button>
+    <button class="tab-btn" onclick="showTab('mars','tiktok',this)">TikTok</button>
+    <button class="tab-btn mise-en-scene-btn" onclick="showTab('mars','mes',this)">🎬 Mise en scène</button>
+    <button class="tab-btn legende-btn" onclick="showTab('mars','legende',this)">📋 Légendes</button>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="tab-content visible" id="mars-linkedin">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header linkedin-header">
+          <div class="plateforme-icon" style="background:#2d6fa3;color:#fff">in</div>
+          <div><div class="plateforme-name">LinkedIn</div><div class="plateforme-format">2-3 min · Bilan terrain · 8 mars en intro optionnelle</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">En octobre dernier, j'ai animé mon premier atelier BRILLE à Roissy-en-Brie. Voilà ce que le terrain m'a appris — et ce que je n'avais pas anticipé.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Moi c'est Tsiory, ingénieure QVE chez BRILLE Ingénierie. Depuis plusieurs mois j'anime des ateliers Main Tendue dans les centres sociaux — des ateliers collectifs pour les parents d'enfants de 6 à 12 ans.<br><br>Et en mars, je veux vous parler de ce que j'ai vraiment observé sur le terrain — sur le pétale "mon organisation et mon autonomie".<br><br>Ce que je n'avais pas anticipé : les parents ne manquent pas d'idées sur l'organisation. Ce qui leur manque, c'est la légitimité de laisser leur enfant organiser lui-même certaines choses.<br><br>Ils ont peur que ça ne marche pas. Peur que l'enfant "profite". Peur de perdre le contrôle.<br><br>Et pourtant — quand un enfant de 8 ans décide lui-même de l'ordre dans lequel il range son sac le soir, et que ça marche — quelque chose change dans la relation. Une confiance s'installe. C'est ça que j'ai vu à Roissy.<br><br>La QVE, ce n'est pas une méthode magique. C'est un cadre pour que des choses simples puissent se passer. Et le terrain me le confirme à chaque atelier.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Si vous pilotez un dispositif d'accompagnement à la parentalité et que vous cherchez un outil complémentaire à votre accompagnement — je suis disponible pour en parler. Et si vous avez organisé un premier atelier BRILLE avec moi, merci : vous m'avez appris autant que vos familles.</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire</div>
+            <div class="script-text audit-text">Auto-audit QVE gratuit, 28 questions, 5 minutes. Lien dans ma bio.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTAGRAM -->
+  <div class="tab-content" id="mars-instagram">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header insta-header">
+          <div class="plateforme-icon" style="background:linear-gradient(135deg,#f49f4c,#f5abaf);color:#fff">📸</div>
+          <div><div class="plateforme-name">Instagram</div><div class="plateforme-format">60-90 sec · Retour terrain + 8 mars · Ton honnête</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">J'ai animé un atelier sur l'organisation avec des parents. Voilà ce que j'ai entendu — et ce que personne n'attendait.</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Ce que j'ai entendu : "J'ai peur que si je le laisse faire, ça ne marche pas."<br><br>Et c'est là que j'ai compris quelque chose. Le problème n'est pas l'organisation de l'enfant. C'est la confiance du parent envers l'autonomie de son enfant.<br><br>Quand un parent lâche un peu le contrôle — juste un peu — et que ça marche, quelque chose change. Pas juste dans la routine du matin. Dans la relation entière.<br><br>C'est ça que j'ai vu à Roissy-en-Brie en octobre. C'est ça que le pétale "Mon organisation et mon autonomie" fait réellement.<br><br>Et en cette journée du 8 mars — journée des droits des femmes — je veux aussi dire quelque chose. Beaucoup de ces parents qui viennent aux ateliers BRILLE, ce sont des mamans. Qui portent tout. Qui organisent tout. Qui se demandent si elles font bien.<br><br>Oui, vous faites bien. Et vous méritez un espace pour vous aussi 🌸</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">👉 Auto-audit QVE gratuit en bio — 28 questions, 5 minutes. Faites le point sur l'autonomie de votre enfant.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACEBOOK -->
+  <div class="tab-content" id="mars-facebook">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header fb-header">
+          <div class="plateforme-icon" style="background:#3a5fa3;color:#fff">f</div>
+          <div><div class="plateforme-name">Facebook</div><div class="plateforme-format">Témoignages · 8 mars · appel à partages</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">En octobre, j'ai animé mon premier atelier BRILLE à Roissy-en-Brie. Quelques mois plus tard — voici ce que les parents m'ont dit que ça avait changé 🌱</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Je ne m'attendais pas à certaines réponses. Pas "mon enfant range mieux sa chambre". Plutôt : "il m'aide à décider comment s'organiser maintenant". Ou : "il m'a dit qu'il préférait préparer son sac la veille — et depuis, le matin ça se passe mieux."<br><br>Ces petits glissements — c'est ce que la QVE produit sur le long terme. Pas une transformation spectaculaire. Une confiance qui s'installe, progressivement, entre parent et enfant.<br><br>En ce 8 mars — journée des droits des femmes — j'ai aussi envie de rendre hommage à toutes ces mamans qui font l'effort de venir aux ateliers, de questionner leurs habitudes, de s'améliorer sans jamais se dire qu'elles font déjà un boulot remarquable. Vous faites un boulot remarquable 💛<br><br>Merci à l'équipe de Roissy-en-Brie et à Bénédicte pour m'avoir accueillie.</div></div>
+          <div class="script-block"><div class="block-label cta-label">✅ Call to action</div>
+            <div class="script-text cta-text">Est-ce que vous avez participé à un atelier BRILLE ? Qu'est-ce qui a changé pour vous ou votre enfant ? Partagez en commentaire — même une petite chose 👇</div></div>
+          <div class="script-block"><div class="block-label audit-label">🔗 CTA secondaire</div>
+            <div class="script-text audit-text">Lien auto-audit QVE gratuit en commentaire — 28 questions, 5 minutes.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIKTOK -->
+  <div class="tab-content" id="mars-tiktok">
+    <div class="plateformes-grille">
+      <div class="script-card">
+        <div class="script-card-header tiktok-header">
+          <div class="plateforme-icon" style="background:#1a7a7a;color:#fff">♪</div>
+          <div><div class="plateforme-name">TikTok</div><div class="plateforme-format">45-60 sec · 8 mars · Ton honnête et personnel</div></div>
+        </div>
+        <div class="script-body">
+          <div class="script-block"><div class="block-label hook-label">🎯 Hook</div>
+            <div class="script-text hook-text">Ce que les parents m'ont dit à l'atelier sur l'organisation — et ça m'a surprise. 🌱</div></div>
+          <div class="script-block"><div class="block-label corps-label">📝 Corps</div>
+            <div class="script-text">Pas "comment je range mieux". Plutôt : "j'ai peur que si je le laisse faire, ça ne marche pas".<br><br>Et là j'ai tout compris. Le problème n'est pas l'organisation. C'est la confiance.<br><br>Quand un parent lâche un peu — et que ça marche — quelque chose change dans la relation entière.<br><br>C'est ça que j'ai vu à Roissy-en-Brie. Et en ce 8 mars, j'ai envie de dire à toutes ces mamans qui viennent aux ateliers BRILLE : vous faites un travail remarquable 🌸<br><br>Je suis Tsiory, ingénieure QVE. Suis le compte.</div></div>
+          <div class="script-block"><div class="block-label note-label">📌 Note montage</div>
+            <div class="script-text note-text">Tournez décontractée, posture moins "experte" que les mois précédents. C'est votre vidéo la plus humaine du trimestre — laissez tomber la posture ingénieure un instant. Finir sur un sourire sincère.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISE EN SCÈNE -->
+  <div class="tab-content" id="mars-mes">
+    <div class="mise-en-scene-card">
+      <p class="mes-intro">Mars : rupture de ton importante. Vous ne présentez plus un pétale — vous témoignez de ce que vous avez vu. C'est votre première vidéo de "preuve terrain". Le 8 mars vous donne un angle personnel supplémentaire.</p>
+      <div class="mes-grid">
+        <div class="mes-bloc bloc-setup">
+          <div class="mes-bloc-titre">🕐 Setup</div>
+          <div class="mes-item"><div class="mes-icon">📍</div><div class="mes-text"><strong>Lieu :</strong> intérieur simple. Ou osez filmer debout, plus mobile — symbolise le mouvement terrain.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌸</div><div class="mes-text"><strong>8 mars :</strong> fleur ou plante verte visible en fond — discret mais présent. Pas de message "journée des droits des femmes" explicite — c'est votre posture qui parle.</div></div>
+          <div class="mes-item"><div class="mes-icon">💡</div><div class="mes-text"><strong>Lumière :</strong> lumière naturelle de préférence — mars marque le retour du soleil. Profitez-en.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tenue">
+          <div class="mes-bloc-titre">👗 Tenue &amp; visuel</div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Couleur du pétale :</strong> vert #cbe1b6 (même pétale qu'en janvier — retour terrain). Vous pouvez choisir une tenue différente de janvier pour marquer la progression.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌿</div><div class="mes-text"><strong>Style :</strong> tenue décontractée — encore moins formelle que les mois précédents. Ce mois-ci vous êtes la femme de terrain, pas l'ingénieure en conférence.</div></div>
+        </div>
+        <div class="mes-bloc bloc-tournage">
+          <div class="mes-bloc-titre">🎬 Tournage</div>
+          <div class="mes-item"><div class="mes-icon">🎯</div><div class="mes-text"><strong>Ton clé :</strong> "voilà ce que j'ai vu" — pas "voilà ce que la théorie dit". Utilisez des exemples concrets anonymisés ("une maman m'a dit...", "un parent a partagé...").</div></div>
+          <div class="mes-item"><div class="mes-icon">📅</div><div class="mes-text"><strong>8 mars :</strong> publiez la version Instagram/TikTok le 8 mars. LinkedIn/Facebook peuvent partir le 7 ou 9.</div></div>
+          <div class="mes-item"><div class="mes-icon">🔁</div><div class="mes-text"><strong>Option :</strong> filmez deux hooks — un centré "retour terrain" (LinkedIn), un centré "8 mars" (Instagram/TikTok). 30 secondes de tournage supplémentaire, deux angles très différents.</div></div>
+        </div>
+        <div class="mes-bloc bloc-montage">
+          <div class="mes-bloc-titre">🖥️ Montage</div>
+          <div class="mes-item"><div class="mes-icon">🎨</div><div class="mes-text"><strong>Vignette :</strong> fond rose doux #f5abaf + emoji 🌸 + "RETOUR TERRAIN · ROISSY-EN-BRIE". Ou version 8 mars : fond rose + "8 MARS · MON TERRAIN · MA FORCE".</div></div>
+          <div class="mes-item"><div class="mes-icon">📸</div><div class="mes-text"><strong>Option B-roll :</strong> si vous avez des photos de l'atelier de Roissy (sans visages identifiables) — intégrez-les en montage sur les moments de témoignage. Fort impact émotionnel.</div></div>
+        </div>
+        <div class="mes-bloc bloc-posture">
+          <div class="mes-bloc-titre">🌸 Posture &amp; ton</div>
+          <div class="mes-item"><div class="mes-icon">💛</div><div class="mes-text"><strong>Ce mois-ci :</strong> la femme de terrain. Humble et confiante à la fois. Vous avez vu des choses — vous les partagez honnêtement.</div></div>
+          <div class="mes-item"><div class="mes-icon">🌸</div><div class="mes-text"><strong>8 mars :</strong> nommez les mamans — pas pour les victimiser, pour les honorer. "Vous faites un travail remarquable" dit sincèrement vaut plus que n'importe quel discours.</div></div>
+          <div class="mes-item"><div class="mes-icon">⚠️</div><div class="mes-text"><strong>À éviter :</strong> exagérer le "succès" de l'atelier. L'honnêteté sur ce qui était difficile est votre meilleure crédibilité.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LÉGENDES -->
+  <div class="tab-content" id="mars-legende">
+    <p class="legende-intro"><strong>Mars — Retour terrain Roissy-en-Brie + 8 mars.</strong> Première vidéo de témoignage terrain. Le ton change — vous ne présentez plus, vous témoignez. Double angle selon la plateforme : retour terrain (LinkedIn/Facebook) · 8 mars + terrain (Instagram/TikTok). Cliquez sur la zone texte pour copier.</p>
+    <div class="legende-grid">
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-li">
+          <div class="pl-icon" style="background:#2d6fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">in</div>
+          <div><div class="pl-name">LinkedIn</div><div class="pl-spec">Bilan terrain · preuve sociale · ton sincère</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">En octobre dernier, j'animais mon premier atelier BRILLE à Roissy-en-Brie. Voilà ce que le terrain m'a appris — et ce que je n'avais pas anticipé.
+
+Ce que je pensais entendre : "comment mieux organiser mon enfant."
+Ce que j'ai entendu : "j'ai peur que si je le laisse faire, ça ne marche pas."
+
+Ce glissement m'a tout appris. Le pétale "Mon organisation et mon autonomie" n'est pas un problème d'organisation. C'est un problème de confiance — celle du parent envers l'autonomie de son enfant.
+
+Et quand cette confiance se pose — même sur une petite chose, même le temps d'un sac à préparer la veille — quelque chose change dans la relation.
+
+C'est ça que l'ingénierie QVE produit. Pas une transformation spectaculaire. Une confiance qui s'installe.
+
+Merci à l'équipe de Roissy-en-Brie pour m'avoir accueillie pour ce premier atelier.
+
+📩 Vous souhaitez un atelier BRILLE dans votre structure ? Je suis disponible.</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#QVE #RetourTerrain #BRILLEIngenierie #CentreSocial #ActionSociale</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#OrganisationEnfant #Autonomie #Enfants612 #SoutienParentalité #IngenierieFormation #FleurQVE #MainTendue #Épanouissement #Parentalité #IngénierieSocioÉducative</div>
+          </div>
+          <div class="legende-tip">Mentionnez @Roissy-en-Brie si la page de la ville est sur LinkedIn — potentiel de partage institutionnel.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-ig">
+          <div class="pl-icon" style="font-size:18px;">📸</div>
+          <div><div class="pl-name">Instagram</div><div class="pl-spec">Reel · 8 mars + terrain · auto-audit bio</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">J'ai animé un atelier sur l'organisation avec des parents. Voilà ce que j'ai entendu — et ce que personne n'attendait 🌱
+
+"J'ai peur que si je le laisse faire, ça ne marche pas."
+
+Ce n'est pas un manque de méthode. C'est un manque de confiance envers l'autonomie de son enfant. Et ça se travaille — collectivement, dans un espace bienveillant, sans jugement.
+
+Quand un parent lâche un peu — juste un peu — et que ça marche, quelque chose change dans la relation entière. C'est ça que j'ai vu à Roissy-en-Brie en octobre 🌿
+
+Et en ce 8 mars, j'ai envie de dire à toutes les mamans qui viennent aux ateliers BRILLE — qui remettent en question leurs habitudes, qui font l'effort de se questionner : vous faites un travail remarquable 💛
+
+👉 Auto-audit QVE gratuit en bio — 28 questions, 5 minutes.</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags post</div>
+            <div class="hashtags-text">#RetourTerrain #QVE #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">1er commentaire</div>
+            <div class="hashtags-text">#8Mars #JourneeDroitsFemmes #Parentalité #Autonomie #Enfants612 #CentreSocial #ActionSociale #SoutienParentalité #MamanEntrepreneur #Épanouissement</div>
+          </div>
+          <div class="legende-tip">Story le 8 mars : citation simple sur fond rose BRILLE — "Vous faites un travail remarquable 🌸 — pour toutes les mamans BRILLEuses." Pas d'auto-promo, juste de la gratitude.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-fb">
+          <div class="pl-icon" style="background:#3a5fa3;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">f</div>
+          <div><div class="pl-name">Facebook</div><div class="pl-spec">Témoignage · gratitude terrain · 8 mars</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">En octobre, j'ai animé mon premier atelier BRILLE à Roissy-en-Brie. Et quelques mois plus tard — voici ce que les parents m'ont dit que ça avait changé 🌱
+
+Pas "mon enfant range mieux sa chambre". Plutôt : "il m'aide à décider comment s'organiser maintenant." Ou : "il prépare son sac la veille de lui-même — et le matin se passe mieux."
+
+Ces petits glissements — c'est ce que la QVE produit. Pas de magie. Une confiance qui s'installe, progressivement, entre parent et enfant.
+
+En ce 8 mars, je veux rendre hommage à toutes les mamans qui font l'effort de venir aux ateliers, de questionner leurs habitudes, de s'améliorer sans jamais se dire qu'elles font déjà quelque chose de remarquable.
+
+Vous faites quelque chose de remarquable 💛
+
+Merci à Bénédicte et à toute l'équipe de Roissy-en-Brie.
+
+Est-ce que vous avez participé à un atelier BRILLE ? Qu'est-ce qui a changé ? Même une petite chose 👇
+
+(Lien auto-audit QVE gratuit en commentaire 👇)</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags</div>
+            <div class="hashtags-text">#QVE #RetourTerrain #8Mars #Parentalité #BRILLE</div>
+          </div>
+          <div class="legende-tip">Ce post peut générer des témoignages spontanés — répondez à chacun, même brièvement. C'est votre meilleure preuve sociale.</div>
+        </div>
+      </div>
+
+      <div class="legende-card">
+        <div class="legende-card-header lh-tt">
+          <div class="pl-icon" style="background:#1a7a7a;color:#fff;border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;">♪</div>
+          <div><div class="pl-name">TikTok</div><div class="pl-spec">45-60 sec · 8 mars · Ton honnête terrain</div></div>
+        </div>
+        <div class="legende-body">
+          <div class="copy-wrap">
+            <button class="copy-btn-leg" onclick="copyLeg(this)">Copier</button>
+            <div class="copy-zone">Ce que les parents m'ont dit à l'atelier sur l'organisation — et ça m'a surprise 🌱
+
+Pas "comment mieux organiser mon enfant". Plutôt : "j'ai peur que si je le laisse faire, ça ne marche pas."
+
+Et là j'ai tout compris. Ce n'est pas un problème d'organisation. C'est un problème de confiance.
+
+Quand un parent lâche un peu — et que ça marche — quelque chose change dans la relation entière.
+
+Et en ce 8 mars : à toutes les mamans qui font ce travail-là — vous faites quelque chose de remarquable 🌸
+
+Je suis Tsiory, ingénieure QVE. Suis le compte.
+
+#RetourTerrain #QVE #8Mars #Parentalité #BRILLEIngenierie</div>
+          </div>
+          <div class="hashtags-block">
+            <div class="hashtags-label">Hashtags</div>
+            <div class="hashtags-text">#RetourTerrain #QVE #8Mars #Parentalité #BRILLEIngenierie</div>
+          </div>
+          <div class="legende-tip">Posture détendue, tenue simple. C'est votre vidéo la plus humaine du trimestre. Finissez sur un sourire sincère, pas une accroche commerciale.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showMois(id, btn) {
+  document.querySelectorAll('.mois-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showTab(mois, tab, btn) {
+  const section = document.getElementById(mois);
+  section.querySelectorAll('.tab-content').forEach(t => t.classList.remove('visible'));
+  section.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(mois + '-' + tab).classList.add('visible');
+  btn.classList.add('active');
+}
+
+function copyLeg(btn) {
+  const zone = btn.nextElementSibling;
+  const text = zone.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copié !';
+    btn.style.background = '#4caf50';
+    setTimeout(() => { btn.textContent = 'Copier'; btn.style.background = '#b8aed7'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
