@@ -1,0 +1,58 @@
+[
+ {
+  "id": "emotions",
+  "couleur": "#f5abaf",
+  "titre": "Mes émotions de parent",
+  "sousTitre": "Accueillir, comprendre, apaiser",
+  "miroir": "Mes émotions apprivoisées",
+  "miroirSous": "Nommer, exprimer, réguler"
+ },
+ {
+  "id": "apprentissages",
+  "couleur": "#b8aed7",
+  "titre": "Mon regard sur ses apprentissages",
+  "sousTitre": "Encourager, soutenir, relativiser",
+  "miroir": "Le sens de mes apprentissages",
+  "miroirSous": "Curiosité, école, motivation"
+ },
+ {
+  "id": "liens",
+  "couleur": "#f8f4b8",
+  "titre": "Mes liens et ma parole",
+  "sousTitre": "Écouter, parler, se relier",
+  "miroir": "Mes liens et ma parole",
+  "miroirSous": "Relations, communication"
+ },
+ {
+  "id": "droits",
+  "couleur": "#a4c2e7",
+  "titre": "Mon cadre et ses droits",
+  "sousTitre": "Un cadre clair, des limites bienveillantes",
+  "miroir": "Ma place et mes droits",
+  "miroirSous": "Cadre familial, devoirs, CIDE"
+ },
+ {
+  "id": "equilibre",
+  "couleur": "#ebc6e0",
+  "titre": "Mon équilibre et mon énergie",
+  "sousTitre": "Me ressourcer, alléger ma charge",
+  "miroir": "Mon équilibre et mon énergie",
+  "miroirSous": "Bien-être global"
+ },
+ {
+  "id": "briller",
+  "couleur": "#f49f4c",
+  "titre": "Ce qui me fait briller",
+  "sousTitre": "Mes forces de parent, mes victoires",
+  "miroir": "Ce qui me fait briller",
+  "miroirSous": "Talents, forces, victoires"
+ },
+ {
+  "id": "organisation",
+  "couleur": "#cbe1b6",
+  "titre": "Mon organisation et ma posture",
+  "sousTitre": "Routines, temps, responsabilités partagées",
+  "miroir": "Mon organisation et mon autonomie",
+  "miroirSous": "Espace, temps, responsabilités"
+ }
+]

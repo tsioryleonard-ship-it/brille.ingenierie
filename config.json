@@ -1,0 +1,45 @@
+{
+  "nomApp": "Étincelle",
+  "marque": "BRILLE",
+  "debutDefis": "2026-11-02",
+  "contact": {
+    "nom": "LEONARD Rindra Tsiory",
+    "email": "tsioryleonard@gmail.com",
+    "telephone": "07 45 32 30 90"
+  },
+  "messageAccueil": "Les ateliers vous ont donné de l'élan. Étincelle le prolonge à la maison : chaque semaine, un petit moment à vivre ensemble, parent et enfant.",
+  "achat": {
+    "actif": false,
+    "offres": [
+      {
+        "id": "petale",
+        "nom": "Un pétale",
+        "detail": "Un pétale au choix de la fleur.",
+        "prix": "15 €",
+        "lien": ""
+      },
+      {
+        "id": "fleur",
+        "nom": "La fleur complète, 1 an",
+        "detail": "Les 7 pétales pendant 12 mois.",
+        "prix": "49 €",
+        "lien": ""
+      },
+      {
+        "id": "solidaire",
+        "nom": "Tarif solidaire, 1 an",
+        "detail": "La fleur complète, pour les familles pour qui le tarif standard est une difficulté.",
+        "prix": "19 €",
+        "lien": ""
+      },
+      {
+        "id": "vie",
+        "nom": "Accès à vie",
+        "detail": "La fleur complète, tant qu'Étincelle existe.",
+        "prix": "99 €",
+        "lien": ""
+      }
+    ],
+    "delai": "48 heures ouvrées"
+  }
+}

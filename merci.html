@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Merci · Étincelle · BRILLE</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="legal merci">
+  <p style="text-align:center"><img src="logo-brille.png" alt="BRILLE" width="90" height="66"></p>
+  <div class="carte teinte" style="background:var(--vert)">
+    <span class="etiquette">Paiement reçu</span>
+    <h1>Merci pour votre confiance</h1>
+    <p>Votre paiement est bien enregistré. Votre code personnel vous est envoyé <b>par e-mail</b>, à l'adresse utilisée pour payer, sous <b id="delai">48 heures ouvrées</b>.</p>
+  </div>
+  <div class="carte">
+    <h2>Pour ouvrir Étincelle</h2>
+    <ol>
+      <li>Ouvrez l'e-mail de BRILLE (pensez à regarder dans les courriers indésirables).</li>
+      <li>Touchez le lien : l'application s'ouvre toute seule. Sinon, ouvrez Étincelle et saisissez le code.</li>
+      <li>Installez l'application sur votre téléphone depuis le menu « Plus », pour la retrouver comme une application.</li>
+    </ol>
+    <p class="petit">Un souci, ou pas de message au bout de ce délai ? Écrivez-nous : <a id="mail" href="mailto:tsioryleonard@gmail.com">tsioryleonard@gmail.com</a>.</p>
+    <p style="text-align:center"><a class="btn plein" href="./">Retour à Étincelle</a></p>
+  </div>
+  <p class="petit liens-legaux"><a href="legal.html#cgv">Conditions générales</a> · <a href="legal.html#confidentialite">Confidentialité</a> · <a href="legal.html#mentions">Mentions légales</a></p>
+</main>
+<script>
+  fetch('config.json', { cache: 'no-cache' }).then(r => r.json()).then(c => {
+    if (c.achat && c.achat.delai) document.getElementById('delai').textContent = c.achat.delai;
+    if (c.contact && c.contact.email) { const m = document.getElementById('mail'); m.href = 'mailto:' + c.contact.email; m.textContent = c.contact.email; }
+  }).catch(() => { });
+</script>
+</body>
+</html>
