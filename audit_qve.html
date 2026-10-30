@@ -261,9 +261,9 @@ html,body{min-height:100vh;min-height:100dvh;}
     <div class="hero">
       <div class="flower flower-hero" id="fl-hero" aria-hidden="true"></div>
       <h1 class="t">La fleur QVE</h1>
-      <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Une petite fleur pour faire le point en quelques minutes !</p>
+      <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Les deux fleurs peuvent ensuite se comparer !</p>
       <div class="chips" id="chips"></div>
-      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button></div>
+      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button><button class="btn big" style="background:var(--lilas);color:#111" onclick="openCompare('','')">🪞 Comparer nos deux fleurs<small>L'enfant et le parent ont chacun la leur</small></button></div>
       <div class="install" id="install-box"><button class="btn" onclick="installApp()">📲 Installer sur mon téléphone</button><div class="help" id="install-help"></div></div>
     </div>
   </div>
@@ -280,10 +280,24 @@ html,body{min-height:100vh;min-height:100dvh;}
         </div>
       </div>
       
+      <div class="fg" id="code-wrap" style="display:none"><label>Code de l'enfant (facultatif)</label><input id="i-code" type="text" placeholder="QVE-xx-xx-xx-xx-xx-xx-xx" autocomplete="off"><div style="font-size:12px;color:var(--gris);margin-top:6px;line-height:1.6">Si votre enfant a fait sa fleur, saisissez son code pour comparer vos regards.</div></div>
       <label class="autoread"><input type="checkbox" id="i-auto"> 🔊 Mode audio : lire les questions à voix haute</label>
       <div class="tip" id="inf-tip"></div>
     </div>
     <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="start()">C'est parti ! →</button></div>
+  </div>
+
+    <!-- COMPARAISON -->
+  <div class="page" id="p-cmp">
+    <div class="card">
+      <h2 class="t">Comparer nos deux fleurs</h2>
+      <p class="s">À faire ensemble, au calme. Chaque parcours se termine par un code : collez ici celui de l'enfant et celui du parent pour ouvrir la discussion.</p>
+      <div class="fg"><label>Prénom de l'enfant (facultatif)</label><input id="c-n" type="text" placeholder="Ex : Emma" autocomplete="off"></div>
+      <div class="fg"><label>Code de l'enfant</label><input id="c-e" type="text" placeholder="QVE-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
+      <div class="fg"><label>Code du parent</label><input id="c-p" type="text" placeholder="QVP-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
+      <div class="tip">💡 Les codes ne contiennent que des scores (pas de prénom) et la comparaison se fait sur votre appareil : rien n'est envoyé.</div>
+    </div>
+    <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="compare()">🪞 Comparer →</button></div>
   </div>
 
   <div class="page" id="p-q">
@@ -348,7 +362,7 @@ const SC_P=[{v:1,e:"😰",l:"Pas du tout"},{v:2,e:"😟",l:"Rarement"},{v:3,e:"�
 
 let IS_E=true;
 const TXT={enfant:{t:'On se présente ?',s:'Dis-nous qui tu es pour fabriquer ta fleur.',n:'Ton prénom',a:'Ton âge',tip:'💡 Pense à <strong>ces dernières semaines</strong> et réponds avec ce que tu ressens vraiment. Le bouton 🔊 lit la question à voix haute.'},parent:{t:'Avant de commencer',s:'Quelques informations pour personnaliser vos résultats.',n:'Prénom de l\'enfant',a:'Âge de l\'enfant',tip:'💡 Répondez en pensant aux <strong>4 dernières semaines</strong>. Il s\'agit de votre ressenti : il n\'y a pas de bonne réponse.'}};
-function choose(m){unlockSpeech();sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;go('p-info');}
+function choose(m){unlockSpeech();sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;document.getElementById('code-wrap').style.display=IS_E?'none':'block';go('p-info');}
 try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}catch(e){}
 let info={},ans={},cur=0,items=[];
 
@@ -577,42 +591,6 @@ function crossRow(r,detail){
   }
   return h+'</div>';
 }
-function crossView(nom,E,P){
-  const avg=a=>Math.round(a.reduce((x,y)=>x+y,0)/a.length);
-  const rows=PETALS.map(function(p,i){
-    const e=E[i],pa=P[i],d=pa-e;let k='near';
-    if(Math.abs(d)>=25)k=d>0?'low':'high';
-    else if(e>=65&&pa>=65)k='shine';
-    else if(e<50&&pa<50)k='need';
-    return {p:p,i:i,e:e,pa:pa,ad:Math.abs(d),k:k,m:Math.min(e,pa),a:(e+pa)/2};
-  });
-  const div=rows.filter(r=>r.k==='low'||r.k==='high').sort((a,b)=>b.ad-a.ad);
-  const need=rows.filter(r=>r.k==='need').sort((a,b)=>a.a-b.a);
-  const shine=rows.filter(r=>r.k==='shine').sort((a,b)=>b.m-a.m);
-  const near=rows.filter(r=>r.k==='near');
-  const focus=div[0]||need[0]||rows.slice().sort((a,b)=>a.a-b.a)[0];
-  const start=shine.concat(near).filter(r=>r!==focus).sort((a,b)=>b.m-a.m)[0]||null;
-  const nd=div.length;
-  const msg=nd===0?"Vos regards sont proches sur les 7 pétales. Belle complicité : prenez le temps de la célébrer !":nd+" pétale"+(nd>1?"s":"")+" où vos regards diffèrent. C'est une belle occasion de vous parler, sans chercher qui a raison.";
-  let h='<div class="rhero"><h2 class="t">🪞 Nos deux fleurs</h2><p>'+msg+'</p></div>';
-  h+='<div class="duo"><div><div class="flower" aria-hidden="true">'+flower(E.map(v=>v/100),{anim:true})+'</div>🌈 L\'enfant · '+avg(E)+'/100</div><div><div class="flower" aria-hidden="true">'+flower(P.map(v=>v/100),{anim:true})+'</div>🏠 Le parent · '+avg(P)+'/100</div></div>';
-  h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🗝️ Par où commencer ?</h3>';
-  if(start)h+='<div class="act"><div class="n">1</div><div>Ouvrez avec un pétale qui va bien : <b>'+start.p.emoji+' '+start.p.name+'</b>. Dire ce qui brille met en confiance.</div></div>';
-  h+='<div class="act"><div class="n">'+(start?2:1)+'</div><div>'+(nd?'Puis un seul pétale à la fois, en commençant par celui où l\'écart est le plus grand : ':'Puis, si vous le souhaitez, un pétale à faire grandir ensemble : ')+'<b>'+focus.p.emoji+' '+focus.p.name+'</b>.</div></div>';
-  h+='<p style="margin-top:12px"><b>Les règles du jeu</b></p>'
-   +'<div class="act"><div class="n">•</div><div>Choisissez un moment calme (pas pendant les devoirs, au coucher ou en pleine dispute). 10 minutes suffisent.</div></div>'
-   +'<div class="act"><div class="n">•</div><div>Quand l\'enfant parle : écoutez, reformulez (« Si je comprends bien… »), remerciez. Pas de « mais », pas de justification.</div></div>'
-   +'<div class="act"><div class="n">•</div><div>L\'enfant a le droit de ne pas répondre : « On y reviendra si tu veux. »</div></div>'
-   +'<div class="act"><div class="n">•</div><div>Terminez par un petit pas choisi à deux, et décidez quand vous en reparlez.</div></div></div>';
-  const detail=div.concat(need,shine);
-  if(detail.length){h+='<h3 class="t" style="font-size:22px;margin:18px 0 10px">💬 Pour ouvrir la discussion</h3><div class="xgrid">'+detail.map(r=>crossRow(r,true)).join('')+'</div>';}
-  if(near.length){h+='<h3 class="t" style="font-size:20px;margin:18px 0 10px">🤝 Là où vous êtes proches</h3><div class="xgrid">'+near.map(r=>crossRow(r,false)).join('')+'</div>';}
-  h+='<div class="box" style="background:'+focus.p.color+'"><h3 class="t">🌱 Un petit pas à deux : '+focus.p.emoji+' '+focus.p.name+'</h3><p>Choisissez UNE idée ensemble, et décidez quand vous en reparlez.</p>'
-   +focus.p.actions.map((a,i)=>'<div class="act"><div class="n">'+(i+1)+'</div><div>'+esc(a)+'</div></div>').join('')
-   +'<div class="act"><div class="n">★</div><div><b>Pour l\'enfant :</b> '+esc(focus.p.mission)+'</div></div></div>';
-  h+='<div class="note">Un écart n\'est pas une erreur : chacun voit une partie de la même réalité. Cet outil est un support de dialogue, pas un diagnostic. Si votre enfant exprime une souffrance importante, rapprochez-vous d\'un professionnel (médecin, psychologue, équipe éducative).</div>';
-  return h;
-}
 function openCompare(ce,pa){document.getElementById('c-e').value=ce||'';document.getElementById('c-p').value=pa||'';sfx('pop');go('p-cmp');}
 function compare(){
   const E=parseCode(document.getElementById('c-e').value,'QVE'),P=parseCode(document.getElementById('c-p').value,'QVP');
@@ -633,19 +611,27 @@ function results(){stopSpeak();
   const fl='<div class="flower flower-res" aria-hidden="true">'+flower(sc.map(x=>x.s/100),{anim:true})+'</div>';
   let h='';
   if(IS_E){
+    const code='QVE-'+sc.map(x=>x.s).join('-');
     h+='<div class="rhero"><h2 class="t">🌸 La fleur de '+nom+' !</h2><p>Plus un pétale est grand, plus il brille en ce moment. Bravo d\'avoir répondu avec ton cœur !</p></div>'+fl;
     h+='<div class="rl">'+sorted.slice().reverse().map(x=>rcard(x,false)).join('')+'</div>';
     h+='<div class="box" style="background:'+top[0].p.color+'"><h3 class="t">✨ Mes pétales qui brillent le plus</h3><p>'+top.map(x=>x.p.emoji+' <b>'+x.p.name+'</b>').join('<br>')+'<br><br>Continue comme ça, tu peux être fier·ère de toi !</p></div>';
     h+=TEASE(low,true);
+    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🔑 Mon code secret</h3><p>Montre ta fleur à un adulte de confiance. Si il ou elle veut, il pourra utiliser ce code pour voir comment il voit les choses de son côté.</p><div class="code">'+code+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+code+'\')">📋 Copier mon code</button></div></div>';
     h+='<div class="note">Ce petit jeu aide à parler de ce qui va bien et de ce qu\'on peut améliorer. Ce n\'est pas un test ni une note. Si quelque chose te pèse, parles-en à un adulte en qui tu as confiance.</div>';
+    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">👨‍👩‍👧 Pour l\'adulte qui accompagne</h3><p>Vous pouvez maintenant remplir le miroir parent et saisir le code ci-dessus pour comparer vos regards.</p><div style="text-align:center;margin-top:12px"><button class="btn" onclick="choose(\'parent\')">Passer au miroir parent →</button><br><br><button class="btn sec" onclick="openCompare(\''+code+'\',\'\')">🪞 Le parent a déjà sa fleur : comparer</button></div></div>';
     h+=CTA(true);
     h+='<div class="btn-row"><button class="btn sec" onclick="restart()">↺ Rejouer</button></div>';
   } else {
-    const cc=null;
+    const cc=info.code?parseCode(info.code):null;
     const emo=glob>=70?'🌟':glob>=45?'🌱':'💪';
     const msg=glob>=70?nom+' semble bien s\'épanouir dans l\'ensemble.':glob>=45?'De beaux pétales à renforcer ensemble.':'Il y a de belles pistes à explorer ensemble, pas à pas.';
     h+='<div class="rhero"><h2 class="t">'+emo+' La fleur de '+nom+'</h2><p>'+msg+'</p><div class="t" style="font-size:54px;margin-top:8px">'+glob+'<span style="font-size:22px">/100</span></div><div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.6">Indice QVE global (regard du parent)</div></div>'+fl;
     h+='<div class="rl">'+sorted.slice().reverse().map(x=>rcard(x,true,cc)).join('')+'</div>';
+    if(cc){h+=crossView(nom,cc,sc.map(x=>x.s));}
+    else{
+      const pcode='QVP-'+sc.map(x=>x.s).join('-');
+      h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🪞 Et si on comparait nos regards ?</h3><p>Quand votre enfant aura fait sa fleur, vous pourrez voir ensemble où vos regards se rejoignent ou diffèrent, et ouvrir la discussion. Gardez votre code :</p><div class="code">'+pcode+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+pcode+'\')">📋 Copier mon code</button><br><br><button class="btn sec" onclick="openCompare(\'\',\''+pcode+'\')">🪞 Mon enfant a déjà sa fleur : comparer</button></div></div>';
+    }
     h+=TEASE(low,false);
     h+='<div class="box" style="background:var(--vert)"><h3 class="t">✨ Pétales à célébrer</h3><p>'+top.map(x=>x.p.emoji+' <b>'+x.p.name+'</b> ('+x.s+'/100)').join('<br>')+'</p></div>';
     h+=CTA(false);
@@ -657,6 +643,36 @@ function results(){stopSpeak();
   sendToSheet(sc,glob);
 }
 
+function openCompare(ce,pa){document.getElementById('c-e').value=ce||'';document.getElementById('c-p').value=pa||'';sfx('pop');go('p-cmp');}
+function compare(){
+  const E=parseCode(document.getElementById('c-e').value,'QVE'),P=parseCode(document.getElementById('c-p').value,'QVP');
+  if(!E){toast('Le code de l\'enfant (QVE-…) est manquant ou incorrect');return;}
+  if(!P){toast('Le code du parent (QVP-…) est manquant ou incorrect');return;}
+  const nom=esc(document.getElementById('c-n').value.trim());
+  document.getElementById('rc').innerHTML=crossView(nom,E,P)+'<div class="btn-row"><button class="btn sec" onclick="restart()">← Accueil</button></div>';
+  go('p-res');sfx('fanfare');
+}
+
+function crossView(nom,E,P){
+  const avg=a=>Math.round(a.reduce((x,y)=>x+y,0)/a.length);
+  const rows=PETALS.map(function(p,i){
+    const e=E[i],pa=P[i],d=pa-e;let k='near';
+    if(Math.abs(d)>=25)k=d>0?'low':'high';
+    else if(e>=65&&pa>=65)k='shine';
+    else if(e<50&&pa<50)k='need';
+    return {p:p,i:i,e:e,pa:pa,ad:Math.abs(d),k:k};
+  });
+  const nd=rows.filter(r=>r.k==='low'||r.k==='high').length;
+  const msg=nd===0?"Vos regards sont proches sur les 7 pétales. Belle complicité !":nd+" pétale"+(nd>1?"s":"")+" où vos regards diffèrent. Prenez le temps de le remarquer, sans chercher qui a raison.";
+  let h='<div class="rhero"><h2 class="t">🪞 Nos deux fleurs</h2><p>'+msg+'</p></div>';
+  h+='<div class="duo"><div><div class="flower" aria-hidden="true">'+flower(E.map(v=>v/100),{anim:true})+'</div>🌈 L\'enfant · '+avg(E)+'/100</div><div><div class="flower" aria-hidden="true">'+flower(P.map(v=>v/100),{anim:true})+'</div>🏠 Le parent · '+avg(P)+'/100</div></div>';
+  h+='<h3 class="t" style="font-size:22px;margin:18px 0 10px">👀 Pétale par pétale</h3><div class="xgrid">'+rows.map(r=>crossRow(r,false)).join('')+'</div>';
+  const f=rows.filter(r=>r.k==='low'||r.k==='high').sort((a,b)=>b.ad-a.ad)[0];
+  h+='<div class="box" style="background:var(--jaune)"><h3 class="t">💬 Et maintenant, on en parle ?</h3>'+(f?'<p>Le plus grand écart : '+f.p.emoji+' <b>'+f.p.name+'</b>.</p>':'')+'<div class="lock"><div class="lk">🔒</div><div>Les phrases pour ouvrir la discussion, les règles du jeu et les petits pas à faire à deux vous attendent dans <b>Étincelle</b>.</div></div></div>';
+  h+=CTA(false);
+  h+='<div class="note">Un écart n\'est pas une erreur : chacun voit une partie de la même réalité. Cet outil est un support de dialogue, pas un diagnostic. Si votre enfant exprime une souffrance importante, rapprochez-vous d\'un professionnel (médecin, psychologue, équipe éducative).</div>';
+  return h;
+}
 
 function TEASE(x,kid){
   const p=x.p;
