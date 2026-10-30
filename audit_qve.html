@@ -20,7 +20,9 @@ strong,b{font-weight:600;}
 
 /* Décors flottants */
 .deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.deco i{position:absolute;border-radius:60% 40% 55% 45%;opacity:.12;animation:drift 14s ease-in-out infinite;}
+.deco i{position:absolute;top:-12vh;border-radius:0 100% 0 100%;opacity:.5;animation:petalFall var(--dur,22s) linear infinite;will-change:transform;}
+@keyframes petalFall{0%{transform:translate3d(0,0,0) rotate(var(--r0,0deg));}25%{transform:translate3d(var(--sx,30px),30vh,0) rotate(calc(var(--r0,0deg) + 90deg));}50%{transform:translate3d(calc(var(--sx,30px) * -1),62vh,0) rotate(calc(var(--r0,0deg) + 180deg));}75%{transform:translate3d(var(--sx,30px),92vh,0) rotate(calc(var(--r0,0deg) + 270deg));}100%{transform:translate3d(0,125vh,0) rotate(calc(var(--r0,0deg) + 360deg));}}
+@media (prefers-reduced-motion:reduce){.deco i{animation:none;top:auto;opacity:.25;}}
 @keyframes drift{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-18px) rotate(12deg);}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:none;}}
 @keyframes pop{0%{transform:scale(.6);opacity:0;}70%{transform:scale(1.1);}100%{transform:scale(1);opacity:1;}}
@@ -151,6 +153,14 @@ strong,b{font-weight:600;}
 .flag{display:inline-block;background:var(--jaune);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;margin-top:6px;}
 .legend{display:flex;gap:6px;font-size:11px;font-weight:600;color:var(--gris);margin-top:5px;align-items:center;}
 .legend span.d{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.duo{display:flex;gap:10px;margin:8px 0 14px}
+.duo>div{flex:1;text-align:center;font-size:13px;font-weight:700}
+.duo .flower{width:100%;margin:0 auto 4px}
+.xrow{background:#fff;border-radius:18px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+.xrow .bar{margin-top:8px}
+.xtag{display:inline-block;border-radius:20px;padding:3px 11px;font-size:12px;font-weight:700;margin:8px 0 2px}
+.xq{background:#fff7ec;border-left:4px solid var(--orange);border-radius:10px;padding:9px 12px;font-size:13.5px;line-height:1.6;margin-top:8px;font-weight:400}
+.xnote{font-size:12.5px;color:var(--gris);line-height:1.65;margin-top:8px}
 </style>
 </head>
 <body>
@@ -168,7 +178,7 @@ strong,b{font-weight:600;}
       <h1 class="t">La fleur QVE</h1>
       <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Les deux fleurs peuvent ensuite se comparer !</p>
       <div class="chips" id="chips"></div>
-      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button></div>
+      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button><button class="btn big" style="background:var(--lilas);color:#111" onclick="openCompare('','')">🪞 Comparer nos deux fleurs<small>L'enfant et le parent ont chacun la leur</small></button></div>
     </div>
   </div>
 
@@ -188,6 +198,19 @@ strong,b{font-weight:600;}
       <div class="tip" id="inf-tip"></div>
     </div>
     <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="start()">C'est parti ! →</button></div>
+  </div>
+
+  <!-- COMPARAISON -->
+  <div class="page" id="p-cmp">
+    <div class="card">
+      <h2 class="t">Comparer nos deux fleurs</h2>
+      <p class="s">À faire ensemble, au calme. Chaque parcours se termine par un code : collez ici celui de l'enfant et celui du parent pour ouvrir la discussion.</p>
+      <div class="fg"><label>Prénom de l'enfant (facultatif)</label><input id="c-n" type="text" placeholder="Ex : Emma" autocomplete="off"></div>
+      <div class="fg"><label>Code de l'enfant</label><input id="c-e" type="text" placeholder="QVE-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
+      <div class="fg"><label>Code du parent</label><input id="c-p" type="text" placeholder="QVP-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
+      <div class="tip">💡 Les codes ne contiennent que des scores (pas de prénom) et la comparaison se fait sur votre appareil : rien n'est envoyé.</div>
+    </div>
+    <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="compare()">🪞 Comparer →</button></div>
   </div>
 
   <!-- QUESTIONS -->
@@ -253,7 +276,7 @@ const SC_P=[{v:1,e:"😰",l:"Pas du tout"},{v:2,e:"😟",l:"Rarement"},{v:3,e:"�
 
 let IS_E=true;
 const TXT={enfant:{t:'On se présente ?',s:'Dis-nous qui tu es pour fabriquer ta fleur.',n:'Ton prénom',a:'Ton âge',tip:'💡 Pense à <strong>ces dernières semaines</strong> et réponds avec ce que tu ressens vraiment. Le bouton 🔊 lit la question à voix haute.'},parent:{t:'Avant de commencer',s:'Quelques informations pour personnaliser vos résultats.',n:'Prénom de l\'enfant',a:'Âge de l\'enfant',tip:'💡 Répondez en pensant aux <strong>4 dernières semaines</strong>. Il s\'agit de votre ressenti : il n\'y a pas de bonne réponse.'}};
-function choose(m){sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;document.getElementById('code-wrap').style.display=IS_E?'none':'block';go('p-info');}
+function choose(m){unlockSpeech();sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;document.getElementById('code-wrap').style.display=IS_E?'none':'block';go('p-info');}
 try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}catch(e){}
 let info={},ans={},cur=0,items=[];
 
@@ -306,17 +329,33 @@ function burst(el,n){const r=el?el.getBoundingClientRect():{left:innerWidth/2,to
 function score(pid){const a=ans[pid]||{};const v=Object.values(a);if(!v.length)return 0;return Math.round((v.reduce((x,y)=>x+y,0)/v.length-1)/4*100);}
 function status(s){return s>=70?{t:"En pleine floraison 🌸",k:"ok"}:s>=45?{t:"En train de pousser 🌱",k:"mid"}:{t:"A envie d'être arrosé 💧",k:"low"};}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
-let AUTO=false,speakTok=0;
-function frVoice(){try{const v=speechSynthesis.getVoices();return v.find(x=>/^fr/i.test(x.lang)&&/(google|thomas|amelie|audrey|hortense|julie|denise|eloise|claude)/i.test(x.name))||v.find(x=>/^fr/i.test(x.lang))||null;}catch(e){return null;}}
-function stopSpeak(){speakTok++;try{speechSynthesis.cancel();}catch(e){}}
+let AUTO=false,speakTok=0,KEEP=[],VOICES=[],WARNED=false;
+const SPEECH_OK=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+function loadVoices(){try{VOICES=speechSynthesis.getVoices()||[];}catch(e){}}
+if(SPEECH_OK){loadVoices();try{if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',loadVoices);else speechSynthesis.onvoiceschanged=loadVoices;}catch(e){}}
+function frVoice(){if(!VOICES.length)loadVoices();return VOICES.find(x=>/^fr[-_]FR$/i.test(x.lang)&&/(google|thomas|amelie|audrey|hortense|julie|denise|eloise|claude)/i.test(x.name))||VOICES.find(x=>/^fr[-_]FR$/i.test(x.lang))||VOICES.find(x=>/^fr/i.test(x.lang))||null;}
+/* Sur téléphone, la synthèse vocale doit être « débloquée » par un vrai toucher : on le fait dès les premiers boutons */
+function unlockSpeech(){if(!SPEECH_OK)return;try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang='fr-FR';speechSynthesis.speak(u);}catch(e){}}
+function stopSpeak(){speakTok++;KEEP=[];try{if(SPEECH_OK&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel();}catch(e){}}
+function cleanTxt(t){return String(t).replace(/fier·ère/g,'fier ou fière').replace(/·/g,'').replace(/[\u{1F300}-\u{1FAFF}☀-➿️]/gu,'');}
 function speakAll(list){
+  if(!SPEECH_OK){if(!WARNED){WARNED=true;toast('🔇 Ce navigateur ne sait pas lire à voix haute. Ouvre la page dans Chrome ou Safari.');}return;}
   try{
-    stopSpeak();const tok=speakTok;
-    list.forEach(function(it){
-      const txt=typeof it==='string'?it:it.t;const u=new SpeechSynthesisUtterance(String(txt).replace(/·/g,'').replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,''));
-      u.lang='fr-FR';u.rate=.92;const v=frVoice();if(v)u.voice=v;
-      speechSynthesis.speak(u);
-    });
+    const busy=speechSynthesis.speaking||speechSynthesis.pending;
+    speakTok++;const tok=speakTok;KEEP=[];
+    const run=function(){
+      if(tok!==speakTok)return;
+      try{speechSynthesis.resume();}catch(e){}
+      const v=frVoice();
+      list.forEach(function(it){
+        const u=new SpeechSynthesisUtterance(cleanTxt(typeof it==='string'?it:it.t));
+        u.lang='fr-FR';u.rate=.92;u.volume=1;if(v)u.voice=v;
+        u.onerror=function(ev){if(ev&&ev.error&&ev.error!=='canceled'&&ev.error!=='interrupted'&&!WARNED){WARNED=true;toast('🔇 Pas de son ? Vérifie le volume et le mode silencieux du téléphone.');}};
+        KEEP.push(u);
+        speechSynthesis.speak(u);
+      });
+    };
+    if(busy){speechSynthesis.cancel();setTimeout(run,150);}else run();
   }catch(e){}
 }
 function speak(t){speakAll([t]);}
@@ -325,8 +364,8 @@ function readPage(){const p=PETALS[cur];speakAll(['Pétale '+(cur+1)+' sur 7. '+
 
 /* ---------- INIT ---------- */
 (function init(){
-  const d=document.getElementById('deco');const cols=['#cbe1b6','#f5abaf','#b8aed7','#fdd5a5','#a4c2e7','#ebc6e0'];
-  for(let i=0;i<9;i++){const e=document.createElement('i');const sz=40+Math.random()*70;e.style.cssText='width:'+sz+'px;height:'+sz+'px;background:'+cols[i%cols.length]+';left:'+(Math.random()*95)+'%;top:'+(Math.random()*95)+'%;animation-delay:'+(-Math.random()*10)+'s;';d.appendChild(e);}
+  const d=document.getElementById('deco');const cols=['#b8aed7','#a4c2e7','#f8f4b8','#cbe1b6','#ebc6e0','#f5abaf','#f49f4c'];
+  for(let i=0;i<14;i++){const e=document.createElement('i');const w=16+Math.random()*16;e.style.cssText='width:'+w+'px;height:'+(w*1.5)+'px;background:'+cols[i%cols.length]+';left:'+(2+Math.random()*94)+'%;--dur:'+(18+Math.random()*14)+'s;--sx:'+(20+Math.random()*40)+'px;--r0:'+Math.round(Math.random()*360)+'deg;animation-delay:'+(-Math.random()*30)+'s;';d.appendChild(e);}
   document.getElementById('fl-hero').innerHTML=flower(PETALS.map(()=>1),{anim:true});
   document.getElementById('chips').innerHTML=PETALS.map(p=>'<span class="chip" style="background:'+p.color+'">'+p.emoji+' '+p.name+'</span>').join('');
 })();
@@ -335,7 +374,7 @@ function readPage(){const p=PETALS[cur];speakAll(['Pétale '+(cur+1)+' sur 7. '+
 function start(){
   const prenom=document.getElementById('i-prenom').value.trim(),age=document.getElementById('i-age').value;
   if(!prenom||!age){toast('Merci de renseigner le prénom et la tranche d\'âge !');return;}
-  sfx('start');
+  unlockSpeech();sfx('start');
   AUTO=!!document.getElementById('i-auto').checked;
   info={prenom:prenom,age:age,code:''};
   if(!IS_E){const c=document.getElementById('i-code');info.code=c?c.value.trim().toUpperCase():'';
@@ -400,8 +439,97 @@ function next(){
 }
 
 /* ---------- CODE ENFANT ---------- */
-function parseCode(c){const m=/^QVE-(\d{1,3})-(\d{1,3})-(\d{1,3})-(\d{1,3})-(\d{1,3})-(\d{1,3})-(\d{1,3})$/.exec(c);return m?m.slice(1).map(Number):null;}
+function normCode(c){return String(c||'').trim().toUpperCase().replace(/[-‐-―−\s_]+/g,'-');}
+function parseCode(c,pref){pref=pref||'QVE';const m=normCode(c).split('-');if(m.length!==8||m[0]!==pref)return null;const n=m.slice(1).map(x=>/^\d{1,3}$/.test(x)?Number(x):NaN);return n.some(x=>isNaN(x)||x>100)?null:n;}
 function copyCode(c){try{navigator.clipboard.writeText(c);toast('Code copié ✨');}catch(e){toast('Recopie le code à la main 😉');}}
+
+/* ---------- REGARDS CROISÉS ENFANT / PARENT ---------- */
+const CROSS_Q=[
+ "Dans ta journée, quel moment te paraît le plus compliqué ? Et le plus facile ?",
+ "Quand tu as une grosse émotion, qu'est-ce qui t'aide le plus ? Et que pourrais-je faire pour t'aider ?",
+ "Qu'est-ce que tu aimerais découvrir ou mieux comprendre en ce moment ?",
+ "Vers qui as-tu envie d'aller quand quelque chose ne va pas ?",
+ "Y a-t-il une règle à la maison dont on pourrait reparler ensemble ?",
+ "À quels moments te sens-tu plein d'énergie ? Et fatigué ?",
+ "De quoi es-tu le plus fier en ce moment ?"
+];
+const KM={
+ shine:{t:"✨ Vous brillez ensemble",c:"#cbe1b6"},
+ need:{t:"💧 Vous êtes d'accord : ce pétale a besoin d'eau",c:"#f8f4b8"},
+ low:{t:"🪞 Regards différents : l'enfant le vit plus difficilement",c:"#fdd5a5"},
+ high:{t:"🪞 Regards différents : l'enfant se sent mieux que vous ne le pensez",c:"#fdd5a5"},
+ near:{t:"🤝 Regards proches",c:"#eeeeee"}
+};
+const OPEN={
+ shine:["« Qu'est-ce qui fait que ça se passe bien pour toi sur ce pétale ? »","« Qu'est-ce qu'on fait déjà et qu'on a envie de garder ? »"],
+ need:["« Sur celui-là, on dirait qu'on ressent la même chose. Qu'est-ce qui serait le plus utile ? »","« Quel tout petit pas pourrait-on essayer ensemble cette semaine ? »"],
+ low:["« Moi, je le voyais plutôt comme ça. Et toi, comment tu le vis ? Je t'écoute. »","« Raconte-moi un moment récent où c'était difficile. »","« Qu'est-ce qui t'aiderait ? Que pourrais-je faire autrement ? »"],
+ high:["« J'avais un petit doute là-dessus, mais toi tu as l'air de bien le vivre. Qu'est-ce qui t'aide ? »","« Qu'est-ce qui marche bien pour toi, que je ne vois pas toujours ? »"]
+};
+const NOTE={
+ shine:"Dire ce qui va bien met en confiance : c'est le meilleur moyen d'ouvrir la discussion.",
+ need:"Quand on est d'accord sur ce qui manque, il est plus facile d'avancer ensemble.",
+ low:"Pour vous, parent : cet écart ne dit pas que vous vous trompez. Il montre que, vu de l'intérieur, ce n'est pas la même vue. Écoutez d'abord, sans corriger ni expliquer.",
+ high:"Pour vous, parent : c'est plutôt une bonne nouvelle, et une invitation à demander plutôt qu'à deviner. Restez curieux, sans mettre votre enfant à l'épreuve."
+};
+function crossRow(r,detail){
+  const m=KM[r.k];
+  let h='<div class="xrow"><div style="display:flex;gap:10px;align-items:center"><div style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;background:'+r.p.color+'">'+r.p.emoji+'</div><div style="flex:1;min-width:0;font-weight:700;font-size:14px;line-height:1.3">'+r.p.name+'</div></div>'
+   +'<div class="bar"><div style="width:'+r.e+'%;background:'+r.p.color+'"></div></div><div class="bar bar2"><div style="width:'+r.pa+'%;background:#222"></div></div>'
+   +'<div class="legend"><span class="d" style="background:'+r.p.color+'"></span>Enfant '+r.e+' <span class="d" style="background:#222;margin-left:8px"></span>Parent '+r.pa+'</div>'
+   +'<span class="xtag" style="background:'+m.c+'">'+m.t+'</span>';
+  if(detail){
+    h+='<div class="xnote">'+NOTE[r.k]+'</div>';
+    (OPEN[r.k]||[]).forEach(function(q){h+='<div class="xq">'+q+'</div>';});
+    h+='<div class="xq">💬 Une question curieuse : « '+CROSS_Q[r.i]+' »</div>';
+  }
+  return h+'</div>';
+}
+function crossView(nom,E,P){
+  const avg=a=>Math.round(a.reduce((x,y)=>x+y,0)/a.length);
+  const rows=PETALS.map(function(p,i){
+    const e=E[i],pa=P[i],d=pa-e;let k='near';
+    if(Math.abs(d)>=25)k=d>0?'low':'high';
+    else if(e>=65&&pa>=65)k='shine';
+    else if(e<50&&pa<50)k='need';
+    return {p:p,i:i,e:e,pa:pa,ad:Math.abs(d),k:k,m:Math.min(e,pa),a:(e+pa)/2};
+  });
+  const div=rows.filter(r=>r.k==='low'||r.k==='high').sort((a,b)=>b.ad-a.ad);
+  const need=rows.filter(r=>r.k==='need').sort((a,b)=>a.a-b.a);
+  const shine=rows.filter(r=>r.k==='shine').sort((a,b)=>b.m-a.m);
+  const near=rows.filter(r=>r.k==='near');
+  const focus=div[0]||need[0]||rows.slice().sort((a,b)=>a.a-b.a)[0];
+  const start=shine.concat(near).filter(r=>r!==focus).sort((a,b)=>b.m-a.m)[0]||null;
+  const nd=div.length;
+  const msg=nd===0?"Vos regards sont proches sur les 7 pétales. Belle complicité : prenez le temps de la célébrer !":nd+" pétale"+(nd>1?"s":"")+" où vos regards diffèrent. C'est une belle occasion de vous parler, sans chercher qui a raison.";
+  let h='<div class="rhero"><h2 class="t">🪞 Nos deux fleurs</h2><p>'+msg+'</p></div>';
+  h+='<div class="duo"><div><div class="flower" aria-hidden="true">'+flower(E.map(v=>v/100),{anim:true})+'</div>🌈 L\'enfant · '+avg(E)+'/100</div><div><div class="flower" aria-hidden="true">'+flower(P.map(v=>v/100),{anim:true})+'</div>🏠 Le parent · '+avg(P)+'/100</div></div>';
+  h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🗝️ Par où commencer ?</h3>';
+  if(start)h+='<div class="act"><div class="n">1</div><div>Ouvrez avec un pétale qui va bien : <b>'+start.p.emoji+' '+start.p.name+'</b>. Dire ce qui brille met en confiance.</div></div>';
+  h+='<div class="act"><div class="n">'+(start?2:1)+'</div><div>'+(nd?'Puis un seul pétale à la fois, en commençant par celui où l\'écart est le plus grand : ':'Puis, si vous le souhaitez, un pétale à faire grandir ensemble : ')+'<b>'+focus.p.emoji+' '+focus.p.name+'</b>.</div></div>';
+  h+='<p style="margin-top:12px"><b>Les règles du jeu</b></p>'
+   +'<div class="act"><div class="n">•</div><div>Choisissez un moment calme (pas pendant les devoirs, au coucher ou en pleine dispute). 10 minutes suffisent.</div></div>'
+   +'<div class="act"><div class="n">•</div><div>Quand l\'enfant parle : écoutez, reformulez (« Si je comprends bien… »), remerciez. Pas de « mais », pas de justification.</div></div>'
+   +'<div class="act"><div class="n">•</div><div>L\'enfant a le droit de ne pas répondre : « On y reviendra si tu veux. »</div></div>'
+   +'<div class="act"><div class="n">•</div><div>Terminez par un petit pas choisi à deux, et décidez quand vous en reparlez.</div></div></div>';
+  const detail=div.concat(need,shine);
+  if(detail.length){h+='<h3 class="t" style="font-size:22px;margin:18px 0 10px">💬 Pour ouvrir la discussion</h3>'+detail.map(r=>crossRow(r,true)).join('');}
+  if(near.length){h+='<h3 class="t" style="font-size:20px;margin:18px 0 10px">🤝 Là où vous êtes proches</h3>'+near.map(r=>crossRow(r,false)).join('');}
+  h+='<div class="box" style="background:'+focus.p.color+'"><h3 class="t">🌱 Un petit pas à deux : '+focus.p.emoji+' '+focus.p.name+'</h3><p>Choisissez UNE idée ensemble, et décidez quand vous en reparlez.</p>'
+   +focus.p.actions.map((a,i)=>'<div class="act"><div class="n">'+(i+1)+'</div><div>'+esc(a)+'</div></div>').join('')
+   +'<div class="act"><div class="n">★</div><div><b>Pour l\'enfant :</b> '+esc(focus.p.mission)+'</div></div></div>';
+  h+='<div class="note">Un écart n\'est pas une erreur : chacun voit une partie de la même réalité. Cet outil est un support de dialogue, pas un diagnostic. Si votre enfant exprime une souffrance importante, rapprochez-vous d\'un professionnel (médecin, psychologue, équipe éducative).</div>';
+  return h;
+}
+function openCompare(ce,pa){document.getElementById('c-e').value=ce||'';document.getElementById('c-p').value=pa||'';sfx('pop');go('p-cmp');}
+function compare(){
+  const E=parseCode(document.getElementById('c-e').value,'QVE'),P=parseCode(document.getElementById('c-p').value,'QVP');
+  if(!E){toast('Le code de l\'enfant (QVE-…) est manquant ou incorrect');return;}
+  if(!P){toast('Le code du parent (QVP-…) est manquant ou incorrect');return;}
+  const nom=esc(document.getElementById('c-n').value.trim());
+  document.getElementById('rc').innerHTML=crossView(nom,E,P)+'<div class="btn-row"><button class="btn sec" onclick="restart()">← Accueil</button></div>';
+  go('p-res');sfx('fanfare');
+}
 
 /* ---------- RÉSULTATS ---------- */
 function results(){stopSpeak();
@@ -420,7 +548,7 @@ function results(){stopSpeak();
     h+='<div class="box" style="background:'+low.p.color+'"><h3 class="t">💧 Ma mission de la semaine</h3><p>Mon pétale « <b>'+low.p.name+'</b> » a envie d\'être arrosé.</p><div class="act"><div class="n">★</div><div>'+esc(low.p.mission)+'</div></div></div>';
     h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🔑 Mon code secret</h3><p>Montre ta fleur à un adulte de confiance. Si il ou elle veut, il pourra utiliser ce code pour voir comment il voit les choses de son côté.</p><div class="code">'+code+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+code+'\')">📋 Copier mon code</button></div></div>';
     h+='<div class="note">Ce petit jeu aide à parler de ce qui va bien et de ce qu\'on peut améliorer. Ce n\'est pas un test ni une note. Si quelque chose te pèse, parles-en à un adulte en qui tu as confiance.</div>';
-    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">👨‍👩‍👧 Pour l\'adulte qui accompagne</h3><p>Vous pouvez maintenant remplir le miroir parent et saisir le code ci-dessus pour comparer vos regards.</p><div style="text-align:center;margin-top:12px"><button class="btn" onclick="choose(\'parent\')">Passer au miroir parent →</button></div></div>';
+    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">👨‍👩‍👧 Pour l\'adulte qui accompagne</h3><p>Vous pouvez maintenant remplir le miroir parent et saisir le code ci-dessus pour comparer vos regards.</p><div style="text-align:center;margin-top:12px"><button class="btn" onclick="choose(\'parent\')">Passer au miroir parent →</button><br><br><button class="btn sec" onclick="openCompare(\''+code+'\',\'\')">🪞 Le parent a déjà sa fleur : comparer</button></div></div>';
     h+='<div class="btn-row"><button class="btn sec" onclick="restart()">↺ Rejouer</button></div>';
   } else {
     const cc=info.code?parseCode(info.code):null;
@@ -428,11 +556,10 @@ function results(){stopSpeak();
     const msg=glob>=70?nom+' semble bien s\'épanouir dans l\'ensemble.':glob>=45?'De beaux pétales à renforcer ensemble.':'Il y a de belles pistes à explorer ensemble, pas à pas.';
     h+='<div class="rhero"><h2 class="t">'+emo+' La fleur de '+nom+'</h2><p>'+msg+'</p><div class="t" style="font-size:54px;margin-top:8px">'+glob+'<span style="font-size:22px">/100</span></div><div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.6">Indice QVE global (regard du parent)</div></div>'+fl;
     h+='<div class="rl">'+sorted.slice().reverse().map(x=>rcard(x,true,cc)).join('')+'</div>';
-    if(cc){
-      const gaps=sc.map((x,i)=>({p:x.p,d:Math.abs(x.s-cc[i]),e:cc[i],pa:x.s})).filter(g=>g.d>=25).sort((a,b)=>b.d-a.d);
-      h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🪞 Regards croisés</h3>'
-        +(gaps.length?'<p>Sur certains pétales, '+nom+' et vous ne voyez pas tout à fait la même chose. C\'est normal, et très précieux pour se parler :</p>'+gaps.map(g=>'<div class="act"><div class="n">'+g.p.emoji+'</div><div><b>'+g.p.name+'</b><br>Enfant : '+g.e+' · Parent : '+g.pa+'<br><i>Idée pour en parler : « Raconte-moi comment tu vis ça, moi je le vois comme ça… »</i></div></div>').join('')
-        :'<p>Vos regards sont plutôt proches sur les 7 pétales. Belle complicité !</p>')+'</div>';
+    if(cc){h+=crossView(nom,cc,sc.map(x=>x.s));}
+    else{
+      const pcode='QVP-'+sc.map(x=>x.s).join('-');
+      h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🪞 Et si on comparait nos regards ?</h3><p>Quand votre enfant aura fait sa fleur, vous pourrez voir ensemble où vos regards se rejoignent ou diffèrent, et ouvrir la discussion. Gardez votre code :</p><div class="code">'+pcode+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+pcode+'\')">📋 Copier mon code</button><br><br><button class="btn sec" onclick="openCompare(\'\',\''+pcode+'\')">🪞 Mon enfant a déjà sa fleur : comparer</button></div></div>';
     }
     const pr=low;
     h+='<div class="box" style="background:'+pr.p.color+'"><h3 class="t">🎯 Pétale à arroser en premier : '+pr.p.emoji+' '+pr.p.name+'</h3><p>3 pistes concrètes pour les 2 prochaines semaines :</p>'+pr.p.actions.map((a,i)=>'<div class="act"><div class="n">'+(i+1)+'</div><div>'+esc(a)+'</div></div>').join('')+'</div>';
