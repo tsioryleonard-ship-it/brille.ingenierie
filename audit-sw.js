@@ -1,7 +1,7 @@
 /* Service worker de l'auto-audit QVE : permet l'ouverture hors connexion.
    Il ne touche qu'aux fichiers de l'auto-audit, pas aux autres pages du site. */
-var CACHE = 'brille-audit-qve-v1';
-var FILES = ['audit_qve.html', 'audit-manifest.webmanifest', 'audit-icon-192.png', 'audit-icon-512.png', 'audit-icon-180.png'];
+var CACHE = 'brille-audit-qve-v2';
+var FILES = ['audit_qve.html', 'audit-manifest.webmanifest', 'audit-icon-192.png', 'audit-icon-512.png', 'audit-icon-180.png','audit-icon-maskable-512.png'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
