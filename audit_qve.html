@@ -245,6 +245,7 @@ html,body{min-height:100vh;min-height:100dvh;}
   #p-q.active{max-width:820px;margin:0 auto;width:100%;}
   #p-info.active,#p-cmp.active{max-width:720px;margin:0 auto;width:100%;}
 }
+.lock{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.65);border-radius:16px;padding:12px 14px;margin-top:10px;font-size:14px;line-height:1.5}.lock .lk{font-size:26px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -260,9 +261,9 @@ html,body{min-height:100vh;min-height:100dvh;}
     <div class="hero">
       <div class="flower flower-hero" id="fl-hero" aria-hidden="true"></div>
       <h1 class="t">La fleur QVE</h1>
-      <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Les deux fleurs peuvent ensuite se comparer !</p>
+      <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Une petite fleur pour faire le point en quelques minutes !</p>
       <div class="chips" id="chips"></div>
-      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button><button class="btn big" style="background:var(--lilas);color:#111" onclick="openCompare('','')">🪞 Comparer nos deux fleurs<small>L'enfant et le parent ont chacun la leur</small></button></div>
+      <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button></div>
       <div class="install" id="install-box"><button class="btn" onclick="installApp()">📲 Installer sur mon téléphone</button><div class="help" id="install-help"></div></div>
     </div>
   </div>
@@ -278,27 +279,13 @@ html,body{min-height:100vh;min-height:100dvh;}
           <select id="i-age"><option value="">-- Choisir --</option><option value="6-7">🌱 6–7 ans</option><option value="8-9">🌿 8–9 ans</option><option value="10-12">🌳 10–12 ans</option></select>
         </div>
       </div>
-      <div class="fg" id="code-wrap" style="display:none"><label>Code de l'enfant (facultatif)</label><input id="i-code" type="text" placeholder="QVE-xx-xx-xx-xx-xx-xx-xx" autocomplete="off"><div style="font-size:12px;color:var(--gris);margin-top:6px;line-height:1.6">Si votre enfant a fait sa fleur, saisissez son code pour comparer vos regards.</div></div>
+      
       <label class="autoread"><input type="checkbox" id="i-auto"> 🔊 Mode audio : lire les questions à voix haute</label>
       <div class="tip" id="inf-tip"></div>
     </div>
     <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="start()">C'est parti ! →</button></div>
   </div>
 
-  <!-- COMPARAISON -->
-  <div class="page" id="p-cmp">
-    <div class="card">
-      <h2 class="t">Comparer nos deux fleurs</h2>
-      <p class="s">À faire ensemble, au calme. Chaque parcours se termine par un code : collez ici celui de l'enfant et celui du parent pour ouvrir la discussion.</p>
-      <div class="fg"><label>Prénom de l'enfant (facultatif)</label><input id="c-n" type="text" placeholder="Ex : Emma" autocomplete="off"></div>
-      <div class="fg"><label>Code de l'enfant</label><input id="c-e" type="text" placeholder="QVE-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
-      <div class="fg"><label>Code du parent</label><input id="c-p" type="text" placeholder="QVP-xx-xx-xx-xx-xx-xx-xx" autocomplete="off" autocapitalize="characters"></div>
-      <div class="tip">💡 Les codes ne contiennent que des scores (pas de prénom) et la comparaison se fait sur votre appareil : rien n'est envoyé.</div>
-    </div>
-    <div class="btn-row"><button class="btn sec" onclick="go('p-home')">← Retour</button><button class="btn" onclick="compare()">🪞 Comparer →</button></div>
-  </div>
-
-  <!-- QUESTIONS -->
   <div class="page" id="p-q">
     <div class="prog">
       <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
@@ -361,7 +348,7 @@ const SC_P=[{v:1,e:"😰",l:"Pas du tout"},{v:2,e:"😟",l:"Rarement"},{v:3,e:"�
 
 let IS_E=true;
 const TXT={enfant:{t:'On se présente ?',s:'Dis-nous qui tu es pour fabriquer ta fleur.',n:'Ton prénom',a:'Ton âge',tip:'💡 Pense à <strong>ces dernières semaines</strong> et réponds avec ce que tu ressens vraiment. Le bouton 🔊 lit la question à voix haute.'},parent:{t:'Avant de commencer',s:'Quelques informations pour personnaliser vos résultats.',n:'Prénom de l\'enfant',a:'Âge de l\'enfant',tip:'💡 Répondez en pensant aux <strong>4 dernières semaines</strong>. Il s\'agit de votre ressenti : il n\'y a pas de bonne réponse.'}};
-function choose(m){unlockSpeech();sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;document.getElementById('code-wrap').style.display=IS_E?'none':'block';go('p-info');}
+function choose(m){unlockSpeech();sfx('pop');MODE=m;IS_E=m==='enfant';const x=TXT[m];document.getElementById('inf-title').textContent=x.t;document.getElementById('inf-sub').textContent=x.s;document.getElementById('lbl-name').textContent=x.n;document.getElementById('lbl-age').textContent=x.a;document.getElementById('inf-tip').innerHTML=x.tip;go('p-info');}
 try{speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){};}catch(e){}
 let info={},ans={},cur=0,items=[];
 
@@ -646,37 +633,42 @@ function results(){stopSpeak();
   const fl='<div class="flower flower-res" aria-hidden="true">'+flower(sc.map(x=>x.s/100),{anim:true})+'</div>';
   let h='';
   if(IS_E){
-    const code='QVE-'+sc.map(x=>x.s).join('-');
     h+='<div class="rhero"><h2 class="t">🌸 La fleur de '+nom+' !</h2><p>Plus un pétale est grand, plus il brille en ce moment. Bravo d\'avoir répondu avec ton cœur !</p></div>'+fl;
     h+='<div class="rl">'+sorted.slice().reverse().map(x=>rcard(x,false)).join('')+'</div>';
     h+='<div class="box" style="background:'+top[0].p.color+'"><h3 class="t">✨ Mes pétales qui brillent le plus</h3><p>'+top.map(x=>x.p.emoji+' <b>'+x.p.name+'</b>').join('<br>')+'<br><br>Continue comme ça, tu peux être fier·ère de toi !</p></div>';
-    h+='<div class="box" style="background:'+low.p.color+'"><h3 class="t">💧 Ma mission de la semaine</h3><p>Mon pétale « <b>'+low.p.name+'</b> » a envie d\'être arrosé.</p><div class="act"><div class="n">★</div><div>'+esc(low.p.mission)+'</div></div></div>';
-    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🔑 Mon code secret</h3><p>Montre ta fleur à un adulte de confiance. Si il ou elle veut, il pourra utiliser ce code pour voir comment il voit les choses de son côté.</p><div class="code">'+code+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+code+'\')">📋 Copier mon code</button></div></div>';
+    h+=TEASE(low,true);
     h+='<div class="note">Ce petit jeu aide à parler de ce qui va bien et de ce qu\'on peut améliorer. Ce n\'est pas un test ni une note. Si quelque chose te pèse, parles-en à un adulte en qui tu as confiance.</div>';
-    h+='<div class="box" style="background:var(--jaune)"><h3 class="t">👨‍👩‍👧 Pour l\'adulte qui accompagne</h3><p>Vous pouvez maintenant remplir le miroir parent et saisir le code ci-dessus pour comparer vos regards.</p><div style="text-align:center;margin-top:12px"><button class="btn" onclick="choose(\'parent\')">Passer au miroir parent →</button><br><br><button class="btn sec" onclick="openCompare(\''+code+'\',\'\')">🪞 Le parent a déjà sa fleur : comparer</button></div></div>';
+    h+=CTA(true);
     h+='<div class="btn-row"><button class="btn sec" onclick="restart()">↺ Rejouer</button></div>';
   } else {
-    const cc=info.code?parseCode(info.code):null;
+    const cc=null;
     const emo=glob>=70?'🌟':glob>=45?'🌱':'💪';
     const msg=glob>=70?nom+' semble bien s\'épanouir dans l\'ensemble.':glob>=45?'De beaux pétales à renforcer ensemble.':'Il y a de belles pistes à explorer ensemble, pas à pas.';
     h+='<div class="rhero"><h2 class="t">'+emo+' La fleur de '+nom+'</h2><p>'+msg+'</p><div class="t" style="font-size:54px;margin-top:8px">'+glob+'<span style="font-size:22px">/100</span></div><div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.6">Indice QVE global (regard du parent)</div></div>'+fl;
     h+='<div class="rl">'+sorted.slice().reverse().map(x=>rcard(x,true,cc)).join('')+'</div>';
-    if(cc){h+=crossView(nom,cc,sc.map(x=>x.s));}
-    else{
-      const pcode='QVP-'+sc.map(x=>x.s).join('-');
-      h+='<div class="box" style="background:var(--jaune)"><h3 class="t">🪞 Et si on comparait nos regards ?</h3><p>Quand votre enfant aura fait sa fleur, vous pourrez voir ensemble où vos regards se rejoignent ou diffèrent, et ouvrir la discussion. Gardez votre code :</p><div class="code">'+pcode+'</div><div style="text-align:center"><button class="btn" onclick="copyCode(\''+pcode+'\')">📋 Copier mon code</button><br><br><button class="btn sec" onclick="openCompare(\'\',\''+pcode+'\')">🪞 Mon enfant a déjà sa fleur : comparer</button></div></div>';
-    }
-    const pr=low;
-    h+='<div class="box" style="background:'+pr.p.color+'"><h3 class="t">🎯 Pétale à arroser en premier : '+pr.p.emoji+' '+pr.p.name+'</h3><p>3 pistes concrètes pour les 2 prochaines semaines :</p>'+pr.p.actions.map((a,i)=>'<div class="act"><div class="n">'+(i+1)+'</div><div>'+esc(a)+'</div></div>').join('')+'</div>';
+    h+=TEASE(low,false);
     h+='<div class="box" style="background:var(--vert)"><h3 class="t">✨ Pétales à célébrer</h3><p>'+top.map(x=>x.p.emoji+' <b>'+x.p.name+'</b> ('+x.s+'/100)').join('<br>')+'</p></div>';
-    const subj=encodeURIComponent('Etre prévenu·e - pétale '+pr.p.name);
-    h+='<div class="box" style="background:linear-gradient(135deg,var(--peche),var(--lilas))"><h3 class="t">🌱 Et si on le faisait ensemble, au quotidien ?</h3><p>Savoir quoi faire, c\'est une première étape. Le faire chaque jour, c\'est une autre histoire ! Brille prépare un outil à utiliser à la maison, parent et enfant ensemble, pour aider le pétale « <b>'+pr.p.name+'</b> » à grandir en quelques minutes par jour.</p><p style="margin-top:8px">Il n\'est pas encore ouvert. Écrivez-nous pour être prévenu·e en priorité, ou pour découvrir nos ateliers parent-enfant en centre social.</p><div style="text-align:center;margin-top:14px"><a class="btn" style="display:inline-block;text-decoration:none" href="mailto:tsioryleonard@gmail.com?subject='+subj+'">🔔 Être prévenu·e de l\'ouverture</a></div></div>';
-    h+='<div class="note">Cet outil est un support de réflexion et de dialogue ; ce n\'est pas un diagnostic. En cas d\'inquiétude, rapprochez-vous d\'un professionnel (médecin, psychologue, équipe éducative).</div>';
+    h+=CTA(false);
+    h+='<div class="note">Cet aperçu est un support de réflexion ; ce n\'est pas un diagnostic. En cas d\'inquiétude, rapprochez-vous d\'un professionnel (médecin, psychologue, équipe éducative).</div>';
     h+='<div class="btn-row"><button class="btn sec" onclick="restart()">↺ Refaire l\'audit</button></div>';
   }
   document.getElementById('rc').innerHTML=h;
   go('p-res');sfx('fanfare');for(let i=0;i<7;i++)setTimeout(()=>sfx('petal',i),700+i*120);setTimeout(()=>{for(let i=0;i<14;i++)setTimeout(()=>{const d=document.createElement('div');d.className='particle';d.textContent=['✨','⭐','🌟','💫','🌸','🎉'][i%6];d.style.left=(10+Math.random()*80)+'vw';d.style.top=(10+Math.random()*50)+'vh';const a=Math.random()*6.28,r=70+Math.random()*50;d.style.setProperty('--tx',Math.cos(a)*r+'px');d.style.setProperty('--ty',Math.sin(a)*r+'px');document.body.appendChild(d);setTimeout(()=>d.remove(),950);},i*60);},300);
   sendToSheet(sc,glob);
+}
+
+
+function TEASE(x,kid){
+  const p=x.p;
+  return '<div class="box" style="background:'+p.color+'"><h3 class="t">💧 '+(kid?'Un pétale a envie d\'être arrosé':'Le pétale à arroser en premier')+'</h3><p style="font-size:1.15em">'+p.emoji+' <b>'+p.name+'</b></p>'
+   +'<div class="lock"><div class="lk">🔒</div><div>'+(kid?'Sa mission, des jeux et des petits défis t\'attendent dans <b>Étincelle</b>.':'Les pistes concrètes, les jeux à faire avec votre enfant et la suite pas à pas vous attendent dans <b>Étincelle</b>, l\'application BRILLE.')+'</div></div></div>';
+}
+function CTA(kid){
+  const subj=encodeURIComponent('Étincelle - je veux découvrir');
+  return '<div class="box" style="background:linear-gradient(135deg,var(--peche),var(--lilas))"><h3 class="t">✨ Et si on allait plus loin ?</h3>'
+   +'<p>Cette fleur n\'est que le début. <b>Étincelle</b>, l\'application BRILLE, prolonge ce moment à la maison : chaque pétale devient un chemin, avec des activités à vivre '+(kid?'avec ton parent':'avec votre enfant')+', quelques minutes à la fois.</p>'
+   +'<div class="lock"><div class="lk">🌸</div><div>Les 7 pétales se déverrouillent un à un, au rythme de la famille.</div></div>'
+   +'<div style="text-align:center;margin-top:14px"><a class="btn" style="display:inline-block;text-decoration:none" href="mailto:tsioryleonard@gmail.com?subject='+subj+'">✨ Découvrir Étincelle</a></div></div>';
 }
 
 function rcard(x,parent,cc){
