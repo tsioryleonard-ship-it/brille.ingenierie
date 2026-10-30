@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto-Audit QVE — Brille</title>
+<link rel="manifest" href="audit-manifest.webmanifest">
+<meta name="theme-color" content="#f49f4c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Audit QVE">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="audit-icon-192.png">
+<link rel="apple-touch-icon" href="audit-icon-180.png">
 <link href="https://fonts.googleapis.com/css2?family=Gruppo&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -161,6 +169,9 @@ strong,b{font-weight:600;}
 .xtag{display:inline-block;border-radius:20px;padding:3px 11px;font-size:12px;font-weight:700;margin:8px 0 2px}
 .xq{background:#fff7ec;border-left:4px solid var(--orange);border-radius:10px;padding:9px 12px;font-size:13.5px;line-height:1.6;margin-top:8px;font-weight:400}
 .xnote{font-size:12.5px;color:var(--gris);line-height:1.65;margin-top:8px}
+.install{max-width:340px;margin:20px auto 0;text-align:center;display:none;}
+.install .btn{background:#fff;color:#222;border:2px solid var(--orange);font-size:14px;padding:12px 22px;}
+.install .help{display:none;background:var(--jaune);border-radius:16px;padding:12px 16px;font-size:13px;line-height:1.7;margin-top:10px;text-align:left;}
 </style>
 </head>
 <body>
@@ -179,6 +190,7 @@ strong,b{font-weight:600;}
       <p>Les 7 pétales de la qualité de vie de l'enfant. Choisis ton parcours : l'enfant répond avec son cœur, le parent avec son regard. Les deux fleurs peuvent ensuite se comparer !</p>
       <div class="chips" id="chips"></div>
       <div class="choice"><button class="btn big" style="background:var(--ciel);color:#111" onclick="choose('enfant')">🌈 Je suis un enfant<small>La fleur de mes pétales</small></button><button class="btn big" style="background:var(--orange)" onclick="choose('parent')">🏠 Je suis un parent<small>Le miroir parent</small></button><button class="btn big" style="background:var(--lilas);color:#111" onclick="openCompare('','')">🪞 Comparer nos deux fleurs<small>L'enfant et le parent ont chacun la leur</small></button></div>
+      <div class="install" id="install-box"><button class="btn" onclick="installApp()">📲 Installer sur mon téléphone</button><div class="help" id="install-help"></div></div>
     </div>
   </div>
 
@@ -361,6 +373,26 @@ function speakAll(list){
 function speak(t){speakAll([t]);}
 function speakQ(pi,qi){speakAll([PETALS[pi].qp[qi]]);}
 function readPage(){const p=PETALS[cur];speakAll(['Pétale '+(cur+1)+' sur 7. '+p.name+'. '+p.sub+'.','Répondez de 1, pas du tout, à 5, toujours.'].concat(p.qp.map((q,i)=>'Question '+(i+1)+'. '+q+'.')));}
+
+/* ---------- APPLICATION INSTALLABLE (PWA) ---------- */
+let DEFERRED=null;
+function isStandalone(){return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)||window.navigator.standalone===true;}
+function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);}
+function showInstall(){const b=document.getElementById('install-box');if(b&&!isStandalone())b.style.display='block';}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFERRED=e;showInstall();});
+window.addEventListener('appinstalled',function(){DEFERRED=null;const b=document.getElementById('install-box');if(b)b.style.display='none';toast('✨ Application installée !');});
+function installApp(){
+  if(DEFERRED){DEFERRED.prompt();DEFERRED.userChoice.then(function(){DEFERRED=null;});return;}
+  const h=document.getElementById('install-help');
+  h.innerHTML=isIOS()
+    ?'<b>Sur iPhone / iPad (avec Safari) :</b><br>1. Touche le bouton <b>Partager</b> (le carré avec une flèche).<br>2. Choisis <b>« Sur l\'écran d\'accueil »</b>.<br>3. Valide avec <b>Ajouter</b>.'
+    :'<b>Sur Android (avec Chrome) :</b><br>1. Ouvre le menu <b>⋮</b> du navigateur.<br>2. Choisis <b>« Installer l\'application »</b> ou <b>« Ajouter à l\'écran d\'accueil »</b>.<br><br><i>Si tu as ouvert le lien depuis Instagram, Facebook ou WhatsApp, ouvre-le d\'abord dans Chrome ou Safari.</i>';
+  h.style.display='block';
+}
+window.addEventListener('load',function(){
+  if(!isStandalone())showInstall();
+  if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){navigator.serviceWorker.register('audit-sw.js').catch(function(){});}
+});
 
 /* ---------- INIT ---------- */
 (function init(){

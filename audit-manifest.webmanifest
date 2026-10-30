@@ -1,0 +1,17 @@
+{
+  "name": "Auto-audit QVE · BRILLE",
+  "short_name": "Audit QVE",
+  "description": "La Fleur QVE : l'enfant et le parent font le point sur les 7 pétales, puis comparent leurs regards pour se parler.",
+  "lang": "fr",
+  "start_url": "./audit_qve.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#f49f4c",
+  "icons": [
+    { "src": "audit-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "audit-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "audit-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
