@@ -15,7 +15,7 @@
 
   /* ---------- Stockage local (avec solution de repli si le téléphone le bloque) ---------- */
   let memoire = null;
-  const vide = () => ({ v: 1, mode: 'parent', bilans: {}, enfant: {}, defisFaits: {}, ensembleFaits: {} });
+  const vide = () => ({ v: 1, mode: 'parent', bilans: {}, enfant: {}, defisFaits: {}, ensembleFaits: {}, parcours: {} });
   const charger = () => {
     if (memoire) return memoire;
     try { const brut = localStorage.getItem(CLE); memoire = brut ? Object.assign(vide(), JSON.parse(brut)) : vide(); }
@@ -42,17 +42,49 @@
     D.petales = D.vitrine.map(v => Object.assign({}, v, D.details[v.id] || {}, { ouvert: ouverts.includes(v.id) && !!D.details[v.id] }));
     D.defis = D.petales.filter(p => p.ouvert).flatMap(p => p.defis || []).sort((a, b) => a.id.localeCompare(b.id));
   }
+  /* Protection : filigrane au nom de la famille + freins au copier-coller / à l'impression (dissuasion : une capture d'écran reste possible) */
+  const xmlesc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[c]));
+  function appliquerProtection() {
+    const actif = !D.admin;
+    document.body.classList.toggle('protege', actif);
+    const ancien = document.getElementById('filigrane'); if (ancien) ancien.remove();
+    if (!actif) return;
+    const txt = `Accès : ${D.nom || 'famille accompagnée'} · BRILLE · usage personnel`;
+    const f = document.createElement('div'); f.id = 'filigrane'; f.setAttribute('aria-hidden', 'true');
+    const poser = police => {                          // la police Quicksand est embarquée dans l'image (une image SVG ne voit pas les polices de la page)
+      const css = police ? `<style>@font-face{font-family:'QS';src:url(data:font/woff2;base64,${police}) format('woff2');font-weight:600}</style>` : '';
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="240">${css}<text x="30" y="130" transform="rotate(-24 210 120)" font-family="${police ? "'QS', " : ''}Quicksand, sans-serif" font-size="17" font-weight="600" fill="#000" fill-opacity="0.085">${xmlesc(txt)}</text></svg>`;
+      f.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
+    };
+    poser('');
+    fetch('quicksand-latin-600-normal.woff2').then(r => r.arrayBuffer()).then(buf => {
+      let bin = ''; const u = new Uint8Array(buf); for (let i = 0; i < u.length; i += 8192) bin += String.fromCharCode.apply(null, u.subarray(i, i + 8192));
+      poser(btoa(bin));
+    }).catch(() => {});
+    document.body.appendChild(f);
+  }
+  const champSaisie = t => t && /^(INPUT|TEXTAREA)$/.test(t.tagName);
+  ['contextmenu', 'copy', 'cut', 'dragstart', 'selectstart'].forEach(ev => document.addEventListener(ev, e => {
+    if (document.body.classList.contains('protege') && !champSaisie(e.target)) e.preventDefault();
+  }));
   async function deverrouiller(code, exigerAdmin) {    // ouvre le contenu autorisé par ce code
     const r = await Acces.ouvrir(code, ACCES.acces, ACCES.contenuEnc);
     if (exigerAdmin && !r.admin) throw new Error('admin');
-    D.details = r.details; D.admin = r.admin; D.apercu = null;
+    if (r.fin && !r.admin && iso(new Date()) > r.fin) { const e = new Error('expire'); e.fin = r.fin; throw e; }
+    D.details = r.details; D.admin = r.admin; D.nom = r.nom; D.fin = r.admin ? '' : r.fin; D.apercu = null;
+    appliquerProtection();
     composer(Object.keys(r.details));
     try { localStorage.setItem(CLE_CODE, code); } catch { }
     return true;
   }
+  const dateLongue = d => { const [a, m, j] = d.split('-').map(Number); return `${String(j).padStart(2, '0')}/${String(m).padStart(2, '0')}/${a}`; };
+  const messageAcces = x => x && x.message === 'expire'
+    ? `Votre accès s'est terminé le ${dateLongue(x.fin)}. Pour le renouveler, écrivez à ${(D.config.contact || {}).email || 'BRILLE'}.`
+    : '';
   function verrouiller() {
     try { localStorage.removeItem(CLE_CODE); } catch { }
     D.petales = []; D.defis = []; D.details = {}; D.admin = false; D.apercu = null;
+    appliquerProtection();
     ecranCode();
   }
   function ecranCode(message, onglet) {
@@ -75,6 +107,7 @@
           <p class="erreur" id="erreur-code" role="alert">${esc(message || '')}</p>
           <button class="btn plein" type="submit" id="valider-code">Entrer</button>
         </form>
+        ${!ing && D.config.codeDecouverte ? '<button type="button" class="btn plein gris" id="decouverte" style="margin-top:10px">Découvrir un extrait gratuit</button>' : ''}
         ${ing ? '' : (achatActif() ? `<p class="petit">Vous ne passez pas par un centre social ? <button type="button" class="lien" id="voir-offres">Obtenir un accès</button></p>` : `<p class="petit">Vous n'avez pas encore de code ? Écrivez à <a href="mailto:${esc(c.email || '')}">${esc(c.email || '')}</a>.</p>`)}
       </div></section>`;
     $app.querySelector('#t-fam').addEventListener('click', () => ecranCode('', 'fam'));
@@ -86,10 +119,12 @@
       const code = champ.value.trim(); if (!code) { err.textContent = 'Saisissez votre code.'; return; }
       bt.disabled = true; bt.textContent = 'Vérification…'; err.textContent = '';
       try { await deverrouiller(code, ing); document.body.classList.remove('verrouille'); premiere = true; rendre(); }
-      catch (x) { if (x.message !== 'admin' && x.message !== 'code') console.error(x); err.textContent = x.message === 'admin' ? 'Ce code n\'ouvre pas l\'espace ingénieure.' : 'Ce code n\'est pas reconnu. Vérifiez-le, ou contactez BRILLE.'; bt.disabled = false; bt.textContent = 'Entrer'; }
+      catch (x) { if (x.message !== 'admin' && x.message !== 'code' && x.message !== 'expire') console.error(x); err.textContent = x.message === 'expire' ? messageAcces(x) : x.message === 'admin' ? 'Ce code n\'ouvre pas l\'espace ingénieure.' : 'Ce code n\'est pas reconnu. Vérifiez-le, ou contactez BRILLE.'; bt.disabled = false; bt.textContent = 'Entrer'; }
     });
+    const dec = $app.querySelector('#decouverte');
+    if (dec) dec.addEventListener('click', async () => { try { await deverrouiller(D.config.codeDecouverte); document.body.classList.remove('verrouille'); premiere = true; rendre(); } catch { err.textContent = 'L\'extrait gratuit n\'est pas disponible pour le moment.'; } });
     champ.addEventListener('input', () => {
-      const net = champ.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, ing ? 12 : 8);
+      const net = champ.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
       champ.value = net.replace(/(.{4})(?=.)/g, '$1-');
     });
     champ.focus({ preventScroll: true });
@@ -203,6 +238,7 @@
       ${motIngenieure()}
       <div class="hero-accueil">
         <img class="logo-etincelle" src="logo-etincelle.png" alt="" width="320" height="320">
+        <p class="accroche-aventure">L'aventure ${brilleColore} commence !</p>
         <span class="etiquette">La suite des ateliers</span>
         <h1>Étincelle</h1>
         <p>${esc(D.config.messageAccueil)}</p>
@@ -305,6 +341,8 @@
         <label class="coche"><input type="checkbox" id="fait" ${fait ? 'checked' : ''}> Nous l'avons fait ensemble</label>
       </div>` : ''}
 
+      ${p.parcours ? `<div class="carte parcours teinte" id="parcours" style="background:${p.couleur}">${parcoursHtml(p)}</div>` : ''}
+
       </div><div>
       <div class="carte" id="bilan">
         <h2>Notre bilan de la semaine</h2>
@@ -327,6 +365,183 @@
     </section>`;
   }
 
+  /* ---------- Parcours d'un mois (4 semaines, suivi dans le téléphone) ---------- */
+  const JOUR = 86400000;
+  const parcoursDe = id => { const S = charger(); S.parcours = S.parcours || {}; return S.parcours[id] || (S.parcours[id] = { debut: '', sem: {}, garde: '', fini: '', nb: 0 }); };
+  /* L'aventure BRILLE : un pétale par mois, dans cet ordre. Pour changer l'ordre, modifiez cette liste. */
+  const ORDRE = ['organisation', 'emotions', 'apprentissages', 'liens', 'droits', 'equilibre', 'briller'];
+  const parcoursFini = id => { const pc = (charger().parcours || {})[id]; return !!(pc && (pc.nb > 0 || pc.fini || Object.keys(pc.sem || {}).length === 4)); };
+  const petalesAventure = () => ORDRE.map(i => petale(i)).filter(q => q && q.ouvert && q.parcours);   // ceux que la famille peut vivre
+  function precedentAVivre(id) {                         // le pétale à terminer avant celui-ci (jamais pour l'accès ingénieure)
+    return null;                                       // pas de verrou entre pétales : chaque famille choisit son ordre
+  }
+  const semCourante = pc => { for (let n = 1; n <= 4; n++) if (!pc.sem[n]) return n; return 4; };
+  function parcoursHtml(p) {
+    const pr = p.parcours, pc = parcoursDe(p.id), faites = Object.keys(pc.sem).length, cur = semCourante(pc);
+    const garde = pr.garde || {};
+    const barre = `<div class="pc-barre" role="img" aria-label="${faites} semaine(s) sur 4 vécue(s)">${[1, 2, 3, 4].map(n => `<i class="${pc.sem[n] ? 'ok' : ''}"></i>`).join('')}</div>`;
+    const entete = `<span class="etiquette">Parcours d'un mois</span><h2>${esc(pr.titre)}</h2><p class="pc-intro">${esc(pr.intro)}</p>`;
+    const aventure = petalesAventure(), rang = aventure.findIndex(q => q.id === p.id) + 1, nbf = aventure.filter(q => parcoursFini(q.id)).length;
+    const cadre = aventure.length > 1 ? `<p class="pc-aventure">🗺️ Aventure BRILLE · ${nbf} pétale${nbf > 1 ? 's' : ''} terminé${nbf > 1 ? 's' : ''} sur ${aventure.length}</p>` : '';
+    if (!pc.debut) {
+      const avant = precedentAVivre(p.id);
+      if (avant) return `${entete}${cadre}<div class="pc-verrou-petale"><span class="pc-num" aria-hidden="true">🔒</span><p>Ce parcours s'ouvre quand vous aurez terminé le mois précédent de votre aventure : <b>« ${esc(avant.parcours.titre)} »</b> (pétale « ${esc(avant.titre)} »).</p></div><a class="btn plein" href="#/petale/${esc(avant.id)}">Aller au mois en cours</a>`;
+      return `${entete}${cadre}<p class="petit">4 semaines à vivre à deux, une mission par semaine. Une semaine s'ouvre quand la précédente a été vécue : prenez le temps qu'il faut, sans pression.</p><button type="button" class="btn plein" id="pc-debut">Commencer notre mois</button>`;
+    }
+    const sem = pr.semaines.map((w, i) => {
+      const n = i + 1, fait = pc.sem[n], ouverte = n === 1 || !!pc.sem[n - 1];
+      if (!ouverte) return `<div class="pc-sem verrou"><div class="pc-lock"><span class="pc-num" aria-hidden="true">🔒</span><span><b>Semaine ${n}</b> · ${esc(w.titre)}<br><small>Se débloque quand la semaine ${n - 1} est vécue ensemble</small></span></div></div>`;
+      return `<details class="pc-sem${fait ? ' fait' : ''}" data-n="${n}" ${n === cur && !fait ? 'open' : ''}>
+        <summary><span class="pc-num">${fait ? '✓' : n}</span><span><b>Semaine ${n}</b> · ${esc(w.titre)}${n === cur && !fait ? ' <em>(cette semaine)</em>' : ''}</span></summary>
+        <p class="pc-mission">${esc(w.mission)}</p>
+        ${fait ? '' : `<button type="button" class="btn plein pc-lancer" data-n="${n}">🎮 Lancer la mission <small>(${w.etapes.length} étapes)</small></button><p class="jeu-aide">Ou lisez les étapes, vivez-les à votre rythme, puis cochez la case.</p>`}
+        <ol class="etapes">${w.etapes.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+        <div class="parler"><b>Pour en parler ensuite</b><ul>${w.enParler.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        <label class="coche"><input type="checkbox" class="pc-fait" data-n="${n}" ${fait ? 'checked' : ''} ${pc.sem[n + 1] ? 'disabled' : ''}> Nous l'avons vécue ensemble</label>
+      </details>`;
+    }).join('');
+    const fini = faites === 4;
+    const souvenir = fini ? `<div class="pc-souvenir"><span class="etiquette">Notre carte souvenir 🏅</span>
+      <div class="pc-med"><img src="p-${esc(p.id)}.png" alt=""><div><b>${esc(pr.titre)}</b><br>Vécu ensemble du ${dateCourte(pc.debut)} au ${dateCourte(pc.fini || pc.debut)}${pc.nb > 1 ? ` · parcours n°${pc.nb}` : ''}</div></div>
+      ${pc.noms ? `<p class="pc-noms">${esc(pc.noms)}</p>` : ''}
+      <p>4 semaines pour vous retrouver, vous écouter et mieux vous comprendre. L'harmonie et l'épanouissement se vivent au quotidien : vous venez de le vivre ensemble.</p></div>
+      <div class="pc-impr"><button type="button" class="btn plein" id="pc-carte">🖨️ Imprimer mon pétale à coller</button>
+        <button type="button" class="btn" id="pc-affiche">🌸 Imprimer ma fleur d'aventure</button>
+        ${parcoursTermines().length > 1 ? '<button type="button" class="btn" id="pc-tous">🖨️ Tous mes pétales gagnés (1 feuille)</button>' : ''}
+        <p class="petit">La fleur d'aventure (A4) s'imprime une seule fois. À chaque parcours terminé, imprimez votre pétale : découpez-le et collez-le à sa place.</p></div>
+      <button type="button" class="btn gris" id="pc-reprendre">Recommencer un nouveau mois</button>` : '';
+    const rituel = fini || pc.garde ? `<div class="pc-garde"><span class="etiquette">Ce que nous gardons</span><h3>${esc(garde.titre || 'Notre rituel')}</h3>
+      <p>${esc(garde.idee || '')}</p>
+      <label for="pc-garde" class="aide">${esc(garde.invite || 'Notre rituel')}</label>
+      <textarea id="pc-garde" maxlength="300" placeholder="Écrivez-le avec votre enfant…">${esc(pc.garde)}</textarea>
+      ${fini ? `<label for="pc-noms" class="aide">Vos prénoms, pour la carte souvenir (facultatif)</label><input type="text" id="pc-noms" maxlength="60" value="${esc(pc.noms || '')}" placeholder="Ex. Sarah et Léo">` : ''}
+      <button type="button" class="btn" id="pc-enreg">Garder</button><p class="ok" id="pc-ok" role="status"></p></div>` : '';
+    return `${entete}${cadre}${barre}<p class="petit">${faites} semaine${faites > 1 ? 's' : ''} sur 4 · commencé le ${dateCourte(pc.debut)}</p>${sem}${souvenir}${rituel}`;
+  }
+  function lierParcours(id) {
+    const zone = $app.querySelector('#parcours'); if (!zone) return;
+    const p = petale(id);
+    const redessiner = () => { zone.innerHTML = parcoursHtml(p); lierParcours(id); };
+    const b = zone.querySelector('#pc-debut');
+    if (b) b.addEventListener('click', () => { if (precedentAVivre(id)) return; const pc = parcoursDe(id); pc.debut = iso(new Date()); sauver(); redessiner(); });
+    zone.querySelectorAll('.pc-fait').forEach(c => c.addEventListener('change', () => {
+      const pc = parcoursDe(id), n = c.dataset.n;
+      if (c.checked) pc.sem[n] = iso(new Date()); else delete pc.sem[n];
+      if (Object.keys(pc.sem).length === 4 && !pc.fini) { pc.fini = iso(new Date()); pc.nb = (pc.nb || 0) + 1; }
+      else if (Object.keys(pc.sem).length < 4) pc.fini = '';
+      sauver(); redessiner();
+    }));
+    const g = zone.querySelector('#pc-enreg');
+    if (g) g.addEventListener('click', () => {
+      const pc = parcoursDe(id);
+      pc.garde = zone.querySelector('#pc-garde').value.trim().slice(0, 300);
+      const nm = zone.querySelector('#pc-noms'); if (nm) pc.noms = nm.value.trim().slice(0, 60);
+      const ok = sauver();
+      if (nm) { redessiner(); const o = zone.querySelector('#pc-ok'); if (o) o.textContent = ok ? 'Gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.'; }
+      else zone.querySelector('#pc-ok').textContent = ok ? 'Rituel gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.';
+    });
+    const bc = zone.querySelector('#pc-carte'); if (bc) bc.addEventListener('click', () => ouvrirImpression('carte', id));
+    const bt = zone.querySelector('#pc-tous'); if (bt) bt.addEventListener('click', () => ouvrirImpression('petales', id));
+    const ba = zone.querySelector('#pc-affiche'); if (ba) ba.addEventListener('click', () => ouvrirImpression('affiche', id));
+    const r = zone.querySelector('#pc-reprendre');
+    if (r) r.addEventListener('click', () => {
+      if (!confirm('Recommencer un nouveau mois ? Votre carte souvenir et votre rituel sont gardés.')) return;
+      const pc = parcoursDe(id); pc.sem = {}; pc.fini = ''; pc.debut = iso(new Date()); sauver();
+      document.dispatchEvent(new CustomEvent('brille:parcours-reset', { detail: { id } })); redessiner();
+    });
+  }
+
+  /* ---------- Impression : carte souvenir et fleur à collectionner (A4) ---------- */
+  const NS = 'http://www.w3.org/2000/svg';
+  const MM = 190 / 1380;                                  // mm par unité de la fleur : sur l'affiche, la fleur fait 190 mm de large
+  const _bb = {};
+  function bboxPetale(id) {
+    if (_bb[id]) return _bb[id];
+    const sv = document.createElementNS(NS, 'svg'); sv.setAttribute('style', 'position:absolute;left:-9999px;width:0;height:0');
+    const pa = document.createElementNS(NS, 'path'); pa.setAttribute('d', D.formes[id].d); sv.appendChild(pa); document.body.appendChild(sv);
+    const b = pa.getBBox(); sv.remove(); return (_bb[id] = { x: b.x, y: b.y, w: b.width, h: b.height });
+  }
+  const coupe = (t, max = 15, nl = 3) => { const m = String(t || '').split(/\s+/).filter(Boolean), l = []; let c = ''; m.forEach(w => { if ((c + ' ' + w).trim().length > max && c) { l.push(c); c = w; } else c = (c + ' ' + w).trim(); }); if (c) l.push(c); return l.slice(0, nl); };
+  function autocollant(p, pc) {                           // le pétale à découper, à l'échelle exacte de la fleur à collectionner
+    const f = D.formes[p.id], b = bboxPetale(p.id), pad = 10, ic = f.icone;
+    const noms = coupe(pc.noms || 'Notre famille', 13, 2), fs = 32, k = 0.62;
+    const iw = ic.w * k, ih = ic.h * k;
+    return `<svg class="impr-colle" xmlns="${NS}" viewBox="${b.x - pad} ${b.y - pad} ${b.w + 2 * pad} ${b.h + 2 * pad}" style="width:${((b.w + 2 * pad) * MM).toFixed(1)}mm;height:${((b.h + 2 * pad) * MM).toFixed(1)}mm" role="img" aria-label="Pétale à découper">
+      <path d="${f.d}" fill="${p.couleur}" stroke="#2E2A2A" stroke-width="5" stroke-linejoin="round"/>
+      <text x="${f.cx}" y="${f.cy - 92}" text-anchor="middle" font-family="Gruppo, Quicksand, sans-serif" font-size="46" font-weight="700" fill="#2E2A2A">BRAVO !</text>
+      <image href="p-${esc(p.id)}.png" x="${f.cx - iw / 2}" y="${f.cy - 78}" width="${iw}" height="${ih}"/>
+      ${noms.map((t, i) => `<text x="${f.cx}" y="${f.cy + 78 + i * (fs + 4)}" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="${fs}" font-weight="700" fill="#2E2A2A">${esc(t)}</text>`).join('')}
+    </svg>`;
+  }
+  function htmlCarte(p, pc) {                             // carte légère : le pétale à découper et à coller sur la fleur d'aventure
+    const pr = p.parcours, noms = (pc.noms || '').trim() || 'Notre famille';
+    return `<section class="impr-feuille cert cl" style="--pc:${p.couleur}">
+      <div class="cert-cadre">
+        <div class="cert-bandeau">${D.petales.map(x => `<i style="background:${x.couleur}"></i>`).join('')}</div>
+        <img class="cl-logo" src="logo-brille.png" alt="BRILLE">
+        <h1>Bravo !</h1>
+        <p class="cl-sous">Un pétale de plus sur votre fleur d'aventure BRILLE</p>
+        <div class="cl-colle">${autocollant(p, pc)}</div>
+        <p class="cl-ciseaux">✂ Découpez le long du trait et collez-le sur l'emplacement « ${esc(nomFam(p))} » de votre fleur.</p>
+        <p class="cl-recap"><b>${esc(noms)}</b> ont vécu ensemble, du ${dateCourte(pc.debut)} au ${dateCourte(pc.fini || pc.debut)}, le parcours <b>« ${esc(pr.titre)} »</b>.<br>L'harmonie et l'épanouissement se vivent au quotidien.</p>
+        <div class="cl-carnet"><b>Notre souvenir du mois</b>
+          <span>Ce qui a changé chez nous : <i></i></span>
+          <span>Ce que nous gardons${pc.garde ? ' : ' + esc(pc.garde) : ' : '} ${pc.garde ? '' : '<i></i>'}</span></div>
+      </div></section>`;
+  }
+  const brilleColore = '<span class="brille-lettres" aria-label="BRILLE">' + 'BRILLE'.split('').map((l, i) => `<span style="color:${['#f49f4c', '#ef7f86', '#6f9fd8', '#8bbd62', '#9585c9', '#e08ab9'][i]}" aria-hidden="true">${l}</span>`).join('') + '</span>';
+  const nomFam = p => p.miroir || p.titre;            // sur les supports imprimés : le titre « famille », pas celui du parent
+  const parcoursTermines = () => ORDRE.map(i => petale(i)).filter(q => q && q.parcours && Object.keys(parcoursDe(q.id).sem || {}).length === 4);
+  function htmlPetales() {                                // tous les pétales gagnés, sur une seule feuille
+    const l = parcoursTermines();
+    return `<section class="impr-feuille pl"><h1>Mes pétales gagnés</h1>
+      <p class="aff-sous">Découpez chaque pétale le long du trait et collez-le à sa place sur votre fleur d'aventure BRILLE.</p>
+      <div class="pl-grille">${l.map(q => `<figure>${autocollant(q, parcoursDe(q.id))}<figcaption>${esc(nomFam(q))}</figcaption></figure>`).join('')}</div>
+      <p class="aff-sous pl-pied">Un pétale à la fois, dans l'ordre que vous choisissez : la fleur se complète à votre rythme.</p></section>`;
+  }
+  function htmlAffiche() {
+    const VB = '30 238 1380 1392';
+    const places = D.petales.map(p => {
+      const f = D.formes[p.id]; if (!f) return '';
+      const l = coupe(nomFam(p), 18, 3);
+      return `<g><path d="${f.d}" fill="${p.couleur}" fill-opacity=".22" stroke="#8d8795" stroke-width="5" stroke-dasharray="16 11" stroke-linejoin="round"/>
+        ${l.map((t, i) => `<text x="${f.cx}" y="${f.cy - 10 + i * 38}" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="30" font-weight="600" fill="#6f6767">${esc(t)}</text>`).join('')}</g>`;
+    }).join('');
+    const leg = ORDRE.map(i => D.petales.find(q => q.id === i)).filter(Boolean).map(p => `<li><i style="border-color:${p.couleur}"></i>${esc(nomFam(p))}</li>`).join('');
+    return `<section class="impr-feuille aff">
+      <h1>Notre aventure ${brilleColore}</h1>
+      <p class="aff-sous">7 pétales, un parcours d'un mois pour chacun, dans l'ordre que l'on choisit. À chaque mois terminé, on imprime son pétale et on le colle ici.</p>
+      <svg viewBox="${VB}" style="width:190mm;height:${(1392 * MM).toFixed(1)}mm" role="img" aria-label="Fleur d'aventure à compléter">${places}<image href="centre.png" x="546" y="734" width="352" height="352"/></svg>
+      <div class="aff-pied"><p class="aff-nom">Notre famille : <i></i></p><p class="aff-sous">Quand la fleur est complète, elle brille ! Cochez chaque pétale collé :</p><ul class="aff-leg">${leg}</ul></div></section>`;
+  }
+  function ouvrirImpression(type, id) {
+    if (document.querySelector('.impr-ov')) return;
+    const p = petale(id), pc = parcoursDe(id);
+    const pg = document.createElement('style'); pg.id = 'impr-page'; pg.textContent = '@page { size: A4; margin: 0 }'; document.head.appendChild(pg);
+    const ov = document.createElement('div'); ov.className = 'impr-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
+    ov.innerHTML = `<div class="impr-bar">
+        ${type === 'carte' ? `<label>Prénoms sur la carte <input type="text" id="impr-noms" maxlength="60" value="${esc(pc.noms || '')}" placeholder="Ex. Sarah et Léo"></label>` : '<span></span>'}
+        <button type="button" class="btn plein" id="impr-go">🖨️ Imprimer</button><button type="button" class="btn gris" id="impr-x">Fermer</button></div>
+      <p class="impr-aide">Imprimez sur du papier A4, de préférence épais. Dans la fenêtre d'impression, choisissez « Marges : aucune » et cochez « Graphiques d'arrière-plan » pour garder les couleurs.</p>
+      <div class="impr-feuilles"></div>`;
+    document.body.appendChild(ov); document.body.classList.add('impr-on');
+    const zone = ov.querySelector('.impr-feuilles');
+    const ajuster = () => {                               // réduit le milieu de la carte si les textes sont longs, pour que tout tienne sur la page
+      const cad = zone.querySelector('.cert-cadre'), mid = zone.querySelector('.cert-mid'); if (!cad || !mid) return;
+      let k = 1; mid.style.zoom = 1;
+      while (cad.scrollHeight > cad.clientHeight + 1 && k > 0.55) { k -= 0.03; mid.style.zoom = k.toFixed(2); }
+    };
+    const dessiner = () => { zone.innerHTML = type === 'carte' ? htmlCarte(p, pc) : type === 'petales' ? htmlPetales() : htmlAffiche(); const z = Math.min(1, (innerWidth - 24) / 794); zone.style.setProperty('--z', z); ajuster(); };
+    dessiner();
+    const nm = ov.querySelector('#impr-noms');
+    if (nm) nm.addEventListener('input', () => { pc.noms = nm.value.trim().slice(0, 60); sauver(); dessiner(); });
+    const fermer = () => { ov.remove(); pg.remove(); document.body.classList.remove('impr-on'); document.removeEventListener('keydown', cle); const t = $app.querySelector('#pc-noms'); if (t) t.value = pc.noms || ''; };
+    const cle = e => { if (e.key === 'Escape') fermer(); };
+    document.addEventListener('keydown', cle);
+    ov.querySelector('#impr-x').addEventListener('click', fermer);
+    ov.querySelector('#impr-go').addEventListener('click', () => window.print());
+  }
+
   function lierPetale(id) {
     const sem = debutSemaine();
     const choix = { parent: bilansDe(id, 'parent').find(b => b.w === sem)?.s || null, enfant: bilansDe(id, 'enfant').find(b => b.w === sem)?.s || null };
@@ -337,6 +552,7 @@
         boutons.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
       }));
     });
+    lierParcours(id);
     const c = $app.querySelector('#fait');
     if (c) c.addEventListener('change', () => { const S = charger(); if (c.checked) S.ensembleFaits[id] = iso(new Date()); else delete S.ensembleFaits[id]; sauver(); });
     if (!$app.querySelector('#enregistrer')) return;      // pétale fermé : rien à lier
@@ -414,6 +630,7 @@
       <h1><span class="surligne" style="--hl:var(--vert)">Plus</span></h1>
       <div class="grille-cartes">
       ${D.admin ? vueIngenieure() : ''}
+      ${!D.admin && D.fin ? `<div class="carte"><span class="etiquette">Mon accès</span><p style="margin:0">Votre accès est valable jusqu'au <b>${dateLongue(D.fin)}</b>. Pour le renouveler, écrivez à <a href="mailto:${esc((D.config.contact || {}).email || '')}">${esc((D.config.contact || {}).email || 'BRILLE')}</a>.</p></div>` : ''}
       ${achatActif() ? `<details class="carte"><summary>Ouvrir d'autres pétales</summary>
         <p>Vous voulez prolonger d'autres thèmes à la maison ? Découvrez les accès disponibles.</p>
         <a class="btn plein" href="#/acces">Voir les accès</a>
@@ -457,7 +674,17 @@
         ${c.telephone ? `<p><a href="tel:${esc(String(c.telephone).replace(/\s/g, ''))}">${esc(c.telephone)}</a></p>` : ''}
       </details>
       </div>
-      <p class="pied">Conçue et développée par ${esc(c.nom || 'BRILLE')}<br>© BRILLE · Étincelle${achatActif() ? '<br>' + liensLegaux() : ''}</p>
+      <details class="carte"><summary>Conditions d'utilisation</summary>
+        <p>Étincelle et ses contenus (textes, activités, illustrations, méthode « QVE ») sont la propriété de BRILLE et protégés par le droit d'auteur.</p>
+        <ul>
+          <li>L'accès est <b>personnel</b> et réservé à la famille ou au groupe à qui le code a été remis.</li>
+          <li>Il est interdit de partager son code, de copier, de capturer pour diffuser, de republier ou de revendre les contenus.</li>
+          <li>L'accès peut être retiré en cas d'usage non conforme.</li>
+        </ul>
+        <p class="petit">Un filigrane au nom de votre accès apparaît sur les pages : il permet de retrouver l'origine d'un contenu diffusé sans autorisation.</p>
+      </details>
+
+      <p class="pied">Conçue et développée par ${esc(c.nom || 'BRILLE')}<br>© BRILLE · Étincelle · Tous droits réservés${achatActif() ? '<br>' + liensLegaux() : ''}</p>
     </section>`;
   }
   function vueIngenieure() {
@@ -490,7 +717,7 @@
       try {
         const d = JSON.parse(await f.text());
         if (!d || typeof d !== 'object' || typeof d.bilans !== 'object') throw new Error('format');
-        memoire = Object.assign(vide(), { bilans: d.bilans || {}, enfant: d.enfant || {}, defisFaits: d.defisFaits || {}, ensembleFaits: d.ensembleFaits || {}, mode: d.mode === 'enfant' ? 'enfant' : 'parent' }); sauver();
+        memoire = Object.assign(vide(), { bilans: d.bilans || {}, enfant: d.enfant || {}, defisFaits: d.defisFaits || {}, ensembleFaits: d.ensembleFaits || {}, parcours: d.parcours || {}, mode: d.mode === 'enfant' ? 'enfant' : 'parent' }); sauver();
         msg('Vos données ont été récupérées.');
       } catch { msg('Ce fichier n\'est pas une copie valide d\'Étincelle.'); }
     });
@@ -527,6 +754,9 @@
         ${f.admin ? '<span class="badge-admin">Mon accès ingénieure · protégé</span>' : ''}
         <input type="text" class="nomf" value="${esc(f.nom)}" aria-label="Nom de la famille ou du groupe"${f.admin ? ' disabled' : ''}>
         <p>Code : <code>${esc(f.code)}</code></p>
+        ${f.admin ? '' : `<label class="petit" style="display:block">Fin d'accès ${f.fin && iso(new Date()) > f.fin ? '<b style="color:#a33">(terminée)</b>' : ''}
+          <input type="date" class="finf" value="${esc(f.fin || '')}" style="padding:6px 10px;border:2px solid #e4dcec;border-radius:12px;font:inherit;margin-left:6px"></label>
+        <p class="petit" style="margin:2px 0 10px">${f.fin ? '' : 'Sans limite de durée. '}Laissez vide pour un accès sans date de fin.</p>`}
         <p class="petit">Ajouté le ${esc(f.ajout || '')}${f.vente ? ' · ' + (f.envoye ? 'envoyé le ' + esc(f.envoye) + (f.acheteur ? ' à ' + esc(f.acheteur) : '') : (f.publie ? 'disponible pour la vente' : 'à publier')) : ''}</p>
         <div class="chips">${f.admin ? cases('pf', f.petales).replace(/<input/g, '<input disabled') : cases('pf', f.petales)}</div>
         <div class="actions-fam">
@@ -551,10 +781,19 @@
         <input type="text" id="nouveau-nom" placeholder="Nom (ex. Atelier mars, famille Martin)">
         <label class="petit" for="nb-codes">Nombre de codes à créer (un lot de 20 est pratique pour les ventes)</label>
         <input type="number" id="nb-codes" min="1" max="50" value="1">
+        <label for="duree" class="petit" style="display:block;margin-top:6px"><b>Durée de l'accès</b> (compte à partir d'aujourd'hui)</label>
+        <select id="duree" style="width:100%;padding:10px 14px;border:2px solid #e4dcec;border-radius:16px;font:inherit;background:#fff;margin:4px 0 12px">
+          <option value="">Sans limite (familles du centre social)</option>
+          <option value="12m" selected>12 mois (fleur entière, un pétale)</option>
+          <option value="5a">5 ans (accès longue durée)</option>
+        </select>
         <label class="coche" style="margin:10px 0"><input type="checkbox" id="lot-vente"> Ces codes sont pour la vente (stock)</label>
         <div class="chips">${cases('ajout', [])}</div>
         <button type="button" class="btn plein" id="creer">Créer le code</button>
         <p class="erreur" id="st" role="status"></p></div>
+      <div class="carte"><h2>Ajouter les parcours d'un mois</h2>
+        <p class="petit">Choisissez le fichier <b>parcours-mensuels-PRIVE.json</b> (sur votre ordinateur, jamais sur GitHub). Les parcours sont ajoutés aux pétales, puis chiffrés avec les autres contenus. Vos codes ne changent pas.</p>
+        <input type="file" id="f-parcours" accept=".json"><p class="erreur" id="st-parcours" role="status"></p></div>
       <div class="carte"><h2>Publier les changements</h2>
         <p>Après chaque ajout ou retrait, téléchargez les deux fichiers, puis déposez-les sur GitHub (Add file → Upload files → Commit changes). Les familles les prennent en compte dans les minutes qui suivent.</p>
         <button type="button" class="btn plein" id="fabriquer">Préparer les fichiers à publier</button>
@@ -579,6 +818,8 @@
       const n = Math.max(1, Math.min(50, parseInt($app.querySelector('#nb-codes').value, 10) || 1));
       const base = $app.querySelector('#nouveau-nom').value.trim() || 'Famille';
       const crees = []; for (let i = 0; i < n; i++) crees.push(Acces.ajouterFamille(carnet, n > 1 ? `${base} ${String(i + 1).padStart(2, '0')}` : base, sel));
+      const dr = $app.querySelector('#duree').value;
+      if (dr) { const d = new Date(); d.setFullYear(d.getFullYear() + (dr === '5a' ? 5 : 1)); crees.forEach(f => { f.fin = iso(d); }); }
       if ($app.querySelector('#lot-vente').checked) crees.forEach(f => { f.vente = true; });
       ecrireCarnet(carnet); rendre(); const e = $app.querySelector('#st'); if (e) { e.style.color = '#2f6b2f'; e.textContent = (n === 1 ? 'Code créé : ' + crees[0].code : n + ' codes créés') + '. Pensez à publier (bouton « Préparer les fichiers »).'; }
     });
@@ -593,6 +834,8 @@
     });
     $app.querySelectorAll('.fam').forEach(bloc => {
       const f = carnet.familles[+bloc.dataset.i];
+      const fi = bloc.querySelector('.finf');
+      if (fi) fi.addEventListener('change', e => { f.fin = e.target.value || ''; ecrireCarnet(carnet); st('Date de fin modifiée. Pensez à publier (bouton « Préparer les fichiers »).'); });
       bloc.querySelector('.nomf').addEventListener('input', e => { if (f.admin) return; f.nom = e.target.value; ecrireCarnet(carnet); });
       bloc.querySelectorAll('.pf').forEach(c => c.addEventListener('change', () => {
         if (f.admin) { c.checked = true; return; }
@@ -623,6 +866,16 @@
       telecharger('acces.json', r.acces); setTimeout(() => telecharger('contenu.enc.json', r.contenuEnc), 500);
       carnet.familles.forEach(f => { if (f.actif && f.petales && f.petales.length) f.publie = true; }); ecrireCarnet(carnet);
       st('Deux fichiers téléchargés : déposez acces.json et contenu.enc.json sur GitHub (Add file, Upload files, Commit changes).');
+    });
+    const fp = $app.querySelector('#f-parcours');
+    if (fp) fp.addEventListener('change', async e => {
+      const f = e.target.files[0], m = $app.querySelector('#st-parcours'); if (!f) return;
+      try {
+        const d = JSON.parse(await f.text()); let n = 0;
+        Object.keys(d).forEach(id => { if (D.details[id] && d[id] && Array.isArray(d[id].semaines) && d[id].semaines.length === 4) { D.details[id].parcours = d[id]; const x = D.petales.find(q => q.id === id); if (x) x.parcours = d[id]; n++; } });
+        if (!n) throw new Error('vide');
+        m.style.color = ''; m.textContent = n + ' parcours ajoutés. Cliquez maintenant sur « Préparer les fichiers à publier ».';
+      } catch { m.style.color = '#a33'; m.textContent = 'Ce fichier n\'est pas valide.'; }
     });
     $app.querySelector('#sauver-carnet').addEventListener('click', () => telecharger('carnet-familles.json', carnet));
   }
@@ -662,11 +915,12 @@
       const lien = decodeURIComponent(m[1]);
       history.replaceState(null, '', location.pathname + location.search + '#/');
       try { await deverrouiller(lien); document.body.classList.remove('verrouille'); premiere = true; rendre(); return; }
-      catch { ecranCode('Ce lien n\'est plus valide. Entrez votre code ou contactez BRILLE.'); return; }
+      catch (x) { ecranCode(messageAcces(x) || 'Ce lien n\'est plus valide. Entrez votre code ou contactez BRILLE.'); return; }
     }
     const code = codeMemorise();
-    if (code) { try { await deverrouiller(code); document.body.classList.remove('verrouille'); rendre(); return; } catch { /* code retiré ou changé */ } }
-    ecranCode(code ? 'Votre accès n\'est plus valide. Entrez un nouveau code ou contactez BRILLE.' : '');
+    let raison = null;
+    if (code) { try { await deverrouiller(code); document.body.classList.remove('verrouille'); rendre(); return; } catch (x) { raison = x; /* code retiré, changé ou expiré */ } }
+    ecranCode(code ? (messageAcces(raison) || 'Votre accès n\'est plus valide. Entrez un nouveau code ou contactez BRILLE.') : '');
   }).catch(() => {
     $app.innerHTML = '<section class="vue"><h1>Oups</h1><p>Impossible de charger le contenu. Vérifiez votre connexion et rechargez la page.</p></section>';
   });

@@ -1,0 +1,84 @@
+/* Étincelle · BRILLE — couche de jeu (fonctionne avec jeu.js) */
+
+/* Bouton son, dans l'en-tête */
+.jeu-son { position: relative; margin-left: auto; flex: none; width: 48px; height: 48px; border-radius: 50%; border: 2px solid #000; background: #fff; font-size: 22px; line-height: 1; display: grid; place-items: center; box-shadow: 0 3px 0 #000; }
+.jeu-son:active { transform: translateY(2px); box-shadow: none; }
+
+/* Tableau de jeu de l'accueil */
+.jeu-hud { background: linear-gradient(135deg, #fdd5a5, #ebc6e0 55%, #b8aed7); border: 0; }
+.jeu-niv { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.jeu-emo { font-size: 46px; line-height: 1; filter: drop-shadow(0 3px 0 rgba(0,0,0,.12)); animation: jeu-bat 2.6s ease-in-out infinite; }
+.jeu-niv b { display: block; font-family: 'Gruppo', 'Quicksand', sans-serif; -webkit-text-stroke: .7px #000; font-size: 1.45rem; font-weight: 400; line-height: 1.1; }
+.jeu-niv small { font-size: .95rem; font-weight: 600; }
+.jeu-barre { height: 16px; border-radius: 999px; background: rgba(255,255,255,.75); overflow: hidden; border: 2px solid #000; }
+.jeu-barre i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #f49f4c, #f5abaf, #b8aed7); transition: width .8s cubic-bezier(.2,.8,.3,1); }
+.jeu-aide { text-align: left; hyphens: none; -webkit-hyphens: none; font-size: .88rem; color: var(--doux); margin: 8px 0 0; line-height: 1.4; }
+.jeu-badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+.jeu-badge { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 18px; background: rgba(255,255,255,.5); text-align: center; opacity: .65; }
+.jeu-badge.on { background: #fff; opacity: 1; box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+.jeu-badge i { font-style: normal; font-size: 26px; line-height: 1.1; }
+.jeu-badge small { font-size: .68rem; font-weight: 600; line-height: 1.15; }
+.jeu-ok { margin-left: auto; font-size: 20px; align-self: center; }
+@keyframes jeu-bat { 0%,100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.12) rotate(4deg); } }
+
+/* Pétale touché : petite lueur */
+a.petale.pop { animation: jeu-lueur .7s ease; }
+@keyframes jeu-lueur { 0% { filter: none; } 35% { filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 26px #f8f4b8) brightness(1.1); } 100% { filter: none; } }
+
+/* Boutons de mission et de défi */
+.jeu-lancer { background: #000; color: #fff; margin: 4px 0 8px; font-size: 1.12rem; }
+.jeu-lancer small { font-weight: 500; opacity: .85; }
+.jeu-defi { background: #fff; margin: 12px 0 0; font-size: 1.1rem; }
+.jeu-defi.fait { background: #cbe1b6; }
+.jeu-saute { animation: jeu-saut .45s ease; }
+@keyframes jeu-saut { 0% { transform: scale(1); } 35% { transform: scale(1.22) rotate(-4deg); } 70% { transform: scale(.95); } 100% { transform: scale(1); } }
+
+/* Mission pas à pas (plein écran) */
+body.jeu-fige { overflow: hidden; }
+.jeu-ov { position: fixed; inset: 0; z-index: 50; display: flex; align-items: stretch; justify-content: center; background: rgba(38,31,43,.55); animation: jeu-fond .25s ease both; }
+.jeu-ov-in { position: relative; width: 100%; max-width: 640px; display: flex; flex-direction: column; background: var(--c, #fdd5a5); padding: calc(16px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom)); overflow-y: auto; }
+@media (min-width: 700px) { .jeu-ov { align-items: center; } .jeu-ov-in { border-radius: 34px; max-height: 92vh; box-shadow: 0 20px 60px rgba(0,0,0,.3); } }
+.jeu-x { position: absolute; top: calc(12px + env(safe-area-inset-top)); right: 14px; width: 46px; height: 46px; border-radius: 50%; border: 2px solid #000; background: #fff; font-size: 20px; line-height: 1; z-index: 2; }
+.jeu-pts { display: flex; gap: 7px; padding: 8px 56px 14px 2px; min-height: 40px; flex-wrap: wrap; align-items: center; }
+.jeu-pts i { flex: none; box-sizing: border-box; width: 13px; height: 13px; border-radius: 50%; background: rgba(255,255,255,.6); border: 2px solid #000; transition: all .3s; }
+.jeu-pts i.jeu-fait { background: #000; }
+.jeu-pts i.now { background: #fff; transform: scale(1.35); }
+.jeu-ecran { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; padding-bottom: 8px; }
+.jeu-ecran.entre { animation: jeu-entre .4s cubic-bezier(.2,.8,.3,1) both; }
+.jeu-ecran h2 { font-size: 1.9rem; text-align: center; margin: 0; }
+.jeu-ecran p, .jeu-etape, .jeu-carte-q { hyphens: none; -webkit-hyphens: none; word-spacing: normal; }
+.jeu-ecran p { margin: 0; font-size: 1.08rem; text-align: center; }
+.jeu-ecran .etiquette { align-self: center; }
+.jeu-gros { font-size: 84px; line-height: 1; text-align: center; animation: jeu-bat 2.2s ease-in-out infinite; }
+.jeu-meta { font-weight: 600; font-size: .98rem !important; opacity: .85; }
+.jeu-etape { background: #fff; border-radius: 28px; padding: 26px 22px; font-size: clamp(1.25rem, 5.4vw, 1.55rem) !important; line-height: 1.45; font-weight: 600; box-shadow: 0 5px 0 rgba(0,0,0,.15); }
+.jeu-carte-q { background: #fff; border-radius: 28px; padding: 28px 22px; font-size: clamp(1.2rem, 5vw, 1.45rem); line-height: 1.45; font-weight: 600; text-align: center; box-shadow: 0 5px 0 rgba(0,0,0,.15); }
+.jeu-gain { font-family: 'Gruppo', 'Quicksand', sans-serif; font-size: 2.6rem !important; -webkit-text-stroke: .8px #000; }
+@keyframes jeu-entre { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes jeu-fond { from { opacity: 0; } to { opacity: 1; } }
+
+/* Effets : pétales volants, +étincelles, gouttes, bandeau */
+.jeu-p { position: fixed; z-index: 70; width: 14px; height: 20px; border-radius: 50% 0 50% 50%; pointer-events: none; border: 1.5px solid rgba(0,0,0,.35); }
+.jeu-goutte { position: fixed; top: 0; z-index: 70; font-size: 28px; pointer-events: none; }
+.jeu-plus { position: fixed; z-index: 70; pointer-events: none; font-family: 'Gruppo', 'Quicksand', sans-serif; font-size: 1.7rem; -webkit-text-stroke: .7px #000; color: #fff; text-shadow: 0 2px 0 #000; }
+.jeu-bandeau { position: fixed; z-index: 80; left: 50%; top: calc(20px + env(safe-area-inset-top)); transform: translateX(-50%); max-width: 92vw; background: #000; color: #fff; padding: 12px 22px; border-radius: 22px; text-align: center; display: grid; gap: 2px; animation: jeu-bandeau 3.2s ease both; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.jeu-bandeau b { font-size: 1.1rem; } .jeu-bandeau span { font-size: .9rem; opacity: .85; }
+@keyframes jeu-bandeau { 0% { opacity: 0; transform: translate(-50%, -30px); } 10%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -20px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .jeu-emo, .jeu-gros, .jeu-ecran.entre, a.petale.pop, .jeu-saute, .jeu-ov { animation: none !important; }
+  .jeu-barre i { transition: none; }
+}
+
+.jeu-auto { align-self: flex-start; margin: 0 0 4px; padding: 8px 14px; border-radius: 999px; border: 2px solid #000; background: #fff; font-size: .85rem; font-weight: 600; }
+.jeu-auto[aria-pressed="true"] { background: #f8f4b8; }
+.jeu-ecoute { background: #fff; }
+
+.jeu-fete .jeu-ov-in { text-align: center; }
+.jeu-fete h2 { font-size: 2rem; margin: 8px 0; }
+.jeu-fete-txt { margin: 8px 0; }
+.jeu-medaille { display: flex; gap: 14px; align-items: center; justify-content: center; background: #fff; border-radius: 22px; padding: 12px 16px; margin: 12px auto; text-align: left; max-width: 420px; }
+.jeu-medaille img { width: 64px; height: 64px; object-fit: contain; flex: none; }
+.jeu-medaille span { display: block; font-size: .9rem; }
+
+.jeu-med { margin-left: 6px; font-size: 20px; align-self: center; }

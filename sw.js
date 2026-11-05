@@ -1,10 +1,10 @@
 // Service worker : permet d'ouvrir l'application même sans réseau.
 // Quand vous modifiez index.html, app.js ou style.css, changez simplement le numéro de VERSION ci-dessous.
-const VERSION = 'etincelle-v15';
+const VERSION = 'etincelle-v22c';
 const FICHIERS = [
-  './', 'index.html', 'legal.html', 'merci.html', 'style.css', 'app.js', 'manifest.webmanifest',
+  './', 'index.html', 'legal.html', 'merci.html', 'style.css', 'jeu.css', 'app.js', 'jeu.js', 'manifest.webmanifest',
   'acces-lib.js', 'qrcode.js', 'config.json', 'vitrine.json', 'acces.json', 'contenu.enc.json', 'formes.json', 'centre.png',
-  'logo-brille.png', 'logo-etincelle.png', 'icon-192.png', 'icon-512.png', 'favicon.png', 'apple-touch-icon.png',
+  'logo-brille.png', 'logo-etincelle.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'favicon.png', 'apple-touch-icon.png',
   'p-emotions.png', 'p-apprentissages.png', 'p-liens.png', 'p-droits.png',
   'p-equilibre.png', 'p-briller.png', 'p-organisation.png',
   'gruppo-latin-400-normal.woff2',
@@ -30,7 +30,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  const estDonnee = /\/(config|vitrine|acces|contenu\.enc)\.json/.test(req.url);
+  const estDonnee = /\/(config|vitrine|acces|contenu\.enc)\.json/.test(req.url) || /\.(js|css)(\?|$)/.test(req.url) || /\/(index\.html)?(\?|#|$)/.test(req.url);
   if (estDonnee) {
     e.respondWith(
       fetch(req).then(r => { const copie = r.clone(); caches.open(VERSION).then(c => c.put(req, copie)); return r; })
