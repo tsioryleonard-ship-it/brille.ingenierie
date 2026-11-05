@@ -8,6 +8,7 @@
     "telephone": "07 45 32 30 90"
   },
   "messageAccueil": "Les ateliers vous ont donné de l'élan. Étincelle le prolonge à la maison : chaque semaine, un petit moment à vivre ensemble, parent et enfant.",
+  "messageHorsAtelier": "Vous n'avez pas pu assister aux ateliers, mais vous aviez quand même envie de mieux vivre le quotidien avec votre enfant ? Étincelle a aussi été pensée pour vous.",
   "achat": {
     "actif": false,
     "offres": [
@@ -15,7 +16,7 @@
         "id": "petale",
         "nom": "Un pétale",
         "detail": "Un pétale au choix de la fleur.",
-        "prix": "15 €",
+        "prix": "19 €",
         "lien": ""
       },
       {
@@ -28,18 +29,19 @@
       {
         "id": "solidaire",
         "nom": "Tarif solidaire, 1 an",
-        "detail": "La fleur complète, pour les familles pour qui le tarif standard est une difficulté.",
-        "prix": "19 €",
+        "detail": "La fleur complète, pour les familles pour qui le tarif standard est une difficulté (RSA, ASS, aides CAF…). Simple déclaration sur l'honneur, aucun justificatif.",
+        "prix": "28 €",
         "lien": ""
       },
       {
         "id": "vie",
-        "nom": "Accès à vie",
-        "detail": "La fleur complète, tant qu'Étincelle existe.",
+        "nom": "Accès longue durée, 5 ans",
+        "detail": "La fleur complète pendant 5 ans.",
         "prix": "99 €",
         "lien": ""
       }
     ],
     "delai": "48 heures ouvrées"
-  }
+  },
+  "codeDecouverte": ""
 }

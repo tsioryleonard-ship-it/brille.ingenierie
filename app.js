@@ -15,7 +15,7 @@
 
   /* ---------- Stockage local (avec solution de repli si le téléphone le bloque) ---------- */
   let memoire = null;
-  const vide = () => ({ v: 1, mode: 'parent', bilans: {}, enfant: {}, defisFaits: {}, ensembleFaits: {}, parcours: {} });
+  const vide = () => ({ v: 1, mode: 'parent', bilans: {}, enfant: {}, defisFaits: {}, ensembleFaits: {}, parcours: {}, famille: { parents: '', enfants: [] } });
   const charger = () => {
     if (memoire) return memoire;
     try { const brut = localStorage.getItem(CLE); memoire = brut ? Object.assign(vide(), JSON.parse(brut)) : vide(); }
@@ -26,6 +26,18 @@
   const cle = qui => (qui === 'enfant' ? 'enfant' : 'bilans');
   const bilansDe = (id, qui = 'parent') => ((charger()[cle(qui)] || {})[id] || []).slice().sort((a, b) => a.w.localeCompare(b.w));
   const dernierBilan = (id, qui = 'parent') => { const l = bilansDe(id, qui); return l.length ? l[l.length - 1] : null; };
+
+  /* ---------- La famille : les prénoms des parents et de TOUS les enfants (aucune limite) ---------- */
+  const famille = () => {
+    const S = charger(), f = S.famille = (S.famille && typeof S.famille === 'object') ? S.famille : { parents: '', enfants: [] };
+    if (!Array.isArray(f.enfants)) f.enfants = [];
+    if (typeof f.parents !== 'string') f.parents = '';
+    return f;
+  };
+  const jointNoms = l => (l.length > 1 ? l.slice(0, -1).join(', ') + ' et ' + l[l.length - 1] : (l[0] || ''));
+  const nomsFamille = () => { const f = famille(), p = f.parents.trim(); return jointNoms([...(p ? [p] : []), ...f.enfants]); };
+  const nomsCarte = pc => ((pc && pc.noms) || '').trim() || nomsFamille();       // un prénom saisi à la main sur une carte reste prioritaire
+  let familleOuverte = false;
 
   /* ---------- Données ---------- */
   let D = { config: {}, petales: [], defis: [], formes: {} };
@@ -214,11 +226,53 @@
 
   const etincelleDeco = '<svg class="etincelle-deco" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4l7 24 24 7-24 7-7 24-7-24-24-7 24-7z" fill="#fff" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><path d="M64 50l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" fill="#cbe1b6" stroke="#000" stroke-width="2" stroke-linejoin="round"/></svg>';
 
+  const etoileDeco = (c, pos) => `<svg class="av-etoile av-${pos}" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4l7 24 24 7-24 7-7 24-7-24-24-7 24-7z" fill="${c}" stroke="#2E2A2A" stroke-width="3" stroke-linejoin="round"/></svg>`;
   const motIngenieure = () => `<figure class="mot">
       <figcaption>Le mot de l'ingénieure QVE</figcaption>
       <blockquote>Défendre l'épanouissement et l'harmonie familiale : redonner sa place au lien, à l'écoute et au bien-être de l'enfant, pour mieux vivre le quotidien.</blockquote>
-      <p class="signature">Tsiory · BRILLE</p>
+      <p class="signature"><b>Rindra Tsiory</b><span>Fondatrice de BRILLE</span></p>
     </figure>`;
+
+  /* ---------- Notre famille (page d'accueil) ---------- */
+  function carteFamille() {
+    const f = famille(), vide = !f.parents.trim() && !f.enfants.length;
+    const puces = f.enfants.map((e, i) => `<li><span>${esc(e)}</span><button type="button" class="x" data-i="${i}" aria-label="Retirer ${esc(e)}">✕</button></li>`).join('');
+    return `<details class="carte famille" id="carte-famille"${vide || familleOuverte ? ' open' : ''}>
+      <summary>👨‍👩‍👧‍👦 Notre famille${vide ? '' : ' : ' + esc(nomsFamille())}</summary>
+      <p class="petit">L'aventure se vit ensemble. Ajoutez les prénoms de toute la famille : ils seront tous sur vos cartes souvenirs, pour que personne ne soit oublié. Les prénoms restent sur ce téléphone.</p>
+      <label for="fam-parents" class="aide">Prénom du ou des parents</label>
+      <input type="text" id="fam-parents" maxlength="60" value="${esc(f.parents)}" placeholder="Ex. Sarah" autocomplete="off">
+      <label for="fam-enfant" class="aide">Les enfants de 6 à 12 ans : autant que vous voulez</label>
+      <ul class="puces-enfants" aria-label="Enfants de la famille">${puces}</ul>
+      <div class="fam-ajout"><input type="text" id="fam-enfant" maxlength="24" placeholder="Prénom d'un enfant" autocomplete="off"><button type="button" class="btn plein" id="fam-ajouter">Ajouter</button></div>
+      <p class="ok" id="fam-ok" role="status"></p>
+    </details>`;
+  }
+  const txtBoutonEnfant = () => (famille().enfants.length > 1 ? 'La fleur des enfants' : 'Sa fleur d\'enfant');
+  const txtLegende = mode => (mode === 'enfant'
+    ? (famille().enfants.length > 1 ? 'Voici la fleur de vos enfants. Touchez un pétale pour le vivre avec eux.' : 'Voici la fleur de votre enfant. Touchez un pétale pour le vivre avec lui.')
+    : 'Touchez un pétale pour l\'explorer. Plus il est grand, mieux vous vous y sentez.');
+  function lierFamille() {
+    const zone = $app.querySelector('#carte-famille'); if (!zone) return;
+    const maj = () => {
+      const be = $app.querySelector('.bascule [data-mode="enfant"]'); if (be) be.textContent = txtBoutonEnfant();
+      const lg = $app.querySelector('.fleur-carte .legende'); if (lg) lg.textContent = txtLegende(charger().mode === 'enfant' ? 'enfant' : 'parent');
+    };
+    const redessiner = () => { familleOuverte = true; zone.outerHTML = carteFamille(); maj(); lierFamille(); };
+    zone.querySelector('#fam-parents').addEventListener('input', e => { famille().parents = e.target.value.slice(0, 60); sauver(); });
+    zone.querySelector('#fam-parents').addEventListener('change', () => { familleOuverte = true; const s = zone.querySelector('summary'); if (s) s.textContent = '👨‍👩‍👧‍👦 Notre famille' + (nomsFamille() ? ' : ' + nomsFamille() : ''); });
+    const ajouter = () => {
+      const champ = zone.querySelector('#fam-enfant'), nom = champ.value.trim().replace(/\s+/g, ' ').slice(0, 24);
+      if (!nom) return;
+      famille().enfants.push(nom);
+      const ok = sauver(); redessiner();
+      const c = $app.querySelector('#fam-enfant'); if (c) c.focus({ preventScroll: true });
+      const o = $app.querySelector('#fam-ok'); if (o) o.textContent = ok ? `${nom} est dans l'aventure !` : 'Impossible d\'enregistrer sur ce téléphone.';
+    };
+    zone.querySelector('#fam-ajouter').addEventListener('click', ajouter);
+    zone.querySelector('#fam-enfant').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ajouter(); } });
+    zone.querySelectorAll('.puces-enfants .x').forEach(b => b.addEventListener('click', () => { famille().enfants.splice(Number(b.dataset.i), 1); sauver(); redessiner(); }));
+  }
 
   /* ---------- Vues ---------- */
   function vueAccueil() {
@@ -236,23 +290,29 @@
     const pDefi = defi ? petale(defi.petale) : null;
     return `<section class="vue">
       ${motIngenieure()}
+      <aside class="aventure-banniere" aria-label="L'aventure BRILLE commence maintenant">
+        ${etoileDeco('#f49f4c', 'g')}${etoileDeco('#a8dbeb', 'd')}
+        <h2 class="av-titre"><span class="av-mot">L'aventure</span><span class="av-brille" aria-label="BRILLE">${[...'BRILLE'].map((l, i) => `<b aria-hidden="true" style="--c:${['#f49f4c', '#a4c2e7', '#f5abaf', '#cbe1b6', '#b8aed7', '#a8dbeb'][i]};--i:${i}">${l}</b>`).join('')}</span><span class="av-mot">commence maintenant !</span></h2>
+      </aside>
       <div class="hero-accueil">
         <img class="logo-etincelle" src="logo-etincelle.png" alt="" width="320" height="320">
-        <p class="accroche-aventure">L'aventure ${brilleColore} commence !</p>
         <span class="etiquette">La suite des ateliers</span>
         <h1>Étincelle</h1>
         <p>${esc(D.config.messageAccueil)}</p>
+        ${D.config.messageHorsAtelier ? `<p class="hors-atelier">${esc(D.config.messageHorsAtelier)}</p>` : ''}
       </div>
 
       <div class="grille">
       <div class="col-gauche">
+      ${carteFamille()}
       <div class="fleur-carte">
         <div class="bascule" role="group" aria-label="Choisir la fleur">
           <button type="button" data-mode="parent" aria-pressed="${mode === 'parent'}">Ma fleur de parent</button>
-          <button type="button" data-mode="enfant" aria-pressed="${mode === 'enfant'}">Sa fleur d'enfant</button>
+          <button type="button" data-mode="enfant" aria-pressed="${mode === 'enfant'}">${txtBoutonEnfant()}</button>
         </div>
         <div class="fleur-bloc">${fleurSVG(mode)}</div>
-        <p class="legende">${mode === 'enfant' ? 'Voici la fleur de votre enfant. Touchez un pétale pour le vivre avec lui.' : 'Touchez un pétale pour l\'explorer. Plus il est grand, mieux vous vous y sentez.'}</p>
+        <p class="legende">${txtLegende(mode)}</p>
+        <p class="legende ensemble">🌸 Chacun peut remplir sa fleur, mais le plus beau, c'est de vivre l'aventure ensemble : c'est comme ça que le lien se crée.</p>
       </div>
       ${defi ? `<a class="carte teinte" href="#/semaine" style="display:block;text-decoration:none;background:${pDefi?.couleur || 'var(--jaune)'}">
         <span class="etiquette">Cette semaine</span>
@@ -273,16 +333,21 @@
     $app.querySelectorAll('.bascule button').forEach(b => b.addEventListener('click', () => {
       charger().mode = b.dataset.mode; sauver(); rendre();
     }));
+    lierFamille();
   }
 
+  const nomEnfant = (i, k) => famille().enfants[i] || (k === 1 ? 'Mon enfant' : 'Enfant ' + (i + 1));
   function bilanBloc(qui, p, actuel) {
-    const parent = qui === 'parent';
+    const parent = qui === 'parent', k0 = (actuel && actuel.k) || Math.max(1, famille().enfants.length);
     const echelle = VISAGES.map((v, k) => `<button type="button" data-note="${k + 1}" aria-pressed="${actuel && actuel.s === k + 1}" aria-label="${k + 1} sur 5, ${v.t}">${visage(k)}<span>${v.t}</span></button>`).join('');
     return `<div class="bloc-bilan" data-qui="${qui}">
-      <span class="etiquette">${parent ? 'Moi, parent' : 'Mon enfant'}</span>
-      ${parent ? '' : '<p class="petit" style="margin:0 0 6px">Laissez votre enfant choisir lui-même son visage, ou posez-lui la question.</p>'}
+      <span class="etiquette">${parent ? 'Moi, parent' : (famille().enfants.length > 1 ? 'Mes enfants' : 'Mon enfant')}</span>
+      ${parent ? '' : '<p class="petit" style="margin:0 0 6px">Chaque enfant choisit lui-même son visage, ou posez-lui la question : une ligne par enfant.</p>'}
       <p style="margin:0"><b>${esc(parent ? p.question : p.questionEnfant)}</b></p>
-      <div class="echelle" role="group" aria-label="${parent ? 'Mon bilan' : 'Bilan de mon enfant'} sur 5">${echelle}</div>
+      ${parent ? `<div class="echelle" role="group" aria-label="Mon bilan sur 5">${echelle}</div>` : '<div class="rangs" id="rangs"></div>'}
+      ${parent ? '' : `<div class="nb-enfants"><label for="nb-enfants">Combien d'enfants ont répondu ?</label>
+        <div class="stepper"><button type="button" id="nb-moins" aria-label="Un enfant de moins">−</button><input id="nb-enfants" type="number" inputmode="numeric" min="1" max="99" value="${k0}"><button type="button" id="nb-plus" aria-label="Un enfant de plus">+</button></div>
+        <p class="petit" style="margin:0">Vous avez plusieurs enfants ? C'est bien de le faire en groupe : c'est ça aussi, une famille épanouie ensemble.</p></div>`}
     </div>`;
   }
   function graphique(id, qui, titre) {
@@ -351,6 +416,8 @@
         <label for="note" class="aide">Un mot pour nous, si vous en avez envie (facultatif, il reste sur votre téléphone)</label>
         <textarea id="note" maxlength="300" placeholder="Ce qui a aidé, ce qui a été difficile…">${esc(actP?.n || actE?.n || '')}</textarea>
         <button class="btn plein" id="enregistrer" type="button" style="margin-top:14px">Enregistrer notre bilan</button>
+        <button class="btn" id="imprimer-bilan" type="button" style="margin-top:10px">🖨️ Imprimer le bilan de la semaine</button>
+        <p class="petit" style="margin:8px 0 0">Un bilan par semaine, à garder : chaque semaine peut être différente. Imprimez-le ou enregistrez-le en PDF pour l'archiver.</p>
         <p class="ok" id="retour-ok" role="status"></p>
         ${graphique(id, 'parent', 'Mon évolution')}
         ${graphique(id, 'enfant', 'Son évolution')}
@@ -403,7 +470,7 @@
     const fini = faites === 4;
     const souvenir = fini ? `<div class="pc-souvenir"><span class="etiquette">Notre carte souvenir 🏅</span>
       <div class="pc-med"><img src="p-${esc(p.id)}.png" alt=""><div><b>${esc(pr.titre)}</b><br>Vécu ensemble du ${dateCourte(pc.debut)} au ${dateCourte(pc.fini || pc.debut)}${pc.nb > 1 ? ` · parcours n°${pc.nb}` : ''}</div></div>
-      ${pc.noms ? `<p class="pc-noms">${esc(pc.noms)}</p>` : ''}
+      ${nomsCarte(pc) ? `<p class="pc-noms">${esc(nomsCarte(pc))}</p>` : ''}
       <p>4 semaines pour vous retrouver, vous écouter et mieux vous comprendre. L'harmonie et l'épanouissement se vivent au quotidien : vous venez de le vivre ensemble.</p></div>
       <div class="pc-impr"><button type="button" class="btn plein" id="pc-carte">🖨️ Imprimer mon pétale à coller</button>
         <button type="button" class="btn" id="pc-affiche">🌸 Imprimer ma fleur d'aventure</button>
@@ -414,7 +481,7 @@
       <p>${esc(garde.idee || '')}</p>
       <label for="pc-garde" class="aide">${esc(garde.invite || 'Notre rituel')}</label>
       <textarea id="pc-garde" maxlength="300" placeholder="Écrivez-le avec votre enfant…">${esc(pc.garde)}</textarea>
-      ${fini ? `<label for="pc-noms" class="aide">Vos prénoms, pour la carte souvenir (facultatif)</label><input type="text" id="pc-noms" maxlength="60" value="${esc(pc.noms || '')}" placeholder="Ex. Sarah et Léo">` : ''}
+      ${fini ? `<label for="pc-noms" class="aide">Les prénoms de toute la famille, parents et tous les enfants, pour la carte souvenir</label><input type="text" id="pc-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Sarah, Léo et Inès">` : ''}
       <button type="button" class="btn" id="pc-enreg">Garder</button><p class="ok" id="pc-ok" role="status"></p></div>` : '';
     return `${entete}${cadre}${barre}<p class="petit">${faites} semaine${faites > 1 ? 's' : ''} sur 4 · commencé le ${dateCourte(pc.debut)}</p>${sem}${souvenir}${rituel}`;
   }
@@ -435,7 +502,7 @@
     if (g) g.addEventListener('click', () => {
       const pc = parcoursDe(id);
       pc.garde = zone.querySelector('#pc-garde').value.trim().slice(0, 300);
-      const nm = zone.querySelector('#pc-noms'); if (nm) pc.noms = nm.value.trim().slice(0, 60);
+      const nm = zone.querySelector('#pc-noms'); if (nm) { const v = nm.value.trim().slice(0, 240); pc.noms = v === nomsFamille() ? '' : v; }
       const ok = sauver();
       if (nm) { redessiner(); const o = zone.querySelector('#pc-ok'); if (o) o.textContent = ok ? 'Gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.'; }
       else zone.querySelector('#pc-ok').textContent = ok ? 'Rituel gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.';
@@ -462,19 +529,25 @@
     const b = pa.getBBox(); sv.remove(); return (_bb[id] = { x: b.x, y: b.y, w: b.width, h: b.height });
   }
   const coupe = (t, max = 15, nl = 3) => { const m = String(t || '').split(/\s+/).filter(Boolean), l = []; let c = ''; m.forEach(w => { if ((c + ' ' + w).trim().length > max && c) { l.push(c); c = w; } else c = (c + ' ' + w).trim(); }); if (c) l.push(c); return l.slice(0, nl); };
+  function lignesNoms(t) {                                // les prénoms de toute la famille, sans jamais en couper : la taille s'adapte
+    t = String(t || '').trim() || 'Notre famille';
+    const NIV = [{ fs: 32, max: 13, nl: 2 }, { fs: 27, max: 14, nl: 3 }, { fs: 22, max: 15, nl: 5 }, { fs: 19, max: 16, nl: 7 }, { fs: 16, max: 18, nl: 9 }, { fs: 14, max: 20, nl: 12 }];
+    for (let i = 0; i < NIV.length; i++) { const n = NIV[i], l = coupe(t, n.max, 99); if (l.length <= n.nl) return { l, fs: n.fs, niv: i }; }
+    const n = NIV[NIV.length - 1]; return { l: coupe(t, n.max, 99), fs: n.fs, niv: NIV.length - 1 };
+  }
   function autocollant(p, pc) {                           // le pétale à découper, à l'échelle exacte de la fleur à collectionner
     const f = D.formes[p.id], b = bboxPetale(p.id), pad = 10, ic = f.icone;
-    const noms = coupe(pc.noms || 'Notre famille', 13, 2), fs = 32, k = 0.62;
+    const { l: noms, fs, niv } = lignesNoms(nomsCarte(pc)), k = niv >= 2 ? 0.42 : 0.62, ny = niv >= 2 ? 26 : 78;
     const iw = ic.w * k, ih = ic.h * k;
     return `<svg class="impr-colle" xmlns="${NS}" viewBox="${b.x - pad} ${b.y - pad} ${b.w + 2 * pad} ${b.h + 2 * pad}" style="width:${((b.w + 2 * pad) * MM).toFixed(1)}mm;height:${((b.h + 2 * pad) * MM).toFixed(1)}mm" role="img" aria-label="Pétale à découper">
       <path d="${f.d}" fill="${p.couleur}" stroke="#2E2A2A" stroke-width="5" stroke-linejoin="round"/>
       <text x="${f.cx}" y="${f.cy - 92}" text-anchor="middle" font-family="Gruppo, Quicksand, sans-serif" font-size="46" font-weight="700" fill="#2E2A2A">BRAVO !</text>
       <image href="p-${esc(p.id)}.png" x="${f.cx - iw / 2}" y="${f.cy - 78}" width="${iw}" height="${ih}"/>
-      ${noms.map((t, i) => `<text x="${f.cx}" y="${f.cy + 78 + i * (fs + 4)}" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="${fs}" font-weight="700" fill="#2E2A2A">${esc(t)}</text>`).join('')}
+      ${noms.map((t, i) => `<text x="${f.cx + (niv >= 2 ? 14 : 0)}" y="${f.cy + ny + i * (fs + 4)}" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="${fs}" font-weight="700" fill="#2E2A2A">${esc(t)}</text>`).join('')}
     </svg>`;
   }
   function htmlCarte(p, pc) {                             // carte légère : le pétale à découper et à coller sur la fleur d'aventure
-    const pr = p.parcours, noms = (pc.noms || '').trim() || 'Notre famille';
+    const pr = p.parcours, noms = nomsCarte(pc) || 'Notre famille';
     return `<section class="impr-feuille cert cl" style="--pc:${p.couleur}">
       <div class="cert-cadre">
         <div class="cert-bandeau">${D.petales.map(x => `<i style="background:${x.couleur}"></i>`).join('')}</div>
@@ -482,47 +555,73 @@
         <h1>Bravo !</h1>
         <p class="cl-sous">Un pétale de plus sur votre fleur d'aventure BRILLE</p>
         <div class="cl-colle">${autocollant(p, pc)}</div>
-        <p class="cl-ciseaux">✂ Découpez le long du trait et collez-le sur l'emplacement « ${esc(nomFam(p))} » de votre fleur.</p>
+        <p class="cl-ciseaux">✂ Découpez le long du trait et collez-le sur l'emplacement « ${esc(p.titre)} » de votre fleur.</p>
         <p class="cl-recap"><b>${esc(noms)}</b> ont vécu ensemble, du ${dateCourte(pc.debut)} au ${dateCourte(pc.fini || pc.debut)}, le parcours <b>« ${esc(pr.titre)} »</b>.<br>L'harmonie et l'épanouissement se vivent au quotidien.</p>
         <div class="cl-carnet"><b>Notre souvenir du mois</b>
           <span>Ce qui a changé chez nous : <i></i></span>
           <span>Ce que nous gardons${pc.garde ? ' : ' + esc(pc.garde) : ' : '} ${pc.garde ? '' : '<i></i>'}</span></div>
       </div></section>`;
   }
-  const brilleColore = '<span class="brille-lettres" aria-label="BRILLE">' + 'BRILLE'.split('').map((l, i) => `<span style="color:${['#f49f4c', '#ef7f86', '#6f9fd8', '#8bbd62', '#9585c9', '#e08ab9'][i]}" aria-hidden="true">${l}</span>`).join('') + '</span>';
-  const nomFam = p => p.miroir || p.titre;            // sur les supports imprimés : le titre « famille », pas celui du parent
   const parcoursTermines = () => ORDRE.map(i => petale(i)).filter(q => q && q.parcours && Object.keys(parcoursDe(q.id).sem || {}).length === 4);
   function htmlPetales() {                                // tous les pétales gagnés, sur une seule feuille
     const l = parcoursTermines();
     return `<section class="impr-feuille pl"><h1>Mes pétales gagnés</h1>
       <p class="aff-sous">Découpez chaque pétale le long du trait et collez-le à sa place sur votre fleur d'aventure BRILLE.</p>
-      <div class="pl-grille">${l.map(q => `<figure>${autocollant(q, parcoursDe(q.id))}<figcaption>${esc(nomFam(q))}</figcaption></figure>`).join('')}</div>
+      <div class="pl-grille">${l.map(q => `<figure>${autocollant(q, parcoursDe(q.id))}<figcaption>${esc(q.titre)}</figcaption></figure>`).join('')}</div>
       <p class="aff-sous pl-pied">Un pétale à la fois, dans l'ordre que vous choisissez : la fleur se complète à votre rythme.</p></section>`;
   }
   function htmlAffiche() {
     const VB = '30 238 1380 1392';
     const places = D.petales.map(p => {
       const f = D.formes[p.id]; if (!f) return '';
-      const l = coupe(nomFam(p), 18, 3);
+      const l = coupe(p.titre, 18, 3);
       return `<g><path d="${f.d}" fill="${p.couleur}" fill-opacity=".22" stroke="#8d8795" stroke-width="5" stroke-dasharray="16 11" stroke-linejoin="round"/>
         ${l.map((t, i) => `<text x="${f.cx}" y="${f.cy - 10 + i * 38}" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="30" font-weight="600" fill="#6f6767">${esc(t)}</text>`).join('')}</g>`;
     }).join('');
-    const leg = ORDRE.map(i => D.petales.find(q => q.id === i)).filter(Boolean).map(p => `<li><i style="border-color:${p.couleur}"></i>${esc(nomFam(p))}</li>`).join('');
+    const leg = ORDRE.map(i => D.petales.find(q => q.id === i)).filter(Boolean).map(p => `<li><i style="border-color:${p.couleur}"></i>${esc(p.titre)}</li>`).join('');
     return `<section class="impr-feuille aff">
-      <h1>Notre aventure ${brilleColore}</h1>
+      <h1>Notre aventure BRILLE</h1>
       <p class="aff-sous">7 pétales, un parcours d'un mois pour chacun, dans l'ordre que l'on choisit. À chaque mois terminé, on imprime son pétale et on le colle ici.</p>
       <svg viewBox="${VB}" style="width:190mm;height:${(1392 * MM).toFixed(1)}mm" role="img" aria-label="Fleur d'aventure à compléter">${places}<image href="centre.png" x="546" y="734" width="352" height="352"/></svg>
-      <div class="aff-pied"><p class="aff-nom">Notre famille : <i></i></p><p class="aff-sous">Quand la fleur est complète, elle brille ! Cochez chaque pétale collé :</p><ul class="aff-leg">${leg}</ul></div></section>`;
+      <div class="aff-pied"><p class="aff-nom">Notre famille : <i>${esc(nomsFamille())}</i></p><p class="aff-sous">Quand la fleur est complète, elle brille ! Cochez chaque pétale collé :</p><ul class="aff-leg">${leg}</ul></div></section>`;
   }
-  function ouvrirImpression(type, id) {
+  /* ---------- Bilan de la semaine, imprimable et archivable ---------- */
+  const plusJours = (w, n) => { const [a, m, j] = w.split('-').map(Number), d = new Date(a, m - 1, j); d.setDate(d.getDate() + n); return iso(d); };
+  function htmlBilan(p, data) {
+    const noms = nomsFamille(), sem = data.sem, k = Math.max(1, data.k || 1);
+    const gros = s => s ? `<div class="bil-visage">${visage(s - 1)}<b>${s} sur 5</b><span>${VISAGES[s - 1].t}</span></div>` : '<div class="bil-visage vide"><b>—</b><span>Pas de réponse cette semaine</span></div>';
+    const vv = (data.v || []).slice(0, k);
+    const rangsBil = vv.length > 1 ? `<div class="bil-rangs">${vv.map((x, i) => `<div class="bil-rang">${x ? visage(x - 1) : '<div class="bil-rien">—</div>'}<b>${esc(nomEnfant(i, k))}</b><span>${x ? VISAGES[x - 1].t : 'Pas de réponse'}</span></div>`).join('')}</div>` : gros(data.enfant);
+    const avant = {};
+    bilansDe(p.id, 'parent').forEach(b => { if (b.w !== sem) (avant[b.w] = avant[b.w] || {}).p = b; });
+    bilansDe(p.id, 'enfant').forEach(b => { if (b.w !== sem) (avant[b.w] = avant[b.w] || {}).e = b; });
+    const lignes = Object.keys(avant).sort().reverse().slice(0, 8).map(w => { const a = avant[w]; return `<tr><td>${dateLongue(w)}</td><td>${a.p ? a.p.s + ' sur 5' : '—'}</td><td>${a.e ? a.e.s + ' sur 5' + (a.e.k > 1 ? ' · ' + a.e.k + ' enfants' : '') : '—'}</td></tr>`; }).join('');
+    return `<section class="impr-feuille bil" style="--pc:${p.couleur}">
+      <div class="bil-cadre">
+        <div class="cert-bandeau">${D.petales.map(x => `<i style="background:${x.couleur}"></i>`).join('')}</div>
+        <div class="bil-tete"><img class="bil-logo" src="logo-brille.png" alt="BRILLE"><img class="bil-icone" src="p-${esc(p.id)}.png" alt=""></div>
+        <p class="bil-sur">Notre bilan de la semaine</p>
+        <h1>${esc(p.titre)}</h1>
+        <p class="bil-date">Semaine du ${dateLongue(sem)} au ${dateLongue(plusJours(sem, 6))}</p>
+        <p class="bil-famille"><b>Notre famille :</b> ${esc(noms)}</p>
+        <div class="bil-duo">
+          <div class="bil-bloc"><span class="bil-tag">Moi, parent</span><p class="bil-q">${esc(p.question)}</p>${gros(data.parent)}</div>
+          <div class="bil-bloc"><span class="bil-tag">${k > 1 ? 'Mes enfants · ' + k + ' ont répondu' : 'Mon enfant'}</span><p class="bil-q">${esc(p.questionEnfant)}</p>${rangsBil}</div>
+        </div>
+        <div class="bil-note"><b>Un mot pour nous</b>${data.note ? `<p>${esc(data.note)}</p>` : ''}<i></i><i></i></div>
+        <div class="bil-histo"><b>Les semaines précédentes</b>${lignes ? `<table><thead><tr><th>Semaine du</th><th>Parent</th><th>Enfant(s)</th></tr></thead><tbody>${lignes}</tbody></table>` : '<p>Premier bilan de ce pétale : bravo, c\'est le début de votre histoire !</p>'}</div>
+        <p class="bil-pied">Un bilan par semaine, à garder : chaque semaine peut être différente.${k > 1 ? ' Plusieurs enfants : le faire en groupe, c\'est ça aussi, une famille épanouie ensemble.' : ''}<br>BRILLE · Étincelle · usage personnel</p>
+      </div></section>`;
+  }
+  function ouvrirImpression(type, id, data) {
     if (document.querySelector('.impr-ov')) return;
     const p = petale(id), pc = parcoursDe(id);
     const pg = document.createElement('style'); pg.id = 'impr-page'; pg.textContent = '@page { size: A4; margin: 0 }'; document.head.appendChild(pg);
     const ov = document.createElement('div'); ov.className = 'impr-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
     ov.innerHTML = `<div class="impr-bar">
-        ${type === 'carte' ? `<label>Prénoms sur la carte <input type="text" id="impr-noms" maxlength="60" value="${esc(pc.noms || '')}" placeholder="Ex. Sarah et Léo"></label>` : '<span></span>'}
+        ${type === 'carte' ? `<label>Prénoms de la famille sur la carte <input type="text" id="impr-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Sarah, Léo et Inès"></label>` : '<span></span>'}
         <button type="button" class="btn plein" id="impr-go">🖨️ Imprimer</button><button type="button" class="btn gris" id="impr-x">Fermer</button></div>
-      <p class="impr-aide">Imprimez sur du papier A4, de préférence épais. Dans la fenêtre d'impression, choisissez « Marges : aucune » et cochez « Graphiques d'arrière-plan » pour garder les couleurs.</p>
+      <p class="impr-aide">${type === 'bilan' ? 'Pour l\'archiver : dans la fenêtre d\'impression, choisissez « Enregistrer au format PDF », ou imprimez sur du papier A4 et rangez la feuille dans un classeur. ' : 'Imprimez sur du papier A4, de préférence épais. '}Dans la fenêtre d'impression, choisissez « Marges : aucune » et cochez « Graphiques d'arrière-plan » pour garder les couleurs.</p>
       <div class="impr-feuilles"></div>`;
     document.body.appendChild(ov); document.body.classList.add('impr-on');
     const zone = ov.querySelector('.impr-feuilles');
@@ -531,11 +630,11 @@
       let k = 1; mid.style.zoom = 1;
       while (cad.scrollHeight > cad.clientHeight + 1 && k > 0.55) { k -= 0.03; mid.style.zoom = k.toFixed(2); }
     };
-    const dessiner = () => { zone.innerHTML = type === 'carte' ? htmlCarte(p, pc) : type === 'petales' ? htmlPetales() : htmlAffiche(); const z = Math.min(1, (innerWidth - 24) / 794); zone.style.setProperty('--z', z); ajuster(); };
+    const dessiner = () => { zone.innerHTML = type === 'carte' ? htmlCarte(p, pc) : type === 'petales' ? htmlPetales() : type === 'bilan' ? htmlBilan(p, data) : htmlAffiche(); const z = Math.min(1, (innerWidth - 24) / 794); zone.style.setProperty('--z', z); ajuster(); };
     dessiner();
     const nm = ov.querySelector('#impr-noms');
-    if (nm) nm.addEventListener('input', () => { pc.noms = nm.value.trim().slice(0, 60); sauver(); dessiner(); });
-    const fermer = () => { ov.remove(); pg.remove(); document.body.classList.remove('impr-on'); document.removeEventListener('keydown', cle); const t = $app.querySelector('#pc-noms'); if (t) t.value = pc.noms || ''; };
+    if (nm) nm.addEventListener('input', () => { const v = nm.value.trim().slice(0, 240); pc.noms = v === nomsFamille() ? '' : v; sauver(); dessiner(); });
+    const fermer = () => { ov.remove(); pg.remove(); document.body.classList.remove('impr-on'); document.removeEventListener('keydown', cle); const t = $app.querySelector('#pc-noms'); if (t) t.value = nomsCarte(pc); };
     const cle = e => { if (e.key === 'Escape') fermer(); };
     document.addEventListener('keydown', cle);
     ov.querySelector('#impr-x').addEventListener('click', fermer);
@@ -556,6 +655,35 @@
     const c = $app.querySelector('#fait');
     if (c) c.addEventListener('change', () => { const S = charger(); if (c.checked) S.ensembleFaits[id] = iso(new Date()); else delete S.ensembleFaits[id]; sauver(); });
     if (!$app.querySelector('#enregistrer')) return;      // pétale fermé : rien à lier
+    const nb = $app.querySelector('#nb-enfants');
+    const lireNb = () => Math.min(99, Math.max(1, parseInt(nb && nb.value, 10) || 1));
+    const actE0 = bilansDe(id, 'enfant').find(b => b.w === sem);
+    let vE = actE0 ? (actE0.v && actE0.v.length ? actE0.v.map(x => x || null) : Array(actE0.k || 1).fill(actE0.s)) : [];
+    const moy = () => { const f = vE.filter(Boolean); return f.length ? Math.round(f.reduce((a, b) => a + b, 0) / f.length) : null; };
+    const rangs = $app.querySelector('#rangs');
+    function dessinerRangs() {
+      if (!rangs) return;
+      const k = lireNb(), v = []; for (let i = 0; i < k; i++) v.push(vE[i] || null); vE = v;
+      rangs.innerHTML = vE.map((x, i) => `<div class="rang"><span class="rang-nom">${esc(nomEnfant(i, k))}</span><div class="echelle mini" role="group" aria-label="Ressenti : ${esc(nomEnfant(i, k))}">${VISAGES.map((vi, j) => `<button type="button" data-i="${i}" data-note="${j + 1}" aria-pressed="${x === j + 1}" aria-label="${j + 1} sur 5, ${vi.t}" title="${vi.t}">${visage(j)}</button>`).join('')}</div></div>`).join('');
+      rangs.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+        vE[+b.dataset.i] = Number(b.dataset.note);
+        b.parentNode.querySelectorAll('button').forEach(y => y.setAttribute('aria-pressed', String(y === b)));
+        choix.enfant = moy();
+      }));
+      choix.enfant = moy();
+    }
+    if (nb) {
+      $app.querySelector('#nb-moins').addEventListener('click', () => { nb.value = Math.max(1, lireNb() - 1); dessinerRangs(); });
+      $app.querySelector('#nb-plus').addEventListener('click', () => { nb.value = Math.min(99, lireNb() + 1); dessinerRangs(); });
+      nb.addEventListener('change', () => { nb.value = lireNb(); dessinerRangs(); });
+      dessinerRangs();
+    }
+    $app.querySelector('#imprimer-bilan').addEventListener('click', () => {
+      const ok = $app.querySelector('#retour-ok');
+      if (!choix.parent && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant, avant d\'imprimer.'; return; }
+      ok.textContent = '';
+      ouvrirImpression('bilan', id, { sem, parent: choix.parent, enfant: choix.enfant, k: lireNb(), v: vE.slice(0, lireNb()), note: $app.querySelector('#note').value.trim() });
+    });
     $app.querySelector('#enregistrer').addEventListener('click', () => {
       const ok = $app.querySelector('#retour-ok');
       if (!choix.parent && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant.'; return; }
@@ -565,6 +693,7 @@
         const k = cle(qui);
         const liste = ((S[k] || {})[id] || []).filter(b => b.w !== sem);
         const entree = { w: sem, d, s: choix[qui] };
+        if (qui === 'enfant') { entree.k = lireNb(); entree.v = vE.slice(0, entree.k).map(x => x || 0); }
         if (note && (qui === 'parent' || !choix.parent)) entree.n = note;
         liste.push(entree);
         S[k] = S[k] || {}; S[k][id] = liste.slice(-52);
@@ -652,7 +781,7 @@
       </details>
 
       <details class="carte"><summary>Mes données et ma vie privée</summary>
-        <p>Vos bilans et vos notes sont enregistrés <b>uniquement sur ce téléphone</b>. Il n'y a ni compte, ni serveur : BRILLE ne les voit pas et ne peut pas les récupérer. Ne saisissez pas de noms ni d'informations sensibles.</p>
+        <p>Vos bilans et vos notes sont enregistrés <b>uniquement sur ce téléphone</b>. Il n'y a ni compte, ni serveur : BRILLE ne les voit pas et ne peut pas les récupérer. Seuls des prénoms sont demandés (pas de nom de famille) : n'ajoutez pas d'informations sensibles.</p>
         <p class="petit">Si vous changez de téléphone ou videz les données du navigateur, vous perdez l'historique, sauf si vous l'enregistrez avant.</p>
         <button class="btn discret plein" id="exporter" type="button">Enregistrer une copie de mes données</button>
         <label class="btn discret plein" style="margin-top:12px">Récupérer une copie<input type="file" id="importer" accept="application/json,.json" hidden></label>
@@ -663,8 +792,9 @@
       </details>
 
       <details class="carte"><summary>À propos d'Étincelle</summary>
-        <p>Étincelle est la suite à la maison des ateliers proposés en centre social par <b>BRILLE</b> : Main tendue pour les parents, Lueur pour les enfants. Elle prolonge ce que vous avez vécu en atelier, en famille, avec la qualité de vie de l'enfant (QVE) comme fil conducteur.</p>
-        <p>La fleur des parents répond en miroir à la fleur de l'enfant, car le parent joue un rôle essentiel dans la qualité de vie de son enfant.</p>
+        <p>Étincelle est la suite à la maison des ateliers proposés en centre social par <b>BRILLE</b>. La qualité de vie de l'enfant (QVE) a d'abord été pensée pour l'enfant : c'est elle qui guide tout.</p>
+        <p>Quand vous revenez de l'atelier Main tendue, Étincelle vous aide à continuer à la maison : faire, avec votre enfant, quelque chose en lien avec sa QVE, un moment à deux ou en famille, à votre rythme.</p>
+        <p>La fleur des parents répond en miroir à la fleur de l'enfant, car le parent joue un rôle essentiel dans la qualité de vie de son enfant. Mais le plus important, c'est de vivre l'aventure ensemble : c'est comme ça que le lien se crée.</p>
         <p class="petit">Étincelle accompagne le bien-être familial. Elle ne remplace pas l'avis d'un médecin ou d'un professionnel de la santé ou du soutien psychologique.</p>
       </details>
 
@@ -717,7 +847,7 @@
       try {
         const d = JSON.parse(await f.text());
         if (!d || typeof d !== 'object' || typeof d.bilans !== 'object') throw new Error('format');
-        memoire = Object.assign(vide(), { bilans: d.bilans || {}, enfant: d.enfant || {}, defisFaits: d.defisFaits || {}, ensembleFaits: d.ensembleFaits || {}, parcours: d.parcours || {}, mode: d.mode === 'enfant' ? 'enfant' : 'parent' }); sauver();
+        memoire = Object.assign(vide(), { bilans: d.bilans || {}, enfant: d.enfant || {}, defisFaits: d.defisFaits || {}, ensembleFaits: d.ensembleFaits || {}, parcours: d.parcours || {}, mode: d.mode === 'enfant' ? 'enfant' : 'parent', famille: (d.famille && typeof d.famille === 'object') ? d.famille : { parents: '', enfants: [] } }); sauver();
         msg('Vos données ont été récupérées.');
       } catch { msg('Ce fichier n\'est pas une copie valide d\'Étincelle.'); }
     });

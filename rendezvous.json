@@ -1,0 +1,20 @@
+[
+  {
+    "exemple": true,
+    "date": "2026-11-12",
+    "heure": "18h00 - 19h30",
+    "titre": "Atelier Main tendue : séance 1",
+    "lieu": "Centre social partenaire",
+    "adresse": "Adresse à renseigner",
+    "description": "Premier temps d'échange entre parents. Exemple à remplacer par vos vraies dates."
+  },
+  {
+    "exemple": true,
+    "date": "2026-11-26",
+    "heure": "18h00 - 19h30",
+    "titre": "Atelier Main tendue : séance 2",
+    "lieu": "Centre social partenaire",
+    "adresse": "Adresse à renseigner",
+    "description": "Exemple à remplacer par vos vraies dates."
+  }
+]

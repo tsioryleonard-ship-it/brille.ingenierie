@@ -437,7 +437,88 @@ body.protege img { -webkit-user-drag: none; pointer-events: auto; }
 .bienvenue-aventure h2 { margin: 6px 0 8px; font-family: 'Gruppo', 'Quicksand', sans-serif; font-size: 1.5rem; }
 .bienvenue-aventure p { margin: 0 auto; max-width: 640px; line-height: 1.55; }
 
-.aff h1, .pl h1 { font-family: 'Quicksand', sans-serif; font-weight: 700; color: #3a3340; -webkit-text-stroke: 0; box-shadow: none; padding: 0; line-height: 1.2; letter-spacing: .01em; }
-.brille-lettres span { -webkit-text-stroke: 0; }
-.hero-accueil p.accroche-aventure { max-width: 100%; margin: 0 0 12px; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 2rem; line-height: 1.12; letter-spacing: -.01em; color: #3a3340; text-align: left; }
-@media (min-width: 720px) { .hero-accueil p.accroche-aventure { font-size: 2.9rem; max-width: 62%; } }
+/* ===== v23 : accueil, famille, bilan imprimable ===== */
+.mot .signature { line-height: 1.35; }
+.mot .signature b { display: block; font-size: 1.05rem; color: var(--texte); }
+.mot .signature span { display: block; font-weight: 500; font-size: .85rem; letter-spacing: .04em; }
+.hero-accueil p.hors-atelier { margin-top: 12px; padding-top: 10px; border-top: 1.5px dashed rgba(0,0,0,.2); font-size: .9rem; font-weight: 400; color: var(--doux); }
+
+/* « L'aventure BRILLE commence maintenant ! » */
+.aventure-banniere { position: relative; overflow: hidden; margin: 0 0 18px; padding: 30px 14px 28px; text-align: center; border-radius: var(--rayon); background: linear-gradient(135deg, #fff6e2 0%, #ffffff 45%, #eaf5fb 100%); box-shadow: var(--ombre); }
+.aventure-banniere::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 10px; background: linear-gradient(90deg, #b8aed7 0 14.28%, #a4c2e7 0 28.57%, #f8f4b8 0 42.85%, #cbe1b6 0 57.14%, #ebc6e0 0 71.42%, #f5abaf 0 85.71%, #f49f4c 0); }
+.av-titre { position: relative; z-index: 1; margin: 6px 0 0; display: flex; flex-direction: column; align-items: center; line-height: 1.05; font-family: 'Quicksand', sans-serif; }
+.av-mot { font-weight: 700; font-size: clamp(1.45rem, 6.6vw, 2.3rem); color: #2E2A2A; }
+.av-brille { display: inline-flex; gap: .015em; margin: .04em 0 .1em; font-size: clamp(3.8rem, 22vw, 7.6rem); font-weight: 700; }
+.av-brille b { display: inline-block; font-weight: 700; color: var(--c); -webkit-text-stroke: .05em #2E2A2A; paint-order: stroke fill; text-shadow: .035em .05em 0 rgba(46,42,42,.9); animation: av-saute 2.8s ease-in-out infinite; animation-delay: calc(var(--i) * .14s); }
+@keyframes av-saute { 0%, 66%, 100% { transform: translateY(0) rotate(0); } 80% { transform: translateY(-.1em) rotate(-4deg); } 92% { transform: translateY(0) rotate(2deg); } }
+.av-etoile { position: absolute; width: 38px; height: 38px; z-index: 0; animation: av-scintille 3.2s ease-in-out infinite; }
+.av-g { left: 5%; top: 24px; } .av-d { right: 6%; top: 32px; width: 30px; height: 30px; animation-delay: .8s; }
+.av-g2 { left: 9%; bottom: 20px; width: 26px; height: 26px; animation-delay: 1.4s; } .av-d2 { right: 8%; bottom: 18px; width: 40px; height: 40px; animation-delay: 2s; }
+@keyframes av-scintille { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.25) rotate(14deg); } }
+@media (prefers-reduced-motion: reduce) { .av-brille b, .av-etoile { animation: none; } }
+@media (min-width: 900px) { .aventure-banniere { padding: 38px 20px 34px; } .av-titre { flex-direction: row; justify-content: center; align-items: baseline; gap: .35em; flex-wrap: wrap; } .av-brille { font-size: 6.4rem; } .av-mot { font-size: 2.6rem; } }
+
+/* Notre famille */
+.legende.ensemble { margin-top: 0; font-size: .88rem; }
+.carte.famille { padding: 16px 20px; }
+.carte.famille input[type=text] { width: 100%; font: inherit; padding: 11px 12px; border: 2px solid #e4dcec; border-radius: 14px; margin: 2px 0 10px; }
+.puces-enfants { list-style: none; padding: 0; margin: 4px 0 10px; display: flex; flex-wrap: wrap; gap: 8px; }
+.puces-enfants:empty { display: none; }
+.puces-enfants li { display: inline-flex; align-items: center; gap: 6px; background: #f3eef7; border-radius: 999px; padding: 4px 4px 4px 14px; font-weight: 600; }
+.puces-enfants button.x { width: 32px; height: 32px; border-radius: 50%; border: 0; background: #fff; font-size: .85rem; cursor: pointer; }
+.fam-ajout { display: flex; gap: 8px; align-items: stretch; }
+.carte.famille .fam-ajout input[type=text] { margin: 0; flex: 1; min-width: 0; }
+.fam-ajout .btn { white-space: nowrap; }
+
+/* Nombre d'enfants qui répondent au bilan */
+.nb-enfants { margin: 14px 0 2px; }
+.nb-enfants label { display: block; font-weight: 600; }
+.stepper { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0 8px; }
+.stepper button { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #2E2A2A; background: #fff; font-size: 1.5rem; font-weight: 700; line-height: 1; cursor: pointer; }
+.stepper input { width: 66px; height: 46px; text-align: center; font: inherit; font-weight: 700; border: 2px solid #e4dcec; border-radius: 14px; }
+
+/* Bilan de la semaine à imprimer (A4) */
+.bil { padding: 7mm; }
+.bil-cadre { height: 100%; border: 3mm solid var(--pc); border-radius: 6mm; padding: 6mm 12mm 6mm; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.bil-tete { width: 100%; display: flex; justify-content: space-between; align-items: center; margin: 4mm 0 0; }
+.bil-logo { height: 14mm; }
+.bil-icone { height: 22mm; width: 22mm; object-fit: contain; }
+.impr-feuille p.bil-sur { font-size: 10.5pt; letter-spacing: .14em; text-transform: uppercase; color: #6f6767; font-weight: 700; margin: 1mm 0 0; }
+.bil h1 { font-family: 'Gruppo', 'Quicksand', sans-serif; font-size: 32pt; line-height: 1.05; margin: 1mm 0; padding: 0 4mm; display: inline-block; box-shadow: inset 0 -.3em 0 0 var(--pc); }
+.impr-feuille p.bil-date { font-size: 12pt; margin: 1mm 0 3mm; }
+.impr-feuille p.bil-famille { width: 100%; text-align: left; font-size: 12pt; border-bottom: .35mm solid #8d8795; padding-bottom: 2mm; margin: 1mm 0 4mm; }
+.bil-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; width: 100%; }
+.bil-bloc { border: .4mm solid var(--pc); background: color-mix(in srgb, var(--pc) 16%, #fff); border-radius: 5mm; padding: 4mm 4mm 5mm; display: flex; flex-direction: column; align-items: center; gap: 2mm; }
+.bil-tag { font-weight: 700; font-size: 10pt; text-transform: uppercase; letter-spacing: .08em; }
+.impr-feuille p.bil-q { font-weight: 600; font-size: 11pt; margin: 0; min-height: 20mm; }
+.bil-visage { display: flex; flex-direction: column; align-items: center; }
+.bil-visage svg { width: 30mm; height: 30mm; }
+.bil-visage b { font-size: 16pt; }
+.bil-visage span { font-size: 10pt; color: #6f6767; }
+.bil-note, .bil-histo { width: 100%; text-align: left; margin-top: 5mm; font-size: 11pt; }
+.impr-feuille .bil-note p { text-align: left; margin: 1mm 0 0; }
+.bil-note i { display: block; border-bottom: .35mm solid #8d8795; height: 8mm; }
+.bil-histo table { width: 100%; border-collapse: collapse; font-size: 10pt; margin-top: 2mm; }
+.bil-histo th, .bil-histo td { border-bottom: .3mm solid #cfc9d6; padding: 1.2mm 2mm; text-align: left; }
+.impr-feuille .bil-histo p { text-align: left; margin: 2mm 0 0; color: #6f6767; }
+.impr-feuille p.bil-pied { margin: auto 0 0; font-size: 8.5pt; color: #6f6767; }
+.aff-nom i { font-style: normal; font-weight: 600; height: auto; min-height: 6mm; }
+
+/* ===== v24 ===== */
+.mot blockquote::before { content: none; display: none; }
+.hero-accueil p { max-width: calc(100% - 150px); }
+@media (min-width: 900px) { .hero-accueil p { max-width: calc(100% - 270px); } }
+.carte.famille .fam-ajout input[type=text] { flex: 1 1 auto; width: auto; min-width: 0; }
+.fam-ajout .btn, .fam-ajout .btn.plein { flex: 0 0 auto; width: auto; padding-left: 22px; padding-right: 22px; }
+.rangs { display: grid; gap: 8px; margin: 10px 0 4px; }
+.rang { display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid #e4dcec; border-radius: 18px; padding: 6px 8px; }
+.rang-nom { flex: 0 0 74px; font-weight: 600; font-size: .85rem; line-height: 1.15; word-break: break-word; text-align: left; }
+.echelle.mini { flex: 1; margin: 0; gap: 4px; }
+.echelle.mini button { min-height: 46px; padding: 4px 0; border-radius: 12px; border-width: 2px; }
+.echelle.mini button svg { width: 30px; height: 30px; }
+.bil-rangs { display: grid; grid-template-columns: repeat(auto-fit, minmax(26mm, 1fr)); gap: 3mm; margin-top: 2mm; }
+.bil-rang { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.bil-rang svg { width: 16mm; height: 16mm; }
+.bil-rang b { font-size: 10pt; }
+.bil-rang span { font-size: 8pt; color: #6f6767; }
+.bil-rien { width: 16mm; height: 16mm; display: grid; place-items: center; color: #999; }

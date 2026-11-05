@@ -5,17 +5,19 @@
 .jeu-son:active { transform: translateY(2px); box-shadow: none; }
 
 /* Tableau de jeu de l'accueil */
-.jeu-hud { background: linear-gradient(135deg, #fdd5a5, #ebc6e0 55%, #b8aed7); border: 0; }
+.jeu-hud { background: #fbf8dc; border: 0; }
 .jeu-niv { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .jeu-emo { font-size: 46px; line-height: 1; filter: drop-shadow(0 3px 0 rgba(0,0,0,.12)); animation: jeu-bat 2.6s ease-in-out infinite; }
 .jeu-niv b { display: block; font-family: 'Gruppo', 'Quicksand', sans-serif; -webkit-text-stroke: .7px #000; font-size: 1.45rem; font-weight: 400; line-height: 1.1; }
 .jeu-niv small { font-size: .95rem; font-weight: 600; }
-.jeu-barre { height: 16px; border-radius: 999px; background: rgba(255,255,255,.75); overflow: hidden; border: 2px solid #000; }
-.jeu-barre i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #f49f4c, #f5abaf, #b8aed7); transition: width .8s cubic-bezier(.2,.8,.3,1); }
+.jeu-barre { height: 16px; border-radius: 999px; background: #fff; overflow: hidden; border: 2px solid #000; }
+.jeu-barre i { display: block; height: 100%; border-radius: 999px; background: #cbe1b6; transition: width .8s cubic-bezier(.2,.8,.3,1); }
 .jeu-aide { text-align: left; hyphens: none; -webkit-hyphens: none; font-size: .88rem; color: var(--doux); margin: 8px 0 0; line-height: 1.4; }
 .jeu-badges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
-.jeu-badge { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 18px; background: rgba(255,255,255,.5); text-align: center; opacity: .65; }
-.jeu-badge.on { background: #fff; opacity: 1; box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+.jeu-badge { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 18px; background: var(--bg, #f3eef8); text-align: center; opacity: .6; }
+.jeu-badge.on { opacity: 1; box-shadow: 0 3px 0 rgba(0,0,0,.14); }
+.jeu-badge:nth-child(8n+1) { --bg: #fbe3c8; } .jeu-badge:nth-child(8n+2) { --bg: #dce8f5; } .jeu-badge:nth-child(8n+3) { --bg: #fbdcde; } .jeu-badge:nth-child(8n+4) { --bg: #e6f0da; }
+.jeu-badge:nth-child(8n+5) { --bg: #e4dff0; } .jeu-badge:nth-child(8n+6) { --bg: #dcf0f6; } .jeu-badge:nth-child(8n+7) { --bg: #fbf8d4; } .jeu-badge:nth-child(8n) { --bg: #f5e2ee; }
 .jeu-badge i { font-style: normal; font-size: 26px; line-height: 1.1; }
 .jeu-badge small { font-size: .68rem; font-weight: 600; line-height: 1.15; }
 .jeu-ok { margin-left: auto; font-size: 20px; align-self: center; }

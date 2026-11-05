@@ -52,6 +52,8 @@
       const { wk, id } = await deriver(f.code, carnet.salt, carnet.iter);
       const cles = {}; f.petales.forEach(p => { if (carnet.cles[p]) cles[p] = carnet.cles[p]; });
       if (f.admin) cles._admin = '1';
+      cles._nom = f.nom || '';
+      if (f.fin && !f.admin) cles._fin = f.fin;
       const iv = alea(12);
       const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, wk, enc.encode(JSON.stringify(cles))));
       familles.push({ id, iv: b64(iv), k: b64(ct) });
@@ -75,11 +77,12 @@
     const cles = JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(e.iv) }, wk, unb64(e.k))));
     const details = {};
     for (const p of Object.keys(cles)) {
+      if (p[0] === '_') continue;
       const c = contenuEnc.petales[p]; if (!c) continue;
       try { details[p] = JSON.parse(dec.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(c.iv) }, await cleAES(unb64(cles[p]), ['decrypt']), unb64(c.data)))); } catch { }
     }
     if (!Object.keys(details).length) throw new Error('vide');
-    return { details, admin: cles._admin === '1' };
+    return { details, admin: cles._admin === '1', nom: cles._nom || '', fin: cles._fin || '' };
   }
 
   g.Acces = { nouveauCode, nouveauCarnet, ajouterFamille, renouvelerCles, fabriquer, ouvrir, norm };

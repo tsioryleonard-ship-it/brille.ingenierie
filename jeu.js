@@ -194,9 +194,9 @@
     const ouverts = [...app.querySelectorAll('a.ligne-petale:not(.ferme)')].map(a => (a.getAttribute('href') || '').split('/').pop());
     if (ouverts.length) { S.ouverts = ouverts; sauver(); }
     if (app.querySelector('.jeu-hud')) return;
-    const hero = app.querySelector('.hero-accueil'); if (!hero) return;
+    const place = app.querySelector('.fleur-carte') || app.querySelector('.hero-accueil'); if (!place) return;
     const d = document.createElement('div'); d.className = 'jeu-hud carte'; d.innerHTML = htmlHud();
-    hero.insertAdjacentElement('afterend', d);
+    place.insertAdjacentElement('afterend', d);
     // pétales déjà « vécus » : une petite pastille ✨ sur la liste
     app.querySelectorAll('a.ligne-petale:not(.ferme)').forEach(a => {
       const id = (a.getAttribute('href') || '').split('/').pop();
