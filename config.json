@@ -7,8 +7,99 @@
     "email": "tsioryleonard@gmail.com",
     "telephone": "07 45 32 30 90"
   },
-  "messageAccueil": "Les ateliers vous ont donné de l'élan. Étincelle le prolonge à la maison : chaque semaine, un petit moment à vivre ensemble, parent et enfant.",
-  "messageHorsAtelier": "Vous n'avez pas pu assister aux ateliers, mais vous aviez quand même envie de mieux vivre le quotidien avec votre enfant ? Étincelle a aussi été pensée pour vous.",
+  "messageAccueil": "Vous avez vécu l'atelier : vous êtes des pionniers BRILLE. Étincelle prolonge ce moment à la maison, quand ça vous fait plaisir, en quelques minutes. À vous de le faire vivre, puis de le transmettre autour de vous.",
+  "messageHorsAtelier": "Vous n'avez pas suivi d'atelier BRILLE ? Votre aventure commence ici.",
+  "essai": {
+    "actif": true,
+    "jours": 7,
+    "codes": {
+      "emotions": "ZBKA-V6RP",
+      "apprentissages": "XX37-VN2V",
+      "liens": "HT4Z-59ZY",
+      "droits": "RAL9-HV4N",
+      "equilibre": "LSU3-FPB2",
+      "briller": "YFU7-5QJ8",
+      "organisation": "76HW-PPFA"
+    },
+    "questions": [
+      {
+        "q": "Ces temps-ci, qu'est-ce qui pèse le plus dans votre quotidien de famille ?",
+        "poids": 2,
+        "choix": [
+          {
+            "t": "Le temps qui file : les matins, les devoirs, les routines",
+            "petale": "organisation"
+          },
+          {
+            "t": "Les colères, les larmes, les débordements",
+            "petale": "emotions"
+          },
+          {
+            "t": "L'école : la motivation, le stress, les apprentissages",
+            "petale": "apprentissages"
+          },
+          {
+            "t": "On ne se parle pas assez, ou pas comme on voudrait",
+            "petale": "liens"
+          },
+          {
+            "t": "Les règles, les limites, les disputes sur le cadre",
+            "petale": "droits"
+          },
+          {
+            "t": "La fatigue : j'ai besoin de souffler",
+            "petale": "equilibre"
+          },
+          {
+            "t": "Rien de grave : j'aimerais surtout qu'on se sente fiers de nous",
+            "petale": "briller"
+          }
+        ]
+      },
+      {
+        "q": "Quel moment de la journée aimeriez-vous rendre plus doux ?",
+        "choix": [
+          {
+            "t": "Le matin, avant de partir",
+            "petale": "organisation"
+          },
+          {
+            "t": "Après l'école, les devoirs",
+            "petale": "apprentissages"
+          },
+          {
+            "t": "Le repas et les conversations",
+            "petale": "liens"
+          },
+          {
+            "t": "Le soir, le coucher",
+            "petale": "equilibre"
+          }
+        ]
+      },
+      {
+        "q": "Pour votre enfant, vous aimeriez surtout...",
+        "choix": [
+          {
+            "t": "Qu'il dise ce qu'il ressent, sans tout garder pour lui",
+            "petale": "emotions"
+          },
+          {
+            "t": "Qu'il se sente écouté et respecté",
+            "petale": "droits"
+          },
+          {
+            "t": "Qu'il prenne confiance en lui",
+            "petale": "briller"
+          },
+          {
+            "t": "Qu'il se sente bien dans son quotidien",
+            "petale": "equilibre"
+          }
+        ]
+      }
+    ]
+  },
   "achat": {
     "actif": false,
     "offres": [
