@@ -246,6 +246,12 @@ html,body{min-height:100vh;min-height:100dvh;}
   #p-info.active,#p-cmp.active{max-width:720px;margin:0 auto;width:100%;}
 }
 .lock{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.65);border-radius:16px;padding:12px 14px;margin-top:10px;font-size:14px;line-height:1.5}.lock .lk{font-size:26px;flex-shrink:0}
+
+/* Texte justifié */
+p,.tip,.act,.xq,.xnote,.note,.lock>div:last-child,.card p.s,.box p,.rhero p,.hero p,.qtext{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;}
+.hero p,.rhero p,.note{text-align-last:center;}
+.rc .nm,.rc .st,.qbig .qt,.phead small{text-align:left;hyphens:none;}
+.qbig .qt{text-align:center;}
 </style>
 </head>
 <body>
@@ -680,11 +686,10 @@ function TEASE(x,kid){
    +'<div class="lock"><div class="lk">🔒</div><div>'+(kid?'Sa mission, des jeux et des petits défis t\'attendent dans <b>Étincelle</b>.':'Les pistes concrètes, les jeux à faire avec votre enfant et la suite pas à pas vous attendent dans <b>Étincelle</b>, l\'application BRILLE.')+'</div></div></div>';
 }
 function CTA(kid){
-  const subj=encodeURIComponent('Étincelle - je veux découvrir');
   return '<div class="box" style="background:linear-gradient(135deg,var(--peche),var(--lilas))"><h3 class="t">✨ Et si on allait plus loin ?</h3>'
    +'<p>Cette fleur n\'est que le début. <b>Étincelle</b>, l\'application BRILLE, prolonge ce moment à la maison : chaque pétale devient un chemin, avec des activités à vivre '+(kid?'avec ton parent':'avec votre enfant')+', quelques minutes à la fois.</p>'
    +'<div class="lock"><div class="lk">🌸</div><div>Les 7 pétales se déverrouillent un à un, au rythme de la famille.</div></div>'
-   +'<div style="text-align:center;margin-top:14px"><a class="btn" style="display:inline-block;text-decoration:none" href="mailto:tsioryleonard@gmail.com?subject='+subj+'">✨ Découvrir Étincelle</a></div></div>';
+   +'<div style="text-align:center;margin-top:14px"><a class="btn" style="display:inline-block;text-decoration:none" href="https://tsioryleonard-ship-it.github.io/brille/" target="_blank" rel="noopener">✨ Découvrir Étincelle</a></div></div>';
 }
 
 function rcard(x,parent,cc){
