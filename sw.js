@@ -1,8 +1,8 @@
 // Service worker : permet d'ouvrir l'application même sans réseau.
 // Quand vous modifiez index.html, app.js ou style.css, changez simplement le numéro de VERSION ci-dessous.
-const VERSION = 'etincelle-v24';
+const VERSION = 'etincelle-v56';
 const FICHIERS = [
-  './', 'index.html', 'legal.html', 'merci.html', 'style.css', 'jeu.css', 'app.js', 'jeu.js', 'manifest.webmanifest',
+  './', 'index.html', 'legal.html', 'merci.html', 'style.css', 'jeu.css', 'app.js', 'jeu.js', 'enquete.js', 'enquete.json', 'manifest.webmanifest',
   'acces-lib.js', 'qrcode.js', 'config.json', 'vitrine.json', 'acces.json', 'contenu.enc.json', 'formes.json', 'centre.png',
   'logo-brille.png', 'logo-etincelle.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'favicon.png', 'apple-touch-icon.png',
   'p-emotions.png', 'p-apprentissages.png', 'p-liens.png', 'p-droits.png',
@@ -14,7 +14,7 @@ const FICHIERS = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FICHIERS)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(FICHIERS.map(f => new Request(f, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', e => {
@@ -30,7 +30,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
-  const estDonnee = /\/(config|vitrine|acces|contenu\.enc)\.json/.test(req.url);
+  const estDonnee = /\/(config|vitrine|acces|enquete|contenu\.enc)\.json/.test(req.url);
   if (estDonnee) {
     e.respondWith(
       fetch(req).then(r => { const copie = r.clone(); caches.open(VERSION).then(c => c.put(req, copie)); return r; })

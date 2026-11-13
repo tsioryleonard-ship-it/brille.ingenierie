@@ -1,6 +1,6 @@
 /* Étincelle · BRILLE
    La suite des ateliers, à la maison, parent et enfant ensemble.
-   Application sans serveur : tout ce que la famille saisit reste dans son téléphone. */
+   Application sans serveur : tout ce que la famille saisit reste sur son appareil (ordinateur, tablette ou téléphone). */
 (() => {
   'use strict';
 
@@ -25,6 +25,8 @@
   const sauver = () => { try { localStorage.setItem(CLE, JSON.stringify(memoire)); return true; } catch { return false; } };
   const cle = qui => (qui === 'enfant' ? 'enfant' : 'bilans');
   const bilansDe = (id, qui = 'parent') => ((charger()[cle(qui)] || {})[id] || []).slice().sort((a, b) => a.w.localeCompare(b.w));
+  const scoreDe = b => { const l = [b.s, b.s2].filter(Boolean); return l.length ? Math.round(l.reduce((t, x) => t + x, 0) / l.length) : 0; };   // parent : moyenne du parent 1 et du parent 2 s'il y en a deux
+  const bilanFamille = id => { const a = dernierBilan(id, 'parent'), e = dernierBilan(id, 'enfant'), l = [a, e].filter(Boolean); return l.length ? { s: Math.round(l.reduce((t, x) => t + scoreDe(x), 0) / l.length) } : null; };
   const dernierBilan = (id, qui = 'parent') => { const l = bilansDe(id, qui); return l.length ? l[l.length - 1] : null; };
 
   /* ---------- La famille : les prénoms des parents et de TOUS les enfants (aucune limite) ---------- */
@@ -34,8 +36,10 @@
     if (typeof f.parents !== 'string') f.parents = '';
     return f;
   };
+  const MAX_ENFANTS = 20;                                   // nombre maximum d'enfants par famille
   const jointNoms = l => (l.length > 1 ? l.slice(0, -1).join(', ') + ' et ' + l[l.length - 1] : (l[0] || ''));
-  const nomsFamille = () => { const f = famille(), p = f.parents.trim(); return jointNoms([...(p ? [p] : []), ...f.enfants]); };
+  const nomDeFamille = () => { const p = famille().parents.trim().replace(/^famille\s+/i, ''); return p ? 'Famille ' + p : ''; };   // « parents » contient désormais le nom de famille
+  const nomsFamille = () => { const n = nomDeFamille(), e = jointNoms(famille().enfants); return n && e ? n + ' : ' + e : (n || e); };
   const nomsCarte = pc => ((pc && pc.noms) || '').trim() || nomsFamille();       // un prénom saisi à la main sur une carte reste prioritaire
   let familleOuverte = false;
 
@@ -50,6 +54,45 @@
     ACCES = { acces, contenuEnc };
   }
   const codeMemorise = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch { return ''; } };
+
+  /* ---------- Essai gratuit d'une semaine (automatique, aucune publication à chaque essai) ----------
+     Un code d'essai par pétale (créés une seule fois, voir « Gérer les familles »). La semaine démarre à la première
+     ouverture, sur le téléphone de la famille, et se termine toute seule. */
+  const CLE_ESSAI = 'brille-etincelle-essai';
+  const essaiCfg = () => D.config.essai || {};
+  const essaiJours = () => Math.max(1, parseInt(essaiCfg().jours, 10) || 7);
+  const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const essaiCodes = () => { const o = {}; Object.entries(essaiCfg().codes || {}).forEach(([k, c]) => { if (normCode(c)) o[k] = String(c).trim(); }); return o; };
+  /* Avec un « serveur » (petit script Google gratuit, voir SERVEUR-ESSAI.md), l'essai exige un e-mail vérifié : un essai par adresse,
+     sur n'importe quel téléphone, et les codes d'essai ne sont plus dans config.json. Sans serveur : verrou sur le téléphone seulement. */
+  const essaiServeur = () => String(essaiCfg().serveur || '').trim();
+  const essaiPetales = () => essaiServeur() ? (Array.isArray(essaiCfg().petales) && essaiCfg().petales.length ? essaiCfg().petales : (D.vitrine || []).map(v => v.id)) : Object.keys(essaiCodes());
+  const essaiDispo = () => essaiCfg().actif !== false && (!!essaiServeur() || Object.keys(essaiCodes()).length > 0);
+  const appelServeur = async corps => {
+    const r = await fetch(essaiServeur(), { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(corps) });
+    if (!r.ok) throw new Error('reseau'); return r.json();
+  };
+  const essaiPour = code => { const n = normCode(code); const t = Object.entries(essaiCodes()).find(([, c]) => normCode(c) === n); return t ? t[0] : ''; };
+  const essaiPause = () => { const n = parseInt(essaiCfg().pause, 10); return Number.isFinite(n) && n >= 0 ? n : 30; };   // jours d'attente après un essai
+  /* Un seul essai à la fois, puis une pause avant le suivant. La date du dernier essai est gardée à deux endroits du téléphone
+     (mémoire de l'appli + cookie) : vider l'historique ne suffit pas à le recommencer. */
+  const lireEssai = () => {
+    const lots = [];
+    try { const o = JSON.parse(localStorage.getItem(CLE_ESSAI) || 'null'); if (o && o.d) lots.push({ p: o.p, d: o.d }); else if (o && typeof o === 'object') Object.entries(o).forEach(([p, d]) => { if (/^\d{4}-\d\d-\d\d$/.test(d)) lots.push({ p, d }); }); } catch { }
+    try { const m = document.cookie.match(/(?:^|; )brille_essai=([^;]+)/); if (m) { const [p, d] = decodeURIComponent(m[1]).split('|'); if (/^\d{4}-\d\d-\d\d$/.test(d || '')) lots.push({ p, d }); } } catch { }
+    return lots.sort((a, b) => a.d < b.d ? 1 : -1)[0] || null;
+  };
+  const ecrireEssai = R => {
+    try { localStorage.setItem(CLE_ESSAI, JSON.stringify(R)); } catch { }
+    try { document.cookie = 'brille_essai=' + encodeURIComponent(R.p + '|' + R.d) + '; max-age=63072000; path=/; SameSite=Lax'; } catch { }
+  };
+  const essaiEtat = () => {
+    const R = lireEssai(); if (!R) return null;
+    const fin = plusJours(R.d, essaiJours() - 1), libre = plusJours(fin, essaiPause() + 1), auj = iso(new Date());
+    return { R, fin, libre, actif: auj <= fin, bloque: auj > fin && auj < libre };
+  };
+  const joursRestants = fin => Math.max(0, Math.round((new Date(fin + 'T00:00:00') - jour(new Date())) / 86400000) + 1);
+  const titreEnfant = id => { const v = (D.vitrine || []).find(x => x.id === id); return v ? (v.miroir || v.titre) : id; };
   function composer(ouverts) {                        // ouverts : liste d'identifiants de pétales ouverts
     D.petales = D.vitrine.map(v => Object.assign({}, v, D.details[v.id] || {}, { ouvert: ouverts.includes(v.id) && !!D.details[v.id] }));
     D.defis = D.petales.filter(p => p.ouvert).flatMap(p => p.defis || []).sort((a, b) => a.id.localeCompare(b.id));
@@ -61,11 +104,11 @@
     document.body.classList.toggle('protege', actif);
     const ancien = document.getElementById('filigrane'); if (ancien) ancien.remove();
     if (!actif) return;
-    const txt = `Accès : ${D.nom || 'famille accompagnée'} · BRILLE · usage personnel`;
+    const txt = `Accès personnel de ${D.nom || 'la famille'} · merci de ne pas partager`;
     const f = document.createElement('div'); f.id = 'filigrane'; f.setAttribute('aria-hidden', 'true');
     const poser = police => {                          // la police Quicksand est embarquée dans l'image (une image SVG ne voit pas les polices de la page)
       const css = police ? `<style>@font-face{font-family:'QS';src:url(data:font/woff2;base64,${police}) format('woff2');font-weight:600}</style>` : '';
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="420" height="240">${css}<text x="30" y="130" transform="rotate(-24 210 120)" font-family="${police ? "'QS', " : ''}Quicksand, sans-serif" font-size="17" font-weight="600" fill="#000" fill-opacity="0.085">${xmlesc(txt)}</text></svg>`;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360">${css}<text x="90" y="200" transform="rotate(-20 320 180)" font-family="${police ? "'QS', " : ''}Quicksand, sans-serif" font-size="14" font-weight="600" fill="#000" fill-opacity="0.06">${xmlesc(txt)}</text></svg>`;
       f.style.backgroundImage = `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
     };
     poser('');
@@ -82,20 +125,38 @@
   async function deverrouiller(code, exigerAdmin) {    // ouvre le contenu autorisé par ce code
     const r = await Acces.ouvrir(code, ACCES.acces, ACCES.contenuEnc);
     if (exigerAdmin && !r.admin) throw new Error('admin');
-    if (r.fin && !r.admin && iso(new Date()) > r.fin) { const e = new Error('expire'); e.fin = r.fin; throw e; }
-    D.details = r.details; D.admin = r.admin; D.nom = r.nom; D.fin = r.admin ? '' : r.fin; D.apercu = null;
+    const ess = r.admin ? '' : (essaiPour(code) || (/^Essai ·/.test(r.nom || '') ? Object.keys(r.details || {})[0] || '' : ''));
+    if (ess) {
+      let s = essaiEtat();
+      if (s && s.actif && s.R.p !== ess) { const e = new Error('autre'); e.p = s.R.p; e.fin = s.fin; throw e; }      // déjà un essai en cours ailleurs
+      if (s && !s.actif && s.bloque) { const e = new Error('pause'); e.fin = s.fin; e.libre = s.libre; throw e; }   // pause entre deux essais
+      if (essaiServeur()) { if (!s || !s.actif) throw new Error('demarrer'); }                                      // seul le serveur démarre un essai
+      else if (!s || (!s.actif && !s.bloque)) { ecrireEssai({ p: ess, d: iso(new Date()) }); s = essaiEtat(); }     // sans serveur : démarrage local
+      r.fin = s.fin;
+    }
+    if (r.fin && !r.admin && iso(new Date()) > r.fin) { const e = new Error('expire'); e.fin = r.fin; e.essai = !!ess; throw e; }
+    document.body.dataset.admin = r.admin ? '1' : ''; D.details = ess ? Object.fromEntries(Object.entries(r.details || {}).map(([k, v]) => { const w = Object.assign({}, v); delete w.parcours; return [k, w]; })) : r.details;   // essai : pas de parcours d'un mois
+    D.admin = r.admin; D.nom = ess ? 'Essai BRILLE' : r.nom; D.fin = r.admin ? '' : r.fin; D.essai = ess; D.apercu = null;
     appliquerProtection();
     composer(Object.keys(r.details));
     try { localStorage.setItem(CLE_CODE, code); } catch { }
     return true;
   }
   const dateLongue = d => { const [a, m, j] = d.split('-').map(Number); return `${String(j).padStart(2, '0')}/${String(m).padStart(2, '0')}/${a}`; };
-  const messageAcces = x => x && x.message === 'expire'
-    ? `Votre accès s'est terminé le ${dateLongue(x.fin)}. Pour le renouveler, écrivez à ${(D.config.contact || {}).email || 'BRILLE'}.`
+  const messageAcces = x => x && x.message === 'pause'
+    ? `Votre semaine d'essai s'est terminée le ${dateLongue(x.fin)}. Merci d'avoir testé Étincelle ! Un nouvel essai sera possible à partir du ${dateLongue(x.libre)}. Pour continuer ce pétale dès maintenant, ${achatActif() ? 'touchez « Obtenir un accès » ci-dessous' : 'écrivez à ' + ((D.config.contact || {}).email || 'BRILLE')}.`
+    : x && x.message === 'demarrer'
+    ? `Pour démarrer un essai gratuit, touchez « Tester gratuitement » sur l'écran d'accueil.`
+    : x && x.message === 'autre'
+    ? `Vous avez déjà un essai en cours sur « ${titreEnfant(x.p)} », jusqu'au ${dateLongue(x.fin)}. Un seul pétale à la fois : reprenez-le avec son code.`
+    : x && x.message === 'expire'
+    ? (x.essai ? `Votre semaine d'essai s'est terminée le ${dateLongue(x.fin)}. Merci d'avoir testé Étincelle ! Pour continuer ce pétale, ${achatActif() ? 'touchez « Obtenir un accès » ci-dessous' : 'écrivez à ' + ((D.config.contact || {}).email || 'BRILLE')}.`
+      : `Votre accès s'est terminé le ${dateLongue(x.fin)}. Pour le renouveler, écrivez à ${(D.config.contact || {}).email || 'BRILLE'}.`)
     : '';
   function verrouiller() {
     try { localStorage.removeItem(CLE_CODE); } catch { }
-    D.petales = []; D.defis = []; D.details = {}; D.admin = false; D.apercu = null;
+    document.body.dataset.admin = '';
+    D.petales = []; D.defis = []; D.details = {}; D.admin = false; D.essai = ''; D.apercu = null;
     appliquerProtection();
     ecranCode();
   }
@@ -104,23 +165,26 @@
     const c = D.config.contact || {};
     const ing = onglet === 'ing';
     $app.innerHTML = `<section class="vue acces">
+      ${heroEtincelle()}
       ${motIngenieure()}
       <div class="onglets-acces" role="tablist" aria-label="Type d'accès">
         <button type="button" role="tab" id="t-fam" aria-selected="${!ing}">Accès famille</button>
-        <button type="button" role="tab" id="t-ing" aria-selected="${ing}">Accès ingénieure</button>
+        <button type="button" role="tab" id="t-ing" aria-selected="${ing}">Accès conceptrice</button>
       </div>
       <div class="carte" role="tabpanel">
         <span class="etiquette">${ing ? 'Espace conceptrice' : 'Accès famille'}</span>
-        <h1>${ing ? 'Espace ingénieure' : 'Bienvenue dans Étincelle'}</h1>
-        <p>${ing ? 'Réservé à la conceptrice d\'Étincelle : aperçu complet de tous les pétales et vue « comme une famille ». Entrez votre code personnel.' : (achatActif() ? 'Cette application prolonge les ateliers BRILLE. Elle est gratuite pour les familles accompagnées par un centre partenaire : entrez le code personnel remis à l\'atelier, ou reçu après votre achat.' : 'Cette application prolonge les ateliers BRILLE. Elle est réservée aux familles accompagnées : entrez le code personnel qui vous a été remis à l\'atelier.')}</p>
+        <h1>${ing ? 'Espace conceptrice' : 'J\'ai un code'}</h1>
+        <p>${ing ? 'Réservé à la conceptrice d\'Étincelle : aperçu complet de tous les pétales et vue « comme une famille ». Entrez votre code personnel.' : 'Entrez le code personnel remis à l\'atelier ou reçu à l\'inscription.'}</p>
         <form id="form-code" autocomplete="off">
-          <label for="champ-code">${ing ? 'Votre code ingénieure' : 'Votre code famille'}</label>
+          <label for="champ-code">${ing ? 'Votre code conceptrice' : 'Votre code famille'}</label>
           <input id="champ-code" type="text" inputmode="text" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="${ing ? 'XXXX-XXXX-XXXX' : 'XXXX-XXXX'}" maxlength="16">
           <p class="erreur" id="erreur-code" role="alert">${esc(message || '')}</p>
           <button class="btn plein" type="submit" id="valider-code">Entrer</button>
         </form>
-        ${!ing && D.config.codeDecouverte ? '<button type="button" class="btn plein gris" id="decouverte" style="margin-top:10px">Découvrir un extrait gratuit</button>' : ''}
-        ${ing ? '' : (achatActif() ? `<p class="petit">Vous ne passez pas par un centre social ? <button type="button" class="lien" id="voir-offres">Obtenir un accès</button></p>` : `<p class="petit">Vous n'avez pas encore de code ? Écrivez à <a href="mailto:${esc(c.email || '')}">${esc(c.email || '')}</a>.</p>`)}
+        ${!ing && essaiDispo() ? `<button type="button" class="btn plein" id="essai" style="margin-top:10px">🌱 Tester gratuitement ${essaiJours() === 7 ? 'une semaine' : essaiJours() + ' jours'}</button><p class="petit" style="margin:6px 0 0">Répondez à 3 questions : je vous conseille un pétale à essayer, sans paiement ni engagement.</p>` : ''}
+        ${!ing && !essaiDispo() && D.config.codeDecouverte ? '<button type="button" class="btn plein gris" id="decouverte" style="margin-top:10px">Découvrir un extrait gratuit</button>' : ''}
+        ${ing ? '' : (achatActif() ? `<p class="petit">Vous n'avez pas suivi d'atelier ? <button type="button" class="lien" id="voir-offres">Obtenir un accès</button></p>` : `<p class="petit">Vous n'avez pas encore de code ? Écrivez à <a href="mailto:${esc(c.email || '')}">${esc(c.email || '')}</a>.</p>`)}
+        <p class="petit liens-legaux" style="margin-top:14px">${liensLegaux()}</p>
       </div></section>`;
     $app.querySelector('#t-fam').addEventListener('click', () => ecranCode('', 'fam'));
     $app.querySelector('#t-ing').addEventListener('click', () => ecranCode('', 'ing'));
@@ -131,8 +195,9 @@
       const code = champ.value.trim(); if (!code) { err.textContent = 'Saisissez votre code.'; return; }
       bt.disabled = true; bt.textContent = 'Vérification…'; err.textContent = '';
       try { await deverrouiller(code, ing); document.body.classList.remove('verrouille'); premiere = true; rendre(); }
-      catch (x) { if (x.message !== 'admin' && x.message !== 'code' && x.message !== 'expire') console.error(x); err.textContent = x.message === 'expire' ? messageAcces(x) : x.message === 'admin' ? 'Ce code n\'ouvre pas l\'espace ingénieure.' : 'Ce code n\'est pas reconnu. Vérifiez-le, ou contactez BRILLE.'; bt.disabled = false; bt.textContent = 'Entrer'; }
+      catch (x) { if (x.message !== 'admin' && x.message !== 'code' && x.message !== 'expire') console.error(x); err.textContent = x.message === 'expire' ? messageAcces(x) : x.message === 'admin' ? 'Ce code n\'ouvre pas l\'espace conceptrice.' : 'Ce code n\'est pas reconnu. Vérifiez-le, ou écrivez-moi.'; bt.disabled = false; bt.textContent = 'Entrer'; }
     });
+    const es = $app.querySelector('#essai'); if (es) es.addEventListener('click', () => ecranEssai());
     const dec = $app.querySelector('#decouverte');
     if (dec) dec.addEventListener('click', async () => { try { await deverrouiller(D.config.codeDecouverte); document.body.classList.remove('verrouille'); premiere = true; rendre(); } catch { err.textContent = 'L\'extrait gratuit n\'est pas disponible pour le moment.'; } });
     champ.addEventListener('input', () => {
@@ -143,8 +208,18 @@
   }
 
   /* ---------- Accès payant ---------- */
-  const achatActif = () => !!(D.config.achat && D.config.achat.actif && (D.config.achat.offres || []).length);
+  const achatActif = () => !!(D.config.achat && D.config.achat.actif && (D.config.achat.offres || []).length && iso(new Date()) >= (D.config.achat.ouverture || '0000-00-00'));
+  /* Prix de lancement jusqu'à « finLancement » (inclus), puis prix normal et lien de paiement normal (config.json) */
+  const enLancement = () => { const f = (D.config.achat || {}).finLancement; return !f || iso(new Date()) <= f; };
+  const prixDe = o => (enLancement() || !o.prixNormal) ? (o.prix || '') : o.prixNormal;
+  const lienDe = o => enLancement() ? (o.lien || '') : (o.lienNormal || '');   // jamais le lien de lancement après la fin du lancement
   const liensLegaux = () => `<a href="legal.html#cgv" target="_blank" rel="noopener">Conditions générales</a> · <a href="legal.html#confidentialite" target="_blank" rel="noopener">Confidentialité</a> · <a href="legal.html#mentions" target="_blank" rel="noopener">Mentions légales</a>`;
+  const carteOffre = o => `<div class="offre">
+          <h2>${esc(o.nom)}</h2>
+          <p class="petit">${esc(o.detail || '')}</p>
+          <div class="offre-prix">${esc(prixDe(o))}${enLancement() && o.prixNormal ? ` <s class="petit" style="font-weight:400">${esc(o.prixNormal)}</s>` : ''}</div>
+          <button type="button" class="btn plein payer" data-id="${esc(o.id)}" data-sol="${o.solidaire ? '1' : ''}" disabled>Choisir cet accès</button>
+        </div>`;
   function htmlAchat(retour) {
     const offres = D.config.achat.offres || [];
     return `<section class="vue achat">
@@ -152,36 +227,36 @@
       <div class="carte">
         <span class="etiquette">Obtenir un accès</span>
         <h1>Ouvrir Étincelle chez moi</h1>
-        <p>Étincelle est <b>gratuite pour les familles accompagnées par un centre social partenaire</b> : leur code est remis à l'atelier. Si vous ne passez pas par un centre, vous pouvez acheter un accès.</p>
+        <p>Étincelle est <b>gratuite pour les familles accompagnées lors d'un atelier BRILLE</b> : leur code est remis à l'atelier. Si vous n'avez pas suivi d'atelier, vous pouvez acheter un accès.</p>
         <div class="consent">
           <label class="coche"><input type="checkbox" id="ok-cgv"> J'ai lu et j'accepte les conditions générales et la politique de confidentialité.</label>
-          <label class="coche"><input type="checkbox" id="ok-retractation"> Je demande l'accès immédiat à Étincelle et je reconnais perdre mon droit de rétractation dès que mon code m'est fourni.</label>
+          <p class="petit" style="margin:8px 0 0">Au moment du paiement, vous choisissez : recevoir votre code tout de suite (vous renoncez alors à votre droit de rétractation de 14 jours) ou attendre 14 jours avant de le recevoir.</p>
         </div>
-        <div class="offres">${offres.map(o => `<div class="offre">
-          <h2>${esc(o.nom)}</h2>
-          <p class="petit">${esc(o.detail || '')}</p>
-          <div class="offre-prix">${esc(o.prix || '')}</div>
-          ${o.id === 'solidaire' ? `<label class="coche"><input type="checkbox" class="decl-solidaire"> Je déclare sur l'honneur que le tarif standard représente une difficulté financière pour mon foyer.</label>` : ''}
-          <button type="button" class="btn plein payer" data-id="${esc(o.id)}" disabled>Choisir cet accès</button>
-        </div>`).join('')}</div>
+        ${enLancement() && (D.config.achat || {}).finLancement ? `<p class="petit"><b>Prix de lancement jusqu'au ${esc(dateLongue(D.config.achat.finLancement))}</b>, puis prix normal.</p>` : ''}
+        <div class="offres">${offres.filter(o => !o.solidaire).map(carteOffre).join('')}</div>
+        ${offres.some(o => o.solidaire) ? `<h2 style="margin-top:22px">Tarif solidaire</h2>
+        <p class="petit">Un geste de solidarité, pas une promotion : la moitié du prix pour les familles dont le budget est serré (RSA, ASS, aides CAF…), sur simple déclaration, sans justificatif. Si vous pouvez payer le tarif standard, merci de le choisir : il permet de maintenir ce geste pour d'autres familles. Un accès par foyer.</p>
+        <label class="coche"><input type="checkbox" class="decl-solidaire"> Je déclare sur l'honneur que le tarif standard représente une difficulté financière pour mon foyer.</label>
+        <div class="offres">${offres.filter(o => o.solidaire).map(carteOffre).join('')}</div>` : ''}
         <p class="ok" id="achat-info" role="status"></p>
         <p class="petit">Votre code vous est envoyé par e-mail après le paiement. Un seul tarif solidaire par foyer.</p>
         <p class="petit liens-legaux">${liensLegaux()}</p>
       </div></section>`;
   }
   function lierAchat(retour) {
-    const cgv = $app.querySelector('#ok-cgv'), ret = $app.querySelector('#ok-retractation'), decl = $app.querySelector('.decl-solidaire'), info = $app.querySelector('#achat-info');
-    const maj = () => $app.querySelectorAll('.payer').forEach(b => { b.disabled = !(cgv.checked && ret.checked && (b.dataset.id !== 'solidaire' || (decl && decl.checked))); });
+    const cgv = $app.querySelector('#ok-cgv'), decl = $app.querySelector('.decl-solidaire'), info = $app.querySelector('#achat-info');
+    const maj = () => $app.querySelectorAll('.payer').forEach(b => { b.disabled = !(cgv.checked && (!b.dataset.sol || (decl && decl.checked))); });
     $app.querySelectorAll('.achat input[type=checkbox]').forEach(x => x.addEventListener('change', maj)); maj();
     $app.querySelector('#achat-retour').addEventListener('click', () => { if (retour === 'code') ecranCode(); else location.hash = '#/'; });
     $app.querySelectorAll('.payer').forEach(b => b.addEventListener('click', () => {
       const o = (D.config.achat.offres || []).find(x => x.id === b.dataset.id); if (!o) return;
       const c = D.config.contact || {};
-      if (o.lien) { window.open(o.lien, '_blank', 'noopener'); info.textContent = 'Le paiement s\'ouvre dans un nouvel onglet. Votre code vous sera envoyé par e-mail.'; }
+      const lien = lienDe(o);
+      if (lien) { window.open(lien, '_blank', 'noopener'); info.textContent = 'Le paiement s\'ouvre dans un nouvel onglet. Votre code vous sera envoyé par e-mail.'; }
       else {
-        const corps = `Bonjour, je souhaite l'accès « ${o.nom} » (${o.prix}). J'ai lu les conditions générales et je reconnais perdre mon droit de rétractation dès que mon code m'est fourni.`;
+        const corps = `Bonjour, je souhaite l'accès « ${o.nom} » (${prixDe(o)}). J'ai lu les conditions générales. Je choisis (rayer la mention inutile) : l'accès immédiat, en renonçant à mon droit de rétractation / d'attendre 14 jours avant de recevoir mon code.`;
         location.href = `mailto:${c.email || ''}?subject=${encodeURIComponent('Étincelle : ' + o.nom)}&body=${encodeURIComponent(corps)}`;
-        info.textContent = 'Votre message est prêt : envoyez-le, nous vous répondons avec les moyens de paiement.';
+        info.textContent = 'Votre message est prêt : envoyez-le, je vous réponds avec les moyens de paiement.';
       }
     }));
   }
@@ -200,13 +275,12 @@
   const visage = i => `<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="${VISAGES[i].c}" stroke="#000" stroke-width="1.8"/><circle cx="14" cy="16" r="1.9" fill="#000"/><circle cx="26" cy="16" r="1.9" fill="#000"/><path d="${VISAGES[i].b}" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>`;
 
   /* ---------- Fleur interactive (les vraies formes de la fleur QVE, tracées depuis l'image d'origine) ---------- */
-  function fleurSVG(mode) {
-    const qui = mode === 'enfant' ? 'enfant' : 'parent';
+  function fleurSVG() {
     const parts = D.petales.map(p => {
       const f = D.formes[p.id]; if (!f) return '';
-      const b = p.ouvert ? dernierBilan(p.id, qui) : null;
+      const b = p.ouvert ? bilanFamille(p.id) : null;
       const s = b ? 0.9 + 0.03 * b.s : 0.97;
-      const titre = qui === 'enfant' ? p.miroir : p.titre;
+      const titre = p.titre;
       const lab = p.ouvert ? `${titre}${b ? `, dernier bilan ${b.s} sur 5` : ', pas encore de bilan'}` : `${titre}, se découvre en atelier`;
       const t = f.trou, ic = f.icone;
       return `<a href="#/petale/${p.id}" class="petale${p.ouvert ? '' : ' ferme'}" aria-label="${esc(lab)}">
@@ -218,7 +292,7 @@
         </g>
       </a>`;
     }).join('');
-    return `<svg viewBox="30 238 1380 1392" role="group" aria-label="${qui === 'enfant' ? 'La fleur de l\'enfant' : 'La fleur du parent'} : sept pétales à explorer">
+    return `<svg viewBox="30 238 1380 1392" role="group" aria-label="La fleur de la famille : sept pétales à explorer">
       ${parts}
       <image href="centre.png" x="546" y="734" width="352" height="352" style="pointer-events:none"/>
     </svg>`;
@@ -227,8 +301,15 @@
   const etincelleDeco = '<svg class="etincelle-deco" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4l7 24 24 7-24 7-7 24-7-24-24-7 24-7z" fill="#fff" stroke="#000" stroke-width="2.5" stroke-linejoin="round"/><path d="M64 50l3 9 9 3-9 3-3 9-3-9-9-3 9-3z" fill="#cbe1b6" stroke="#000" stroke-width="2" stroke-linejoin="round"/></svg>';
 
   const etoileDeco = (c, pos) => `<svg class="av-etoile av-${pos}" viewBox="0 0 80 80" aria-hidden="true"><path d="M40 4l7 24 24 7-24 7-7 24-7-24-24-7 24-7z" fill="${c}" stroke="#2E2A2A" stroke-width="3" stroke-linejoin="round"/></svg>`;
+  const heroEtincelle = () => `<div class="hero-accueil">
+        <img class="logo-etincelle" src="logo-etincelle.png" alt="" width="320" height="320">
+        <span class="etiquette">La suite des ateliers</span>
+        <h1>Étincelle</h1>
+        <p>${esc(D.config.messageAccueil)}</p>
+        ${essaiDispo() ? `<p class="hero-essai">Pas encore venus en atelier ? <b>Testez gratuitement un pétale pendant ${essaiJours()} jours</b>, en famille.</p>` : ''}
+      </div>`;
   const motIngenieure = () => `<figure class="mot">
-      <figcaption>Le mot de l'ingénieure QVE</figcaption>
+      <figcaption>Le mot de la fondatrice</figcaption>
       <blockquote>Défendre l'épanouissement et l'harmonie familiale : redonner sa place au lien, à l'écoute et au bien-être de l'enfant, pour mieux vivre le quotidien.</blockquote>
       <p class="signature"><b>Rindra Tsiory</b><span>Fondatrice de BRILLE</span></p>
     </figure>`;
@@ -238,36 +319,33 @@
     const f = famille(), vide = !f.parents.trim() && !f.enfants.length;
     const puces = f.enfants.map((e, i) => `<li><span>${esc(e)}</span><button type="button" class="x" data-i="${i}" aria-label="Retirer ${esc(e)}">✕</button></li>`).join('');
     return `<details class="carte famille" id="carte-famille"${vide || familleOuverte ? ' open' : ''}>
-      <summary>👨‍👩‍👧‍👦 Notre famille${vide ? '' : ' : ' + esc(nomsFamille())}</summary>
-      <p class="petit">L'aventure se vit ensemble. Ajoutez les prénoms de toute la famille : ils seront tous sur vos cartes souvenirs, pour que personne ne soit oublié. Les prénoms restent sur ce téléphone.</p>
-      <label for="fam-parents" class="aide">Prénom du ou des parents</label>
-      <input type="text" id="fam-parents" maxlength="60" value="${esc(f.parents)}" placeholder="Ex. Sarah" autocomplete="off">
-      <label for="fam-enfant" class="aide">Les enfants de 6 à 12 ans : autant que vous voulez</label>
+      <summary>👨‍👩‍👧‍👦 ${esc(nomDeFamille() || 'Notre famille')}</summary>
+      <p class="petit">L'aventure se vit ensemble. Indiquez le nom de famille et les prénoms de tous les enfants : ils seront sur vos cartes souvenirs, pour que personne ne soit oublié. Ces informations restent sur cet appareil.</p>
+      <label for="fam-parents" class="aide">Le nom de famille</label>
+      <input type="text" id="fam-parents" maxlength="60" value="${esc(f.parents)}" placeholder="Ex. Martin" autocomplete="off">
+      <label for="fam-enfant" class="aide">Les enfants de 6 à 12 ans : jusqu'à ${MAX_ENFANTS}</label>
       <ul class="puces-enfants" aria-label="Enfants de la famille">${puces}</ul>
       <div class="fam-ajout"><input type="text" id="fam-enfant" maxlength="24" placeholder="Prénom d'un enfant" autocomplete="off"><button type="button" class="btn plein" id="fam-ajouter">Ajouter</button></div>
       <p class="ok" id="fam-ok" role="status"></p>
     </details>`;
   }
-  const txtBoutonEnfant = () => (famille().enfants.length > 1 ? 'La fleur des enfants' : 'Sa fleur d\'enfant');
-  const txtLegende = mode => (mode === 'enfant'
-    ? (famille().enfants.length > 1 ? 'Voici la fleur de vos enfants. Touchez un pétale pour le vivre avec eux.' : 'Voici la fleur de votre enfant. Touchez un pétale pour le vivre avec lui.')
-    : 'Touchez un pétale pour l\'explorer. Plus il est grand, mieux vous vous y sentez.');
+  const txtLegende = () => 'Notre fleur de famille. Touchez un pétale pour le vivre ensemble : plus il est grand, mieux la famille s\'y sent.';
   function lierFamille() {
     const zone = $app.querySelector('#carte-famille'); if (!zone) return;
     const maj = () => {
-      const be = $app.querySelector('.bascule [data-mode="enfant"]'); if (be) be.textContent = txtBoutonEnfant();
-      const lg = $app.querySelector('.fleur-carte .legende'); if (lg) lg.textContent = txtLegende(charger().mode === 'enfant' ? 'enfant' : 'parent');
+      const lg = $app.querySelector('.fleur-carte .legende'); if (lg) lg.textContent = txtLegende();
     };
     const redessiner = () => { familleOuverte = true; zone.outerHTML = carteFamille(); maj(); lierFamille(); };
     zone.querySelector('#fam-parents').addEventListener('input', e => { famille().parents = e.target.value.slice(0, 60); sauver(); });
-    zone.querySelector('#fam-parents').addEventListener('change', () => { familleOuverte = true; const s = zone.querySelector('summary'); if (s) s.textContent = '👨‍👩‍👧‍👦 Notre famille' + (nomsFamille() ? ' : ' + nomsFamille() : ''); });
+    zone.querySelector('#fam-parents').addEventListener('change', () => { familleOuverte = true; const s = zone.querySelector('summary'); if (s) s.textContent = '👨‍👩‍👧‍👦 ' + (nomDeFamille() || 'Notre famille'); });
     const ajouter = () => {
       const champ = zone.querySelector('#fam-enfant'), nom = champ.value.trim().replace(/\s+/g, ' ').slice(0, 24);
       if (!nom) return;
+      if (famille().enfants.length >= MAX_ENFANTS) { const o = $app.querySelector('#fam-ok'); if (o) o.textContent = `Vous pouvez ajouter jusqu'à ${MAX_ENFANTS} enfants.`; return; }
       famille().enfants.push(nom);
       const ok = sauver(); redessiner();
       const c = $app.querySelector('#fam-enfant'); if (c) c.focus({ preventScroll: true });
-      const o = $app.querySelector('#fam-ok'); if (o) o.textContent = ok ? `${nom} est dans l'aventure !` : 'Impossible d\'enregistrer sur ce téléphone.';
+      const o = $app.querySelector('#fam-ok'); if (o) o.textContent = ok ? `${nom} est dans l'aventure !` : 'Impossible d\'enregistrer sur cet appareil.';
     };
     zone.querySelector('#fam-ajouter').addEventListener('click', ajouter);
     zone.querySelector('#fam-enfant').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ajouter(); } });
@@ -276,11 +354,10 @@
 
   /* ---------- Vues ---------- */
   function vueAccueil() {
-    const S = charger(), mode = S.mode === 'enfant' ? 'enfant' : 'parent';
     const defi = defiCourant();
     const lignes = D.petales.map(p => {
-      const b = p.ouvert ? dernierBilan(p.id, mode) : null;
-      const titre = mode === 'enfant' ? p.miroir : p.titre, ss = p.ouvert ? (mode === 'enfant' ? p.miroirSous : p.sousTitre) : '🔒 Se découvre en atelier';
+      const b = p.ouvert ? bilanFamille(p.id) : null;
+      const titre = p.titre, ss = p.ouvert ? p.sousTitre : '🔒 Se découvre en atelier';
       return `<li><a class="ligne-petale${p.ouvert ? '' : ' ferme'}" href="#/petale/${p.id}" style="background:${p.couleur}">
         <span class="pastille"><img src="p-${p.id}.png" alt="" width="42" height="42"></span>
         <span class="txt"><strong>${esc(titre)}</strong><small>${esc(ss)}</small></span>
@@ -289,35 +366,24 @@
     }).join('');
     const pDefi = defi ? petale(defi.petale) : null;
     return `<section class="vue">
-      ${motIngenieure()}
-      <aside class="aventure-banniere" aria-label="L'aventure BRILLE commence maintenant">
+      <aside class="aventure-banniere" aria-label="L'aventure BRILLE continue ici">
         ${etoileDeco('#f49f4c', 'g')}${etoileDeco('#a8dbeb', 'd')}
-        <h2 class="av-titre"><span class="av-mot">L'aventure</span><span class="av-brille" aria-label="BRILLE">${[...'BRILLE'].map((l, i) => `<b aria-hidden="true" style="--c:${['#f49f4c', '#a4c2e7', '#f5abaf', '#cbe1b6', '#b8aed7', '#a8dbeb'][i]};--i:${i}">${l}</b>`).join('')}</span><span class="av-mot">commence maintenant !</span></h2>
+        <h2 class="av-titre"><span class="av-mot">L'aventure</span><span class="av-brille" aria-label="BRILLE">${[...'BRILLE'].map((l, i) => `<b aria-hidden="true" style="--c:${['#f49f4c', '#a4c2e7', '#f5abaf', '#cbe1b6', '#b8aed7', '#a8dbeb'][i]};--i:${i}">${l}</b>`).join('')}</span><span class="av-mot">continue ici</span></h2>
+        <div class="av-bas">
+          <img class="av-logo" src="logo-etincelle.png" alt="" width="320" height="320">
+          ${D.config.messageHorsAtelier ? `<p class="av-petit">${esc(D.config.messageHorsAtelier)}</p>` : ''}
+        </div>
       </aside>
-      <div class="hero-accueil">
-        <img class="logo-etincelle" src="logo-etincelle.png" alt="" width="320" height="320">
-        <span class="etiquette">La suite des ateliers</span>
-        <h1>Étincelle</h1>
-        <p>${esc(D.config.messageAccueil)}</p>
-        ${D.config.messageHorsAtelier ? `<p class="hors-atelier">${esc(D.config.messageHorsAtelier)}</p>` : ''}
-      </div>
+      ${motIngenieure()}
 
       <div class="grille">
       <div class="col-gauche">
       ${carteFamille()}
       <div class="fleur-carte">
-        <div class="bascule" role="group" aria-label="Choisir la fleur">
-          <button type="button" data-mode="parent" aria-pressed="${mode === 'parent'}">Ma fleur de parent</button>
-          <button type="button" data-mode="enfant" aria-pressed="${mode === 'enfant'}">${txtBoutonEnfant()}</button>
-        </div>
-        <div class="fleur-bloc">${fleurSVG(mode)}</div>
-        <p class="legende">${txtLegende(mode)}</p>
-        <p class="legende ensemble">🌸 Chacun peut remplir sa fleur, mais le plus beau, c'est de vivre l'aventure ensemble : c'est comme ça que le lien se crée.</p>
+        <div class="fleur-bloc">${fleurSVG()}</div>
+        <p class="legende">${txtLegende()}</p>
+        <p class="legende ensemble">🌸 Une seule fleur pour toute la famille : parents et enfants la font grandir ensemble, c'est comme ça que le lien se crée.</p>
       </div>
-      ${defi ? `<a class="carte teinte" href="#/semaine" style="display:block;text-decoration:none;background:${pDefi?.couleur || 'var(--jaune)'}">
-        <span class="etiquette">Cette semaine</span>
-        <h3 style="margin-bottom:.25em">${esc(defi.titre)}</h3>
-        <p style="margin:0">${esc(defi.consigne.split('. ')[0])}.</p></a>` : ''}
       </div>
 
       <div class="col-droite">
@@ -330,30 +396,33 @@
     </section>`;
   }
   function lierAccueil() {
-    $app.querySelectorAll('.bascule button').forEach(b => b.addEventListener('click', () => {
-      charger().mode = b.dataset.mode; sauver(); rendre();
-    }));
     lierFamille();
   }
 
   const nomEnfant = (i, k) => famille().enfants[i] || (k === 1 ? 'Mon enfant' : 'Enfant ' + (i + 1));
   function bilanBloc(qui, p, actuel) {
-    const parent = qui === 'parent', k0 = (actuel && actuel.k) || Math.max(1, famille().enfants.length);
-    const echelle = VISAGES.map((v, k) => `<button type="button" data-note="${k + 1}" aria-pressed="${actuel && actuel.s === k + 1}" aria-label="${k + 1} sur 5, ${v.t}">${visage(k)}<span>${v.t}</span></button>`).join('');
+    const parent = qui === 'parent', k0 = Math.min(MAX_ENFANTS, (actuel && actuel.k) || Math.max(1, famille().enfants.length));
+    const echelleDe = note => VISAGES.map((v, k) => `<button type="button" data-note="${k + 1}" aria-pressed="${note === k + 1}" aria-label="${k + 1} sur 5, ${v.t}">${visage(k)}<span>${v.t}</span></button>`).join('');
+    const s2 = (actuel && actuel.s2) || 0;                 // bilan du parent 2 déjà enregistré cette semaine
     return `<div class="bloc-bilan" data-qui="${qui}">
-      <span class="etiquette">${parent ? 'Moi, parent' : (famille().enfants.length > 1 ? 'Mes enfants' : 'Mon enfant')}</span>
+      <span class="etiquette"${parent ? ' id="etiq-parent"' : ''}>${parent ? (s2 ? 'Nous, parents' : 'Moi, parent') : (famille().enfants.length > 1 ? 'Mes enfants' : 'Mon enfant')}</span>
       ${parent ? '' : '<p class="petit" style="margin:0 0 6px">Chaque enfant choisit lui-même son visage, ou posez-lui la question : une ligne par enfant.</p>'}
       <p style="margin:0"><b>${esc(parent ? p.question : p.questionEnfant)}</b></p>
-      ${parent ? `<div class="echelle" role="group" aria-label="Mon bilan sur 5">${echelle}</div>` : '<div class="rangs" id="rangs"></div>'}
+      ${parent ? `<p class="parent-lib" id="lib-p1"${s2 ? '' : ' hidden'}><b>Parent 1</b></p>
+        <div class="echelle" role="group" aria-label="Mon bilan sur 5" data-qui="parent">${echelleDe(actuel && actuel.s)}</div>
+        <div id="bloc-p2"${s2 ? '' : ' hidden'}><p class="parent-lib"><b>Parent 2</b></p>
+          <div class="echelle" role="group" aria-label="Bilan du parent 2 sur 5" data-qui="parent2">${echelleDe(s2)}</div>
+          <button type="button" class="lien" id="p2-retirer">Retirer le parent 2</button></div>
+        <button type="button" class="btn discret petit-btn" id="p2-ajouter"${s2 ? ' hidden' : ''}>＋ Ajouter un second parent</button>` : '<div class="rangs" id="rangs"></div>'}
       ${parent ? '' : `<div class="nb-enfants"><label for="nb-enfants">Combien d'enfants ont répondu ?</label>
-        <div class="stepper"><button type="button" id="nb-moins" aria-label="Un enfant de moins">−</button><input id="nb-enfants" type="number" inputmode="numeric" min="1" max="99" value="${k0}"><button type="button" id="nb-plus" aria-label="Un enfant de plus">+</button></div>
-        <p class="petit" style="margin:0">Vous avez plusieurs enfants ? C'est bien de le faire en groupe : c'est ça aussi, une famille épanouie ensemble.</p></div>`}
+        <div class="stepper"><button type="button" id="nb-moins" aria-label="Un enfant de moins">−</button><input id="nb-enfants" type="number" inputmode="numeric" min="1" max="${MAX_ENFANTS}" value="${k0}"><button type="button" id="nb-plus" aria-label="Un enfant de plus">+</button></div>
+        <p class="petit" style="margin:0">Vous avez plusieurs enfants ? C'est bien de le faire en groupe : c'est ça aussi, une famille épanouie ensemble. (${MAX_ENFANTS} enfants au maximum.)</p></div>`}
     </div>`;
   }
   function graphique(id, qui, titre) {
     const recents = bilansDe(id, qui).slice(-8);
     if (!recents.length) return '';
-    return `<h3 style="margin-top:6px">${titre}</h3><div class="histo-wrap"><div class="historique" aria-label="${titre}">${recents.map(b => `<div class="barre" style="height:${b.s * 17}px" title="${dateCourte(b.d)} : ${b.s}/5"><span>${dateCourte(b.d)}</span></div>`).join('')}</div></div>`;
+    return `<h3 style="margin-top:6px">${titre}</h3><div class="histo-wrap"><div class="historique" aria-label="${titre}">${recents.map(b => `<div class="barre" style="height:${scoreDe(b) * 17}px" title="${dateCourte(b.d)} : ${scoreDe(b)}/5"><span>${dateCourte(b.d)}</span></div>`).join('')}</div></div>`;
   }
 
   function vuePetaleFerme(p) {
@@ -369,9 +438,9 @@
         <span class="etiquette">🔒 À découvrir en atelier</span>
         <h2>Ce pétale se vit d'abord ensemble</h2>
         <p>Chez BRILLE, le lien passe avant tout. Ce pétale se découvre en atelier, avec d'autres parents et avec votre enfant : c'est là qu'il prend tout son sens. Étincelle vous aidera ensuite à le prolonger à la maison.</p>
-        <p>Vous l'avez déjà vécu en atelier et il n'est pas encore ouvert ? Écrivez-nous, nous l'ajouterons à votre accès.</p>
+        <p>Vous l'avez déjà vécu en atelier et il n'est pas encore ouvert ? Écrivez-moi, je l'ajouterai à votre accès.</p>
         <a class="btn plein" href="mailto:${esc(c.email || '')}?subject=${encodeURIComponent('Étincelle : ouvrir un pétale')}">Écrire à BRILLE</a>
-        ${achatActif() ? `<p style="margin-top:18px">Vous ne passez pas par un centre social ? Vous pouvez ouvrir ce pétale ou la fleur complète.</p><a class="btn discret plein" href="#/acces">Voir les accès</a>` : ''}
+        ${achatActif() ? `<p style="margin-top:18px">Vous n'avez pas suivi d'atelier ? Vous pouvez ouvrir ce pétale ou la fleur complète.</p><a class="btn discret plein" href="#/acces">Voir les accès</a>` : ''}
       </div>
     </section>`;
   }
@@ -394,7 +463,6 @@
         <div class="icone"><img src="p-${p.id}.png" alt=""></div>
         <h1>${esc(p.titre)}</h1>
         <p class="ss">${esc(p.sousTitre)}</p>
-        <p class="miroir">Côté enfant, ce pétale s'appelle : « ${esc(p.miroir)} » (${esc(p.miroirSous.toLowerCase())})</p>
       </div>
 
       ${e ? `<div class="carte ensemble teinte" style="background:${p.couleur}">
@@ -406,14 +474,22 @@
         <label class="coche"><input type="checkbox" id="fait" ${fait ? 'checked' : ''}> Nous l'avons fait ensemble</label>
       </div>` : ''}
 
-      ${p.parcours ? `<div class="carte parcours teinte" id="parcours" style="background:${p.couleur}">${parcoursHtml(p)}</div>` : ''}
+      ${p.parcours ? `<div class="carte parcours teinte" id="parcours" style="background:${p.couleur}">${parcoursHtml(p)}</div>` : (D.essai ? `<div class="carte"><span class="etiquette">🔒 Parcours d'un mois</span><p style="margin:0">Le parcours d'un mois (4 semaines, une mission par semaine) est réservé aux familles qui ont un accès complet à ce pétale.</p></div>` : '')}
+
+      ${D.essai ? '' : `<div class="carte transmettre">
+        <span class="etiquette">Je transmets</span>
+        <h2>Ce que j'ai reçu, je le partage</h2>
+        <p>Vous avez vécu ce pétale en atelier : vous êtes un pionnier BRILLE. Ce qui compte, c'est ce que vous en faites ensuite, autour de vous.</p>
+        <ul class="transmettre-idees"><li>Racontez à un frère, une sœur ou un grand-parent ce que vous avez préféré.</li><li>Laissez votre enfant expliquer ce pétale à un ami, avec ses mots à lui.</li><li>Gardez un petit rituel en famille et invitez quelqu'un à le vivre avec vous.</li></ul>
+        <button type="button" class="btn" data-partager="${esc(p.id)}">💌 Envoyer un petit mot à un proche</button>
+      </div>`}
 
       </div><div>
       <div class="carte" id="bilan">
         <h2>Notre bilan de la semaine</h2>
         ${bilanBloc('parent', p, actP)}
         ${bilanBloc('enfant', p, actE)}
-        <label for="note" class="aide">Un mot pour nous, si vous en avez envie (facultatif, il reste sur votre téléphone)</label>
+        <label for="note" class="aide">Un mot pour nous, si vous en avez envie (facultatif, il reste sur votre appareil)</label>
         <textarea id="note" maxlength="300" placeholder="Ce qui a aidé, ce qui a été difficile…">${esc(actP?.n || actE?.n || '')}</textarea>
         <button class="btn plein" id="enregistrer" type="button" style="margin-top:14px">Enregistrer notre bilan</button>
         <button class="btn" id="imprimer-bilan" type="button" style="margin-top:10px">🖨️ Imprimer le bilan de la semaine</button>
@@ -439,10 +515,13 @@
   const ORDRE = ['organisation', 'emotions', 'apprentissages', 'liens', 'droits', 'equilibre', 'briller'];
   const parcoursFini = id => { const pc = (charger().parcours || {})[id]; return !!(pc && (pc.nb > 0 || pc.fini || Object.keys(pc.sem || {}).length === 4)); };
   const petalesAventure = () => ORDRE.map(i => petale(i)).filter(q => q && q.ouvert && q.parcours);   // ceux que la famille peut vivre
-  function precedentAVivre(id) {                         // le pétale à terminer avant celui-ci (jamais pour l'accès ingénieure)
+  function precedentAVivre(id) {                         // le pétale à terminer avant celui-ci (jamais pour l'accès conceptrice)
     return null;                                       // pas de verrou entre pétales : chaque famille choisit son ordre
   }
   const semCourante = pc => { for (let n = 1; n <= 4; n++) if (!pc.sem[n]) return n; return 4; };
+  // Petit mot affiché quand une semaine du parcours est vécue (aussi lu par jeu.js)
+  const MOTS_SEMAINE = ['🌱 La graine est plantée : premier pas fait ensemble.', '🌿 La tige pousse : votre fleur prend racine.', '🌷 Le bourgeon se prépare : toute la famille a trouvé son rythme.', '🌸 La fleur s\'ouvre : bravo, ce mois, vous l\'avez vécu ensemble !'];
+  window.BRILLE_MOTS_SEM = MOTS_SEMAINE;
   function parcoursHtml(p) {
     const pr = p.parcours, pc = parcoursDe(p.id), faites = Object.keys(pc.sem).length, cur = semCourante(pc);
     const garde = pr.garde || {};
@@ -453,13 +532,13 @@
     if (!pc.debut) {
       const avant = precedentAVivre(p.id);
       if (avant) return `${entete}${cadre}<div class="pc-verrou-petale"><span class="pc-num" aria-hidden="true">🔒</span><p>Ce parcours s'ouvre quand vous aurez terminé le mois précédent de votre aventure : <b>« ${esc(avant.parcours.titre)} »</b> (pétale « ${esc(avant.titre)} »).</p></div><a class="btn plein" href="#/petale/${esc(avant.id)}">Aller au mois en cours</a>`;
-      return `${entete}${cadre}<p class="petit">4 semaines à vivre à deux, une mission par semaine. Une semaine s'ouvre quand la précédente a été vécue : prenez le temps qu'il faut, sans pression.</p><button type="button" class="btn plein" id="pc-debut">Commencer notre mois</button>`;
+      return `${entete}${cadre}<p class="petit">4 semaines à vivre en famille, une mission par semaine. Une semaine s'ouvre quand la précédente a été vécue : prenez le temps qu'il faut, sans pression.</p><button type="button" class="btn plein" id="pc-debut">Commencer notre mois</button>`;
     }
     const sem = pr.semaines.map((w, i) => {
       const n = i + 1, fait = pc.sem[n], ouverte = n === 1 || !!pc.sem[n - 1];
       if (!ouverte) return `<div class="pc-sem verrou"><div class="pc-lock"><span class="pc-num" aria-hidden="true">🔒</span><span><b>Semaine ${n}</b> · ${esc(w.titre)}<br><small>Se débloque quand la semaine ${n - 1} est vécue ensemble</small></span></div></div>`;
       return `<details class="pc-sem${fait ? ' fait' : ''}" data-n="${n}" ${n === cur && !fait ? 'open' : ''}>
-        <summary><span class="pc-num">${fait ? '✓' : n}</span><span><b>Semaine ${n}</b> · ${esc(w.titre)}${n === cur && !fait ? ' <em>(cette semaine)</em>' : ''}</span></summary>
+        <summary><span class="pc-num">${fait ? '✓' : n}</span><span><b>Semaine ${n}</b> · ${esc(w.titre)}${n === cur && !fait ? ' <em>(cette semaine)</em>' : ''}${fait ? `<br><small class="pc-mot-sem">${esc(MOTS_SEMAINE[i] || '')}</small>` : ''}</span></summary>
         <p class="pc-mission">${esc(w.mission)}</p>
         ${fait ? '' : `<button type="button" class="btn plein pc-lancer" data-n="${n}">🎮 Lancer la mission <small>(${w.etapes.length} étapes)</small></button><p class="jeu-aide">Ou lisez les étapes, vivez-les à votre rythme, puis cochez la case.</p>`}
         <ol class="etapes">${w.etapes.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
@@ -481,9 +560,12 @@
       <p>${esc(garde.idee || '')}</p>
       <label for="pc-garde" class="aide">${esc(garde.invite || 'Notre rituel')}</label>
       <textarea id="pc-garde" maxlength="300" placeholder="Écrivez-le avec votre enfant…">${esc(pc.garde)}</textarea>
-      ${fini ? `<label for="pc-noms" class="aide">Les prénoms de toute la famille, parents et tous les enfants, pour la carte souvenir</label><input type="text" id="pc-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Sarah, Léo et Inès">` : ''}
+      ${fini ? `<label for="pc-noms" class="aide">Le nom de famille et les prénoms des enfants, pour la carte souvenir</label><input type="text" id="pc-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Famille Martin : Léo et Inès">` : ''}
       <button type="button" class="btn" id="pc-enreg">Garder</button><p class="ok" id="pc-ok" role="status"></p></div>` : '';
-    return `${entete}${cadre}${barre}<p class="petit">${faites} semaine${faites > 1 ? 's' : ''} sur 4 · commencé le ${dateCourte(pc.debut)}</p>${sem}${souvenir}${rituel}`;
+    const dernier = Object.values(pc.sem).concat([pc.debut]).filter(Boolean).sort().pop();
+    const ecart = dernier ? Math.round((new Date(iso(new Date()) + 'T00:00:00') - new Date(dernier + 'T00:00:00')) / JOUR) : 0;
+    const reprise = (faites < 4 && ecart >= 8) ? `<div class="reprise" role="status"><b>🌱 On reprend là où on s'était arrêtés.</b><br>La semaine ${cur} vous attend. Rien à rattraper, aucun retard : votre étincelle est toujours là, vous la rallumez quand vous voulez.</div>` : '';
+    return `${entete}${cadre}${barre}${reprise}<p class="petit">${faites} semaine${faites > 1 ? 's' : ''} sur 4 · commencé le ${dateCourte(pc.debut)}</p>${sem}${souvenir}${rituel}`;
   }
   function lierParcours(id) {
     const zone = $app.querySelector('#parcours'); if (!zone) return;
@@ -504,8 +586,8 @@
       pc.garde = zone.querySelector('#pc-garde').value.trim().slice(0, 300);
       const nm = zone.querySelector('#pc-noms'); if (nm) { const v = nm.value.trim().slice(0, 240); pc.noms = v === nomsFamille() ? '' : v; }
       const ok = sauver();
-      if (nm) { redessiner(); const o = zone.querySelector('#pc-ok'); if (o) o.textContent = ok ? 'Gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.'; }
-      else zone.querySelector('#pc-ok').textContent = ok ? 'Rituel gardé sur votre téléphone.' : 'Impossible d\'enregistrer sur ce téléphone.';
+      if (nm) { redessiner(); const o = zone.querySelector('#pc-ok'); if (o) o.textContent = ok ? 'Gardé sur votre appareil.' : 'Impossible d\'enregistrer sur cet appareil.'; }
+      else zone.querySelector('#pc-ok').textContent = ok ? 'Rituel gardé sur votre appareil.' : 'Impossible d\'enregistrer sur cet appareil.';
     });
     const bc = zone.querySelector('#pc-carte'); if (bc) bc.addEventListener('click', () => ouvrirImpression('carte', id));
     const bt = zone.querySelector('#pc-tous'); if (bt) bt.addEventListener('click', () => ouvrirImpression('petales', id));
@@ -588,15 +670,18 @@
   /* ---------- Bilan de la semaine, imprimable et archivable ---------- */
   const plusJours = (w, n) => { const [a, m, j] = w.split('-').map(Number), d = new Date(a, m - 1, j); d.setDate(d.getDate() + n); return iso(d); };
   function htmlBilan(p, data) {
-    const noms = nomsFamille(), sem = data.sem, k = Math.max(1, data.k || 1);
+    const noms = nomsFamille(), sem = data.sem, k = Math.min(MAX_ENFANTS, Math.max(1, data.k || 1));
+    const grand = k > 3, dense = grand;                    // familles nombreuses : les enfants passent sur toute la largeur, en grille
+    const cols = k <= 5 ? k : k <= 10 ? 5 : k <= 15 ? 6 : 7, fs = k <= 5 ? 16 : k <= 10 ? 14 : k <= 15 ? 12 : 10;
     const gros = s => s ? `<div class="bil-visage">${visage(s - 1)}<b>${s} sur 5</b><span>${VISAGES[s - 1].t}</span></div>` : '<div class="bil-visage vide"><b>—</b><span>Pas de réponse cette semaine</span></div>';
     const vv = (data.v || []).slice(0, k);
-    const rangsBil = vv.length > 1 ? `<div class="bil-rangs">${vv.map((x, i) => `<div class="bil-rang">${x ? visage(x - 1) : '<div class="bil-rien">—</div>'}<b>${esc(nomEnfant(i, k))}</b><span>${x ? VISAGES[x - 1].t : 'Pas de réponse'}</span></div>`).join('')}</div>` : gros(data.enfant);
+    const rangsBil = vv.length > 1 ? `<div class="bil-rangs${grand ? ' dense' : ''}" style="--cols:${cols};--fs:${fs}mm">${vv.map((x, i) => `<div class="bil-rang">${x ? visage(x - 1) : '<div class="bil-rien">—</div>'}<b>${esc(nomEnfant(i, k))}</b><span>${x ? VISAGES[x - 1].t : 'Pas de réponse'}</span></div>`).join('')}</div>` : gros(data.enfant);
+    const rangsParents = data.parent2 ? `<div class="bil-rangs par">${[['Parent 1', data.parent], ['Parent 2', data.parent2]].map(([n, x]) => `<div class="bil-rang">${x ? visage(x - 1) : '<div class="bil-rien">—</div>'}<b>${n}</b><span>${x ? VISAGES[x - 1].t : 'Pas de réponse'}</span></div>`).join('')}</div>` : gros(data.parent);
     const avant = {};
     bilansDe(p.id, 'parent').forEach(b => { if (b.w !== sem) (avant[b.w] = avant[b.w] || {}).p = b; });
     bilansDe(p.id, 'enfant').forEach(b => { if (b.w !== sem) (avant[b.w] = avant[b.w] || {}).e = b; });
-    const lignes = Object.keys(avant).sort().reverse().slice(0, 8).map(w => { const a = avant[w]; return `<tr><td>${dateLongue(w)}</td><td>${a.p ? a.p.s + ' sur 5' : '—'}</td><td>${a.e ? a.e.s + ' sur 5' + (a.e.k > 1 ? ' · ' + a.e.k + ' enfants' : '') : '—'}</td></tr>`; }).join('');
-    return `<section class="impr-feuille bil" style="--pc:${p.couleur}">
+    const lignes = Object.keys(avant).sort().reverse().slice(0, dense ? 2 : 8).map(w => { const a = avant[w]; return `<tr><td>${dateLongue(w)}</td><td>${a.p ? (a.p.s2 ? 'Parent 1 : ' + (a.p.s || '—') + ' · Parent 2 : ' + a.p.s2 : a.p.s + ' sur 5') : '—'}</td><td>${a.e ? a.e.s + ' sur 5' + (a.e.k > 1 ? ' · ' + a.e.k + ' enfants' : '') : '—'}</td></tr>`; }).join('');
+    return `<section class="impr-feuille bil${dense ? ' dense' : ''}" style="--pc:${p.couleur}">
       <div class="bil-cadre">
         <div class="cert-bandeau">${D.petales.map(x => `<i style="background:${x.couleur}"></i>`).join('')}</div>
         <div class="bil-tete"><img class="bil-logo" src="logo-brille.png" alt="BRILLE"><img class="bil-icone" src="p-${esc(p.id)}.png" alt=""></div>
@@ -604,8 +689,8 @@
         <h1>${esc(p.titre)}</h1>
         <p class="bil-date">Semaine du ${dateLongue(sem)} au ${dateLongue(plusJours(sem, 6))}</p>
         <p class="bil-famille"><b>Notre famille :</b> ${esc(noms)}</p>
-        <div class="bil-duo">
-          <div class="bil-bloc"><span class="bil-tag">Moi, parent</span><p class="bil-q">${esc(p.question)}</p>${gros(data.parent)}</div>
+        <div class="bil-duo${grand ? ' large' : ''}">
+          <div class="bil-bloc"><span class="bil-tag">${data.parent2 ? 'Les parents' : 'Moi, parent'}</span><p class="bil-q">${esc(p.question)}</p>${rangsParents}</div>
           <div class="bil-bloc"><span class="bil-tag">${k > 1 ? 'Mes enfants · ' + k + ' ont répondu' : 'Mon enfant'}</span><p class="bil-q">${esc(p.questionEnfant)}</p>${rangsBil}</div>
         </div>
         <div class="bil-note"><b>Un mot pour nous</b>${data.note ? `<p>${esc(data.note)}</p>` : ''}<i></i><i></i></div>
@@ -619,7 +704,7 @@
     const pg = document.createElement('style'); pg.id = 'impr-page'; pg.textContent = '@page { size: A4; margin: 0 }'; document.head.appendChild(pg);
     const ov = document.createElement('div'); ov.className = 'impr-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
     ov.innerHTML = `<div class="impr-bar">
-        ${type === 'carte' ? `<label>Prénoms de la famille sur la carte <input type="text" id="impr-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Sarah, Léo et Inès"></label>` : '<span></span>'}
+        ${type === 'carte' ? `<label>Nom et prénoms de la famille sur la carte <input type="text" id="impr-noms" maxlength="240" value="${esc(nomsCarte(pc))}" placeholder="Ex. Famille Martin : Léo et Inès"></label>` : '<span></span>'}
         <button type="button" class="btn plein" id="impr-go">🖨️ Imprimer</button><button type="button" class="btn gris" id="impr-x">Fermer</button></div>
       <p class="impr-aide">${type === 'bilan' ? 'Pour l\'archiver : dans la fenêtre d\'impression, choisissez « Enregistrer au format PDF », ou imprimez sur du papier A4 et rangez la feuille dans un classeur. ' : 'Imprimez sur du papier A4, de préférence épais. '}Dans la fenêtre d'impression, choisissez « Marges : aucune » et cochez « Graphiques d'arrière-plan » pour garder les couleurs.</p>
       <div class="impr-feuilles"></div>`;
@@ -643,20 +728,30 @@
 
   function lierPetale(id) {
     const sem = debutSemaine();
-    const choix = { parent: bilansDe(id, 'parent').find(b => b.w === sem)?.s || null, enfant: bilansDe(id, 'enfant').find(b => b.w === sem)?.s || null };
-    $app.querySelectorAll('.bloc-bilan').forEach(bloc => {
-      const qui = bloc.dataset.qui, boutons = [...bloc.querySelectorAll('.echelle button')];
+    const choix = { parent: bilansDe(id, 'parent').find(b => b.w === sem)?.s || null, parent2: bilansDe(id, 'parent').find(b => b.w === sem)?.s2 || null, enfant: bilansDe(id, 'enfant').find(b => b.w === sem)?.s || null };
+    $app.querySelectorAll('.echelle[data-qui]').forEach(ech => {
+      const qui = ech.dataset.qui, boutons = [...ech.querySelectorAll('button')];
       boutons.forEach(b => b.addEventListener('click', () => {
         choix[qui] = Number(b.dataset.note);
         boutons.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
       }));
     });
+    /* Second parent : facultatif, la ligne s'ouvre ou se ferme */
+    const montrerP2 = oui => {
+      const b2 = $app.querySelector('#bloc-p2'), l1 = $app.querySelector('#lib-p1'), aj = $app.querySelector('#p2-ajouter'), et = $app.querySelector('#etiq-parent');
+      if (!b2) return;
+      b2.hidden = !oui; if (l1) l1.hidden = !oui; if (aj) aj.hidden = oui; if (et) et.textContent = oui ? 'Nous, parents' : 'Moi, parent';
+      if (!oui) { choix.parent2 = null; b2.querySelectorAll('.echelle button').forEach(x => x.setAttribute('aria-pressed', 'false')); }
+    };
+    const ajP2 = $app.querySelector('#p2-ajouter'), retP2 = $app.querySelector('#p2-retirer');
+    if (ajP2) ajP2.addEventListener('click', () => montrerP2(true));
+    if (retP2) retP2.addEventListener('click', () => montrerP2(false));
     lierParcours(id);
     const c = $app.querySelector('#fait');
     if (c) c.addEventListener('change', () => { const S = charger(); if (c.checked) S.ensembleFaits[id] = iso(new Date()); else delete S.ensembleFaits[id]; sauver(); });
     if (!$app.querySelector('#enregistrer')) return;      // pétale fermé : rien à lier
     const nb = $app.querySelector('#nb-enfants');
-    const lireNb = () => Math.min(99, Math.max(1, parseInt(nb && nb.value, 10) || 1));
+    const lireNb = () => Math.min(MAX_ENFANTS, Math.max(1, parseInt(nb && nb.value, 10) || 1));
     const actE0 = bilansDe(id, 'enfant').find(b => b.w === sem);
     let vE = actE0 ? (actE0.v && actE0.v.length ? actE0.v.map(x => x || null) : Array(actE0.k || 1).fill(actE0.s)) : [];
     const moy = () => { const f = vE.filter(Boolean); return f.length ? Math.round(f.reduce((a, b) => a + b, 0) / f.length) : null; };
@@ -674,33 +769,34 @@
     }
     if (nb) {
       $app.querySelector('#nb-moins').addEventListener('click', () => { nb.value = Math.max(1, lireNb() - 1); dessinerRangs(); });
-      $app.querySelector('#nb-plus').addEventListener('click', () => { nb.value = Math.min(99, lireNb() + 1); dessinerRangs(); });
+      $app.querySelector('#nb-plus').addEventListener('click', () => { nb.value = Math.min(MAX_ENFANTS, lireNb() + 1); dessinerRangs(); });
       nb.addEventListener('change', () => { nb.value = lireNb(); dessinerRangs(); });
       dessinerRangs();
     }
     $app.querySelector('#imprimer-bilan').addEventListener('click', () => {
       const ok = $app.querySelector('#retour-ok');
-      if (!choix.parent && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant, avant d\'imprimer.'; return; }
+      if (!choix.parent && !choix.parent2 && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant, avant d\'imprimer.'; return; }
       ok.textContent = '';
-      ouvrirImpression('bilan', id, { sem, parent: choix.parent, enfant: choix.enfant, k: lireNb(), v: vE.slice(0, lireNb()), note: $app.querySelector('#note').value.trim() });
+      ouvrirImpression('bilan', id, { sem, parent: choix.parent, parent2: choix.parent2, enfant: choix.enfant, k: lireNb(), v: vE.slice(0, lireNb()), note: $app.querySelector('#note').value.trim() });
     });
     $app.querySelector('#enregistrer').addEventListener('click', () => {
       const ok = $app.querySelector('#retour-ok');
-      if (!choix.parent && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant.'; return; }
+      if (!choix.parent && !choix.parent2 && !choix.enfant) { ok.style.color = '#a33'; ok.textContent = 'Choisissez au moins un visage, pour vous ou pour votre enfant.'; return; }
       const S = charger(), note = $app.querySelector('#note').value.trim(), d = iso(new Date());
       ['parent', 'enfant'].forEach(qui => {
-        if (!choix[qui]) return;
+        if (qui === 'parent' ? !(choix.parent || choix.parent2) : !choix[qui]) return;
         const k = cle(qui);
         const liste = ((S[k] || {})[id] || []).filter(b => b.w !== sem);
-        const entree = { w: sem, d, s: choix[qui] };
+        const entree = { w: sem, d, s: choix[qui] || 0 };
+        if (qui === 'parent' && choix.parent2) entree.s2 = choix.parent2;
         if (qui === 'enfant') { entree.k = lireNb(); entree.v = vE.slice(0, entree.k).map(x => x || 0); }
-        if (note && (qui === 'parent' || !choix.parent)) entree.n = note;
+        if (note && (qui === 'parent' || !(choix.parent || choix.parent2))) entree.n = note;
         liste.push(entree);
         S[k] = S[k] || {}; S[k][id] = liste.slice(-52);
       });
       const stocke = sauver();
       ok.style.color = '';
-      ok.textContent = stocke ? 'Bilan enregistré sur votre téléphone. Merci !' : 'Enregistré pour cette session seulement : votre navigateur bloque le stockage.';
+      ok.textContent = stocke ? 'Bilan enregistré sur votre appareil. Merci !' : 'Enregistré pour cette session seulement : votre navigateur bloque le stockage.';
       setTimeout(() => rendre(), 900);
     });
   }
@@ -718,28 +814,36 @@
     const n = D.defis.length; if (!n) return vueIntrouvable();
     const base = indexDefi(), idx = indexDemande(param);
     const d = D.defis[idx], p = petale(d.petale);
-    const fait = !!charger().defisFaits[d.id];
-    return `<section class="vue">
-      <h1><span class="surligne" style="--hl:var(--vert)">Cette semaine</span></h1>
-      <div class="grille2"><div>
-      <div class="defi" style="background:${p?.couleur || 'var(--jaune)'}">
-        <span class="etiquette">${idx === base ? 'Le défi de la semaine' : `Défi ${idx + 1} sur ${n}`}${p ? ` · ${esc(p.titre)}` : ''}</span>
+    const plusieurs = famille().enfants.length > 1, cleFait = d.id, ens = p && p.ensemble;
+    const fait = !!charger().defisFaits[cleFait];
+    const blocDefi = `<div class="defi" style="background:${p?.couleur || 'var(--jaune)'}">
+        <span class="etiquette">${idx === base ? 'Le défi de la semaine' : `Défi ${idx + 1} sur ${n}`}${p ? ` · ${esc(p.titre)}` : ''} · pour toute la famille</span>
         <h2>${esc(d.titre)}</h2>
         <p class="duree">⏱ ${esc(d.duree)}</p>
         <p style="margin:0">${esc(d.consigne)}</p>
         ${d.plus ? `<p class="plus"><b>Pour aller plus loin :</b> ${esc(d.plus)}</p>` : ''}
-        <label class="coche"><input type="checkbox" id="fait" ${fait ? 'checked' : ''}> J'ai essayé ce défi</label>
-      </div>
+        ${ens ? `<hr style="border:0;border-top:2px dashed rgba(0,0,0,.25);margin:14px 0">
+        <span class="etiquette">À vivre ensemble, ${plusieurs ? 'parents et enfants' : 'parent et enfant'}</span>
+        <h3 style="margin:.3em 0">${esc(ens.titre)}</h3>
+        <p class="duree">⏱ ${esc(ens.duree)}${ens.materiel ? ' · ' + esc(ens.materiel) : ''}</p>
+        <ol class="etapes">${ens.etapes.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+        <div class="parler"><b>Pour en parler ensuite</b><ul>${ens.enParler.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        ${p.questionEnfant ? `<p class="plus"><b>À la fin de la semaine, chacun se demande :</b> « ${esc(p.questionEnfant)} »</p>` : ''}` : ''}
+        <label class="coche"><input type="checkbox" id="fait" data-cle="${esc(cleFait)}" ${fait ? 'checked' : ''}> Nous l'avons vécu en famille</label>
+      </div>`;
+    return `<section class="vue">
+      <h1><span class="surligne" style="--hl:var(--vert)">Cette semaine</span></h1>
+      <div class="grille2"><div>
+      ${blocDefi}
       </div><div>
       <div class="nav-defis">
         <a class="btn discret" href="#/semaine/${(idx - 1 + n) % n}">← Précédent</a>
         ${idx !== base ? '<a class="btn discret" href="#/semaine">Cette semaine</a>' : ''}
         <a class="btn discret" href="#/semaine/${(idx + 1) % n}">Suivant →</a>
       </div>
-      ${p && p.ensemble ? `<a class="carte teinte" href="#/petale/${p.id}" style="display:block;text-decoration:none;background:${p.couleur}">
-        <span class="etiquette">À faire ensemble</span>
-        <h3 style="margin-bottom:.2em">${esc(p.ensemble.titre)}</h3>
-        <p style="margin:0">${esc(p.ensemble.duree)} · parent et enfant. Touchez pour voir les étapes.</p></a>` : ''}
+      ${ens ? `<a class="carte teinte" href="#/petale/${p.id}" style="display:block;text-decoration:none;background:${p.couleur}">
+        <span class="etiquette">Le pétale « ${esc(p.titre)} »</span>
+        <p style="margin:0">Faire le bilan de la famille : le parent, puis chaque enfant. Touchez pour y aller.</p></a>` : ''}
       <p class="petit">Un seul défi à la fois suffit. Si ce n'est pas le bon moment, passez au suivant, sans culpabilité.</p>
       </div></div>
     </section>`;
@@ -747,19 +851,29 @@
   function lierSemaine(param) {
     const c = $app.querySelector('#fait'); if (!c) return;
     const idx = indexDemande(param);
-    c.addEventListener('change', () => { const S = charger(); if (c.checked) S.defisFaits[D.defis[idx].id] = iso(new Date()); else delete S.defisFaits[D.defis[idx].id]; sauver(); });
+    const cle = c.dataset.cle || D.defis[idx].id;
+    c.addEventListener('change', () => { const S = charger(); if (c.checked) S.defisFaits[cle] = iso(new Date()); else delete S.defisFaits[cle]; sauver(); });
   }
 
   /* ----- Plus ----- */
   let invitationInstall = null;
   window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); invitationInstall = e; const b = document.getElementById('btn-install'); if (b) b.hidden = false; });
+  // Le bouton « Installer Étincelle » : un seul écouteur pour toute la page, même si l'invitation arrive après l'affichage de « Plus ».
+  document.addEventListener('click', async e => {
+    const bt = e.target.closest && e.target.closest('#btn-install'); if (!bt) return;
+    if (!invitationInstall) { bt.hidden = true; return; }
+    try { invitationInstall.prompt(); await invitationInstall.userChoice; } catch { }
+    invitationInstall = null; bt.hidden = true;
+  });
   function vuePlus() {
     const c = D.config.contact || {};
     return `<section class="vue">
       <h1><span class="surligne" style="--hl:var(--vert)">Plus</span></h1>
       <div class="grille-cartes">
       ${D.admin ? vueIngenieure() : ''}
-      ${!D.admin && D.fin ? `<div class="carte"><span class="etiquette">Mon accès</span><p style="margin:0">Votre accès est valable jusqu'au <b>${dateLongue(D.fin)}</b>. Pour le renouveler, écrivez à <a href="mailto:${esc((D.config.contact || {}).email || '')}">${esc((D.config.contact || {}).email || 'BRILLE')}</a>.</p></div>` : ''}
+      ${D.essai && D.fin ? `<div class="carte"><span class="etiquette">Mon essai gratuit</span><p style="margin:0">Votre essai dure jusqu'au <b>${dateLongue(D.fin)}</b> (${joursRestants(D.fin) <= 1 ? 'dernier jour' : joursRestants(D.fin) + ' jours restants'}). Ce que vous notez reste sur votre appareil. Il vous a plu ? ${achatActif() ? 'Retrouvez les accès ci-dessous.' : `Écrivez à <a href="mailto:${esc((D.config.contact || {}).email || '')}">${esc((D.config.contact || {}).email || 'BRILLE')}</a> pour continuer.`}</p></div>` : ''}
+      ${!D.admin && !D.essai && D.petales.some(x => x.ouvert) ? `<div class="carte transmettre"><span class="etiquette">🔥 Pionniers BRILLE</span><h2>À vous de transmettre</h2><p style="margin:0 0 10px">Vous avez vécu l'atelier : à votre tour, partagez ce que vous avez appris et reçu avec votre famille et vos proches. Votre accès reste personnel et limité aux pétales que vous avez vécus. Ceux que vous inspirez pourront, eux, ${essaiDispo() ? 'tester gratuitement une semaine' : 'découvrir BRILLE'}.</p><button type="button" class="btn plein" data-partager="">💌 Partager ce que j'ai vécu</button></div>` : ''}
+      ${!D.admin && !D.essai && D.fin ? `<div class="carte"><span class="etiquette">Mon accès</span><p style="margin:0">Votre accès est valable jusqu'au <b>${dateLongue(D.fin)}</b>. Pour le renouveler, écrivez à <a href="mailto:${esc((D.config.contact || {}).email || '')}">${esc((D.config.contact || {}).email || 'BRILLE')}</a>.</p></div>` : ''}
       ${achatActif() ? `<details class="carte"><summary>Ouvrir d'autres pétales</summary>
         <p>Vous voulez prolonger d'autres thèmes à la maison ? Découvrez les accès disponibles.</p>
         <a class="btn plein" href="#/acces">Voir les accès</a>
@@ -772,7 +886,7 @@
       </details>
 
       <details class="carte"><summary>Besoin d'un soutien ?</summary>
-        <p>Vous n'avez pas à tout porter seul·e. Votre référent famille du centre social peut vous écouter et vous orienter. En cas de besoin immédiat :</p>
+        <p>Vous n'avez pas à tout porter seul·e. Un professionnel de la structure qui vous accueille (référent famille, animateur, enseignant) peut vous écouter et vous orienter. En cas de besoin immédiat :</p>
         <ul class="numeros">
           <li><span>Enfant en danger ou inquiétude pour un enfant</span><b>119</b></li>
           <li><span>Prévention du suicide, écoute 24h/24</span><b>3114</b></li>
@@ -781,10 +895,11 @@
       </details>
 
       <details class="carte"><summary>Mes données et ma vie privée</summary>
-        <p>Vos bilans et vos notes sont enregistrés <b>uniquement sur ce téléphone</b>. Il n'y a ni compte, ni serveur : BRILLE ne les voit pas et ne peut pas les récupérer. Seuls des prénoms sont demandés (pas de nom de famille) : n'ajoutez pas d'informations sensibles.</p>
-        <p class="petit">Si vous changez de téléphone ou videz les données du navigateur, vous perdez l'historique, sauf si vous l'enregistrez avant.</p>
+        <p>Vos bilans et vos notes sont enregistrés <b>uniquement sur cet appareil</b> (ordinateur, tablette ou téléphone). Il n'y a ni compte, ni serveur : je ne les vois pas et ne peux pas les récupérer. Seuls un nom de famille et des prénoms sont demandés : n'ajoutez pas d'informations sensibles.</p>
+        <p class="petit">Si vous changez d'appareil ou videz les données du navigateur, vous perdez l'historique, sauf si vous l'enregistrez avant.</p>
         <button class="btn discret plein" id="exporter" type="button">Enregistrer une copie de mes données</button>
         <label class="btn discret plein" style="margin-top:12px">Récupérer une copie<input type="file" id="importer" accept="application/json,.json" hidden></label>
+        <button class="btn discret plein" id="raz-etincelles" type="button" style="margin-top:12px">Remettre mes étincelles à zéro ✨</button>
         <button class="btn alerte plein" id="effacer" type="button" style="margin-top:12px">Effacer toutes mes données</button>
         <button class="btn plein" id="verrouiller" type="button" style="margin-top:12px">Verrouiller l'application</button>
         <p class="petit">« Verrouiller » ne supprime pas vos bilans : il faudra simplement saisir de nouveau votre code famille.</p>
@@ -792,9 +907,9 @@
       </details>
 
       <details class="carte"><summary>À propos d'Étincelle</summary>
-        <p>Étincelle est la suite à la maison des ateliers proposés en centre social par <b>BRILLE</b>. La qualité de vie de l'enfant (QVE) a d'abord été pensée pour l'enfant : c'est elle qui guide tout.</p>
-        <p>Quand vous revenez de l'atelier Main tendue, Étincelle vous aide à continuer à la maison : faire, avec votre enfant, quelque chose en lien avec sa QVE, un moment à deux ou en famille, à votre rythme.</p>
-        <p>La fleur des parents répond en miroir à la fleur de l'enfant, car le parent joue un rôle essentiel dans la qualité de vie de son enfant. Mais le plus important, c'est de vivre l'aventure ensemble : c'est comme ça que le lien se crée.</p>
+        <p>Étincelle est la suite à la maison des ateliers proposés par <b>BRILLE</b>. La qualité de vie de l'enfant (QVE) a d'abord été pensée pour l'enfant : c'est elle qui guide tout.</p>
+        <p>Quand vous revenez de l'atelier Main tendue, Étincelle vous aide à continuer à la maison : faire, avec votre enfant, quelque chose en lien avec sa QVE, un moment en famille, à votre rythme.</p>
+        <p>Étincelle est un outil pour toute la famille : parents et enfants, quel que soit leur nombre, font grandir la même fleur. Le plus important, c'est de vivre l'aventure ensemble : c'est comme ça que le lien se crée.</p>
         <p class="petit">Étincelle accompagne le bien-être familial. Elle ne remplace pas l'avis d'un médecin ou d'un professionnel de la santé ou du soutien psychologique.</p>
       </details>
 
@@ -814,13 +929,13 @@
         <p class="petit">Un filigrane au nom de votre accès apparaît sur les pages : il permet de retrouver l'origine d'un contenu diffusé sans autorisation.</p>
       </details>
 
-      <p class="pied">Conçue et développée par ${esc(c.nom || 'BRILLE')}<br>© BRILLE · Étincelle · Tous droits réservés${achatActif() ? '<br>' + liensLegaux() : ''}</p>
+      <p class="pied">Conçue et développée par ${esc(c.nom || 'BRILLE')}<br>© BRILLE · Étincelle · Tous droits réservés<br>${liensLegaux()}</p>
     </section>`;
   }
   function vueIngenieure() {
     const sel = D.apercu || D.vitrine.map(v => v.id);
     return `<div class="carte teinte" style="background:var(--vert)" id="carte-ing">
-      <span class="etiquette">Espace ingénieure</span>
+      <span class="etiquette">Espace conceptrice</span>
       <h2>Aperçu « comme une famille »</h2>
       <p>Vous voyez tous les pétales. Cochez ceux qu'une famille a vécus en atelier pour voir exactement son application :</p>
       <div class="apercu">${D.vitrine.map(v => `<label class="coche"><input type="checkbox" data-id="${v.id}" ${sel.includes(v.id) ? 'checked' : ''}> ${esc(v.titre)}</label>`).join('')}</div>
@@ -834,13 +949,13 @@
       D.apercu = ids.length === D.vitrine.length ? null : ids; composer(ids.length ? ids : D.vitrine.map(v => v.id));
     });
     const bi = $app.querySelector('#btn-install');
-    if (bi && invitationInstall) { bi.hidden = false; bi.addEventListener('click', async () => { invitationInstall.prompt(); await invitationInstall.userChoice; invitationInstall = null; bi.hidden = true; }); }
+    if (bi && invitationInstall) bi.hidden = false;
     const msg = t => { $app.querySelector('#retour-donnees').textContent = t; };
     $app.querySelector('#exporter').addEventListener('click', () => {
       const blob = new Blob([JSON.stringify(charger(), null, 2)], { type: 'application/json' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `etincelle-mes-donnees-${iso(new Date())}.json`;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-      msg('Copie enregistrée dans les fichiers de votre téléphone.');
+      msg('Copie enregistrée dans les fichiers de votre appareil.');
     });
     $app.querySelector('#importer').addEventListener('change', async e => {
       const f = e.target.files[0]; if (!f) return;
@@ -852,14 +967,19 @@
       } catch { msg('Ce fichier n\'est pas une copie valide d\'Étincelle.'); }
     });
     $app.querySelector('#verrouiller').addEventListener('click', verrouiller);
+    $app.querySelector('#raz-etincelles').addEventListener('click', () => {
+      if (!confirm('Remettre vos étincelles, niveaux et badges à zéro ? Vos bilans et vos notes sont gardés.')) return;
+      if (window.BrilleJeu) window.BrilleJeu.remiseAZero();
+      msg('Vos étincelles sont remises à zéro.');
+    });
     $app.querySelector('#effacer').addEventListener('click', () => {
       if (!confirm('Effacer tous vos bilans, notes et défis ? Cette action est définitive.')) return;
-      memoire = vide(); sauver(); msg('Toutes vos données ont été effacées.');
+      memoire = vide(); sauver(); if (window.BrilleJeu) window.BrilleJeu.remiseAZero(); msg('Toutes vos données ont été effacées.');
     });
   }
 
 
-  /* ----- Gestion des familles (espace ingénieure) ----- */
+  /* ----- Gestion des familles (espace conceptrice) ----- */
   const CLE_CARNET = 'brille-carnet';
   const lireCarnet = () => { try { return JSON.parse(localStorage.getItem(CLE_CARNET) || 'null'); } catch { return null; } };
   const ecrireCarnet = c => { try { localStorage.setItem(CLE_CARNET, JSON.stringify(c)); } catch { } };
@@ -880,24 +1000,25 @@
     const actives = carnet.familles.filter(f => f.actif);
     const stock = carnet.familles.filter(f => f.actif && f.vente && f.publie && !f.envoye).length;
     const aPublier = carnet.familles.filter(f => f.actif && f.vente && !f.publie).length;
-    const ligneFam = (f, i) => f.actif ? `<div class="carte fam${f.admin ? ' fam-admin' : ''}" data-i="${i}">
-        ${f.admin ? '<span class="badge-admin">Mon accès ingénieure · protégé</span>' : ''}
-        <input type="text" class="nomf" value="${esc(f.nom)}" aria-label="Nom de la famille ou du groupe"${f.admin ? ' disabled' : ''}>
-        <p>Code : <code>${esc(f.code)}</code></p>
-        ${f.admin ? '' : `<label class="petit" style="display:block">Fin d'accès ${f.fin && iso(new Date()) > f.fin ? '<b style="color:#a33">(terminée)</b>' : ''}
+    const ligneFam = (f, i) => f.actif ? `<div class="carte fam${f.admin ? ' fam-admin' : ''}${f.essai ? ' fam-essai' : ''}" data-i="${i}">
+        ${f.admin ? '<span class="badge-admin">Mon accès conceptrice · protégé</span>' : ''}${f.essai ? '<span class="badge-admin" style="background:#f49f4c;color:#2b2b2b">🔒 Code d\'essai · protégé · à ne jamais envoyer à une famille</span>' : ''}
+        <input type="text" class="nomf" value="${esc(f.nom)}" aria-label="Nom de la famille ou du groupe"${f.admin || f.essai ? ' disabled' : ''}>
+        <p>Code : <code>${f.essai ? '••••-••••' : esc(f.code)}</code></p>
+        ${f.essai ? '<p class="petit" style="margin:2px 0 10px">Ce code est utilisé automatiquement par l\'essai gratuit (après la vérification par e-mail). Ne le modifiez pas, ne le retirez pas.</p>' : ''}
+        ${f.admin || f.essai ? '' : `<label class="petit" style="display:block">Fin d'accès ${f.fin && iso(new Date()) > f.fin ? '<b style="color:#a33">(terminée)</b>' : ''}
           <input type="date" class="finf" value="${esc(f.fin || '')}" style="padding:6px 10px;border:2px solid #e4dcec;border-radius:12px;font:inherit;margin-left:6px"></label>
         <p class="petit" style="margin:2px 0 10px">${f.fin ? '' : 'Sans limite de durée. '}Laissez vide pour un accès sans date de fin.</p>`}
         <p class="petit">Ajouté le ${esc(f.ajout || '')}${f.vente ? ' · ' + (f.envoye ? 'envoyé le ' + esc(f.envoye) + (f.acheteur ? ' à ' + esc(f.acheteur) : '') : (f.publie ? 'disponible pour la vente' : 'à publier')) : ''}</p>
-        <div class="chips">${f.admin ? cases('pf', f.petales).replace(/<input/g, '<input disabled') : cases('pf', f.petales)}</div>
-        <div class="actions-fam">
+        <div class="chips">${f.admin || f.essai ? cases('pf', f.petales).replace(/<input/g, '<input disabled') : cases('pf', f.petales)}</div>
+        ${f.essai ? '' : `<div class="actions-fam">
           <button type="button" class="btn petit-btn" data-a="msg">Copier le message</button>
           <button type="button" class="btn petit-btn" data-a="msgachat">Message d'achat</button>
           ${f.vente ? `<button type="button" class="btn petit-btn gris" data-a="envoye">${f.envoye ? 'Remettre en stock' : 'Marquer comme envoyé'}</button>` : ''}
           <button type="button" class="btn petit-btn gris" data-a="lien">Copier le lien</button>
           <button type="button" class="btn petit-btn gris" data-a="qr">QR code</button>
           ${f.admin ? '' : '<button type="button" class="btn petit-btn alerte" data-a="retirer">Retirer</button>'}
-        </div></div>` : '';
-    const lignes = carnet.familles.map((f, i) => f.admin ? ligneFam(f, i) : '').join('') + carnet.familles.map((f, i) => f.admin ? '' : ligneFam(f, i)).join('');
+        </div>`}</div>` : '';
+    const lignes = carnet.familles.map((f, i) => f.admin ? ligneFam(f, i) : '').join('') + carnet.familles.map((f, i) => f.admin || f.essai ? '' : ligneFam(f, i)).join('') + carnet.familles.map((f, i) => f.essai && !f.admin ? ligneFam(f, i) : '').join('');
     return `<section class="vue"><a class="retour" href="#/plus">← Plus</a>
       <h1><span class="surligne" style="--hl:var(--vert)">Gérer les familles</span></h1>
       <div class="grille-cartes">
@@ -914,6 +1035,8 @@
         <label for="duree" class="petit" style="display:block;margin-top:6px"><b>Durée de l'accès</b> (compte à partir d'aujourd'hui)</label>
         <select id="duree" style="width:100%;padding:10px 14px;border:2px solid #e4dcec;border-radius:16px;font:inherit;background:#fff;margin:4px 0 12px">
           <option value="">Sans limite (familles du centre social)</option>
+          <option value="1m">1 mois (découverte pour une structure partenaire)</option>
+          <option value="3m">3 mois (familles du centre, un pétale)</option>
           <option value="12m" selected>12 mois (fleur entière, un pétale)</option>
           <option value="5a">5 ans (accès longue durée)</option>
         </select>
@@ -924,6 +1047,10 @@
       <div class="carte"><h2>Ajouter les parcours d'un mois</h2>
         <p class="petit">Choisissez le fichier <b>parcours-mensuels-PRIVE.json</b> (sur votre ordinateur, jamais sur GitHub). Les parcours sont ajoutés aux pétales, puis chiffrés avec les autres contenus. Vos codes ne changent pas.</p>
         <input type="file" id="f-parcours" accept=".json"><p class="erreur" id="st-parcours" role="status"></p></div>
+      ${essaiServeur() ? '' : `<div class="carte"><h2>Codes d'essai gratuit</h2>
+        <p class="petit">Une seule fois : crée 7 codes d'essai (un par pétale). Ensuite, les familles qui n'ont pas suivi d'atelier testent un pétale pendant ${essaiJours()} jours, tout seul, sans rien à faire de ton côté. Le bloc copié est à coller dans <b>config.json</b> (ligne <code>"codes"</code>), puis publie les fichiers.</p>
+        <button type="button" class="btn plein" id="creer-essai">Créer les codes d'essai</button>
+        <p class="erreur" id="st-essai" role="status"></p></div>`}
       <div class="carte"><h2>Publier les changements</h2>
         <p>Après chaque ajout ou retrait, téléchargez les deux fichiers, puis déposez-les sur GitHub (Add file → Upload files → Commit changes). Les familles les prennent en compte dans les minutes qui suivent.</p>
         <button type="button" class="btn plein" id="fabriquer">Préparer les fichiers à publier</button>
@@ -939,7 +1066,7 @@
     const imp = $app.querySelector('#f-carnet');
     if (imp) { imp.addEventListener('change', () => { const r = new FileReader(); r.onload = () => { try { const c = JSON.parse(r.result); if (c.v !== 2 || !c.cles || !c.familles) throw 0; ecrireCarnet(c); rendre(); } catch { st('Ce fichier n\'est pas un carnet valide.'); } }; r.readAsText(imp.files[0]); }); return; }
     const carnet = lireCarnet(); if (!carnet) return;
-    const msgFamille = f => `Bonjour, voici votre accès personnel pour prolonger à la maison ce que nous avons vécu à l'atelier. Touchez ce lien, l'application s'ouvre toute seule : ${lienFamille(f)}\n(Si on vous demande le code, saisissez-le : ${f.code}). À bientôt, Tsiory (BRILLE)`;
+    const msgFamille = f => `Bonjour, voici votre accès personnel pour prolonger à la maison ce que nous avons vécu ensemble à l'atelier. Touchez ce lien, l'application s'ouvre toute seule : ${lienFamille(f)}\n(Si on vous demande le code, saisissez-le : ${f.code}). À bientôt, Tsiory (BRILLE)`;
     const msgAchat = f => `Bonjour, merci pour votre achat d'un accès à Étincelle ! Touchez ce lien, l'application s'ouvre toute seule : ${lienFamille(f)}\n(Si on vous demande le code, saisissez-le : ${f.code}). Bon moment en famille, Tsiory (BRILLE)`;
     const copier = async (t, ok) => { try { await navigator.clipboard.writeText(t); st(ok); } catch { prompt('Copiez ce texte :', t); } };
     $app.querySelector('#creer').addEventListener('click', () => {
@@ -949,9 +1076,23 @@
       const base = $app.querySelector('#nouveau-nom').value.trim() || 'Famille';
       const crees = []; for (let i = 0; i < n; i++) crees.push(Acces.ajouterFamille(carnet, n > 1 ? `${base} ${String(i + 1).padStart(2, '0')}` : base, sel));
       const dr = $app.querySelector('#duree').value;
-      if (dr) { const d = new Date(); d.setFullYear(d.getFullYear() + (dr === '5a' ? 5 : 1)); crees.forEach(f => { f.fin = iso(d); }); }
+      if (dr) { const d = new Date(); if (dr === '1m') d.setMonth(d.getMonth() + 1); else if (dr === '3m') d.setMonth(d.getMonth() + 3); else d.setFullYear(d.getFullYear() + (dr === '5a' ? 5 : 1)); crees.forEach(f => { f.fin = iso(d); }); }
       if ($app.querySelector('#lot-vente').checked) crees.forEach(f => { f.vente = true; });
       ecrireCarnet(carnet); rendre(); const e = $app.querySelector('#st'); if (e) { e.style.color = '#2f6b2f'; e.textContent = (n === 1 ? 'Code créé : ' + crees[0].code : n + ' codes créés') + '. Pensez à publier (bouton « Préparer les fichiers »).'; }
+    });
+    const cE = $app.querySelector('#creer-essai');
+    if (cE) cE.addEventListener('click', async () => {
+      const codes = {};
+      (D.vitrine || []).forEach(v => {
+        let f = carnet.familles.find(x => x.actif && x.essai === v.id);
+        if (!f) { f = Acces.ajouterFamille(carnet, 'Essai · ' + titreEnfant(v.id), [v.id]); f.essai = v.id; f.fin = ''; }
+        codes[v.id] = f.code;
+      });
+      ecrireCarnet(carnet);
+      const bloc = JSON.stringify({ actif: true, jours: essaiJours(), codes }, null, 2);
+      const e = $app.querySelector('#st-essai');
+      try { await navigator.clipboard.writeText(bloc); if (e) { e.style.color = '#2f6b2f'; e.textContent = 'Les 7 codes sont créés et le bloc est copié. ' + (essaiServeur() ? 'Colle-le dans le script Google (liste CODES), puis « Préparer les fichiers » et publie.' : 'Colle-le dans config.json (ligne « codes »), puis « Préparer les fichiers » et publie.'); } }
+      catch { prompt('Copiez ce bloc pour config.json :', bloc); }
     });
     const prochain = $app.querySelector('#prochain');
     if (prochain) prochain.addEventListener('click', async () => {
@@ -966,9 +1107,10 @@
       const f = carnet.familles[+bloc.dataset.i];
       const fi = bloc.querySelector('.finf');
       if (fi) fi.addEventListener('change', e => { f.fin = e.target.value || ''; ecrireCarnet(carnet); st('Date de fin modifiée. Pensez à publier (bouton « Préparer les fichiers »).'); });
-      bloc.querySelector('.nomf').addEventListener('input', e => { if (f.admin) return; f.nom = e.target.value; ecrireCarnet(carnet); });
+      bloc.querySelector('.nomf').addEventListener('input', e => { if (f.admin || f.essai) return; f.nom = e.target.value; ecrireCarnet(carnet); });
       bloc.querySelectorAll('.pf').forEach(c => c.addEventListener('change', () => {
         if (f.admin) { c.checked = true; return; }
+        if (f.essai) { c.checked = f.petales.includes(c.dataset.id); return; }
         if (c.checked) { if (!f.petales.includes(c.dataset.id)) f.petales.push(c.dataset.id); }
         else { f.petales = f.petales.filter(x => x !== c.dataset.id); Acces.renouvelerCles(carnet, [c.dataset.id]); }
         ecrireCarnet(carnet); st('Modifié. Pensez à publier (bouton « Préparer les fichiers »).');
@@ -1015,6 +1157,132 @@
     return '<section class="vue"><h1>Page introuvable</h1><p>Cette page n\'existe pas.</p><a class="btn" href="#/">Retour à la fleur</a></section>';
   }
 
+  /* ---------- Essai gratuit : questionnaire, bandeau, partage ---------- */
+  const bandeauEssai = () => {
+    if (!D.essai || D.admin || !D.fin) return '';
+    const n = joursRestants(D.fin);
+    return `<div class="essai-bandeau" role="status">🌱 Essai gratuit · ${n <= 1 ? 'dernier jour' : n + ' jours restants'}. <a href="#/plus">En savoir plus</a></div>`;
+  };
+  function ecranEssai(etape, scores) {
+    etape = etape || 0; scores = scores || {};
+    document.body.classList.add('verrouille');
+    const Q = essaiCfg().questions || [], codes = essaiCodes(), srv = !!essaiServeur();
+    const S = essaiEtat();
+    const retour = `<button type="button" class="btn discret" id="es-retour" style="margin-top:12px">← Retour</button>`;
+    const lierRetour = () => { const r = $app.querySelector('#es-retour'); if (r) r.addEventListener('click', () => etape > 0 ? ecranEssai(etape - 1, scores) : ecranCode()); };
+    window.scrollTo(0, 0);
+    if (etape < Q.length) {
+      const q = Q[etape];
+      $app.innerHTML = `<section class="vue acces"><div class="carte"><span class="etiquette">Essai gratuit · question ${etape + 1} sur ${Q.length}</span>
+        <h1 class="essai-q">${esc(q.q)}</h1>
+        <div class="essai-choix">${q.choix.map((c, i) => `<button type="button" class="btn essai-c" data-i="${i}">${esc(c.t)}</button>`).join('')}</div>
+        <p class="petit">Rien n'est envoyé : vos réponses restent sur votre appareil.</p>${retour}</div></section>`;
+      $app.querySelectorAll('.essai-c').forEach(b => b.addEventListener('click', () => {
+        const c = q.choix[+b.dataset.i], sc = Object.assign({}, scores);
+        if (c.petale) sc[c.petale] = (sc[c.petale] || 0) + (q.poids || 1);
+        ecranEssai(etape + 1, sc);
+      }));
+      lierRetour(); return;
+    }
+    const dispo = essaiPetales();
+    const reco = dispo.slice().sort((a, b) => (scores[b] || 0) - (scores[a] || 0))[0];
+    const carteP = (id, grand) => {
+      const v = (D.vitrine || []).find(x => x.id === id); if (!v) return '';
+      const mien = S && S.R.p === id, bloc = !!(S && ((S.actif && !mien) || S.bloque));
+      const lib = S && S.actif ? (mien ? `Reprendre (${joursRestants(S.fin)} j)` : 'Un essai est déjà en cours') : S && S.bloque ? `Possible le ${dateLongue(S.libre)}` : `Essayer ${essaiJours()} jours`;
+      return `<div class="essai-p" style="--c:${esc(v.couleur)}"><img src="p-${esc(id)}.png" alt=""><div><b>${esc(v.miroir || v.titre)}</b><br><small>${esc(v.miroirSous || '')}</small></div>
+        <button type="button" class="btn ${grand ? 'plein' : ''} essai-go" data-id="${esc(id)}" ${bloc ? 'disabled' : ''}>${lib}</button></div>`;
+    };
+    $app.innerHTML = `<section class="vue acces"><div class="carte"><span class="etiquette">Votre pétale conseillé</span>
+      <h1 class="essai-q">On vous propose de commencer par là</h1>
+      ${S && S.bloque ? `<p class="erreur" role="status" style="color:inherit">Votre essai s'est terminé le ${dateLongue(S.fin)}. Merci de l'avoir testé ! Un nouvel essai sera possible à partir du ${dateLongue(S.libre)}.</p>` : ''}
+      ${carteP(reco, true)}
+      <p class="petit">Votre essai de ${essaiJours()} jours démarre à la première ouverture. Pas de paiement, pas d'engagement : à la fin, il s'arrête tout seul. Un seul pétale à la fois, avec une pause ${essaiPause() >= 28 && essaiPause() <= 31 ? 'd\'un mois' : 'de ' + essaiPause() + ' jours'} avant l'essai suivant.</p>
+      ${dispo.length > 1 ? `<details class="essai-autres"><summary>Choisir un autre pétale</summary>${dispo.filter(x => x !== reco).map(x => carteP(x, false)).join('')}</details>` : ''}
+      <p class="erreur" id="es-err" role="alert"></p>${retour}</div></section>`;
+    $app.querySelectorAll('.essai-go').forEach(b => b.addEventListener('click', async () => {
+      if (srv) { ecranEmail(b.dataset.id); return; }
+      const err = $app.querySelector('#es-err'); b.disabled = true;
+      try { await deverrouiller(codes[b.dataset.id]); document.body.classList.remove('verrouille'); location.hash = '#/petale/' + b.dataset.id; premiere = true; rendre(); }
+      catch (x) { if (err) err.textContent = messageAcces(x) || 'L\'essai n\'est pas disponible pour le moment.'; b.disabled = false; }
+    }));
+    lierRetour();
+  }
+  function ecranEmail(id, etape, email, info) {
+    etape = etape || 1; email = email || '';
+    document.body.classList.add('verrouille'); window.scrollTo(0, 0);
+    const v = (D.vitrine || []).find(x => x.id === id) || {}, nom = v.miroir || v.titre || '';
+    const retour = `<button type="button" class="btn discret" id="em-retour" style="margin-top:12px">← Retour</button>`;
+    const err = m => { const e = $app.querySelector('#em-err'); if (e) e.textContent = m; };
+    if (etape === 1) {
+      $app.innerHTML = `<section class="vue acces"><div class="carte"><span class="etiquette">Essai gratuit · ${esc(nom)}</span>
+        <h1 class="essai-q">Votre adresse e-mail</h1>
+        <p>Je vous envoie un code à 6 chiffres pour démarrer votre essai de ${essaiJours()} jours. C'est ce qui garantit <b>un essai par famille</b>.</p>
+        <input type="email" id="em-mail" autocomplete="email" inputmode="email" placeholder="prenom@exemple.fr" value="${esc(email)}" style="width:100%;font-size:1.05rem;padding:12px;border-radius:12px;border:1px solid #ccc">
+        <label style="display:flex;gap:8px;align-items:flex-start;margin:12px 0;font-size:.9rem"><input type="checkbox" id="em-ok" style="margin-top:3px"><span>J'accepte que mon adresse serve uniquement à vérifier cet essai. Elle est conservée sous une forme chiffrée, illisible, et jamais utilisée pour m'écrire. <a href="legal.html#confidentialite" target="_blank" rel="noopener">En savoir plus</a></span></label>
+        <p class="petit liens-legaux">${liensLegaux()}</p>
+        <button type="button" class="btn plein" id="em-envoi">Recevoir mon code</button>
+        <p class="erreur" id="em-err" role="alert"></p>${retour}</div></section>`;
+      $app.querySelector('#em-envoi').addEventListener('click', async ev => {
+        const m = $app.querySelector('#em-mail').value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m)) return err('Cette adresse e-mail ne semble pas valide.');
+        if (!$app.querySelector('#em-ok').checked) return err('Merci de cocher la case pour continuer.');
+        ev.target.disabled = true; err('');
+        try { const r = await appelServeur({ action: 'demande', email: m, petale: id }); if (!r.ok) throw new Error('x'); ecranEmail(id, 2, m); }
+        catch { err('Connexion impossible pour le moment. Vérifiez votre réseau et réessayez.'); ev.target.disabled = false; }
+      });
+    } else {
+      $app.innerHTML = `<section class="vue acces"><div class="carte"><span class="etiquette">Essai gratuit · ${esc(nom)}</span>
+        <h1 class="essai-q">Entrez votre code</h1>
+        <p>Si l'adresse <b>${esc(email)}</b> est valable, un code à 6 chiffres vient d'être envoyé (pensez aux courriers indésirables). Il est valable 10 minutes.</p>
+        ${info ? `<p class="petit">${esc(info)}</p>` : ''}
+        <input type="text" id="em-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000" style="width:100%;font-size:1.6rem;letter-spacing:.4em;text-align:center;padding:12px;border-radius:12px;border:1px solid #ccc">
+        <button type="button" class="btn plein" id="em-verif" style="margin-top:12px">Démarrer mon essai</button>
+        <p class="petit">Pas de code ? Si votre essai précédent date de moins d'un mois, aucun code n'est envoyé.</p>
+        <p class="erreur" id="em-err" role="alert"></p>${retour}</div></section>`;
+      $app.querySelector('#em-verif').addEventListener('click', async ev => {
+        const c = $app.querySelector('#em-code').value.replace(/\D/g, '');
+        if (c.length !== 6) return err('Le code contient 6 chiffres.');
+        ev.target.disabled = true; err('');
+        try {
+          const r = await appelServeur({ action: 'verifier', email, code: c, petale: id });
+          if (!r.ok) { err(r.raison === 'trop' ? 'Trop d\'essais. Demandez un nouveau code.' : r.raison === 'pause' ? 'Votre essai précédent est terminé. Un nouvel essai sera possible à partir du ' + dateLongue(r.libre) + '.' : 'Code incorrect ou expiré.'); ev.target.disabled = false; return; }
+          ecrireEssai({ p: r.petale, d: r.debut });
+          await deverrouiller(r.code); document.body.classList.remove('verrouille');
+          location.hash = '#/petale/' + r.petale; premiere = true; rendre();
+        } catch (x) { err(messageAcces(x) || 'Connexion impossible pour le moment. Réessayez.'); ev.target.disabled = false; }
+      });
+    }
+    const rt = $app.querySelector('#em-retour'); if (rt) rt.addEventListener('click', () => etape === 2 ? ecranEmail(id, 1, email) : ecranEssai(99));
+  }
+  const lienApp = () => location.origin + location.pathname.replace(/index\.html$/, '');
+  document.addEventListener('click', async e => {
+    const b = e.target && e.target.closest && e.target.closest('[data-partager]'); if (!b) return;
+    const id = b.dataset.partager, nomP = id ? titreEnfant(id) : '';
+    const c = D.config.contact || {};
+    const txt = `Je viens de vivre ${nomP ? '« ' + nomP + ' » ' : 'un atelier '}avec BRILLE et ça m'a fait du bien, à moi et à ma famille. ${essaiDispo() ? 'Tu peux tester gratuitement pendant une semaine : ' + lienApp() : 'Si ça te tente, écris à ' + (c.email || 'BRILLE') + '.'}`;
+    try { if (navigator.share) { await navigator.share({ text: txt }); return; } } catch (x) { if (x && x.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(txt); b.textContent = '✅ Message copié, collez-le dans un SMS ou WhatsApp'; } catch { prompt('Copiez ce petit mot :', txt); }
+  });
+  (() => {
+    const st = document.createElement('style');
+    st.textContent = `.topbar .brand-nom{display:none!important}
+.fam-essai{background:#fdd5a5!important;border:2px solid #f49f4c}.fam-essai code{background:#fff6e8}
+.hero-accueil{display:block!important;position:relative;overflow:hidden}
+.hero-accueil .logo-etincelle{position:static!important;float:right;width:min(42%,230px)!important;height:auto!important;margin:0 0 4px 14px!important;shape-outside:margin-box}
+.hero-accueil h1{font-size:clamp(2.2rem,9vw,3.8rem);line-height:1.05;margin:.25em 0 .3em}
+.hero-accueil p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;max-width:none!important;padding-right:0!important;margin:0 0 .7em}
+.hero-accueil .hero-essai{background:rgba(255,255,255,.55);border-radius:14px;padding:10px 14px;text-align:left}
+.hero-accueil::after{content:'';display:block;clear:both}
+@media(max-width:520px){.hero-accueil .logo-etincelle{width:min(38%,150px)!important}}
+.essai-bandeau{background:#cbe1b6;color:#2b2b2b;text-align:center;padding:8px 14px;border-radius:14px;margin:0 0 12px;font-weight:600}.essai-bandeau a{color:inherit}
+.essai-q{font-size:1.35rem;line-height:1.3;margin:8px 0 14px}.essai-choix{display:grid;gap:10px;margin-bottom:10px}.essai-c{text-align:left;white-space:normal;height:auto;padding:12px 16px}
+.essai-p{display:grid;grid-template-columns:48px 1fr;gap:6px 12px;align-items:center;background:var(--c,#f8f4b8);border-radius:18px;padding:12px;margin:8px 0}.essai-p img{width:48px;height:48px;object-fit:contain}.essai-p .btn{grid-column:1/-1}
+.essai-autres{margin:10px 0}.reprise{background:#fdd5a5;color:#2b2b2b;border-radius:16px;padding:12px 14px;margin:10px 0}
+.transmettre-idees{margin:6px 0 12px;padding-left:20px}.transmettre-idees li{margin:4px 0}`;
+    document.head.appendChild(st);
+  })();
+
   /* ---------- Routeur ---------- */
   let premiere = true;
   function rendre() {
@@ -1028,7 +1296,7 @@
     else if (r === 'acces') { html = achatActif() ? htmlAchat('fleur') : vueIntrouvable(); tab = 'plus'; apres = () => { if (achatActif()) lierAchat('fleur'); }; titre = 'Obtenir un accès · Étincelle'; }
     else if (r === 'plus') { html = vuePlus(); tab = 'plus'; apres = lierPlus; titre = 'Plus · Étincelle'; }
     else { html = vueIntrouvable(); tab = ''; }
-    $app.innerHTML = html;
+    $app.innerHTML = bandeauEssai() + html;
     document.title = titre;
     document.querySelectorAll('.tabbar a').forEach(a => { if (a.dataset.tab === tab) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     apres();
@@ -1045,12 +1313,12 @@
       const lien = decodeURIComponent(m[1]);
       history.replaceState(null, '', location.pathname + location.search + '#/');
       try { await deverrouiller(lien); document.body.classList.remove('verrouille'); premiere = true; rendre(); return; }
-      catch (x) { ecranCode(messageAcces(x) || 'Ce lien n\'est plus valide. Entrez votre code ou contactez BRILLE.'); return; }
+      catch (x) { ecranCode(messageAcces(x) || 'Ce lien n\'est plus valide. Entrez votre code ou écrivez-moi.'); return; }
     }
     const code = codeMemorise();
     let raison = null;
     if (code) { try { await deverrouiller(code); document.body.classList.remove('verrouille'); rendre(); return; } catch (x) { raison = x; /* code retiré, changé ou expiré */ } }
-    ecranCode(code ? (messageAcces(raison) || 'Votre accès n\'est plus valide. Entrez un nouveau code ou contactez BRILLE.') : '');
+    ecranCode(code ? (messageAcces(raison) || 'Votre accès n\'est plus valide. Entrez un nouveau code ou écrivez-moi.') : '');
   }).catch(() => {
     $app.innerHTML = '<section class="vue"><h1>Oups</h1><p>Impossible de charger le contenu. Vérifiez votre connexion et rechargez la page.</p></section>';
   });
